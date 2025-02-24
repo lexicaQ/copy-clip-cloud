@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Apple, Download, Check, Clipboard, Cloud, Shield, Sparkles, ArrowBigDown } from "lucide-react";
+import { Apple, Download, Check, Clipboard, Cloud, Shield, Sparkles, ArrowBigDown, Star } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -9,7 +9,6 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate initial loading
     setTimeout(() => setIsLoading(false), 2000);
   }, []);
 
@@ -29,23 +28,26 @@ const Index = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
         <motion.div
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="mb-4"
-          >
-            <Clipboard className="w-16 h-16 text-white" />
-          </motion.div>
+          <div className="loading-spinner">
+            <div className="loading-cube">
+              <div className="cube-face" style={{ transform: 'rotateX(0deg) translateZ(12px)' }} />
+              <div className="cube-face" style={{ transform: 'rotateX(180deg) translateZ(12px)' }} />
+              <div className="cube-face" style={{ transform: 'rotateY(90deg) translateZ(12px)' }} />
+              <div className="cube-face" style={{ transform: 'rotateY(-90deg) translateZ(12px)' }} />
+              <div className="cube-face" style={{ transform: 'rotateX(90deg) translateZ(12px)' }} />
+              <div className="cube-face" style={{ transform: 'rotateX(-90deg) translateZ(12px)' }} />
+            </div>
+          </div>
           <motion.h2
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="text-xl font-medium text-white"
+            className="text-xl font-medium text-white mt-8"
           >
             Loading CopyClipCloud...
           </motion.h2>
@@ -56,14 +58,38 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden">
+      {/* Star Field Background */}
+      <div className="star-field">
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="star"
+            initial={{ opacity: Math.random() }}
+            animate={{
+              opacity: [Math.random() * 0.2, 1, Math.random() * 0.2],
+              scale: [1, Math.random() + 1, 1],
+            }}
+            transition={{
+              duration: Math.random() * 3 + 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Interactive Background */}
       <div className="absolute inset-0 z-0">
         <motion.div 
           animate={{ 
             background: [
-              "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03) 0%, transparent 70%)",
-              "radial-gradient(circle at 80% 80%, rgba(255,255,255,0.03) 0%, transparent 70%)",
-              "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03) 0%, transparent 70%)"
+              "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05) 0%, transparent 70%)",
+              "radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 70%)",
+              "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05) 0%, transparent 70%)"
             ]
           }}
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
@@ -81,41 +107,48 @@ const Index = () => {
         {/* Logo and Badge */}
         <div className="space-y-6">
           <motion.div
-            className="w-24 h-24 mx-auto"
+            className="w-32 h-32 mx-auto"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
           >
-            <div className="w-full h-full rounded-2xl glass-panel flex items-center justify-center bg-zinc-950 relative overflow-hidden group">
+            <div className="w-full h-full rounded-2xl glass-panel flex items-center justify-center bg-zinc-950 relative overflow-hidden group glow-effect">
               <motion.div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{
-                  background: "linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)",
+                  background: "linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
                 }}
                 animate={{ x: ["200%", "-200%"] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
               />
-              <Clipboard className="w-12 h-12 relative z-10" />
+              <Clipboard className="w-16 h-16 relative z-10" />
               <motion.div
-                className="absolute -top-1 -right-1"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute -top-2 -right-2"
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 180, 360]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
               >
-                <Sparkles className="w-4 h-4 text-yellow-400" />
+                <Star className="w-8 h-8 text-yellow-400 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
               </motion.div>
             </div>
           </motion.div>
 
           <motion.div
-            className="inline-flex items-center px-4 py-2 rounded-full glass-panel space-x-2"
+            className="inline-flex items-center px-6 py-3 rounded-full glass-panel space-x-3 glow-effect"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             whileHover={{ scale: 1.05 }}
             transition={{ delay: 0.2 }}
           >
-            <Apple className="w-4 h-4" />
-            <span className="text-sm font-medium">Built for macOS 15+</span>
+            <Apple className="w-5 h-5" />
+            <span className="text-base font-medium">Built for macOS 15+</span>
           </motion.div>
         </div>
         

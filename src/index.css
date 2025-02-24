@@ -42,24 +42,67 @@
   .floating-element {
     animation: float 6s ease-in-out infinite;
   }
+
+  .glow-effect {
+    @apply relative;
+  }
+
+  .glow-effect::after {
+    content: '';
+    @apply absolute inset-0 rounded-xl;
+    box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .glow-effect:hover::after {
+    opacity: 1;
+  }
+
+  .star-field {
+    @apply absolute inset-0 overflow-hidden pointer-events-none;
+  }
+
+  .star {
+    @apply absolute w-1 h-1 bg-white rounded-full;
+    animation: twinkle 1s infinite;
+  }
+
+  .loading-spinner {
+    @apply relative w-24 h-24;
+    perspective: 800px;
+  }
+
+  .loading-cube {
+    @apply absolute inset-0;
+    transform-style: preserve-3d;
+    animation: cube-spin 2s infinite linear;
+  }
+
+  .cube-face {
+    @apply absolute w-full h-full border border-white/20 backdrop-blur-sm;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  }
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: 200% 50%;
-  }
-  100% {
-    background-position: -200% 50%;
-  }
+  0% { background-position: 200% 50%; }
+  100% { background-position: -200% 50%; }
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes cube-spin {
+  0% { transform: rotateX(0) rotateY(0); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
 }
 
 .gradient-bg {
