@@ -17,57 +17,44 @@
   
   .animated-border-button {
     @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl;
-    background: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
-    background-size: 200% 100%;
-    background-position: 100% 50%;
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
   }
 
   .animated-border-button:hover {
-    @apply bg-white text-black shadow-2xl;
-    background-position: 0% 50%;
+    @apply shadow-2xl;
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
     transform: translateY(-2px);
   }
 
   .animated-border-button::before {
     content: '';
-    @apply absolute inset-0 border border-white/50 rounded-xl;
-    animation: border-pulse 2s linear infinite;
+    @apply absolute inset-0 border border-white/20 rounded-xl;
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.5), rgba(59, 130, 246, 0.5));
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-pulse 4s linear infinite;
   }
 
-  .floating-element {
-    animation: float 6s ease-in-out infinite;
+  .bg-grid-white\/5 {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   }
 }
 
 @keyframes border-pulse {
-  0%, 100% {
-    clip-path: inset(0 0 98% 0);
-  }
-  25% {
-    clip-path: inset(0 98% 0 0);
-  }
-  50% {
-    clip-path: inset(98% 0 0 0);
-  }
-  75% {
-    clip-path: inset(0 0 0 98%);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .gradient-bg {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.02) 100%
+    rgba(139, 92, 246, 0.1) 0%,
+    rgba(59, 130, 246, 0.1) 100%
   );
 }
-

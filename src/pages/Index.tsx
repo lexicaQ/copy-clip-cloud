@@ -1,11 +1,13 @@
+
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Apple, Download, Check, Clipboard, Cloud, Shield } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Apple, Download, Check, Clipboard, Cloud, Shield, Loader2, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { getLatestAppVersion, downloadApp } from "@/utils/appDownload";
 
 const Index = () => {
   const [downloading, setDownloading] = useState(false);
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   const handleDownload = async () => {
     setDownloading(true);
@@ -29,21 +31,23 @@ const Index = () => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      toast.success("Download started!");
+      toast.success("Download started successfully!");
     } catch (error) {
       console.error('Download error:', error);
-      toast.error("Download failed. Please try again.");
+      toast.error("Download failed. Please try again later.");
     } finally {
-      setDownloading(false);
+      setTimeout(() => {
+        setDownloading(false);
+      }, 2000); // Keep animation visible for 2 seconds
     }
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden">
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden bg-black">
       {/* Background effects */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_0%,_transparent_70%)]" />
-        <div className="absolute top-0 left-0 w-full h-full bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(29,7,84,0.8)_0%,rgba(0,0,0,1)_100%)]" />
+        <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" />
       </div>
 
       <motion.div
@@ -55,13 +59,18 @@ const Index = () => {
         {/* Logo and Badge */}
         <div className="space-y-6">
           <motion.div 
-            className="w-24 h-24 mx-auto floating-element"
+            className="w-28 h-28 mx-auto"
             initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            animate={{ scale: 1, rotateY: downloading ? 360 : 0 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+              rotateY: { duration: 1.5, ease: "easeInOut" }
+            }}
           >
-            <div className="w-full h-full rounded-2xl glass-panel flex items-center justify-center">
-              <Clipboard className="w-12 h-12" />
+            <div className="w-full h-full rounded-3xl glass-panel flex items-center justify-center bg-gradient-to-br from-purple-500/20 to-blue-500/20">
+              <Cloud className="w-14 h-14 text-white/90" />
             </div>
           </motion.div>
 
@@ -79,7 +88,7 @@ const Index = () => {
         {/* Title and Description */}
         <div className="space-y-4">
           <motion.h1 
-            className="text-4xl md:text-6xl font-bold tracking-tight"
+            className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
@@ -107,26 +116,37 @@ const Index = () => {
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="animated-border-button glass-panel"
+            className="animated-border-button glass-panel group relative overflow-hidden"
           >
-            <span className="relative z-10 flex items-center space-x-2">
+            <AnimatePresence mode="wait">
               {downloading ? (
-                <>
+                <motion.div
+                  key="downloading"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-blue-500/20"
+                >
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                   >
-                    <Check className="w-5 h-5" />
+                    <Loader2 className="w-6 h-6 text-white" />
                   </motion.div>
-                  <span>Downloading...</span>
-                </>
+                </motion.div>
               ) : (
-                <>
+                <motion.div
+                  key="download"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  className="relative z-10 flex items-center space-x-2"
+                >
                   <Download className="w-5 h-5" />
                   <span>Download for Mac</span>
-                </>
+                </motion.div>
               )}
-            </span>
+            </AnimatePresence>
           </button>
 
           <p className="text-sm text-gray-500">
@@ -153,6 +173,49 @@ const Index = () => {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* FAQ Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="mt-16 space-y-4"
+        >
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          {faqs.map((faq, index) => (
+            <motion.div
+              key={index}
+              className="glass-panel overflow-hidden"
+              initial={false}
+            >
+              <button
+                onClick={() => setActiveFaq(activeFaq === index ? null : index)}
+                className="w-full p-4 flex items-center justify-between text-left"
+              >
+                <span className="font-medium">{faq.question}</span>
+                <motion.div
+                  animate={{ rotate: activeFaq === index ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="w-5 h-5" />
+                </motion.div>
+              </button>
+              <motion.div
+                initial={false}
+                animate={{
+                  height: activeFaq === index ? "auto" : 0,
+                  opacity: activeFaq === index ? 1 : 0
+                }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="p-4 pt-0 text-gray-400">
+                  {faq.answer}
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
       </motion.div>
     </div>
   );
@@ -174,6 +237,25 @@ const features = [
     description: "End-to-end encryption ensures your clipboard data stays private and secure at all times.",
     icon: Shield
   },
+];
+
+const faqs = [
+  {
+    question: "How does CopyClipCloud work?",
+    answer: "CopyClipCloud runs in the background on your Mac, automatically syncing your clipboard content across all your devices using end-to-end encryption. When you copy something on one device, it's instantly available on all your other devices."
+  },
+  {
+    question: "Is my clipboard data secure?",
+    answer: "Yes, absolutely! We use military-grade encryption to protect your data. All clipboard content is encrypted before it leaves your device, and only you can decrypt it. We never have access to your unencrypted data."
+  },
+  {
+    question: "What types of content can I sync?",
+    answer: "CopyClipCloud supports text, formatted text, images, files, and more. You can sync practically anything you can copy to your clipboard, with support for rich text formatting and file attachments."
+  },
+  {
+    question: "How much does it cost?",
+    answer: "CopyClipCloud is currently free during our beta period. We plan to introduce premium features in the future, but core functionality will always remain free."
+  }
 ];
 
 export default Index;
