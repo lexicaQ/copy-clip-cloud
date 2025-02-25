@@ -1,6 +1,7 @@
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Apple, Download, Cloud, Loader2, ChevronDown, Zap, Users, Clock } from "lucide-react";
+import { Apple, Download, Cloud, Loader2, ChevronDown, Zap, Users, Clock, Shield, Clipboard } from "lucide-react";
 import { toast } from "sonner";
 import { getLatestAppVersion, downloadApp } from "@/utils/appDownload";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
