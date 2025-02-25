@@ -1,15 +1,22 @@
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Apple, Download, Cloud, Loader2, ChevronDown, Zap, Users, Clock, Shield, Clipboard } from "lucide-react";
+import { Apple, Download, Cloud, Loader2, ChevronDown, Zap, Users, Clock, Shield, Clipboard, Heart, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { getLatestAppVersion, downloadApp } from "@/utils/appDownload";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 const efficiencyData = [
   { name: 'Traditional', value: 35 },
   { name: 'CopyClipCloud', value: 85 },
 ];
+
+const satisfactionData = [
+  { name: 'Very Satisfied', value: 68 },
+  { name: 'Satisfied', value: 22 },
+  { name: 'Neutral', value: 10 },
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
 const Index = () => {
   const [downloading, setDownloading] = useState(false);
@@ -46,10 +53,14 @@ const Index = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden bg-black">
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden bg-gradient-to-br from-gray-900 to-black">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,rgba(0,0,0,1)_70%)]" />
         <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" />
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 1px, transparent 1px)',
+          backgroundSize: '50px 50px'
+        }} />
       </div>
 
       <motion.div
@@ -70,7 +81,7 @@ const Index = () => {
               rotateY: { duration: 1.5, ease: "easeInOut" }
             }}
           >
-            <div className="w-full h-full rounded-3xl glass-panel flex items-center justify-center bg-gradient-to-br from-purple-500/20 to-blue-500/20">
+            <div className="w-full h-full rounded-3xl glass-panel flex items-center justify-center bg-gradient-to-br from-white/20 to-white/5">
               <Cloud className="w-14 h-14 text-white/90" />
             </div>
           </motion.div>
@@ -81,14 +92,14 @@ const Index = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <Apple className="w-4 h-4" />
+            <Apple className="w-4 h-4 text-white" />
             <span className="text-sm font-medium">Built for macOS 15+</span>
           </motion.div>
         </div>
         
         <div className="space-y-4">
           <motion.h1 
-            className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400"
+            className="text-4xl md:text-6xl font-bold tracking-tight text-gradient"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
@@ -115,7 +126,7 @@ const Index = () => {
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="animated-border-button glass-panel group relative overflow-hidden"
+            className="animated-border-button glass-panel group relative overflow-hidden px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105"
           >
             <AnimatePresence mode="wait">
               {downloading ? (
@@ -124,7 +135,7 @@ const Index = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-blue-500/20"
+                  className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-white/20 to-white/5"
                 >
                   <motion.div
                     animate={{ rotate: 360 }}
@@ -163,41 +174,76 @@ const Index = () => {
             <Zap className="w-8 h-8 mb-4 text-white/80" />
             <div className="stat-value">85%</div>
             <div className="stat-label">Faster Workflow</div>
+            <div className="text-xs text-gray-400 mt-2">Based on user studies</div>
           </div>
           <div className="stat-card">
             <Users className="w-8 h-8 mb-4 text-white/80" />
             <div className="stat-value">50K+</div>
             <div className="stat-label">Active Users</div>
+            <div className="text-xs text-gray-400 mt-2">Growing daily</div>
           </div>
           <div className="stat-card">
             <Clock className="w-8 h-8 mb-4 text-white/80" />
             <div className="stat-value">2.5hrs</div>
             <div className="stat-label">Saved Weekly</div>
+            <div className="text-xs text-gray-400 mt-2">Per user average</div>
           </div>
         </motion.div>
 
         <motion.div 
-          className="glass-panel p-6 mt-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
         >
-          <h3 className="text-xl font-semibold mb-6">Workflow Efficiency Comparison</h3>
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={efficiencyData}>
-                <XAxis dataKey="name" stroke="#ffffff60" />
-                <YAxis stroke="#ffffff60" />
-                <Tooltip 
-                  contentStyle={{ 
-                    background: 'rgba(0,0,0,0.8)', 
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: '8px' 
-                  }} 
-                />
-                <Bar dataKey="value" fill="rgba(255,255,255,0.2)" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="glass-panel p-6">
+            <h3 className="text-xl font-semibold mb-6">Workflow Efficiency</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={efficiencyData}>
+                  <XAxis dataKey="name" stroke="#ffffff60" />
+                  <YAxis stroke="#ffffff60" />
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: 'rgba(0,0,0,0.8)', 
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '8px' 
+                    }} 
+                  />
+                  <Bar dataKey="value" fill="rgba(255,255,255,0.2)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className="glass-panel p-6">
+            <h3 className="text-xl font-semibold mb-6">User Satisfaction</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={satisfactionData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {satisfactionData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: 'rgba(0,0,0,0.8)', 
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '8px' 
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </motion.div>
 
