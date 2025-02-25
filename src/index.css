@@ -12,103 +12,39 @@
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl;
+    @apply backdrop-blur-lg bg-white/5 border border-white/10;
   }
   
   .animated-border-button {
-    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl;
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out;
+    background: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: 100% 50%;
   }
 
   .animated-border-button:hover {
-    @apply text-white shadow-2xl;
-    background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
-    transform: translateY(-2px);
+    @apply bg-white text-black;
+    background-position: 0% 50%;
   }
 
   .animated-border-button::before {
     content: '';
-    @apply absolute inset-0 rounded-xl;
-    background: linear-gradient(90deg, #ffffff, transparent, #ffffff);
-    background-size: 200% 100%;
-    animation: shimmer 2s linear infinite;
-    opacity: 0.1;
-  }
-
-  .animated-border-button:hover::before {
-    opacity: 0.2;
-  }
-
-  .floating-element {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .glow-effect {
-    @apply relative;
-  }
-
-  .glow-effect::after {
-    content: '';
-    @apply absolute inset-0 rounded-xl;
-    box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .glow-effect:hover::after {
-    opacity: 1;
-  }
-
-  .star-field {
-    @apply absolute inset-0 overflow-hidden pointer-events-none;
-  }
-
-  .star {
-    @apply absolute w-1 h-1 bg-white rounded-full;
-    animation: twinkle 1s infinite;
-  }
-
-  .loading-spinner {
-    @apply relative w-24 h-24;
-    perspective: 800px;
-  }
-
-  .loading-cube {
-    @apply absolute inset-0;
-    transform-style: preserve-3d;
-    animation: cube-spin 2s infinite linear;
-  }
-
-  .cube-face {
-    @apply absolute w-full h-full border border-white/20 backdrop-blur-sm;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    @apply absolute inset-0 border border-white/50;
+    animation: border-pulse 2s linear infinite;
   }
 }
 
-@keyframes shimmer {
-  0% { background-position: 200% 50%; }
-  100% { background-position: -200% 50%; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0); }
-  50% { transform: translateY(-20px) rotate(2deg); }
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
-}
-
-@keyframes cube-spin {
-  0% { transform: rotateX(0) rotateY(0); }
-  100% { transform: rotateX(360deg) rotateY(360deg); }
-}
-
-.gradient-bg {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
+@keyframes border-pulse {
+  0%, 100% {
+    clip-path: inset(0 0 98% 0);
+  }
+  25% {
+    clip-path: inset(0 98% 0 0);
+  }
+  50% {
+    clip-path: inset(98% 0 0 0);
+  }
+  75% {
+    clip-path: inset(0 0 0 98%);
+  }
 }
