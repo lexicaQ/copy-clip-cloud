@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Apple, Download, Check, Clipboard, Cloud, Shield } from "lucide-react";
 import { toast } from "sonner";
+import { getLatestAppVersion, downloadApp } from "@/utils/appDownload";
 
 const Index = () => {
   const [downloading, setDownloading] = useState(false);
@@ -10,10 +10,28 @@ const Index = () => {
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      // Simulated download delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      toast.success("Download started! This is a preview version.");
+      // Get the latest version info
+      const latestVersion = await getLatestAppVersion();
+      if (!latestVersion) {
+        throw new Error("No version available for download");
+      }
+
+      // Download the file
+      const fileBlob = await downloadApp(latestVersion.file_path);
+      
+      // Create a download link
+      const url = URL.createObjectURL(fileBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = latestVersion.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast.success("Download started!");
     } catch (error) {
+      console.error('Download error:', error);
       toast.error("Download failed. Please try again.");
     } finally {
       setDownloading(false);
