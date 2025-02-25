@@ -5,9 +5,9 @@ import type { AppVersion } from "./types";
 export async function getLatestAppVersion(): Promise<AppVersion | null> {
   const { data, error } = await supabase
     .from('app_versions')
-    .select('*')
+    .select()
     .eq('is_latest', true)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
   return data;
