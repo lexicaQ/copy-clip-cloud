@@ -1,9 +1,14 @@
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Apple, Download, Check, Clipboard, Cloud, Shield, Loader2, ChevronDown } from "lucide-react";
+import { Apple, Download, Cloud, Loader2, ChevronDown, Zap, Users, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { getLatestAppVersion, downloadApp } from "@/utils/appDownload";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+
+const efficiencyData = [
+  { name: 'Traditional', value: 35 },
+  { name: 'CopyClipCloud', value: 85 },
+];
 
 const Index = () => {
   const [downloading, setDownloading] = useState(false);
@@ -12,16 +17,13 @@ const Index = () => {
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      // Get the latest version info
       const latestVersion = await getLatestAppVersion();
       if (!latestVersion) {
         throw new Error("No version available for download");
       }
 
-      // Download the file
       const fileBlob = await downloadApp(latestVersion.file_path);
       
-      // Create a download link
       const url = URL.createObjectURL(fileBlob);
       const a = document.createElement('a');
       a.href = url;
@@ -38,15 +40,14 @@ const Index = () => {
     } finally {
       setTimeout(() => {
         setDownloading(false);
-      }, 2000); // Keep animation visible for 2 seconds
+      }, 2000);
     }
   };
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden bg-black">
-      {/* Background effects */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(29,7,84,0.8)_0%,rgba(0,0,0,1)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,rgba(0,0,0,1)_70%)]" />
         <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" />
       </div>
 
@@ -56,7 +57,6 @@ const Index = () => {
         transition={{ duration: 0.8 }}
         className="w-full max-w-4xl mx-auto text-center space-y-8 relative z-10"
       >
-        {/* Logo and Badge */}
         <div className="space-y-6">
           <motion.div 
             className="w-28 h-28 mx-auto"
@@ -85,7 +85,6 @@ const Index = () => {
           </motion.div>
         </div>
         
-        {/* Title and Description */}
         <div className="space-y-4">
           <motion.h1 
             className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400"
@@ -106,7 +105,6 @@ const Index = () => {
           </motion.p>
         </div>
 
-        {/* Download Button */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -154,7 +152,54 @@ const Index = () => {
           </p>
         </motion.div>
 
-        {/* Features Grid */}
+        <motion.div 
+          className="stats-grid mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <div className="stat-card">
+            <Zap className="w-8 h-8 mb-4 text-white/80" />
+            <div className="stat-value">85%</div>
+            <div className="stat-label">Faster Workflow</div>
+          </div>
+          <div className="stat-card">
+            <Users className="w-8 h-8 mb-4 text-white/80" />
+            <div className="stat-value">50K+</div>
+            <div className="stat-label">Active Users</div>
+          </div>
+          <div className="stat-card">
+            <Clock className="w-8 h-8 mb-4 text-white/80" />
+            <div className="stat-value">2.5hrs</div>
+            <div className="stat-label">Saved Weekly</div>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="glass-panel p-6 mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+        >
+          <h3 className="text-xl font-semibold mb-6">Workflow Efficiency Comparison</h3>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={efficiencyData}>
+                <XAxis dataKey="name" stroke="#ffffff60" />
+                <YAxis stroke="#ffffff60" />
+                <Tooltip 
+                  contentStyle={{ 
+                    background: 'rgba(0,0,0,0.8)', 
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '8px' 
+                  }} 
+                />
+                <Bar dataKey="value" fill="rgba(255,255,255,0.2)" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16"
           initial={{ opacity: 0, y: 20 }}
@@ -174,7 +219,6 @@ const Index = () => {
           ))}
         </motion.div>
 
-        {/* FAQ Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -209,12 +253,28 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className="p-4 pt-0 text-gray-400">
+                <div className="p-4 pt-0 text-gray-400 text-left">
                   {faq.answer}
                 </div>
               </motion.div>
             </motion.div>
           ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.4 }}
+          className="mt-16 text-center"
+        >
+          <p className="text-sm text-gray-400">
+            Join thousands of satisfied users from companies like
+          </p>
+          <div className="flex items-center justify-center gap-8 mt-4 opacity-50">
+            <div className="h-8">Company 1</div>
+            <div className="h-8">Company 2</div>
+            <div className="h-8">Company 3</div>
+          </div>
         </motion.div>
       </motion.div>
     </div>
