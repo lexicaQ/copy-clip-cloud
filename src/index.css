@@ -12,25 +12,30 @@
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10;
+    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl;
   }
   
   .animated-border-button {
-    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out;
+    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl;
     background: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
     background-size: 200% 100%;
     background-position: 100% 50%;
   }
 
   .animated-border-button:hover {
-    @apply bg-white text-black;
+    @apply bg-white text-black shadow-2xl;
     background-position: 0% 50%;
+    transform: translateY(-2px);
   }
 
   .animated-border-button::before {
     content: '';
-    @apply absolute inset-0 border border-white/50;
+    @apply absolute inset-0 border border-white/50 rounded-xl;
     animation: border-pulse 2s linear infinite;
+  }
+
+  .floating-element {
+    animation: float 6s ease-in-out infinite;
   }
 }
 
@@ -48,3 +53,21 @@
     clip-path: inset(0 0 0 98%);
   }
 }
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.gradient-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+}
+
