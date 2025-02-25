@@ -1,6 +1,6 @@
 
 export interface AppVersion {
-  id: string;  // Changed from number to string to match Supabase's UUID type
+  id: string;  // This must be string to match Supabase's UUID type
   created_at: string;
   version: string;
   filename: string;
