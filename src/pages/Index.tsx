@@ -10,6 +10,7 @@ import AppLogo from "@/components/AppLogo";
 import DownloadButton from "@/components/DownloadButton";
 import FeatureGrid from "@/components/FeatureGrid";
 import AdditionalFeatures from "@/components/AdditionalFeatures";
+import FAQ from "@/components/FAQ";
 
 const Index = () => {
   const [downloading, setDownloading] = useState(false);
@@ -50,7 +51,7 @@ const Index = () => {
         <div className="space-y-6">
           <AppLogo />
           <motion.div
-            className="inline-flex items-center px-6 py-3 rounded-full glass-panel space-x-3 glow-effect"
+            className="inline-flex items-center px-6 py-3 rounded-full glass-panel space-x-3 hover:bg-white/10 transition-all duration-300"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             whileHover={{ scale: 1.05 }}
@@ -97,6 +98,7 @@ const Index = () => {
 
         <FeatureGrid />
         <AdditionalFeatures />
+        <FAQ />
       </motion.div>
     </div>
   );
