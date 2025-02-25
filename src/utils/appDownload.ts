@@ -1,7 +1,8 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import type { AppVersion } from "./types";
 
-export async function getLatestAppVersion() {
+export async function getLatestAppVersion(): Promise<AppVersion | null> {
   const { data, error } = await supabase
     .from('app_versions')
     .select('*')
@@ -12,7 +13,7 @@ export async function getLatestAppVersion() {
   return data;
 }
 
-export async function downloadApp(filePath: string) {
+export async function downloadApp(filePath: string): Promise<Blob> {
   const { data, error } = await supabase.storage
     .from('app_files')
     .download(filePath);
