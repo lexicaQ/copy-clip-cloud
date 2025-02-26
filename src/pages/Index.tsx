@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { motion, useAnimation, AnimatePresence } from "framer-motion";
-import { Apple, Download, Check, Cloud, Shield, Zap, History, Users, ChevronDown, ChevronUp } from "lucide-react";
+import { Apple, Download, Check, Cloud, Shield, Zap, History, Users, ChevronDown, ChevronUp, Loader } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -13,10 +14,10 @@ const Index = () => {
     const animateLogo = async () => {
       await logoControls.start({
         scale: [0, 1.2, 1],
-        rotate: [0, -10, 10, 0],
+        rotate: [0, 360, 0],
         transition: { 
-          duration: 1.5,
-          times: [0, 0.6, 0.8, 1],
+          duration: 2,
+          times: [0, 0.6, 1],
           ease: "easeOut"
         }
       });
@@ -25,7 +26,7 @@ const Index = () => {
 
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -53,20 +54,39 @@ const Index = () => {
           <motion.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black"
           >
-            <motion.div
-              animate={{ scale: [1, 1.2, 1], rotate: [0, 360] }}
-              transition={{ duration: 2, times: [0, 0.5, 1] }}
-              className="w-32 h-32"
-            >
-              <img
-                src="/lovable-uploads/47736611-82aa-49d6-81c4-d97073c3bb26.png"
-                alt="CopyClipCloud Logo"
-                className="w-full h-full object-contain"
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
-            </motion.div>
+            <div className="relative">
+              <motion.div
+                initial={{ scale: 0, rotate: 0 }}
+                animate={{ 
+                  scale: [0, 1.2, 1],
+                  rotate: [0, 360, 0]
+                }}
+                transition={{ 
+                  duration: 2,
+                  times: [0, 0.6, 1],
+                  ease: "easeOut"
+                }}
+                className="w-32 h-32 logo-shine"
+              >
+                <img
+                  src="/lovable-uploads/47736611-82aa-49d6-81c4-d97073c3bb26.png"
+                  alt="CopyClipCloud Logo"
+                  className="w-full h-full object-contain"
+                  style={{ filter: "brightness(0) invert(1)" }}
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="absolute -bottom-12 left-1/2 transform -translate-x-1/2"
+              >
+                <Loader className="w-6 h-6 animate-spin" />
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -81,7 +101,7 @@ const Index = () => {
         <div className="w-full max-w-6xl mx-auto relative z-10">
           <motion.div 
             animate={logoControls}
-            className="w-32 h-32 mx-auto mb-12"
+            className="w-32 h-32 mx-auto mb-12 logo-shine floating"
           >
             <img
               src="/lovable-uploads/47736611-82aa-49d6-81c4-d97073c3bb26.png"
@@ -97,14 +117,14 @@ const Index = () => {
             transition={{ delay: 0.5 }}
             className="flex justify-center mb-16"
           >
-            <div className="inline-flex items-center px-4 py-2 rounded-full glass-panel space-x-2">
+            <div className="inline-flex items-center px-4 py-2 rounded-full glass-panel space-x-2 hover:scale-105 transition-transform">
               <Apple className="w-4 h-4" />
               <span className="text-sm font-medium">Made for macOS 15+</span>
             </div>
           </motion.div>
 
           <motion.h1 
-            className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70"
+            className="text-5xl md:text-7xl font-bold tracking-tight gradient-text mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
@@ -115,7 +135,7 @@ const Index = () => {
           </motion.h1>
           
           <motion.p 
-            className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-16"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9 }}
@@ -170,14 +190,13 @@ const Index = () => {
             {features.map((feature, index) => (
               <motion.div 
                 key={index}
-                className="glass-panel p-6 hover:bg-white/10 transition-all duration-300 cursor-default group"
-                whileHover={{ y: -5, scale: 1.02 }}
+                className="feature-card"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
                 <feature.icon className="w-10 h-10 mb-4 text-white/80 group-hover:text-white transition-colors" />
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                <h3 className="text-lg font-semibold mb-2 gradient-text">{feature.title}</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
@@ -192,13 +211,12 @@ const Index = () => {
             {stats.map((stat, index) => (
               <motion.div 
                 key={index} 
-                className="glass-panel p-8 text-center space-y-2"
-                whileHover={{ scale: 1.05 }}
+                className="stat-card"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.2 }}
               >
-                <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+                <div className="text-4xl font-bold gradient-text mb-2">
                   {stat.value}
                 </div>
                 <div className="text-gray-400 text-sm">{stat.label}</div>
@@ -212,12 +230,12 @@ const Index = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.7 }}
           >
-            <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold text-center mb-8 gradient-text">Frequently Asked Questions</h2>
             <div className="space-y-4">
               {faqs.map((faq, index) => (
                 <motion.div
                   key={index}
-                  className="glass-panel overflow-hidden"
+                  className="faq-card"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -226,7 +244,7 @@ const Index = () => {
                     className="w-full px-6 py-4 flex items-center justify-between text-left"
                     onClick={() => toggleFaq(index)}
                   >
-                    <span className="font-medium">{faq.question}</span>
+                    <span className="font-medium gradient-text">{faq.question}</span>
                     {selectedFaq === index ? (
                       <ChevronUp className="w-5 h-5" />
                     ) : (
@@ -324,3 +342,4 @@ const faqs = [
 ];
 
 export default Index;
+
