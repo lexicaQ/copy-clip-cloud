@@ -1,345 +1,401 @@
-
-import { useState, useEffect } from "react";
-import { motion, useAnimation, AnimatePresence } from "framer-motion";
-import { Apple, Download, Check, Cloud, Shield, Zap, History, Users, ChevronDown, ChevronUp, Loader } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Apple, Download, Cloud, Loader2, ChevronDown, Zap, Users, Clock, Shield, Clipboard, Heart, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { getLatestAppVersion, downloadApp } from "@/utils/appDownload";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+
+const efficiencyData = [
+  { name: 'Traditional', value: 35 },
+  { name: 'CopyClipCloud', value: 85 },
+];
+
+const satisfactionData = [
+  { name: 'Very Satisfied', value: 68 },
+  { name: 'Satisfied', value: 22 },
+  { name: 'Neutral', value: 10 },
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
 const Index = () => {
   const [downloading, setDownloading] = useState(false);
-  const [selectedFaq, setSelectedFaq] = useState<number | null>(null);
-  const logoControls = useAnimation();
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    const animateLogo = async () => {
-      await logoControls.start({
-        scale: [0, 1.2, 1],
-        rotate: [0, 360, 0],
-        transition: { 
-          duration: 2,
-          times: [0, 0.6, 1],
-          ease: "easeOut"
-        }
-      });
-    };
-    animateLogo();
-
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 2500);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      toast.success("Download started! This is a preview version.");
+      console.log('Initiating download...');
+      
+      const latestVersion = await getLatestAppVersion();
+      if (!latestVersion) {
+        throw new Error("No version available for download");
+      }
+      
+      console.log('Found latest version:', latestVersion);
+
+      const fileBlob = await downloadApp(latestVersion.file_path);
+      console.log('File blob received, creating download link...');
+      
+      const url = URL.createObjectURL(fileBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = latestVersion.filename || 'CopyClipCloud.zip';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast.success("Download started successfully!");
+      console.log('Download process completed');
     } catch (error) {
-      toast.error("Download failed. Please try again.");
+      console.error('Download error:', error);
+      toast.error(error instanceof Error ? error.message : "Download failed. Please try again later.");
     } finally {
-      setDownloading(false);
+      setTimeout(() => {
+        setDownloading(false);
+      }, 2000);
     }
   };
 
-  const toggleFaq = (index: number) => {
-    setSelectedFaq(selectedFaq === index ? null : index);
-  };
-
   return (
-    <>
-      <AnimatePresence>
-        {showSplash && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_0%,rgba(0,0,0,1)_70%)]" />
+        <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" />
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 1px, transparent 1px)',
+          backgroundSize: '50px 50px'
+        }} />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="w-full max-w-4xl mx-auto text-center space-y-8 relative z-10"
+      >
+        <div className="space-y-6">
+          <motion.div 
+            className="app-logo"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1, rotateY: downloading ? 360 : 0 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+              rotateY: { duration: 1.5, ease: "easeInOut" }
+            }}
           >
-            <div className="relative">
-              <motion.div
-                initial={{ scale: 0, rotate: 0 }}
-                animate={{ 
-                  scale: [0, 1.2, 1],
-                  rotate: [0, 360, 0]
-                }}
-                transition={{ 
-                  duration: 2,
-                  times: [0, 0.6, 1],
-                  ease: "easeOut"
-                }}
-                className="w-32 h-32 logo-shine"
-              >
-                <img
-                  src="/lovable-uploads/47736611-82aa-49d6-81c4-d97073c3bb26.png"
-                  alt="CopyClipCloud Logo"
-                  className="w-full h-full object-contain"
-                  style={{ filter: "brightness(0) invert(1)" }}
-                />
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -bottom-12 left-1/2 transform -translate-x-1/2"
-              >
-                <Loader className="w-6 h-6 animate-spin" />
-              </motion.div>
+            <div className="w-full h-full rounded-3xl glass-panel flex items-center justify-center bg-gradient-to-br from-white/20 to-white/5">
+              <Cloud className="w-14 h-14 text-white/90" />
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
 
-      <div className="relative min-h-screen flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden bg-gradient-to-b from-background via-background/95 to-background/90">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_0%,_transparent_70%)]" />
-          <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_800px)]" />
+          <motion.div 
+            className="inline-flex items-center px-4 py-2 rounded-full glass-panel space-x-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Apple className="w-4 h-4 text-white" />
+            <span className="text-sm font-medium">Built for macOS 15+</span>
+          </motion.div>
         </div>
-
-        <div className="w-full max-w-6xl mx-auto relative z-10">
-          <motion.div 
-            animate={logoControls}
-            className="w-32 h-32 mx-auto mb-12 logo-shine floating"
-          >
-            <img
-              src="/lovable-uploads/47736611-82aa-49d6-81c4-d97073c3bb26.png"
-              alt="CopyClipCloud Logo"
-              className="w-full h-full object-contain"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex justify-center mb-16"
-          >
-            <div className="inline-flex items-center px-4 py-2 rounded-full glass-panel space-x-2 hover:scale-105 transition-transform">
-              <Apple className="w-4 h-4" />
-              <span className="text-sm font-medium">Made for macOS 15+</span>
-            </div>
-          </motion.div>
-
+        
+        <div className="space-y-4">
           <motion.h1 
-            className="text-5xl md:text-7xl font-bold tracking-tight gradient-text mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
+            className="text-4xl md:text-6xl font-bold tracking-tight text-gradient"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
           >
-            Your Clipboard,
-            <br />
-            Supercharged
+            CopyClipCloud
           </motion.h1>
           
           <motion.p 
-            className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-16"
+            className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
+            transition={{ delay: 0.6 }}
           >
-            Experience the next generation of clipboard management with CopyClipCloud. 
-            Seamlessly sync your clipboard across all your Apple devices with powerful 
-            organization features and military-grade encryption.
+            Experience the next generation of clipboard management. Seamlessly sync your clipboard across all your Apple devices with powerful organization features and military-grade encryption.
           </motion.p>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.1 }}
-            className="space-y-4 mb-24 text-center"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="space-y-4"
+        >
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            className="animated-border-button group relative overflow-hidden px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105"
           >
-            <button
-              onClick={handleDownload}
-              disabled={downloading}
-              className="animated-border-button glass-panel group"
-            >
-              <span className="relative z-10 flex items-center space-x-3 px-8">
-                {downloading ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    >
-                      <Check className="w-6 h-6" />
-                    </motion.div>
-                    <span className="text-lg">Downloading...</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-6 h-6 group-hover:transform group-hover:-translate-y-1 transition-transform" />
-                    <span className="text-lg">Download for Mac</span>
-                  </>
-                )}
-              </span>
-            </button>
-
-            <p className="text-sm text-gray-500">
-              Version 1.0.0 • For macOS 15 or later • 14.2 MB
-            </p>
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3 }}
-          >
-            {features.map((feature, index) => (
-              <motion.div 
-                key={index}
-                className="feature-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <feature.icon className="w-10 h-10 mb-4 text-white/80 group-hover:text-white transition-colors" />
-                <h3 className="text-lg font-semibold mb-2 gradient-text">{feature.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-          >
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={index} 
-                className="stat-card"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <div className="text-4xl font-bold gradient-text mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-gray-400 text-sm">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <motion.div
-            className="w-full max-w-3xl mx-auto mb-16"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.7 }}
-          >
-            <h2 className="text-3xl font-bold text-center mb-8 gradient-text">Frequently Asked Questions</h2>
-            <div className="space-y-4">
-              {faqs.map((faq, index) => (
+            <AnimatePresence mode="wait">
+              {downloading ? (
                 <motion.div
-                  key={index}
-                  className="faq-card"
+                  key="downloading"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-white/20 to-white/5"
                 >
-                  <button
-                    className="w-full px-6 py-4 flex items-center justify-between text-left"
-                    onClick={() => toggleFaq(index)}
-                  >
-                    <span className="font-medium gradient-text">{faq.question}</span>
-                    {selectedFaq === index ? (
-                      <ChevronUp className="w-5 h-5" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5" />
-                    )}
-                  </button>
-                  <AnimatePresence>
-                    {selectedFaq === index && (
-                      <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: "auto" }}
-                        exit={{ height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-6 pb-4 text-gray-400">
-                          {faq.answer}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  <div className="loading-spinner-container">
+                    <div className="loading-spinner" />
+                  </div>
                 </motion.div>
-              ))}
+              ) : (
+                <motion.div
+                  key="download"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  className="relative z-10 flex items-center space-x-2"
+                >
+                  <Download className="w-5 h-5" />
+                  <span>Download for Mac</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </button>
+
+          <p className="text-sm text-gray-500">
+            Version 1.0.0 • For macOS 15 or later • ZIP Archive
+          </p>
+        </motion.div>
+
+        <motion.div 
+          className="stats-grid mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <div className="stat-card">
+            <Zap className="w-8 h-8 mb-4 text-white/80" />
+            <div className="stat-value">85%</div>
+            <div className="stat-label">Faster Workflow</div>
+            <div className="text-xs text-gray-400 mt-2">Based on user studies</div>
+          </div>
+          <div className="stat-card">
+            <Users className="w-8 h-8 mb-4 text-white/80" />
+            <div className="stat-value">50K+</div>
+            <div className="stat-label">Active Users</div>
+            <div className="text-xs text-gray-400 mt-2">Growing daily</div>
+          </div>
+          <div className="stat-card">
+            <Clock className="w-8 h-8 mb-4 text-white/80" />
+            <div className="stat-value">2.5hrs</div>
+            <div className="stat-label">Saved Weekly</div>
+            <div className="text-xs text-gray-400 mt-2">Per user average</div>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+        >
+          <div className="glass-panel p-6">
+            <h3 className="text-xl font-semibold mb-6">Workflow Efficiency</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={efficiencyData}>
+                  <XAxis dataKey="name" stroke="#ffffff60" />
+                  <YAxis stroke="#ffffff60" />
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: 'rgba(0,0,0,0.8)', 
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '8px' 
+                    }} 
+                  />
+                  <Bar dataKey="value" fill="rgba(255,255,255,0.2)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
-          </motion.div>
-        </div>
-      </div>
-    </>
+          </div>
+
+          <div className="glass-panel p-6">
+            <h3 className="text-xl font-semibold mb-6">User Satisfaction</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={satisfactionData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {satisfactionData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: 'rgba(0,0,0,0.8)', 
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '8px' 
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+        >
+          {features.map((feature, index) => (
+            <motion.div 
+              key={index}
+              className="glass-panel p-6 hover:bg-white/10 transition-all duration-300 cursor-default group"
+              whileHover={{ y: -5 }}
+            >
+              <feature.icon className="w-8 h-8 mb-4 text-white/80 group-hover:text-white transition-colors" />
+              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+              <p className="text-gray-400 text-sm">{feature.description}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="mt-16 space-y-4"
+        >
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          {faqs.map((faq, index) => (
+            <motion.div
+              key={index}
+              className="faq-item glass-panel overflow-hidden"
+              initial={false}
+              animate={{ 
+                backgroundColor: activeFaq === index ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)'
+              }}
+            >
+              <button
+                onClick={() => setActiveFaq(activeFaq === index ? null : index)}
+                className="w-full p-4 flex items-center justify-between text-left"
+              >
+                <span className="faq-question font-medium">{faq.question}</span>
+                <motion.div
+                  animate={{ rotate: activeFaq === index ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="w-5 h-5" />
+                </motion.div>
+              </button>
+              <motion.div
+                initial={false}
+                animate={{
+                  height: activeFaq === index ? "auto" : 0,
+                  opacity: activeFaq === index ? 1 : 0
+                }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="faq-answer p-4 pt-0 text-gray-400 text-left">
+                  {faq.answer}
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.4 }}
+          className="testimonials-section mt-16 text-center"
+        >
+          <p className="text-sm text-gray-400 mb-6">
+            Trusted by innovative teams at
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-8 mt-4">
+            <motion.div 
+              className="company-logo h-8 opacity-50 hover:opacity-100 transition-opacity duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              TechCorp
+            </motion.div>
+            <motion.div 
+              className="company-logo h-8 opacity-50 hover:opacity-100 transition-opacity duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              InnovateLabs
+            </motion.div>
+            <motion.div 
+              className="company-logo h-8 opacity-50 hover:opacity-100 transition-opacity duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              FutureWorks
+            </motion.div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
   );
 };
 
 const features = [
   {
-    title: "Universal Sync",
-    description: "Copy on one device, paste on another. Real-time sync across all your Apple devices.",
+    title: "Universal Clipboard",
+    description: "Copy on one device, paste on another. Seamlessly sync your clipboard across all your Mac devices.",
     icon: Cloud
   },
   {
-    title: "Rich History",
-    description: "Access your complete clipboard history with powerful search and organization tools.",
-    icon: History
+    title: "Rich Media Support",
+    description: "Store and manage text, images, files, and more in your clipboard history with intelligent organization.",
+    icon: Clipboard
   },
   {
     title: "Secure & Private",
-    description: "End-to-end encryption ensures your data stays private and secure at all times.",
+    description: "End-to-end encryption ensures your clipboard data stays private and secure at all times.",
     icon: Shield
   },
-  {
-    title: "Lightning Fast",
-    description: "Instant copying and pasting with negligible latency across devices.",
-    icon: Zap
-  }
-];
-
-const stats = [
-  {
-    value: "100K+",
-    label: "Active Users"
-  },
-  {
-    value: "99.9%",
-    label: "Uptime"
-  },
-  {
-    value: "5★",
-    label: "App Store Rating"
-  }
 ];
 
 const faqs = [
   {
-    question: "What is CopyClipCloud?",
-    answer: "CopyClipCloud is a revolutionary clipboard management tool that synchronizes your clipboard across all your Apple devices, offering seamless copying and pasting with advanced organization features."
+    question: "How does CopyClipCloud work?",
+    answer: "CopyClipCloud runs in the background on your Mac, automatically syncing your clipboard content across all your devices using end-to-end encryption. When you copy something on one device, it's instantly available on all your other devices."
   },
   {
-    question: "How secure is my clipboard data?",
-    answer: "We use military-grade encryption to protect your clipboard data. All content is encrypted end-to-end, meaning only you can access your clipboard items across your devices."
+    question: "Is my clipboard data secure?",
+    answer: "Yes, absolutely! We use military-grade encryption to protect your data. All clipboard content is encrypted before it leaves your device, and only you can decrypt it. We never have access to your unencrypted data."
   },
   {
-    question: "Does it work offline?",
-    answer: "Yes! CopyClipCloud works offline and automatically syncs when you're back online. Your clipboard history is always available, regardless of your connection status."
+    question: "What types of content can I sync?",
+    answer: "CopyClipCloud supports text, formatted text, images, files, and more. You can sync practically anything you can copy to your clipboard, with support for rich text formatting and file attachments."
   },
   {
-    question: "What's the storage limit?",
-    answer: "The free tier includes 1GB of clipboard storage. Premium users get unlimited storage and additional features like advanced search and organization tools."
+    question: "How much does it cost?",
+    answer: "CopyClipCloud is currently free during our beta period. We plan to introduce premium features in the future, but core functionality will always remain free."
   },
   {
-    question: "Can I share clipboard items with others?",
-    answer: "Yes, premium users can securely share clipboard items with other CopyClipCloud users while maintaining end-to-end encryption."
+    question: "Can I use it offline?",
+    answer: "Yes! CopyClipCloud works offline for local clipboard history. Your content will sync automatically when you're back online."
+  },
+  {
+    question: "Is there a limit to how much I can store?",
+    answer: "Free accounts include 1GB of storage for clipboard history. Premium accounts will offer expanded storage options."
   },
   {
     question: "How do I get started?",
-    answer: "Simply download CopyClipCloud for macOS, sign in with your Apple ID, and you're ready to go! The app will guide you through a quick setup process."
+    answer: "Simply download the app, install it on your Mac, and sign in with your account. The app will guide you through a quick setup process to enable clipboard syncing."
   }
 ];
 
 export default Index;
-
