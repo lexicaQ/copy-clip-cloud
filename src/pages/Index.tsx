@@ -37,7 +37,6 @@ const Index = () => {
       const fileBlob = await downloadApp(latestVersion.file_path);
       console.log('File blob received, creating download link...');
       
-      // Create and trigger download
       const url = URL.createObjectURL(fileBlob);
       const a = document.createElement('a');
       a.href = url;
@@ -78,7 +77,7 @@ const Index = () => {
       >
         <div className="space-y-6">
           <motion.div 
-            className="w-28 h-28 mx-auto"
+            className="app-logo"
             initial={{ scale: 0 }}
             animate={{ scale: 1, rotateY: downloading ? 360 : 0 }}
             transition={{ 
@@ -133,7 +132,7 @@ const Index = () => {
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="animated-border-button glass-panel group relative overflow-hidden px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105"
+            className="animated-border-button group relative overflow-hidden px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105"
           >
             <AnimatePresence mode="wait">
               {downloading ? (
@@ -144,12 +143,9 @@ const Index = () => {
                   exit={{ opacity: 0, y: -20 }}
                   className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-white/20 to-white/5"
                 >
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  >
-                    <Loader2 className="w-6 h-6 text-white" />
-                  </motion.div>
+                  <div className="loading-spinner-container">
+                    <div className="loading-spinner" />
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
@@ -283,14 +279,17 @@ const Index = () => {
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
-              className="glass-panel overflow-hidden"
+              className="faq-item glass-panel overflow-hidden"
               initial={false}
+              animate={{ 
+                backgroundColor: activeFaq === index ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)'
+              }}
             >
               <button
                 onClick={() => setActiveFaq(activeFaq === index ? null : index)}
                 className="w-full p-4 flex items-center justify-between text-left"
               >
-                <span className="font-medium">{faq.question}</span>
+                <span className="faq-question font-medium">{faq.question}</span>
                 <motion.div
                   animate={{ rotate: activeFaq === index ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -307,7 +306,7 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className="p-4 pt-0 text-gray-400 text-left">
+                <div className="faq-answer p-4 pt-0 text-gray-400 text-left">
                   {faq.answer}
                 </div>
               </motion.div>
@@ -319,15 +318,30 @@ const Index = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.4 }}
-          className="mt-16 text-center"
+          className="testimonials-section mt-16 text-center"
         >
-          <p className="text-sm text-gray-400">
-            Join thousands of satisfied users from companies like
+          <p className="text-sm text-gray-400 mb-6">
+            Trusted by innovative teams at
           </p>
-          <div className="flex items-center justify-center gap-8 mt-4 opacity-50">
-            <div className="h-8">Company 1</div>
-            <div className="h-8">Company 2</div>
-            <div className="h-8">Company 3</div>
+          <div className="flex flex-wrap items-center justify-center gap-8 mt-4">
+            <motion.div 
+              className="company-logo h-8 opacity-50 hover:opacity-100 transition-opacity duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              TechCorp
+            </motion.div>
+            <motion.div 
+              className="company-logo h-8 opacity-50 hover:opacity-100 transition-opacity duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              InnovateLabs
+            </motion.div>
+            <motion.div 
+              className="company-logo h-8 opacity-50 hover:opacity-100 transition-opacity duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              FutureWorks
+            </motion.div>
           </div>
         </motion.div>
       </motion.div>
@@ -369,6 +383,18 @@ const faqs = [
   {
     question: "How much does it cost?",
     answer: "CopyClipCloud is currently free during our beta period. We plan to introduce premium features in the future, but core functionality will always remain free."
+  },
+  {
+    question: "Can I use it offline?",
+    answer: "Yes! CopyClipCloud works offline for local clipboard history. Your content will sync automatically when you're back online."
+  },
+  {
+    question: "Is there a limit to how much I can store?",
+    answer: "Free accounts include 1GB of storage for clipboard history. Premium accounts will offer expanded storage options."
+  },
+  {
+    question: "How do I get started?",
+    answer: "Simply download the app, install it on your Mac, and sign in with your account. The app will guide you through a quick setup process to enable clipboard syncing."
   }
 ];
 
