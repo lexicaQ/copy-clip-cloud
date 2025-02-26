@@ -25,26 +25,33 @@ const Index = () => {
   const handleDownload = async () => {
     setDownloading(true);
     try {
+      console.log('Initiating download...');
+      
       const latestVersion = await getLatestAppVersion();
       if (!latestVersion) {
         throw new Error("No version available for download");
       }
+      
+      console.log('Found latest version:', latestVersion);
 
       const fileBlob = await downloadApp(latestVersion.file_path);
+      console.log('File blob received, creating download link...');
       
+      // Create and trigger download
       const url = URL.createObjectURL(fileBlob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = latestVersion.filename;
+      a.download = latestVersion.filename || 'CopyClipCloud.zip';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
       toast.success("Download started successfully!");
+      console.log('Download process completed');
     } catch (error) {
       console.error('Download error:', error);
-      toast.error("Download failed. Please try again later.");
+      toast.error(error instanceof Error ? error.message : "Download failed. Please try again later.");
     } finally {
       setTimeout(() => {
         setDownloading(false);
