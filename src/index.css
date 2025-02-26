@@ -12,7 +12,7 @@
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl;
+    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300;
   }
   
   .animated-border-button {
@@ -58,3 +58,33 @@
   );
 }
 
+/* Enhanced glass morphism effects */
+.glass-morph {
+  @apply backdrop-blur-xl bg-white/5 border border-white/10;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Animated gradient background */
+.animated-gradient {
+  background: linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
