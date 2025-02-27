@@ -17,26 +17,21 @@
   
   .animated-border-button {
     @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl;
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    background: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: 100% 50%;
   }
 
   .animated-border-button:hover {
-    @apply text-white shadow-2xl;
-    background: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+    @apply bg-white text-black shadow-2xl;
+    background-position: 0% 50%;
     transform: translateY(-2px);
   }
 
   .animated-border-button::before {
     content: '';
-    @apply absolute inset-0 rounded-xl;
-    background: linear-gradient(90deg, #ffffff, transparent, #ffffff);
-    background-size: 200% 100%;
-    animation: shimmer 2s linear infinite;
-    opacity: 0.1;
-  }
-
-  .animated-border-button:hover::before {
-    opacity: 0.2;
+    @apply absolute inset-0 border border-white/50 rounded-xl;
+    animation: border-pulse 2s linear infinite;
   }
 
   .floating-element {
@@ -44,12 +39,18 @@
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: 200% 50%;
+@keyframes border-pulse {
+  0%, 100% {
+    clip-path: inset(0 0 98% 0);
   }
-  100% {
-    background-position: -200% 50%;
+  25% {
+    clip-path: inset(0 98% 0 0);
+  }
+  50% {
+    clip-path: inset(98% 0 0 0);
+  }
+  75% {
+    clip-path: inset(0 0 0 98%);
   }
 }
 
@@ -69,3 +70,4 @@
     rgba(255, 255, 255, 0.02) 100%
   );
 }
+
