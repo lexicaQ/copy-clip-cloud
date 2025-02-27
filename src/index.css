@@ -7,12 +7,17 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    overflow-x: hidden;
+  }
+  
+  ::selection {
+    @apply bg-white/20 text-white;
   }
 }
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl;
+    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
   }
   
   .animated-border-button {
@@ -60,6 +65,40 @@
   .stat-label {
     @apply text-sm text-gray-400;
   }
+  
+  /* 3D Button Effect */
+  .btn-3d {
+    @apply relative inline-flex items-center justify-center px-6 py-3 text-base font-medium transition-all duration-300 ease-out rounded-lg;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  .btn-3d::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg bg-white/10 -z-10;
+    transform: translateZ(-10px);
+    transition: transform 0.3s ease-out;
+  }
+  
+  .btn-3d:hover::before {
+    transform: translateZ(-20px);
+  }
+  
+  /* Glow effect */
+  .glow-on-hover {
+    @apply relative overflow-hidden;
+  }
+  
+  .glow-on-hover::after {
+    content: '';
+    @apply absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  .glow-on-hover:hover::after {
+    @apply opacity-100;
+  }
 }
 
 @keyframes border-pulse {
@@ -73,4 +112,74 @@
     rgba(255, 255, 255, 0.1) 0%,
     rgba(255, 255, 255, 0.05) 100%
   );
+}
+
+/* Subtle hover animation for cards */
+.hover-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Text animation for important elements */
+.animate-text-gradient {
+  background: linear-gradient(90deg, #ffffff, #dddddd, #ffffff);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGradient 5s linear infinite;
+}
+
+@keyframes textGradient {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Shine effect for buttons and cards */
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.1) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: rotate(30deg);
+  opacity: 0;
+  transition: opacity 0.6s;
+  pointer-events: none;
+}
+
+.shine-effect:hover::after {
+  opacity: 1;
+  animation: shine 1.5s ease-out;
+}
+
+@keyframes shine {
+  0% {
+    transform: scale(0) rotate(30deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3) rotate(30deg);
+    opacity: 0;
+  }
 }
