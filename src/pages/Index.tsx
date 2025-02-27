@@ -98,7 +98,7 @@ const Index = () => {
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      console.log('Initiating download...');
+      console.log('Initiating download process...');
       
       const latestVersion = await getLatestAppVersion();
       if (!latestVersion) {
@@ -198,7 +198,7 @@ const Index = () => {
             />
 
             <p className="text-sm text-gray-500">
-              Version 1.0.0 • For macOS 15 or later • ZIP Archive
+              Version 1.0.1 • For macOS 15 or later • ZIP Archive
             </p>
           </motion.div>
         </div>
