@@ -33,12 +33,35 @@ export async function downloadApp(filePath: string): Promise<Blob> {
     throw new Error('No file path provided for download');
   }
 
+  // Create the full path with 'versions/' prefix if it's not already there
+  const fullPath = filePath.startsWith('versions/') ? filePath : `versions/${filePath}`;
+  console.log('Using full path for download:', fullPath);
+
   const { data, error } = await supabase.storage
     .from('app_files')
-    .download(filePath);
+    .download(fullPath);
 
   if (error) {
     console.error('Error downloading file:', error);
+    
+    // Try alternative path without 'versions/' prefix as fallback
+    if (filePath.startsWith('versions/')) {
+      console.log('Attempting fallback download without versions/ prefix');
+      const fallbackPath = filePath.replace('versions/', '');
+      
+      const fallbackResult = await supabase.storage
+        .from('app_files')
+        .download(fallbackPath);
+        
+      if (fallbackResult.error) {
+        console.error('Fallback download also failed:', fallbackResult.error);
+        throw new Error(`Failed to download file: ${error.message}`);
+      }
+      
+      console.log('Fallback download successful');
+      return fallbackResult.data;
+    }
+    
     throw new Error(`Failed to download file: ${error.message}`);
   }
 
