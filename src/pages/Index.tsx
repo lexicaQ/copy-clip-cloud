@@ -1,32 +1,18 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Apple, Download, Cloud, Zap, Users, Clock, Shield, Clipboard, Heart, Sparkles } from "lucide-react";
+import { Cloud, Shield, Clipboard } from "lucide-react";
 import { toast } from "sonner";
 import { getLatestAppVersion, downloadApp } from "@/utils/appDownload";
 
-// Custom components
+// Components
 import SplashScreen from "@/components/SplashScreen";
-import Logo from "@/components/Logo";
-import DownloadButton from "@/components/DownloadButton";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import FAQSection from "@/components/FAQSection";
 import FeatureShowcase from "@/components/FeatureShowcase";
-import StatsCard from "@/components/StatsCard";
-import ChartDisplay from "@/components/ChartDisplay";
 import TestimonialsSection from "@/components/TestimonialsSection";
-
-// Chart data
-const efficiencyData = [
-  { name: 'Traditional', value: 35 },
-  { name: 'CopyClipCloud', value: 85 },
-];
-
-const satisfactionData = [
-  { name: 'Very Satisfied', value: 68 },
-  { name: 'Satisfied', value: 22 },
-  { name: 'Neutral', value: 10 },
-];
+import HeroSection from "@/components/sections/HeroSection";
+import StatsSection from "@/components/sections/StatsSection";
+import ChartsSection from "@/components/sections/ChartsSection";
 
 // Features data
 const features = [
@@ -85,7 +71,6 @@ const Index = () => {
   const [hasVisited, setHasVisited] = useState(false);
 
   useEffect(() => {
-    // Check if user has visited before
     const visited = localStorage.getItem("visited");
     if (visited) {
       setShowSplash(false);
@@ -150,114 +135,12 @@ const Index = () => {
         transition={{ duration: 0.8 }}
         className="w-full max-w-6xl mx-auto text-center space-y-12 relative z-10 px-4 md:px-8 py-16"
       >
-        {/* Header Section */}
-        <div className="space-y-8">
-          <div className="flex flex-col items-center justify-center space-y-6">
-            <Logo size="lg" />
-            
-            <motion.div 
-              className="inline-flex items-center px-4 py-2 rounded-full glass-panel space-x-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Apple className="w-4 h-4 text-white" />
-              <span className="text-sm font-medium">Built for macOS 15+</span>
-            </motion.div>
-          </div>
-          
-          <div className="space-y-4">
-            <motion.h1 
-              className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              CopyClipCloud
-            </motion.h1>
-            
-            <motion.p 
-              className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              Experience the next generation of clipboard management. Seamlessly sync your clipboard across all your Apple devices with powerful organization features and military-grade encryption.
-            </motion.p>
-          </div>
+        <HeroSection downloading={downloading} onDownload={handleDownload} />
+        
+        <StatsSection />
+        
+        <ChartsSection />
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="space-y-4"
-          >
-            <DownloadButton 
-              onClick={handleDownload} 
-              isDownloading={downloading} 
-            />
-
-            <p className="text-sm text-gray-500">
-              Version 1.0.1 • For macOS 15 or later • ZIP Archive
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Stats Section */}
-        <motion.div 
-          className="stats-grid mt-24"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          <StatsCard 
-            icon={Zap} 
-            value="85%" 
-            label="Faster Workflow" 
-            subtext="Based on user studies"
-            delay={0.1}
-          />
-          <StatsCard 
-            icon={Users} 
-            value="50K+" 
-            label="Active Users" 
-            subtext="Growing daily"
-            delay={0.2}
-          />
-          <StatsCard 
-            icon={Clock} 
-            value="2.5hrs" 
-            label="Saved Weekly" 
-            subtext="Per user average"
-            delay={0.3}
-          />
-        </motion.div>
-
-        {/* Charts Section */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-24"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          <ChartDisplay 
-            title="Workflow Efficiency" 
-            type="bar" 
-            data={efficiencyData} 
-            dataKey="value"
-            delay={0.1}
-          />
-          <ChartDisplay 
-            title="User Satisfaction" 
-            type="pie" 
-            data={satisfactionData} 
-            dataKey="value"
-            colors={['#00C49F', '#0088FE', '#FFBB28']}
-            delay={0.2}
-          />
-        </motion.div>
-
-        {/* Features Section */}
         <motion.div 
           className="mt-24 space-y-8"
           initial={{ opacity: 0 }}
@@ -277,7 +160,6 @@ const Index = () => {
           <FeatureShowcase features={features} />
         </motion.div>
 
-        {/* FAQ Section */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -288,7 +170,6 @@ const Index = () => {
           <FAQSection items={faqs} />
         </motion.div>
 
-        {/* Testimonials Section */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
