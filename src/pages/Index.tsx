@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Apple, Download, Check, Clipboard, Cloud, Shield } from "lucide-react";
@@ -15,7 +14,44 @@ const Index = () => {
     try {
       toast.info("Preparing download...");
       
-      // Call the Supabase edge function to get the download URL
+      // Try to download using the direct Storage API first
+      try {
+        const { data: files, error: filesError } = await supabase
+          .storage
+          .from('app_files')
+          .list();
+        
+        if (!filesError && files && files.length > 0) {
+          // Sort files to get the latest version based on filename (assuming naming convention like CopyClipCloud_X.Y.Z.zip)
+          const sortedFiles = files.sort((a, b) => b.name.localeCompare(a.name));
+          const latestFile = sortedFiles[0];
+          
+          const { data: fileData, error: fileError } = await supabase
+            .storage
+            .from('app_files')
+            .createSignedUrl(latestFile.name, 60);
+          
+          if (!fileError && fileData) {
+            toast.success(`Download started! Latest version`);
+            // Create a temporary link element to trigger the download
+            const link = document.createElement('a');
+            link.href = fileData.signedUrl;
+            link.setAttribute('download', latestFile.name);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            setTimeout(() => {
+              setDownloading(false);
+            }, 1000);
+            return;
+          }
+        }
+      } catch (directDownloadError) {
+        console.log("Direct download failed, trying edge function...", directDownloadError);
+      }
+      
+      // Fall back to edge function if direct download fails
       const { data, error } = await supabase.functions.invoke('download-app', {
         method: 'GET',
       });
@@ -33,7 +69,7 @@ const Index = () => {
       }
 
       // Start the download by creating a temporary link
-      toast.success(`Download started! Version ${data.version}`);
+      toast.success(`Download started! ${data.version ? `Version ${data.version}` : ''}`);
       
       // Create a temporary link element to trigger the download
       const link = document.createElement('a');
