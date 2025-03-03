@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Apple, Download, Check, Clipboard, Cloud, Shield } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [downloading, setDownloading] = useState(false);
@@ -10,10 +11,35 @@ const Index = () => {
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      // Simulated download delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      toast.success("Download started! This is a preview version.");
+      // Call the Supabase edge function to get the download URL
+      const { data, error } = await supabase.functions.invoke('download-app', {
+        method: 'GET',
+      });
+
+      if (error) {
+        console.error("Function error:", error);
+        toast.error("Download failed. Please try again.");
+        return;
+      }
+
+      if (!data.downloadUrl) {
+        console.error("No download URL returned");
+        toast.error("No app version available for download.");
+        return;
+      }
+
+      // Start the download by creating a temporary link
+      toast.success(`Download started! Version ${data.version}`);
+      
+      // Create a temporary link element to trigger the download
+      const link = document.createElement('a');
+      link.href = data.downloadUrl;
+      link.setAttribute('download', data.fileName || 'CopyClipCloud.zip');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
+      console.error("Download error:", error);
       toast.error("Download failed. Please try again.");
     } finally {
       setDownloading(false);
@@ -89,14 +115,13 @@ const Index = () => {
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="animated-border-button glass-panel"
+            className="animated-border-button glass-panel download-button"
           >
             <span className="relative z-10 flex items-center space-x-2">
               {downloading ? (
                 <>
                   <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="animate-border-pulse"
                   >
                     <Check className="w-5 h-5" />
                   </motion.div>
