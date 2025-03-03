@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Apple, Download, Check, Clipboard, Cloud, Shield } from "lucide-react";
@@ -16,60 +17,86 @@ const Index = () => {
       
       // Try to download using the direct Storage API first
       try {
+        console.log("Attempting direct storage download");
         const { data: files, error: filesError } = await supabase
           .storage
           .from('app_files')
           .list();
         
-        if (!filesError && files && files.length > 0) {
-          // Sort files to get the latest version based on filename (assuming naming convention like CopyClipCloud_X.Y.Z.zip)
-          const sortedFiles = files.sort((a, b) => b.name.localeCompare(a.name));
-          const latestFile = sortedFiles[0];
-          
-          const { data: fileData, error: fileError } = await supabase
-            .storage
-            .from('app_files')
-            .createSignedUrl(latestFile.name, 60);
-          
-          if (!fileError && fileData) {
-            toast.success(`Download started! Latest version`);
-            // Create a temporary link element to trigger the download
-            const link = document.createElement('a');
-            link.href = fileData.signedUrl;
-            link.setAttribute('download', latestFile.name);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            setTimeout(() => {
-              setDownloading(false);
-            }, 1000);
-            return;
-          }
+        if (filesError) {
+          console.error("Error listing files:", filesError);
+          throw new Error("Could not list files");
         }
+        
+        if (!files || files.length === 0) {
+          console.error("No files found in storage");
+          throw new Error("No files available");
+        }
+        
+        // Sort files to get the latest version based on filename
+        const sortedFiles = files.sort((a, b) => b.name.localeCompare(a.name));
+        const latestFile = sortedFiles[0];
+        console.log("Latest file:", latestFile.name);
+        
+        const { data: fileData, error: fileError } = await supabase
+          .storage
+          .from('app_files')
+          .createSignedUrl(latestFile.name, 60);
+        
+        if (fileError) {
+          console.error("Error creating signed URL:", fileError);
+          throw new Error("Could not create download URL");
+        }
+        
+        if (!fileData || !fileData.signedUrl) {
+          console.error("No signed URL returned");
+          throw new Error("No download URL available");
+        }
+        
+        // Start the download
+        toast.success(`Download started! Latest version`);
+        console.log("Starting download with URL:", fileData.signedUrl);
+        
+        // Create a temporary link element to trigger the download
+        const link = document.createElement('a');
+        link.href = fileData.signedUrl;
+        link.setAttribute('download', latestFile.name);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        setTimeout(() => {
+          setDownloading(false);
+        }, 1000);
+        return;
       } catch (directDownloadError) {
-        console.log("Direct download failed, trying edge function...", directDownloadError);
+        console.error("Direct download failed:", directDownloadError);
+        console.log("Falling back to edge function...");
       }
       
       // Fall back to edge function if direct download fails
+      console.log("Calling download-app edge function");
       const { data, error } = await supabase.functions.invoke('download-app', {
         method: 'GET',
       });
 
       if (error) {
-        console.error("Function error:", error);
+        console.error("Edge function error:", error);
         toast.error("Download failed. Please try again later.");
+        setDownloading(false);
         return;
       }
 
       if (!data || !data.downloadUrl) {
-        console.error("No download URL returned");
+        console.error("No download URL returned from edge function");
         toast.error("No app version available for download.");
+        setDownloading(false);
         return;
       }
 
       // Start the download by creating a temporary link
       toast.success(`Download started! ${data.version ? `Version ${data.version}` : ''}`);
+      console.log("Starting download via edge function with URL:", data.downloadUrl);
       
       // Create a temporary link element to trigger the download
       const link = document.createElement('a');
