@@ -15,99 +15,62 @@ const Index = () => {
     try {
       toast.info("Preparing download...");
       
-      // Try to download using the direct Storage API first
-      try {
-        console.log("Attempting direct storage download");
-        const { data: files, error: filesError } = await supabase
-          .storage
-          .from('app_files')
-          .list();
-        
-        if (filesError) {
-          console.error("Error listing files:", filesError);
-          throw new Error("Could not list files");
-        }
-        
-        if (!files || files.length === 0) {
-          console.error("No files found in storage");
-          throw new Error("No files available");
-        }
-        
-        // Sort files to get the latest version based on filename
-        const sortedFiles = files.sort((a, b) => b.name.localeCompare(a.name));
-        const latestFile = sortedFiles[0];
-        console.log("Latest file:", latestFile.name);
-        
-        const { data: fileData, error: fileError } = await supabase
-          .storage
-          .from('app_files')
-          .createSignedUrl(latestFile.name, 60);
-        
-        if (fileError) {
-          console.error("Error creating signed URL:", fileError);
-          throw new Error("Could not create download URL");
-        }
-        
-        if (!fileData || !fileData.signedUrl) {
-          console.error("No signed URL returned");
-          throw new Error("No download URL available");
-        }
-        
-        // Start the download
-        toast.success(`Download started! Latest version`);
-        console.log("Starting download with URL:", fileData.signedUrl);
-        
-        // Create a temporary link element to trigger the download
-        const link = document.createElement('a');
-        link.href = fileData.signedUrl;
-        link.setAttribute('download', latestFile.name);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        setTimeout(() => {
-          setDownloading(false);
-        }, 1000);
-        return;
-      } catch (directDownloadError) {
-        console.error("Direct download failed:", directDownloadError);
-        console.log("Falling back to edge function...");
+      console.log("Attempting to list files in app_files bucket");
+      const { data: files, error: filesError } = await supabase
+        .storage
+        .from('app_files')
+        .list();
+      
+      if (filesError) {
+        console.error("Error listing files:", filesError);
+        throw new Error(`Could not list files: ${filesError.message}`);
       }
       
-      // Fall back to edge function if direct download fails
-      console.log("Calling download-app edge function");
-      const { data, error } = await supabase.functions.invoke('download-app', {
-        method: 'GET',
-      });
-
-      if (error) {
-        console.error("Edge function error:", error);
-        toast.error("Download failed. Please try again later.");
-        setDownloading(false);
-        return;
+      if (!files || files.length === 0) {
+        console.error("No files found in storage bucket");
+        throw new Error("No files available for download. Please check the app_files bucket.");
       }
-
-      if (!data || !data.downloadUrl) {
-        console.error("No download URL returned from edge function");
-        toast.error("No app version available for download.");
-        setDownloading(false);
-        return;
+      
+      console.log("Found files:", files);
+      
+      // Find a file with .zip or .dmg extension, or use the first file
+      let fileToDownload = files.find(file => 
+        file.name.endsWith('.zip') || file.name.endsWith('.dmg')
+      ) || files[0];
+      
+      console.log("Selected file for download:", fileToDownload.name);
+      
+      // Get a public URL for the file
+      const { data: publicURL, error: publicURLError } = await supabase
+        .storage
+        .from('app_files')
+        .getPublicUrl(fileToDownload.name);
+      
+      if (publicURLError) {
+        console.error("Error getting public URL:", publicURLError);
+        throw new Error(`Could not get download URL: ${publicURLError.message}`);
       }
-
-      // Start the download by creating a temporary link
-      toast.success(`Download started! ${data.version ? `Version ${data.version}` : ''}`);
-      console.log("Starting download via edge function with URL:", data.downloadUrl);
+      
+      if (!publicURL || !publicURL.publicUrl) {
+        console.error("No public URL returned");
+        throw new Error("No download URL available");
+      }
+      
+      // Start the download
+      toast.success(`Download started! ${fileToDownload.name}`);
+      console.log("Starting download with URL:", publicURL.publicUrl);
       
       // Create a temporary link element to trigger the download
       const link = document.createElement('a');
-      link.href = data.downloadUrl;
-      link.setAttribute('download', data.fileName || 'CopyClipCloud.zip');
+      link.href = publicURL.publicUrl;
+      link.setAttribute('download', fileToDownload.name);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      
     } catch (error) {
       console.error("Download error:", error);
-      toast.error("Download failed. Please try again later.");
+      toast.error(`Download failed: ${error.message || "Please try again later."}`);
     } finally {
       // Set downloading back to false after a slight delay to prevent quick re-clicks
       setTimeout(() => {

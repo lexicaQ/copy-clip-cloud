@@ -24,53 +24,48 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // First, try to get files directly from storage bucket
-    console.log("Fetching files from app_files bucket");
+    // First, check for files in the app_files bucket 
+    console.log("Checking app_files bucket for downloadable files");
     const { data: files, error: storageError } = await supabase
       .storage
       .from('app_files')
       .list();
 
-    if (storageError) {
-      console.error("Error listing files from storage:", storageError);
+    if (storageError || !files || files.length === 0) {
+      console.log("No files found in app_files bucket or error:", storageError);
+      console.log("Checking app_versions table as fallback");
       
-      // Fall back to app_versions table if storage fails
-      console.log("Fetching from app_versions table as fallback");
+      // Fall back to app_versions table
       const { data: versionData, error: versionError } = await supabase
         .from('app_versions')
         .select('*')
         .order('version', { ascending: false })
         .limit(1);
 
-      if (versionError) {
-        console.error('Error fetching latest version:', versionError);
+      if (versionError || !versionData || versionData.length === 0) {
+        console.error("No app versions found in database:", versionError);
         return new Response(
-          JSON.stringify({ error: 'Failed to fetch latest version', details: versionError }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-        );
-      }
-
-      if (!versionData || versionData.length === 0) {
-        console.error('No app versions found in app_versions table');
-        return new Response(
-          JSON.stringify({ error: 'No app versions available' }),
+          JSON.stringify({ 
+            error: 'No application files available for download',
+            details: versionError || 'No records found'
+          }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
         );
       }
 
       const latestVersion = versionData[0];
-      console.log(`Found latest version: ${latestVersion.version}`);
+      console.log(`Found latest version in database: ${latestVersion.version}`);
       
-      // Generate signed URL
-      const { data: signedURL, error: signedURLError } = await supabase
+      // Generate public URL - this is more reliable than signed URLs
+      const { data: publicURL, error: publicURLError } = await supabase
         .storage
         .from('app_files')
-        .createSignedUrl(latestVersion.file_path, 60);
+        .getPublicUrl(latestVersion.file_path);
 
-      if (signedURLError) {
-        console.error('Error creating signed URL:', signedURLError);
+      if (publicURLError || !publicURL) {
+        console.error('Error creating public URL:', publicURLError);
         return new Response(
-          JSON.stringify({ error: 'Failed to generate download URL', details: signedURLError }),
+          JSON.stringify({ error: 'Failed to generate download URL', details: publicURLError }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
         );
       }
@@ -78,7 +73,7 @@ serve(async (req) => {
       console.log('Download URL generated successfully for version record');
       return new Response(
         JSON.stringify({ 
-          downloadUrl: signedURL.signedUrl,
+          downloadUrl: publicURL.publicUrl,
           version: latestVersion.version,
           fileName: latestVersion.filename
         }),
@@ -86,48 +81,43 @@ serve(async (req) => {
       );
     }
 
-    // If we found files in storage bucket, use the most recent one
-    if (!files || files.length === 0) {
-      console.error('No files found in storage bucket');
-      return new Response(
-        JSON.stringify({ error: 'No files available for download' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
-      );
-    }
-
-    // Sort files to get the latest version based on filename
+    // We found files in the app_files bucket
     console.log(`Found ${files.length} files in storage`);
-    const sortedFiles = files.sort((a, b) => b.name.localeCompare(a.name));
-    const latestFile = sortedFiles[0];
-    console.log(`Using latest file: ${latestFile.name}`);
     
-    // Create signed URL for direct download
-    const { data: signedURL, error: signedURLError } = await supabase
+    // Find a file with .zip or .dmg extension, or use the first file
+    let fileToDownload = files.find(file => 
+      file.name.endsWith('.zip') || file.name.endsWith('.dmg')
+    ) || files[0];
+    
+    console.log(`Using file for download: ${fileToDownload.name}`);
+    
+    // Get public URL for the file
+    const { data: publicURL, error: publicURLError } = await supabase
       .storage
       .from('app_files')
-      .createSignedUrl(latestFile.name, 60);
+      .getPublicUrl(fileToDownload.name);
 
-    if (signedURLError) {
-      console.error('Error creating signed URL for file:', signedURLError);
+    if (publicURLError || !publicURL) {
+      console.error('Error creating public URL for file:', publicURLError);
       return new Response(
-        JSON.stringify({ error: 'Failed to generate download URL', details: signedURLError }),
+        JSON.stringify({ error: 'Failed to generate download URL', details: publicURLError }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
       );
     }
 
     // Extract version from filename if possible (format: CopyClipCloud_X.Y.Z.zip)
     let version = '';
-    const versionMatch = latestFile.name.match(/(\d+\.\d+\.\d+)/);
+    const versionMatch = fileToDownload.name.match(/(\d+\.\d+\.\d+)/);
     if (versionMatch) {
       version = versionMatch[1];
     }
 
-    console.log(`Download URL generated successfully for file: ${latestFile.name}`);
+    console.log(`Download URL generated successfully for file: ${fileToDownload.name}`);
     return new Response(
       JSON.stringify({ 
-        downloadUrl: signedURL.signedUrl,
+        downloadUrl: publicURL.publicUrl,
         version: version,
-        fileName: latestFile.name
+        fileName: fileToDownload.name
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     );
