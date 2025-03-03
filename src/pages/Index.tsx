@@ -9,8 +9,12 @@ const Index = () => {
   const [downloading, setDownloading] = useState(false);
 
   const handleDownload = async () => {
+    if (downloading) return; // Prevent multiple clicks
+    
     setDownloading(true);
     try {
+      toast.info("Preparing download...");
+      
       // Call the Supabase edge function to get the download URL
       const { data, error } = await supabase.functions.invoke('download-app', {
         method: 'GET',
@@ -18,11 +22,11 @@ const Index = () => {
 
       if (error) {
         console.error("Function error:", error);
-        toast.error("Download failed. Please try again.");
+        toast.error("Download failed. Please try again later.");
         return;
       }
 
-      if (!data.downloadUrl) {
+      if (!data || !data.downloadUrl) {
         console.error("No download URL returned");
         toast.error("No app version available for download.");
         return;
@@ -40,9 +44,12 @@ const Index = () => {
       document.body.removeChild(link);
     } catch (error) {
       console.error("Download error:", error);
-      toast.error("Download failed. Please try again.");
+      toast.error("Download failed. Please try again later.");
     } finally {
-      setDownloading(false);
+      // Set downloading back to false after a slight delay to prevent quick re-clicks
+      setTimeout(() => {
+        setDownloading(false);
+      }, 1000);
     }
   };
 
@@ -115,7 +122,8 @@ const Index = () => {
           <button
             onClick={handleDownload}
             disabled={downloading}
-            className="animated-border-button glass-panel download-button"
+            className={`animated-border-button glass-panel download-button ${downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'}`}
+            aria-label="Download for Mac"
           >
             <span className="relative z-10 flex items-center space-x-2">
               {downloading ? (
