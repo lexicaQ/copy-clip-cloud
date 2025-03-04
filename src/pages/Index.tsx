@@ -6,8 +6,6 @@ import AppLogo from "@/components/landing/AppLogo";
 import DownloadButton from "@/components/landing/DownloadButton";
 import AppTitle from "@/components/landing/AppTitle";
 import BackgroundEffects from "@/components/landing/BackgroundEffects";
-import FaqSection from "@/components/landing/FaqSection";
-import UsageStats from "@/components/landing/UsageStats";
 
 const Index = () => {
   return (
@@ -30,14 +28,8 @@ const Index = () => {
         {/* Download Button */}
         <DownloadButton />
 
-        {/* Stats and Charts */}
-        <UsageStats />
-
         {/* Features Grid */}
         <AppFeatures />
-
-        {/* FAQ Section */}
-        <FaqSection />
       </motion.div>
     </div>
   );

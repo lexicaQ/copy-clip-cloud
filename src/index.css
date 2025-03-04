@@ -57,39 +57,6 @@
   .animate-border-pulse {
     animation: pulse 1.5s infinite;
   }
-  
-  .text-gradient {
-    @apply bg-gradient-to-br from-white via-white/90 to-white/70 bg-clip-text text-transparent;
-  }
-  
-  .text-gradient-primary {
-    @apply bg-gradient-to-br from-blue-400 via-purple-400 to-blue-300 bg-clip-text text-transparent;
-  }
-  
-  .text-gradient-blue {
-    @apply bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent;
-  }
-  
-  .text-gradient-purple {
-    @apply bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent;
-  }
-  
-  .text-gradient-rainbow {
-    @apply bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent;
-  }
-  
-  .gradient-card {
-    @apply relative overflow-hidden;
-  }
-  
-  .gradient-card::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/10 to-pink-500/20 opacity-0 transition-opacity duration-300;
-  }
-  
-  .gradient-card:hover::before {
-    @apply opacity-100;
-  }
 }
 
 @keyframes download-border-animation {
