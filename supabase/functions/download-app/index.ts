@@ -45,55 +45,13 @@ serve(async (req) => {
 
     if (storageError || !files || files.length === 0) {
       console.log("No files found in app_files bucket or error:", storageError);
-      console.log("Checking app_versions table as fallback");
-      
-      // Fall back to app_versions table
-      const { data: versionData, error: versionError } = await supabase
-        .from('app_versions')
-        .select('*')
-        .order('version', { ascending: false })
-        .limit(1);
-
-      if (versionError || !versionData || versionData.length === 0) {
-        console.error("No app versions found in database:", versionError);
-        return new Response(
-          JSON.stringify({ 
-            error: 'No application files available for download',
-            details: versionError || 'No records found',
-            message: 'No files found in storage or database. Please upload files to the app_files bucket.'
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
-        );
-      }
-
-      const latestVersion = versionData[0];
-      console.log(`Found latest version in database: ${latestVersion.version}`);
-      
-      // Generate public URL - this is more reliable than signed URLs
-      const { data: publicURL } = supabase
-        .storage
-        .from('app_files')
-        .getPublicUrl(latestVersion.file_path);
-
-      if (!publicURL || !publicURL.publicUrl) {
-        console.error('Error creating public URL');
-        return new Response(
-          JSON.stringify({ 
-            error: 'Failed to generate download URL',
-            message: 'Could not create a public URL for the file'
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-        );
-      }
-
-      console.log('Download URL generated successfully for version record');
       return new Response(
         JSON.stringify({ 
-          downloadUrl: publicURL.publicUrl,
-          version: latestVersion.version,
-          fileName: latestVersion.filename
+          error: 'No application files available for download',
+          details: storageError || 'No records found',
+          message: 'No files found in the app_files bucket. Please upload files to the bucket.'
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
       );
     }
 
@@ -117,7 +75,23 @@ serve(async (req) => {
         file.name.endsWith('.dmg') || 
         file.name.endsWith('.exe') || 
         file.name.endsWith('.pkg')
-      ) || files[0];
+      );
+      
+      // If no specific file type is found, use the first file
+      if (!fileToDownload) {
+        console.log("No .zip/.dmg/.exe file found, using first available file");
+        fileToDownload = files[0];
+      }
+    }
+    
+    if (!fileToDownload) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'No suitable file found for download',
+          message: 'Could not find an appropriate file to download'
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
+      );
     }
     
     console.log(`Using file for download: ${fileToDownload.name}`);
@@ -140,7 +114,7 @@ serve(async (req) => {
     }
 
     // Extract version from filename if possible (format: CopyClipCloud_X.Y.Z.zip)
-    let version = '';
+    let version = '1.0.0'; // Default version
     const versionMatch = fileToDownload.name.match(/(\d+\.\d+\.\d+)/);
     if (versionMatch) {
       version = versionMatch[1];

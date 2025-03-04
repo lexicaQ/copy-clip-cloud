@@ -7,6 +7,68 @@ import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [downloading, setDownloading] = useState(false);
+  const [fileInfo, setFileInfo] = useState<{version: string, extension: string} | null>(null);
+
+  // Check for available files when component mounts
+  const checkForFiles = async () => {
+    try {
+      const { data: files, error } = await supabase
+        .storage
+        .from('app_files')
+        .list();
+      
+      if (error) {
+        console.error("Error checking files:", error);
+        return;
+      }
+
+      if (files && files.length > 0) {
+        console.log("Available files:", files);
+        
+        // Try to determine version and file type
+        let version = "1.0.0";
+        let extension = "ZIP";
+        
+        const downloadableFile = files.find(file => 
+          file.name.endsWith('.zip') || 
+          file.name.endsWith('.dmg') || 
+          file.name.endsWith('.exe') || 
+          file.name.endsWith('.pkg')
+        ) || files[0];
+        
+        // Extract version if possible
+        const versionMatch = downloadableFile.name.match(/(\d+\.\d+\.\d+)/);
+        if (versionMatch) {
+          version = versionMatch[1];
+        }
+        
+        // Determine file extension
+        if (downloadableFile.name.endsWith('.dmg')) {
+          extension = "DMG";
+        } else if (downloadableFile.name.endsWith('.exe')) {
+          extension = "EXE";
+        } else if (downloadableFile.name.endsWith('.pkg')) {
+          extension = "PKG";
+        } else if (downloadableFile.name.endsWith('.zip')) {
+          extension = "ZIP";
+        } else {
+          const parts = downloadableFile.name.split('.');
+          if (parts.length > 1) {
+            extension = parts[parts.length - 1].toUpperCase();
+          }
+        }
+        
+        setFileInfo({ version, extension });
+      }
+    } catch (e) {
+      console.error("Error in checkForFiles:", e);
+    }
+  };
+
+  // Call this when component mounts
+  useState(() => {
+    checkForFiles();
+  });
 
   const handleDownload = async () => {
     if (downloading) return; // Prevent multiple clicks
@@ -50,11 +112,15 @@ const Index = () => {
         fileToDownload = files[0];
       }
       
+      if (!fileToDownload) {
+        toast.error("No downloadable files found");
+        throw new Error("No downloadable files found");
+      }
+      
       console.log("Selected file for download:", fileToDownload.name);
       
-      // Use the Edge Function as a fallback for direct file downloads
+      // METHOD 1: Try direct storage download first
       try {
-        // Try direct storage download first
         const { data: publicUrlData } = supabase
           .storage
           .from('app_files')
@@ -79,7 +145,7 @@ const Index = () => {
       } catch (directDownloadError) {
         console.error("Direct download failed, trying edge function:", directDownloadError);
         
-        // Try the edge function as a fallback
+        // METHOD 2: Try the edge function as a fallback
         const { data: functionData, error: functionError } = await supabase.functions.invoke('download-app', {
           body: { fileName: fileToDownload.name }
         });
@@ -209,7 +275,7 @@ const Index = () => {
           </button>
 
           <p className="text-sm text-gray-500">
-            Version 1.0.0 • For macOS 15 or later • ZIP Archive
+            Version {fileInfo?.version || "1.0.0"} • For macOS 15 or later • {fileInfo?.extension || "ZIP"} Archive
           </p>
         </motion.div>
 
