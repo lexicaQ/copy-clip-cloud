@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Apple, Download, Check, Clipboard, Cloud, Shield } from "lucide-react";
@@ -40,29 +39,24 @@ const Index = () => {
       
       console.log("Selected file for download:", fileToDownload.name);
       
-      // Get a public URL for the file
-      const { data: publicURL, error: publicURLError } = await supabase
+      // Get a public URL for the file - note the corrected type checking here
+      const { data: publicUrlData } = supabase
         .storage
         .from('app_files')
         .getPublicUrl(fileToDownload.name);
       
-      if (publicURLError) {
-        console.error("Error getting public URL:", publicURLError);
-        throw new Error(`Could not get download URL: ${publicURLError.message}`);
-      }
-      
-      if (!publicURL || !publicURL.publicUrl) {
+      if (!publicUrlData || !publicUrlData.publicUrl) {
         console.error("No public URL returned");
         throw new Error("No download URL available");
       }
       
       // Start the download
       toast.success(`Download started! ${fileToDownload.name}`);
-      console.log("Starting download with URL:", publicURL.publicUrl);
+      console.log("Starting download with URL:", publicUrlData.publicUrl);
       
       // Create a temporary link element to trigger the download
       const link = document.createElement('a');
-      link.href = publicURL.publicUrl;
+      link.href = publicUrlData.publicUrl;
       link.setAttribute('download', fileToDownload.name);
       document.body.appendChild(link);
       link.click();
