@@ -57,6 +57,14 @@
   .animate-border-pulse {
     animation: pulse 1.5s infinite;
   }
+  
+  .text-gradient {
+    @apply bg-gradient-to-br from-white via-white/90 to-white/70 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-gradient-to-br from-blue-400 via-purple-400 to-blue-300 bg-clip-text text-transparent;
+  }
 }
 
 @keyframes download-border-animation {
@@ -113,3 +121,4 @@
     rgba(255, 255, 255, 0.02) 100%
   );
 }
+
