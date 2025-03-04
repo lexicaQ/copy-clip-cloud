@@ -18,6 +18,16 @@ serve(async (req) => {
   }
 
   try {
+    // Parse the request body if present
+    let requestedFileName;
+    try {
+      const body = await req.json();
+      requestedFileName = body.fileName;
+      console.log("Request for specific file:", requestedFileName);
+    } catch (e) {
+      console.log("No specific file requested in body");
+    }
+
     console.log("Creating Supabase client");
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -30,6 +40,8 @@ serve(async (req) => {
       .storage
       .from('app_files')
       .list();
+
+    console.log("Storage bucket response:", { files, error: storageError });
 
     if (storageError || !files || files.length === 0) {
       console.log("No files found in app_files bucket or error:", storageError);
@@ -47,7 +59,8 @@ serve(async (req) => {
         return new Response(
           JSON.stringify({ 
             error: 'No application files available for download',
-            details: versionError || 'No records found'
+            details: versionError || 'No records found',
+            message: 'No files found in storage or database. Please upload files to the app_files bucket.'
           }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
         );
@@ -57,15 +70,18 @@ serve(async (req) => {
       console.log(`Found latest version in database: ${latestVersion.version}`);
       
       // Generate public URL - this is more reliable than signed URLs
-      const { data: publicURL, error: publicURLError } = await supabase
+      const { data: publicURL } = supabase
         .storage
         .from('app_files')
         .getPublicUrl(latestVersion.file_path);
 
-      if (publicURLError || !publicURL) {
-        console.error('Error creating public URL:', publicURLError);
+      if (!publicURL || !publicURL.publicUrl) {
+        console.error('Error creating public URL');
         return new Response(
-          JSON.stringify({ error: 'Failed to generate download URL', details: publicURLError }),
+          JSON.stringify({ 
+            error: 'Failed to generate download URL',
+            message: 'Could not create a public URL for the file'
+          }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
         );
       }
@@ -82,25 +98,43 @@ serve(async (req) => {
     }
 
     // We found files in the app_files bucket
-    console.log(`Found ${files.length} files in storage`);
+    console.log(`Found ${files.length} files in storage:`, files.map(f => f.name).join(', '));
     
-    // Find a file with .zip or .dmg extension, or use the first file
-    let fileToDownload = files.find(file => 
-      file.name.endsWith('.zip') || file.name.endsWith('.dmg')
-    ) || files[0];
+    // Find the requested file, or choose an appropriate one
+    let fileToDownload;
+    
+    if (requestedFileName) {
+      fileToDownload = files.find(file => file.name === requestedFileName);
+      if (!fileToDownload) {
+        console.log(`Requested file "${requestedFileName}" not found, will select another`);
+      }
+    }
+    
+    if (!fileToDownload) {
+      // Find a file with .zip, .dmg, or .exe extension, or use the first file
+      fileToDownload = files.find(file => 
+        file.name.endsWith('.zip') || 
+        file.name.endsWith('.dmg') || 
+        file.name.endsWith('.exe') || 
+        file.name.endsWith('.pkg')
+      ) || files[0];
+    }
     
     console.log(`Using file for download: ${fileToDownload.name}`);
     
     // Get public URL for the file
-    const { data: publicURL, error: publicURLError } = await supabase
+    const { data: publicURL } = supabase
       .storage
       .from('app_files')
       .getPublicUrl(fileToDownload.name);
 
-    if (publicURLError || !publicURL) {
-      console.error('Error creating public URL for file:', publicURLError);
+    if (!publicURL || !publicURL.publicUrl) {
+      console.error('Failed to generate public URL for file');
       return new Response(
-        JSON.stringify({ error: 'Failed to generate download URL', details: publicURLError }),
+        JSON.stringify({ 
+          error: 'Failed to generate download URL',
+          message: 'Could not create a public URL for the file'
+        }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
       );
     }
@@ -128,7 +162,8 @@ serve(async (req) => {
       JSON.stringify({ 
         error: 'An unexpected error occurred', 
         details: error.message,
-        stack: error.stack
+        stack: error.stack,
+        message: 'Server error while generating download URL'
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     );
