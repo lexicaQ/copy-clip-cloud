@@ -1,8 +1,7 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Clipboard, GitHub, Twitter, Instagram, Facebook, Mail, ArrowRight, Heart } from "lucide-react";
+import { Clipboard, Github, Twitter, Instagram, Facebook, Mail, ArrowRight, Heart } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -23,7 +22,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4 pt-2">
               <SocialLink icon={Twitter} href="https://twitter.com" />
-              <SocialLink icon={GitHub} href="https://github.com" />
+              <SocialLink icon={Github} href="https://github.com" />
               <SocialLink icon={Instagram} href="https://instagram.com" />
               <SocialLink icon={Facebook} href="https://facebook.com" />
             </div>
