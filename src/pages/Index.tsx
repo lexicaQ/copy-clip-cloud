@@ -5,8 +5,8 @@ import AppFeatures from "@/components/landing/AppFeatures";
 import AppLogo from "@/components/landing/AppLogo";
 import DownloadButton from "@/components/landing/DownloadButton";
 import AppTitle from "@/components/landing/AppTitle";
-import BackgroundEffects from "@/components/landing/BackgroundEffects";
-import AppTestimonials from "@/components/landing/AppTestimonials";
+import InteractiveBackground from "@/components/landing/InteractiveBackground";
+import TestimonialCarousel from "@/components/landing/TestimonialCarousel";
 import AppStats from "@/components/landing/AppStats";
 import AppFAQ from "@/components/landing/AppFAQ";
 import HowItWorks from "@/components/landing/HowItWorks";
@@ -17,7 +17,7 @@ const Index = () => {
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background effects */}
-      <BackgroundEffects />
+      <InteractiveBackground />
 
       {/* Header */}
       <Header />
@@ -40,8 +40,10 @@ const Index = () => {
           {/* Title and Description */}
           <AppTitle />
 
-          {/* Download Button */}
-          <DownloadButton />
+          {/* Download Button - added more spacing */}
+          <div className="mt-16">
+            <DownloadButton />
+          </div>
 
           {/* Features Grid */}
           <AppFeatures />
@@ -53,10 +55,12 @@ const Index = () => {
           <HowItWorks />
           
           {/* Testimonials */}
-          <AppTestimonials />
+          <TestimonialCarousel />
           
           {/* FAQ Section */}
-          <AppFAQ />
+          <div className="mt-24">
+            <AppFAQ />
+          </div>
         </motion.div>
       </motion.div>
       
