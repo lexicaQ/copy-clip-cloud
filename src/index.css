@@ -57,6 +57,39 @@
   .animate-border-pulse {
     animation: pulse 1.5s infinite;
   }
+  
+  .text-gradient-purple {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #9b87f5, #7E69AB);
+  }
+  
+  .text-gradient-blue {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #4facfe, #00f2fe);
+  }
+  
+  .text-gradient-cyan {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #0093E9, #80D0C7);
+  }
+  
+  .text-gradient-gold {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #F59E0B, #FBBF24);
+  }
+  
+  .text-gradient-green {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #10B981, #34D399);
+  }
+  
+  .gradient-bg-purple {
+    background: linear-gradient(to right, #9b87f5, #7E69AB);
+  }
+  
+  .gradient-bg-blue {
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+  }
 }
 
 @keyframes download-border-animation {
