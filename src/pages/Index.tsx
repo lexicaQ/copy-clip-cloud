@@ -10,6 +10,8 @@ import AppTestimonials from "@/components/landing/AppTestimonials";
 import AppStats from "@/components/landing/AppStats";
 import AppFAQ from "@/components/landing/AppFAQ";
 import HowItWorks from "@/components/landing/HowItWorks";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 const Index = () => {
   return (
@@ -17,8 +19,11 @@ const Index = () => {
       {/* Background effects */}
       <BackgroundEffects />
 
+      {/* Header */}
+      <Header />
+
       <motion.div 
-        className="max-w-7xl mx-auto px-4 pt-8 pb-24"
+        className="max-w-7xl mx-auto px-4 pt-32 pb-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -27,7 +32,7 @@ const Index = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl mx-auto text-center space-y-8 relative z-10"
+          className="w-full max-w-4xl mx-auto text-center relative z-10"
         >
           {/* Logo and Badge */}
           <AppLogo />
@@ -41,7 +46,7 @@ const Index = () => {
           {/* Features Grid */}
           <AppFeatures />
           
-          {/* Stats Dashboard - Moved higher up for better visibility */}
+          {/* Stats Dashboard */}
           <AppStats />
           
           {/* How It Works */}
@@ -52,24 +57,11 @@ const Index = () => {
           
           {/* FAQ Section */}
           <AppFAQ />
-          
-          {/* Footer */}
-          <motion.div 
-            className="mt-24 text-center text-gray-500 text-sm"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <p>© 2023 CopyClipCloud. All rights reserved.</p>
-            <div className="flex justify-center space-x-4 mt-2">
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
-            </div>
-          </motion.div>
         </motion.div>
       </motion.div>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
