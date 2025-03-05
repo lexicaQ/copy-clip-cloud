@@ -12,7 +12,7 @@
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl;
+    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
   }
   
   .animated-border-button {
@@ -58,37 +58,21 @@
     animation: pulse 1.5s infinite;
   }
   
-  .text-gradient-purple {
+  .text-gradient {
     @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, #9b87f5, #7E69AB);
+    background-image: linear-gradient(to right, #ffffff, #a0a0a0);
   }
   
-  .text-gradient-blue {
-    @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, #4facfe, #00f2fe);
+  .gradient-bg {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
   }
   
-  .text-gradient-cyan {
-    @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, #0093E9, #80D0C7);
+  .elegant-shadow {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
   }
   
-  .text-gradient-gold {
-    @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, #F59E0B, #FBBF24);
-  }
-  
-  .text-gradient-green {
-    @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, #10B981, #34D399);
-  }
-  
-  .gradient-bg-purple {
-    background: linear-gradient(to right, #9b87f5, #7E69AB);
-  }
-  
-  .gradient-bg-blue {
-    background: linear-gradient(to right, #4facfe, #00f2fe);
+  .subtle-glow {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
   }
 }
 

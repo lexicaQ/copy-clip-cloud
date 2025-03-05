@@ -17,7 +17,12 @@ const Index = () => {
       {/* Background effects */}
       <BackgroundEffects />
 
-      <div className="container mx-auto px-4 pt-12 pb-24">
+      <motion.div 
+        className="max-w-7xl mx-auto px-4 pt-8 pb-24"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -36,11 +41,11 @@ const Index = () => {
           {/* Features Grid */}
           <AppFeatures />
           
+          {/* Stats Dashboard - Moved higher up for better visibility */}
+          <AppStats />
+          
           {/* How It Works */}
           <HowItWorks />
-          
-          {/* Statistics */}
-          <AppStats />
           
           {/* Testimonials */}
           <AppTestimonials />
@@ -64,7 +69,7 @@ const Index = () => {
             </div>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 };

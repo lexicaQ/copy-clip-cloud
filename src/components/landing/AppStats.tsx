@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { BarChart3, Download, Users } from "lucide-react";
+import { BarChart3, Download, Users, Star } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 const statData = [
@@ -9,33 +9,33 @@ const statData = [
     icon: Download,
     value: "100K+",
     label: "Downloads",
-    color: "text-gradient-blue",
-    description: "Active users around the world"
+    description: "Active users globally",
+    numericValue: 100000
   },
   {
-    icon: BarChart3,
-    value: "4.8/5",
+    icon: Star,
+    value: "4.8",
     label: "Average Rating",
-    color: "text-gradient-purple",
-    description: "From App Store reviews"
+    description: "From 12,400+ reviews",
+    numericValue: 4.8
   },
   {
     icon: Users,
     value: "93%",
     label: "User Retention",
-    color: "text-gradient-cyan",
-    description: "After first month of use"
+    description: "After first month of use",
+    numericValue: 93
   }
 ];
 
 const chartData = [
   { name: 'Jan', value: 2400 },
-  { name: 'Feb', value: 1398 },
+  { name: 'Feb', value: 3598 },
   { name: 'Mar', value: 9800 },
-  { name: 'Apr', value: 3908 },
-  { name: 'May', value: 4800 },
-  { name: 'Jun', value: 3800 },
-  { name: 'Jul', value: 4300 },
+  { name: 'Apr', value: 8908 },
+  { name: 'May', value: 12800 },
+  { name: 'Jun', value: 15800 },
+  { name: 'Jul', value: 18600 },
 ];
 
 const CountUp = ({ to, duration = 2 }: { to: number; duration?: number }) => {
@@ -83,7 +83,7 @@ const AppStats = () => {
       viewport={{ once: true }}
     >
       <motion.h2 
-        className="text-2xl font-bold text-center mb-2 text-gradient-cyan"
+        className="text-2xl font-bold text-center mb-2 text-gradient"
         initial={{ opacity: 0, y: -10 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
@@ -99,15 +99,30 @@ const AppStats = () => {
         transition={{ delay: 0.4 }}
         viewport={{ once: true }}
       >
-        See why CopyClipCloud is trusted by users worldwide
+        See why CopyClipCloud is trusted by professionals worldwide
       </motion.p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         {statData.map((stat, index) => {
           const Icon = stat.icon;
-          const isNumber = !isNaN(parseInt(stat.value.replace(/[^0-9]/g, '')));
-          const numericValue = isNumber ? parseInt(stat.value.replace(/[^0-9]/g, '')) : 0;
-          const suffix = isNumber ? stat.value.replace(/[0-9]/g, '') : '';
+          const isNumber = !isNaN(parseFloat(stat.value.replace(/[^0-9.]/g, '')));
+          const numericValue = isNumber ? parseFloat(stat.value.replace(/[^0-9.]/g, '')) : 0;
+          const suffix = isNumber ? stat.value.replace(/[0-9.]/g, '') : '';
+          
+          // Format based on data type
+          const formattedValue = (value: number, originalString: string) => {
+            if (originalString.includes('%')) {
+              return `${Math.round(value)}%`;
+            } else if (value % 1 !== 0) {
+              // If decimal number (like 4.8)
+              return value.toFixed(1);
+            } else if (value >= 1000) {
+              // For thousands (like 100K)
+              return (value / 1000).toFixed(0) + 'K+';
+            } else {
+              return Math.round(value).toString();
+            }
+          };
           
           return (
             <motion.div 
@@ -117,15 +132,14 @@ const AppStats = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + index * 0.1 }}
               viewport={{ once: true }}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
-              <div className="w-12 h-12 mx-auto mb-4 gradient-bg-blue rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-4 bg-white/10 rounded-xl flex items-center justify-center">
                 <Icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className={`text-3xl font-bold mb-1 ${stat.color}`}>
+              <h3 className="text-3xl font-bold mb-1 text-white">
                 {isNumber ? (
                   <>
-                    <CountUp to={numericValue} />
+                    <CountUp to={numericValue < 1000 ? numericValue * 10 : numericValue} />
                     {suffix}
                   </>
                 ) : (
@@ -154,30 +168,25 @@ const AppStats = () => {
             <YAxis stroke="rgba(255,255,255,0.5)" />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor: 'rgba(0,0,0,0.8)', 
+                backgroundColor: 'rgba(0,0,0,0.9)', 
                 border: '1px solid rgba(255,255,255,0.1)',
                 borderRadius: '0.5rem',
-                color: 'white'
+                color: 'white',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.4)'
               }} 
             />
-            <Bar dataKey="value" fill="#8884d8" radius={[4, 4, 0, 0]}>
+            <Bar dataKey="value" radius={[4, 4, 0, 0]}>
               {chartData.map((entry, index) => (
                 <motion.rect 
                   key={index} 
-                  fillOpacity={0.8} 
-                  fill={`url(#colorGradient)`} 
+                  fillOpacity={0.9} 
+                  fill={'white'} 
                   initial={{ y: 100, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.8 + index * 0.1, duration: 0.5 }}
                 />
               ))}
             </Bar>
-            <defs>
-              <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#9b87f5" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#4facfe" stopOpacity={0.8}/>
-              </linearGradient>
-            </defs>
           </BarChart>
         </ResponsiveContainer>
       </motion.div>

@@ -29,6 +29,7 @@ export default {
         "border-move": "border-move 3s ease infinite",
         "float": "float 6s ease-in-out infinite",
         "fade-in": "fade-in 1s ease-out",
+        "pulse-subtle": "pulse-subtle 3s infinite ease-in-out",
       },
       keyframes: {
         "border-move": {
@@ -58,6 +59,14 @@ export default {
           "100%": {
             opacity: "1",
             transform: "translateY(0)",
+          },
+        },
+        "pulse-subtle": {
+          "0%, 100%": {
+            opacity: "1",
+          },
+          "50%": {
+            opacity: "0.7",
           },
         },
       },

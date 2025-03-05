@@ -9,7 +9,7 @@ const AppLogo = () => {
     animate: {
       rotate: 360,
       transition: {
-        duration: 20,
+        duration: 25,
         ease: "linear",
         repeat: Infinity,
       },
@@ -57,9 +57,8 @@ const AppLogo = () => {
         >
           <motion.div 
             className="absolute top-0 left-[calc(50%-10px)] w-5 h-5 glass-panel rounded-full flex items-center justify-center"
-            whileHover={{ scale: 1.2 }}
           >
-            <Sparkles className="w-3 h-3 text-yellow-400" />
+            <Sparkles className="w-3 h-3 text-white" />
           </motion.div>
         </motion.div>
 
@@ -70,8 +69,7 @@ const AppLogo = () => {
           initial={{ rotate: 120 }}
         >
           <motion.div 
-            className="absolute bottom-0 left-[calc(50%-8px)] w-4 h-4 glass-panel rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
-            whileHover={{ scale: 1.2 }}
+            className="absolute bottom-0 left-[calc(50%-8px)] w-4 h-4 glass-panel rounded-full bg-white/20"
           />
         </motion.div>
 
@@ -82,8 +80,7 @@ const AppLogo = () => {
           initial={{ rotate: 240 }}
         >
           <motion.div 
-            className="absolute top-[calc(50%-8px)] right-0 w-4 h-4 glass-panel rounded-full bg-gradient-to-r from-pink-500 to-purple-500"
-            whileHover={{ scale: 1.2 }}
+            className="absolute top-[calc(50%-8px)] right-0 w-4 h-4 glass-panel rounded-full bg-white/20"
           />
         </motion.div>
 
@@ -109,20 +106,20 @@ const AppLogo = () => {
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
         >
-          <div className="w-full h-full rounded-2xl glass-panel flex items-center justify-center shadow-lg border border-white/20 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#9b87f5]/20 to-[#7E69AB]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <Clipboard className="w-12 h-12 text-white group-hover:text-gradient-purple transition-all duration-300" />
+          <div className="w-full h-full rounded-2xl glass-panel flex items-center justify-center shadow-lg border border-white/20 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 opacity-60" />
+            <Clipboard className="w-12 h-12 text-white animate-pulse-subtle" />
           </div>
         </motion.div>
       </div>
 
       <motion.div 
-        className="inline-flex items-center px-4 py-2 rounded-full glass-panel space-x-2 relative overflow-hidden group"
+        className="inline-flex items-center px-4 py-2 rounded-full glass-panel space-x-2 relative overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#9b87f5]/10 to-[#7E69AB]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-white/5" />
         <Apple className="w-4 h-4" />
         <span className="text-sm font-medium">Built for macOS 15+</span>
         <motion.span 
@@ -139,12 +136,12 @@ const AppLogo = () => {
       </motion.div>
 
       <motion.div
-        className="inline-flex items-center px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-xs font-medium"
+        className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-medium"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
       >
-        <span className="w-1.5 h-1.5 rounded-full bg-green-400 mr-1.5"></span>
+        <span className="w-1.5 h-1.5 rounded-full bg-white mr-1.5"></span>
         Free Download
       </motion.div>
     </div>

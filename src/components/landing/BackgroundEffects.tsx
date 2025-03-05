@@ -16,13 +16,13 @@ const BackgroundEffects = () => {
 
     // Particle settings
     const particlesArray: Particle[] = [];
-    const numberOfParticles = 100;
+    const numberOfParticles = 120;
     
-    // Mouse position tracking
+    // Mouse position tracking with improved sensitivity
     let mouse = {
       x: null as number | null,
       y: null as number | null,
-      radius: 150
+      radius: 180
     };
 
     window.addEventListener("mousemove", function(event) {
@@ -41,7 +41,7 @@ const BackgroundEffects = () => {
       mouse.y = null;
     });
 
-    // Particle class
+    // Particle class with improved visuals
     class Particle {
       x: number;
       y: number;
@@ -52,17 +52,19 @@ const BackgroundEffects = () => {
       baseX: number;
       baseY: number;
       density: number;
+      opacity: number;
 
       constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
         this.baseX = x;
         this.baseY = y;
-        this.size = Math.random() * 3 + 1;
-        this.color = `rgba(255, 255, 255, ${Math.random() * 0.3})`;
+        this.size = Math.random() * 2.5 + 0.5; // More varied sizes
+        this.opacity = Math.random() * 0.5 + 0.2; // More varied opacity
+        this.color = `rgba(255, 255, 255, ${this.opacity})`;
         this.directionX = Math.random() * 2 - 1;
         this.directionY = Math.random() * 2 - 1;
-        this.density = Math.random() * 30 + 1;
+        this.density = Math.random() * 35 + 1; // More responsive to mouse
       }
 
       draw() {
@@ -75,7 +77,11 @@ const BackgroundEffects = () => {
 
       update() {
         if (mouse.x === null || mouse.y === null) {
-          // Return to original position
+          // Gentle floating motion when mouse is inactive
+          this.x += Math.sin(Date.now() * 0.001 + this.density) * 0.2;
+          this.y += Math.cos(Date.now() * 0.001 + this.density) * 0.2;
+          
+          // Gradually return to original position
           const dx = this.baseX - this.x;
           const dy = this.baseY - this.y;
           if (Math.abs(dx) > 0.1) {
@@ -85,7 +91,7 @@ const BackgroundEffects = () => {
             this.y += dy * 0.02;
           }
         } else {
-          // Move away from mouse
+          // More dynamic response to mouse
           const dx = mouse.x - this.x;
           const dy = mouse.y - this.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
@@ -104,10 +110,10 @@ const BackgroundEffects = () => {
             const dx = this.baseX - this.x;
             const dy = this.baseY - this.y;
             if (Math.abs(dx) > 0.1) {
-              this.x += dx * 0.02;
+              this.x += dx * 0.03;
             }
             if (Math.abs(dy) > 0.1) {
-              this.y += dy * 0.02;
+              this.y += dy * 0.03;
             }
           }
         }
@@ -136,15 +142,15 @@ const BackgroundEffects = () => {
     }
 
     function connect() {
-      const lineOpacity = 0.05;
+      const lineOpacity = 0.08; // Slightly more visible connections
       for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
           const dx = particlesArray[a].x - particlesArray[b].x;
           const dy = particlesArray[a].y - particlesArray[b].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 100) {
-            ctx.strokeStyle = `rgba(255, 255, 255, ${lineOpacity * (100 - distance) / 100})`;
+          if (distance < 120) { // Increased connection distance
+            ctx.strokeStyle = `rgba(255, 255, 255, ${lineOpacity * (120 - distance) / 120})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
@@ -169,7 +175,7 @@ const BackgroundEffects = () => {
   return (
     <div className="absolute inset-0 z-0">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_0%,_transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.08)_0%,_transparent_70%)]" />
       <div className="absolute top-0 left-0 w-full h-full bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" />
     </div>
   );
