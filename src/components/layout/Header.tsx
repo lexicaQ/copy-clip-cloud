@@ -1,13 +1,14 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Clipboard, ChevronDown, Lock, Award, Heart, Download, Sparkles, BookOpen, MessageSquare } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useFileDownload } from "@/hooks/useFileDownload";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { handleDownload } = useFileDownload();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -18,7 +19,6 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
@@ -61,13 +61,13 @@ const Header = () => {
           </nav>
           
           <div className="hidden md:flex items-center">
-            <Link 
-              to="/download" 
+            <button 
+              onClick={handleDownload}
               className="flex items-center space-x-2 px-5 py-2.5 bg-white text-black rounded-full hover:bg-opacity-90 transition-all"
             >
               <Download className="w-4 h-4" />
               <span className="font-medium">Download</span>
-            </Link>
+            </button>
           </div>
           
           <button 

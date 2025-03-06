@@ -17,15 +17,15 @@ const DownloadButton = () => {
       <button
         onClick={handleDownload}
         disabled={downloading}
-        className={`animated-border-button glass-panel download-button ${downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'}`}
+        className={`animated-border-button glass-panel download-button ${
+          downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'
+        }`}
         aria-label="Download for Mac"
       >
         <span className="relative z-10 flex items-center space-x-2">
           {downloading ? (
             <>
-              <motion.div
-                className="animate-border-pulse"
-              >
+              <motion.div className="animate-border-pulse">
                 <Check className="w-5 h-5" />
               </motion.div>
               <span>Downloading...</span>
