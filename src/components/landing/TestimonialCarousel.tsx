@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, ArrowLeft, ArrowRight, Quote, ShieldCheck, Award } from "lucide-react";
 
@@ -85,42 +85,6 @@ const testimonials = [
     rating: 4.7,
     image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     verified: true
-  },
-  {
-    name: "Thomas Wright",
-    role: "CTO",
-    company: "CloudNative",
-    content: "After trying numerous clipboard managers, CopyClipCloud stands out for its security features and seamless sync. The search functionality is robust, and the UI is intuitive. It's now part of our standard toolkit.",
-    rating: 5.0,
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    verified: true
-  },
-  {
-    name: "Lisa Chen",
-    role: "Graphic Designer",
-    company: "ArtWorks Studio",
-    content: "The image handling in CopyClipCloud is amazing. I can copy and organize design elements across multiple projects without losing quality. The categorization system has transformed my creative process.",
-    rating: 4.9,
-    image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    verified: true
-  },
-  {
-    name: "Carlos Rodriguez",
-    role: "Project Manager",
-    company: "BuildSystems",
-    content: "Managing documentation across our team was always challenging until we implemented CopyClipCloud. Now everyone has access to the information they need, when they need it. The team sharing features are incredible.",
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    verified: true
-  },
-  {
-    name: "Maria Thompson",
-    role: "Data Scientist",
-    company: "DataMatrix",
-    content: "The code snippet management in CopyClipCloud is exceptional. I can easily store and retrieve complex SQL queries and Python code with proper formatting maintained. This has dramatically improved my efficiency.",
-    rating: 5.0,
-    image: "https://images.unsplash.com/photo-1614644147798-f8c0fc9da7f6?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    verified: true
   }
 ];
 
@@ -140,7 +104,7 @@ const Testimonial = ({
       </div>
       
       <div className="flex items-center mb-6">
-        <div className="w-16 h-16 rounded-full overflow-hidden mr-4 border border-white/20 shadow-inner">
+        <div className="w-16 h-16 rounded-full overflow-hidden mr-4 border border-white/20 shadow-glow">
           <img src={image} alt={name} className="w-full h-full object-cover" />
         </div>
         <div>
@@ -179,14 +143,11 @@ const TestimonialCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
-  const [isManualInteraction, setIsManualInteraction] = useState(false);
-  
   const itemsPerPage = { 
     desktop: 3, // lg screens
     tablet: 2,  // md screens
     mobile: 1   // sm screens
   };
-  
   const [itemsToShow, setItemsToShow] = useState(itemsPerPage.desktop);
   
   // Update items to show based on screen size
@@ -206,61 +167,38 @@ const TestimonialCarousel = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // Autoplay functionality with shorter interval
+  // Autoplay functionality
   useEffect(() => {
-    if (!autoplay || isManualInteraction) return;
+    if (!autoplay) return;
     
     const interval = setInterval(() => {
       nextSlide();
-    }, 3000); // Changed to 3 seconds as requested
-    
-    return () => clearInterval(interval);
-  }, [currentIndex, autoplay, itemsToShow, isManualInteraction]);
-
-  // Reset manual interaction flag after a delay
-  useEffect(() => {
-    if (!isManualInteraction) return;
-    
-    const timeout = setTimeout(() => {
-      setIsManualInteraction(false);
     }, 5000);
     
-    return () => clearTimeout(timeout);
-  }, [isManualInteraction]);
+    return () => clearInterval(interval);
+  }, [currentIndex, autoplay, itemsToShow]);
   
   const totalPages = Math.ceil(testimonials.length / itemsToShow);
   
-  const nextSlide = useCallback(() => {
+  const nextSlide = () => {
     setDirection(1);
-    setCurrentIndex((prevIndex) => {
-      const nextIndex = prevIndex + itemsToShow;
-      return nextIndex >= testimonials.length ? 0 : nextIndex;
-    });
-  }, [itemsToShow]);
+    setCurrentIndex((prevIndex) => 
+      prevIndex === testimonials.length - itemsToShow ? 0 : prevIndex + 1
+    );
+  };
   
-  const prevSlide = useCallback(() => {
+  const prevSlide = () => {
     setDirection(-1);
-    setCurrentIndex((prevIndex) => {
-      const nextIndex = prevIndex - itemsToShow;
-      return nextIndex < 0 ? Math.max(testimonials.length - itemsToShow, 0) : nextIndex;
-    });
-  }, [itemsToShow]);
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? testimonials.length - itemsToShow : prevIndex - 1
+    );
+  };
   
-  const goToPage = useCallback((pageIndex: number) => {
+  const goToPage = (pageIndex: number) => {
     const newIndex = pageIndex * itemsToShow;
     setDirection(newIndex > currentIndex ? 1 : -1);
     setCurrentIndex(newIndex);
-    setIsManualInteraction(true);
-  }, [currentIndex, itemsToShow]);
-  
-  const handleManualNavigation = useCallback((direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      prevSlide();
-    } else {
-      nextSlide();
-    }
-    setIsManualInteraction(true);
-  }, [nextSlide, prevSlide]);
+  };
   
   const currentTestimonials = testimonials.slice(currentIndex, currentIndex + itemsToShow);
   
@@ -288,33 +226,27 @@ const TestimonialCarousel = () => {
       </motion.p>
       
       <div className="relative px-4 max-w-7xl mx-auto">
-        {/* Enhanced navigation buttons */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 z-10 hidden md:block">
-          <motion.button 
-            onClick={() => handleManualNavigation('prev')}
-            className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all border border-white/20"
-            whileHover={{ scale: 1.1, boxShadow: "0 0 10px rgba(255,255,255,0.2)" }}
-            whileTap={{ scale: 0.95 }}
+        {/* Navigation buttons */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden md:block">
+          <button 
+            onClick={prevSlide} 
+            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all border border-white/20"
             onMouseEnter={() => setAutoplay(false)}
             onMouseLeave={() => setAutoplay(true)}
-            aria-label="Previous testimonial"
           >
             <ArrowLeft className="w-5 h-5" />
-          </motion.button>
+          </button>
         </div>
         
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 z-10 hidden md:block">
-          <motion.button 
-            onClick={() => handleManualNavigation('next')}
-            className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all border border-white/20"
-            whileHover={{ scale: 1.1, boxShadow: "0 0 10px rgba(255,255,255,0.2)" }}
-            whileTap={{ scale: 0.95 }}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden md:block">
+          <button 
+            onClick={nextSlide} 
+            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all border border-white/20"
             onMouseEnter={() => setAutoplay(false)}
             onMouseLeave={() => setAutoplay(true)}
-            aria-label="Next testimonial"
           >
             <ArrowRight className="w-5 h-5" />
-          </motion.button>
+          </button>
         </div>
         
         {/* Carousel */}
@@ -345,51 +277,24 @@ const TestimonialCarousel = () => {
           </AnimatePresence>
         </div>
         
-        {/* Enhanced pagination dots */}
-        <div className="flex justify-center mt-12 space-x-2">
-          {Array.from({ length: totalPages }).map((_, index) => {
-            const isActive = Math.floor(currentIndex / itemsToShow) === index;
-            return (
-              <motion.button
-                key={index}
-                onClick={() => {
-                  goToPage(index);
-                  setAutoplay(false);
-                  setIsManualInteraction(true);
-                }}
-                className={`h-2.5 rounded-full transition-all ${
-                  isActive 
-                    ? 'bg-white w-8' 
-                    : 'bg-white/30 hover:bg-white/50 w-2.5'
-                }`}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label={`Go to testimonial page ${index + 1}`}
-                aria-current={isActive ? 'true' : 'false'}
-              />
-            );
-          })}
-        </div>
-        
-        {/* Navigation arrows for mobile */}
-        <div className="flex justify-center mt-6 space-x-4 md:hidden">
-          <motion.button 
-            onClick={() => handleManualNavigation('prev')}
-            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </motion.button>
-          
-          <motion.button 
-            onClick={() => handleManualNavigation('next')}
-            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ArrowRight className="w-4 h-4" />
-          </motion.button>
+        {/* Pagination dots */}
+        <div className="flex justify-center mt-10 space-x-2">
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                goToPage(index);
+                setAutoplay(false);
+                setTimeout(() => setAutoplay(true), 5000);
+              }}
+              className={`w-2.5 h-2.5 rounded-full transition-all ${
+                Math.floor(currentIndex / itemsToShow) === index 
+                  ? 'bg-white w-6' 
+                  : 'bg-white/30 hover:bg-white/50'
+              }`}
+              aria-label={`Go to page ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
     </div>

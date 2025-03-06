@@ -1,8 +1,8 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Info, HelpCircle, ShieldCheck, Settings, Tag, Zap, ArrowRight } from "lucide-react";
+import { Info, HelpCircle, ShieldCheck, Settings, Tag, Zap } from "lucide-react";
 
 const faqs = [
   {
@@ -48,12 +48,6 @@ const faqs = [
 ];
 
 const AppFAQ = () => {
-  const [expandedItem, setExpandedItem] = useState<string | null>(null);
-  
-  const handleItemClick = (value: string) => {
-    setExpandedItem(expandedItem === value ? null : value);
-  };
-
   return (
     <motion.div 
       className="mt-24 pt-10 border-t border-white/10"
@@ -91,13 +85,11 @@ const AppFAQ = () => {
           transition={{ delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <Accordion type="single" collapsible className="divide-y divide-white/10" value={expandedItem || ""} onValueChange={handleItemClick}>
+          <Accordion type="single" collapsible className="divide-y divide-white/10">
             {faqs.map((faq, index) => {
               const Icon = faq.icon;
-              const itemValue = `item-${index}`;
-              
               return (
-                <AccordionItem key={index} value={itemValue} className="border-b-0 last:border-0">
+                <AccordionItem key={index} value={`item-${index}`} className="border-b-0 last:border-0">
                   <AccordionTrigger className="py-6 px-6 text-left hover:no-underline group">
                     <div className="flex items-center">
                       <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
@@ -109,13 +101,6 @@ const AppFAQ = () => {
                   <AccordionContent className="px-6 pb-6 pt-0 text-gray-400">
                     <div className="pl-11">
                       {faq.answer}
-                      <motion.button 
-                        className="mt-4 flex items-center text-sm text-white/70 hover:text-white transition-colors"
-                        whileHover={{ x: 5 }}
-                      >
-                        <span>Learn more</span>
-                        <ArrowRight className="w-3 h-3 ml-1" />
-                      </motion.button>
                     </div>
                   </AccordionContent>
                 </AccordionItem>
