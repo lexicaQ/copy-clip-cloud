@@ -6,15 +6,19 @@ import { supabase } from "@/integrations/supabase/client";
 interface FileInfo {
   version: string;
   extension: string;
+  fileName?: string;
+  size?: string;
 }
 
 export const useFileDownload = () => {
   const [downloading, setDownloading] = useState(false);
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
+  const [attemptCount, setAttemptCount] = useState(0);
 
   // Check for available files when component mounts
   const checkForFiles = async () => {
     try {
+      console.log("Checking for available files...");
       const { data: files, error } = await supabase
         .storage
         .from('app_files')
@@ -31,6 +35,8 @@ export const useFileDownload = () => {
         // Try to determine version and file type
         let version = "1.0.0";
         let extension = "ZIP";
+        let fileName = "";
+        let size = "";
         
         const downloadableFile = files.find(file => 
           file.name.endsWith('.zip') || 
@@ -61,7 +67,16 @@ export const useFileDownload = () => {
           }
         }
         
-        setFileInfo({ version, extension });
+        // Get file size
+        if (downloadableFile.metadata && downloadableFile.metadata.size) {
+          const fileSizeInBytes = parseInt(downloadableFile.metadata.size);
+          // Convert bytes to MB
+          size = (fileSizeInBytes / (1024 * 1024)).toFixed(1) + " MB";
+        }
+        
+        fileName = downloadableFile.name;
+        
+        setFileInfo({ version, extension, fileName, size });
       }
     } catch (e) {
       console.error("Error in checkForFiles:", e);
@@ -72,12 +87,24 @@ export const useFileDownload = () => {
     checkForFiles();
   }, []);
 
+  // Retry mechanism for downloads
+  useEffect(() => {
+    if (attemptCount > 0 && attemptCount < 3) {
+      const timer = setTimeout(() => {
+        console.log(`Retry attempt ${attemptCount}...`);
+        handleDownload();
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [attemptCount]);
+
   const handleDownload = async () => {
     if (downloading) return; // Prevent multiple clicks
     
     setDownloading(true);
     try {
-      toast.info("Preparing download...");
+      console.log("Preparing download...");
       
       console.log("Attempting to list files in app_files bucket");
       const { data: files, error: filesError } = await supabase
@@ -98,7 +125,6 @@ export const useFileDownload = () => {
       }
       
       console.log("Found files:", files);
-      console.log("File names:", files.map(f => f.name));
       
       // Find a file with .zip, .dmg, or other common download extensions
       let fileToDownload = files.find(file => 
@@ -154,11 +180,25 @@ export const useFileDownload = () => {
         
         if (functionError) {
           console.error("Edge function error:", functionError);
+          
+          // If this is the first failure, increment attempt count to trigger retry
+          if (attemptCount < 2) {
+            setAttemptCount(prev => prev + 1);
+            throw new Error(`Download retry ${attemptCount + 1}/3...`);
+          }
+          
           throw new Error(`Download API error: ${functionError.message}`);
         }
         
         if (!functionData || !functionData.downloadUrl) {
           console.error("No download URL returned from function:", functionData);
+          
+          // If this is the first failure, increment attempt count to trigger retry
+          if (attemptCount < 2) {
+            setAttemptCount(prev => prev + 1);
+            throw new Error(`Download retry ${attemptCount + 1}/3...`);
+          }
+          
           throw new Error("Could not generate download URL");
         }
         
@@ -174,9 +214,18 @@ export const useFileDownload = () => {
         document.body.removeChild(link);
       }
       
+      // Reset attempt count on success
+      setAttemptCount(0);
+      
     } catch (error) {
       console.error("Download error:", error);
-      toast.error(`Download failed: ${error.message || "Please try again later."}`);
+      
+      // Only show error toast on final failure (after retries)
+      if (attemptCount >= 2) {
+        toast.error(`Download failed: ${error.message || "Please try again later."}`);
+      } else {
+        toast.info(`Download retry ${attemptCount + 1}/3...`);
+      }
     } finally {
       // Set downloading back to false after a slight delay to prevent quick re-clicks
       setTimeout(() => {
