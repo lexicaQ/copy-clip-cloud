@@ -1,8 +1,7 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { 
-  CloudSync, 
+  CloudCog, 
   Shield, 
   Search, 
   Code, 
@@ -171,7 +170,7 @@ const Features = () => {
     {
       title: "Universal Clipboard",
       description: "Copy on one device, paste on another. Your clipboard stays in sync across all your Apple devices automatically.",
-      icon: CloudSync
+      icon: CloudCog
     },
     {
       title: "End-to-End Encryption",
