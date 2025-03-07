@@ -5,7 +5,7 @@ import AppFeatures from "@/components/landing/AppFeatures";
 import AppLogo from "@/components/landing/AppLogo";
 import DownloadButton from "@/components/landing/DownloadButton";
 import AppTitle from "@/components/landing/AppTitle";
-import ModernBackground from "@/components/landing/ModernBackground";
+import InteractiveBackground from "@/components/landing/InteractiveBackground";
 import TestimonialCarousel from "@/components/landing/TestimonialCarousel";
 import AppStats from "@/components/landing/AppStats";
 import AppFAQ from "@/components/landing/AppFAQ";
@@ -18,7 +18,7 @@ const Index = () => {
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background effects */}
-      <ModernBackground />
+      <InteractiveBackground />
 
       {/* Header */}
       <Header />
@@ -55,13 +55,13 @@ const Index = () => {
             ].map((feature, i) => (
               <motion.div 
                 key={i}
-                className="glass-panel px-6 py-4 flex items-center gap-3 backdrop-blur-md hover:bg-white/5 transition-all duration-300 hover:border-white/20 group"
+                className="glass-panel px-6 py-4 flex items-center gap-3 backdrop-blur-md"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 + (i * 0.1) }}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -5, boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.3)" }}
               >
-                <div className="p-2 rounded-lg bg-white/10 group-hover:bg-white/15 transition-all duration-300">
+                <div className="p-2 rounded-lg bg-white/10">
                   <feature.icon className="w-5 h-5" />
                 </div>
                 <div className="text-left">
@@ -91,12 +91,12 @@ const Index = () => {
           </div>
           
           {/* Testimonials */}
-          <div>
+          <div className="mt-24">
             <TestimonialCarousel />
           </div>
           
           {/* FAQ Section */}
-          <div>
+          <div className="mt-24">
             <AppFAQ />
           </div>
         </motion.div>

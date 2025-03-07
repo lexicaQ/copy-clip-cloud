@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Clipboard, ChevronDown, Shield, Download, Zap } from "lucide-react";
+import { Menu, X, Clipboard, ChevronDown, Lock, Award, Heart, Download, Sparkles, BookOpen, MessageSquare } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useFileDownload } from "@/hooks/useFileDownload";
 
@@ -42,7 +41,9 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-10">
             <NavLink to="/features">Features</NavLink>
             <NavLink to="/pricing">Pricing</NavLink>
+            <NavLink to="/tutorials">Tutorials</NavLink>
             <NavLink to="/about">About</NavLink>
+            <NavLink to="/contact">Contact</NavLink>
             
             <div className="relative group">
               <button className="flex items-center text-gray-300 hover:text-white transition-colors">
@@ -50,8 +51,10 @@ const Header = () => {
               </button>
               <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                 <div className="py-2 glass-panel backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden">
-                  <DropdownLink to="/privacy" icon={Shield}>Privacy</DropdownLink>
-                  <DropdownLink to="/support" icon={Zap}>Support</DropdownLink>
+                  <DropdownLink to="/blog" icon={BookOpen}>Blog</DropdownLink>
+                  <DropdownLink to="/tutorials" icon={Sparkles}>Tutorials</DropdownLink>
+                  <DropdownLink to="/faq" icon={MessageSquare}>FAQ</DropdownLink>
+                  <DropdownLink to="/support" icon={Heart}>Support</DropdownLink>
                 </div>
               </div>
             </div>
@@ -88,15 +91,18 @@ const Header = () => {
           >
             <div className="p-4 pt-8">
               <div className="space-y-6">
-                <MobileNavLink to="/features" icon={Zap}>Features</MobileNavLink>
-                <MobileNavLink to="/pricing" icon={Shield}>Pricing</MobileNavLink>
+                <MobileNavLink to="/features" icon={Award}>Features</MobileNavLink>
+                <MobileNavLink to="/pricing" icon={Heart}>Pricing</MobileNavLink>
+                <MobileNavLink to="/tutorials" icon={Sparkles}>Tutorials</MobileNavLink>
                 <MobileNavLink to="/about" icon={Clipboard}>About</MobileNavLink>
+                <MobileNavLink to="/contact" icon={Lock}>Contact</MobileNavLink>
                 
                 <div className="pt-4 border-t border-white/10">
                   <p className="text-gray-400 mb-4 text-sm">Resources</p>
                   <div className="space-y-4 pl-4">
-                    <MobileNavLink to="/privacy" icon={Shield}>Privacy</MobileNavLink>
-                    <MobileNavLink to="/support" icon={Zap}>Support</MobileNavLink>
+                    <MobileNavLink to="/blog" icon={BookOpen}>Blog</MobileNavLink>
+                    <MobileNavLink to="/faq" icon={MessageSquare}>FAQ</MobileNavLink>
+                    <MobileNavLink to="/support" icon={Heart}>Support</MobileNavLink>
                   </div>
                 </div>
                 
