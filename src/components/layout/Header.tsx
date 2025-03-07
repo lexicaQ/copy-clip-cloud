@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Clipboard, ChevronDown, Lock, Award, Heart, Download, Sparkles, BookOpen, MessageSquare } from "lucide-react";
+import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useFileDownload } from "@/hooks/useFileDownload";
 
@@ -41,33 +42,49 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-10">
             <NavLink to="/features">Features</NavLink>
             <NavLink to="/pricing">Pricing</NavLink>
-            <NavLink to="/tutorials">Tutorials</NavLink>
             <NavLink to="/about">About</NavLink>
             <NavLink to="/contact">Contact</NavLink>
             
             <div className="relative group">
               <button className="flex items-center text-gray-300 hover:text-white transition-colors">
-                Resources <ChevronDown className="w-4 h-4 ml-1" />
+                Support
+                <motion.span 
+                  className="ml-1.5 inline-block"
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 180 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  style={{ transformOrigin: "center" }}
+                >
+                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </motion.span>
               </button>
-              <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                <div className="py-2 glass-panel backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden">
-                  <DropdownLink to="/blog" icon={BookOpen}>Blog</DropdownLink>
-                  <DropdownLink to="/tutorials" icon={Sparkles}>Tutorials</DropdownLink>
-                  <DropdownLink to="/faq" icon={MessageSquare}>FAQ</DropdownLink>
-                  <DropdownLink to="/support" icon={Heart}>Support</DropdownLink>
-                </div>
+              <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
+                <motion.div 
+                  className="py-3 glass-panel backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <DropdownLink to="/support" icon={MessageSquare}>Support Center</DropdownLink>
+                  <DropdownLink to="/privacy" icon={Shield}>Privacy</DropdownLink>
+                  <DropdownLink to="/features#faq" icon={FileText}>FAQ</DropdownLink>
+                </motion.div>
               </div>
             </div>
           </nav>
           
           <div className="hidden md:flex items-center">
-            <button 
+            <motion.button 
               onClick={handleDownload}
-              className="flex items-center space-x-2 px-5 py-2.5 bg-white text-black rounded-full hover:bg-opacity-90 transition-all"
+              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-white to-gray-200 text-black rounded-full hover:shadow-lg transition-all"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
             >
               <Download className="w-4 h-4" />
               <span className="font-medium">Download</span>
-            </button>
+            </motion.button>
           </div>
           
           <button 
@@ -90,27 +107,28 @@ const Header = () => {
             transition={{ duration: 0.2 }}
           >
             <div className="p-4 pt-8">
-              <div className="space-y-6">
-                <MobileNavLink to="/features" icon={Award}>Features</MobileNavLink>
-                <MobileNavLink to="/pricing" icon={Heart}>Pricing</MobileNavLink>
-                <MobileNavLink to="/tutorials" icon={Sparkles}>Tutorials</MobileNavLink>
+              <div className="space-y-4">
+                <MobileNavLink to="/features" icon={FileText}>Features</MobileNavLink>
+                <MobileNavLink to="/pricing" icon={FileText}>Pricing</MobileNavLink>
                 <MobileNavLink to="/about" icon={Clipboard}>About</MobileNavLink>
-                <MobileNavLink to="/contact" icon={Lock}>Contact</MobileNavLink>
+                <MobileNavLink to="/contact" icon={MessageSquare}>Contact</MobileNavLink>
                 
                 <div className="pt-4 border-t border-white/10">
-                  <p className="text-gray-400 mb-4 text-sm">Resources</p>
+                  <p className="text-gray-400 mb-4 text-sm">Support</p>
                   <div className="space-y-4 pl-4">
-                    <MobileNavLink to="/blog" icon={BookOpen}>Blog</MobileNavLink>
-                    <MobileNavLink to="/faq" icon={MessageSquare}>FAQ</MobileNavLink>
-                    <MobileNavLink to="/support" icon={Heart}>Support</MobileNavLink>
+                    <MobileNavLink to="/support" icon={MessageSquare}>Support Center</MobileNavLink>
+                    <MobileNavLink to="/privacy" icon={Shield}>Privacy</MobileNavLink>
                   </div>
                 </div>
                 
                 <div className="pt-4 border-t border-white/10 flex flex-col space-y-4">
-                  <Link to="/download" className="w-full bg-white text-black py-3 rounded-lg flex items-center justify-center space-x-2">
+                  <button 
+                    onClick={handleDownload}
+                    className="w-full bg-white text-black py-3 rounded-lg flex items-center justify-center space-x-2"
+                  >
                     <Download className="w-5 h-5" />
                     <span>Download Now</span>
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
@@ -123,7 +141,7 @@ const Header = () => {
 
 const NavLink = ({ children, to }: { children: React.ReactNode; to: string }) => {
   const location = useLocation();
-  const isActive = location.pathname === to;
+  const isActive = location.pathname === to || (to.includes('#') && location.pathname + to.substring(to.indexOf('#')) === to);
   
   return (
     <Link 

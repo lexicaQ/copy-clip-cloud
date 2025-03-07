@@ -12,72 +12,56 @@ const InteractiveBackground = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-
-    // Particle settings
-    const particlesArray: Particle[] = [];
-    const numberOfParticles = Math.min(200, Math.floor(width * height / 10000));
+    // Canvas setup
+    const setCanvasSize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
     
-    // Mouse position tracking
+    setCanvasSize();
+    window.addEventListener("resize", setCanvasSize);
+
+    // Mouse tracking
     let mouse = {
-      x: null as number | null,
-      y: null as number | null,
-      radius: 200
+      x: undefined as number | undefined,
+      y: undefined as number | undefined,
+      radius: 150
     };
 
-    window.addEventListener("mousemove", function(event) {
-      mouse.x = event.x;
-      mouse.y = event.y;
-    });
-
-    window.addEventListener("resize", function() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-      init();
+    window.addEventListener("mousemove", function(e) {
+      mouse.x = e.x;
+      mouse.y = e.y;
     });
 
     window.addEventListener("mouseout", function() {
-      mouse.x = null;
-      mouse.y = null;
+      mouse.x = undefined;
+      mouse.y = undefined;
     });
 
-    // Particle class
+    // Particle system
     class Particle {
       x: number;
       y: number;
-      directionX: number;
-      directionY: number;
       size: number;
-      color: string;
       baseX: number;
       baseY: number;
       density: number;
+      color: string;
       opacity: number;
-      speed: number;
-      pulseSpeed: number;
-      pulseDirection: number;
-      connectDistance: number;
+      velocityX: number;
+      velocityY: number;
 
       constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
         this.baseX = x;
         this.baseY = y;
-        this.size = Math.random() * 3 + 0.5; 
-        this.opacity = Math.random() * 0.6 + 0.2;
+        this.size = Math.random() * 2 + 0.1;
+        this.density = Math.random() * 30 + 1;
+        this.opacity = Math.random() * 0.3 + 0.1;
         this.color = `rgba(255, 255, 255, ${this.opacity})`;
-        this.directionX = Math.random() * 2 - 1;
-        this.directionY = Math.random() * 2 - 1;
-        this.density = Math.random() * 40 + 1;
-        this.speed = Math.random() * 0.3 + 0.05;
-        this.pulseSpeed = Math.random() * 0.04 + 0.01;
-        this.pulseDirection = 1;
-        this.connectDistance = Math.random() * 100 + 70;
+        this.velocityX = Math.random() * 0.2 - 0.1;
+        this.velocityY = Math.random() * 0.2 - 0.1;
       }
 
       draw() {
@@ -89,54 +73,63 @@ const InteractiveBackground = () => {
       }
 
       update() {
-        if (mouse.x === null || mouse.y === null) {
-          // More natural floating motion when mouse is inactive
-          this.x += Math.sin(Date.now() * 0.001 * this.speed) * 0.4;
-          this.y += Math.cos(Date.now() * 0.001 * this.speed) * 0.4;
-          
-          // Size pulsing effect
-          this.size += this.pulseDirection * this.pulseSpeed;
-          if (this.size > this.density / 10 + 1) this.pulseDirection = -1;
-          if (this.size < this.density / 10 - 0.5) this.pulseDirection = 1;
-          
-          // Gradually return to original position
-          const dx = this.baseX - this.x;
-          const dy = this.baseY - this.y;
-          if (Math.abs(dx) > 0.1) {
-            this.x += dx * 0.01;
-          }
-          if (Math.abs(dy) > 0.1) {
-            this.y += dy * 0.01;
-          }
-        } else {
-          // More dynamic response to mouse
+        if (mouse.x && mouse.y) {
+          // Calculate distance between mouse and particle
           const dx = mouse.x - this.x;
           const dy = mouse.y - this.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          const forceDirectionX = dx / distance;
-          const forceDirectionY = dy / distance;
           
-          // Distance past which we won't apply any force
-          const maxDistance = mouse.radius;
-          const force = (maxDistance - distance) / maxDistance;
-          
-          if (distance < maxDistance) {
-            this.x -= forceDirectionX * force * this.density * 0.05;
-            this.y -= forceDirectionY * force * this.density * 0.05;
+          if (distance < mouse.radius) {
+            // Repel particles away from mouse
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
+            const force = (mouse.radius - distance) / mouse.radius;
+            
+            // Move particle away from mouse
+            this.x -= forceDirectionX * force * this.density * 0.1;
+            this.y -= forceDirectionY * force * this.density * 0.1;
           } else {
-            // Return to original position with slight drift
-            const dx = this.baseX - this.x;
-            const dy = this.baseY - this.y;
-            this.x += dx * 0.02;
-            this.y += dy * 0.02;
+            // Drift back to original position, but with a slight random movement
+            if (Math.abs(this.x - this.baseX) > 0.5) {
+              this.x -= (this.x - this.baseX) * 0.02;
+            }
+            if (Math.abs(this.y - this.baseY) > 0.5) {
+              this.y -= (this.y - this.baseY) * 0.02;
+            }
+            
+            // Add a slight random movement
+            this.x += this.velocityX;
+            this.y += this.velocityY;
+            
+            // Bounce off edges with slight damping
+            if (this.x < 0 || this.x > canvas.width) this.velocityX *= -0.9;
+            if (this.y < 0 || this.y > canvas.height) this.velocityY *= -0.9;
+          }
+        } else {
+          // No mouse interaction, gentle floating effect
+          this.x += Math.sin(Date.now() * 0.001 * this.density * 0.05) * 0.2;
+          this.y += Math.cos(Date.now() * 0.001 * this.density * 0.05) * 0.2;
+          
+          // Gradually return to base position
+          if (Math.abs(this.x - this.baseX) > 100) {
+            this.x -= (this.x - this.baseX) * 0.01;
+          }
+          if (Math.abs(this.y - this.baseY) > 100) {
+            this.y -= (this.y - this.baseY) * 0.01;
           }
         }
+        
         this.draw();
       }
     }
 
+    // Generate particles
+    let particlesArray: Particle[] = [];
+    
     function init() {
-      particlesArray.length = 0;
+      particlesArray = [];
+      const numberOfParticles = Math.min(150, window.innerWidth * window.innerHeight / 15000);
+      
       for (let i = 0; i < numberOfParticles; i++) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
@@ -144,37 +137,34 @@ const InteractiveBackground = () => {
       }
     }
 
-    function animate() {
-      requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-      }
-
-      connect();
-    }
-
-    function connect() {
+    function connectParticles() {
       for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
           const dx = particlesArray[a].x - particlesArray[b].x;
           const dy = particlesArray[a].y - particlesArray[b].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          const particleDistance = particlesArray[a].connectDistance;
-
-          if (distance < particleDistance) {
-            // Dynamic connection opacity based on distance
-            const opacityValue = 1 - (distance / particleDistance);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacityValue * 0.15})`;
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-            ctx.stroke();
+          
+          const maxDistance = 150;
+          
+          if (distance < maxDistance) {
+            const opacity = (1 - distance / maxDistance) * 0.15;
+            ctx!.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+            ctx!.lineWidth = 0.5;
+            ctx!.beginPath();
+            ctx!.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx!.lineTo(particlesArray[b].x, particlesArray[b].y);
+            ctx!.stroke();
           }
         }
       }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      ctx!.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particlesArray.forEach(particle => particle.update());
+      connectParticles();
     }
 
     init();
@@ -182,55 +172,64 @@ const InteractiveBackground = () => {
 
     // Cleanup
     return () => {
+      window.removeEventListener("resize", setCanvasSize);
       window.removeEventListener("mousemove", () => {});
-      window.removeEventListener("resize", () => {});
       window.removeEventListener("mouseout", () => {});
     };
   }, []);
 
-  // Beat effect elements
-  const beatElements = [
-    { x: "20%", y: "30%", size: 180, delay: 0 },
-    { x: "70%", y: "60%", size: 220, delay: 1 },
-    { x: "80%", y: "20%", size: 150, delay: 0.5 },
-    { x: "40%", y: "80%", size: 190, delay: 1.5 },
-    { x: "10%", y: "65%", size: 120, delay: 0.8 },
-    { x: "90%", y: "40%", size: 160, delay: 1.2 },
+  // Gradient overlays for depth
+  const gradientElements = [
+    { position: "top", gradient: "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 50%)" },
+    { position: "bottom", gradient: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)" },
+    { position: "left", gradient: "linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 20%)" },
+    { position: "right", gradient: "linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 20%)" }
   ];
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       
-      {/* Beat effect */}
-      {beatElements.map((elem, index) => (
-        <motion.div
+      {/* Gradient overlays for visual depth */}
+      {gradientElements.map((elem, index) => (
+        <div 
           key={index}
-          className="absolute opacity-5 rounded-full bg-white"
-          style={{
-            left: elem.x,
-            top: elem.y,
-            width: elem.size,
-            height: elem.size,
-          }}
-          animate={{
-            scale: [1, 1.05, 1, 1.03, 1],
-            opacity: [0.03, 0.05, 0.03, 0.04, 0.03],
-          }}
-          transition={{
-            duration: 4,
-            ease: "easeInOut",
-            delay: elem.delay,
-            repeat: Infinity,
-          }}
+          className={`absolute ${elem.position}-0 left-0 right-0 h-32 opacity-50`}
+          style={{ background: elem.gradient }}
         />
       ))}
-
-      {/* Radial gradient overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.04)_0%,_transparent_70%)]" />
       
-      {/* Vignette effect */}
-      <div className="absolute top-0 left-0 w-full h-full bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black_70%)]" />
+      {/* Radial center glow */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-20">
+        <div className="w-full h-full bg-[radial-gradient(circle_at_center,_rgba(120,120,255,0.15)_0%,_transparent_70%)]" />
+      </div>
+      
+      {/* Ambient motion elements */}
+      <motion.div
+        className="absolute top-1/4 right-1/4 w-64 h-64 rounded-full bg-indigo-500/5 blur-3xl"
+        animate={{
+          x: [0, 30, 0, -30, 0],
+          y: [0, -30, 0, 30, 0],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      
+      <motion.div
+        className="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-500/5 blur-3xl"
+        animate={{
+          x: [0, -40, 0, 40, 0],
+          y: [0, 40, 0, -40, 0],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
     </div>
   );
 };
