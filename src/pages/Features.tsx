@@ -19,22 +19,38 @@ const Features = () => {
       <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto relative z-10">
         <FeatureHero />
 
-        {/* Feature Showcase Section */}
-        <div className="mb-32">
+        {/* Metro-style Feature Showcase Section with improved layout */}
+        <div className="mb-40">
           {showcaseFeatures.map((feature, index) => (
-            <FeatureShowcase
+            <motion.div
               key={index}
-              title={feature.title}
-              description={feature.description}
-              icon={feature.icon}
-              isReversed={feature.isReversed}
-              delay={index * 0.1}
-            />
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.7 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className={`relative ${index !== 0 ? 'mt-40' : ''}`}
+            >
+              <FeatureShowcase
+                title={feature.title}
+                description={feature.description}
+                icon={feature.icon}
+                isReversed={feature.isReversed}
+                delay={index * 0.1}
+              />
+              
+              {/* Decorative elements for metro styling */}
+              {index % 2 === 0 && (
+                <div className="absolute -right-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
+              )}
+              {index % 2 === 1 && (
+                <div className="absolute -left-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
+              )}
+            </motion.div>
           ))}
         </div>
 
         <motion.h2 
-          className="text-3xl font-bold text-center mb-12"
+          className="text-3xl font-bold text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -42,17 +58,34 @@ const Features = () => {
           <span className="text-gradient">All Features</span>
         </motion.h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featureCards.map((feature, index) => (
-            <FeatureCard
-              key={index}
-              title={feature.title}
-              description={feature.description}
-              icon={feature.icon}
-              delay={index * 0.1}
-              color={feature.color}
-            />
-          ))}
+        {/* Metro-style grid layout for feature cards */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-40">
+          {featureCards.map((feature, index) => {
+            // Create varied card sizes for metro style
+            const isWide = index % 3 === 0;
+            const isTall = index % 4 === 0;
+            
+            return (
+              <motion.div
+                key={index}
+                className={`
+                  ${isWide ? 'md:col-span-6' : 'md:col-span-4'} 
+                  ${isTall ? 'row-span-2' : 'row-span-1'}
+                `}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                <FeatureCard
+                  title={feature.title}
+                  description={feature.description}
+                  icon={feature.icon}
+                  color={feature.color}
+                />
+              </motion.div>
+            );
+          })}
         </div>
 
         <FeatureCallToAction />
