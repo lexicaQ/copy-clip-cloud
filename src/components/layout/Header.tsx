@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare } from "lucide-react";
+import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useFileDownload } from "@/hooks/useFileDownload";
 
@@ -26,11 +26,11 @@ const Header = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-3 bg-black/90 backdrop-blur-lg border-b border-white/10' : 'py-5'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-3 bg-black/90 backdrop-blur-lg border-b border-white/10 shadow-lg' : 'py-5'}`}>
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3 group">
             <motion.div 
-              className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300"
+              className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -40,10 +40,11 @@ const Header = () => {
           </Link>
           
           <nav className="hidden md:flex items-center space-x-10">
-            <NavLink to="/features">Features</NavLink>
-            <NavLink to="/pricing">Pricing</NavLink>
-            <NavLink to="/about">About</NavLink>
-            <NavLink to="/contact">Contact</NavLink>
+            <NavLink to="/" icon={Home}>Home</NavLink>
+            <NavLink to="/features" icon={FileText}>Features</NavLink>
+            <NavLink to="/pricing" icon={FileText}>Pricing</NavLink>
+            <NavLink to="/about" icon={Clipboard}>About</NavLink>
+            <NavLink to="/contact" icon={MessageSquare}>Contact</NavLink>
             
             <div className="relative group">
               <button className="flex items-center text-gray-300 hover:text-white transition-colors">
@@ -62,14 +63,13 @@ const Header = () => {
               </button>
               <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
                 <motion.div 
-                  className="py-3 glass-panel backdrop-blur-xl border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                  className="py-3 glass-panel backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.2 }}
                 >
                   <DropdownLink to="/support" icon={MessageSquare}>Support Center</DropdownLink>
                   <DropdownLink to="/privacy" icon={Shield}>Privacy</DropdownLink>
-                  <DropdownLink to="/features#faq" icon={FileText}>FAQ</DropdownLink>
                 </motion.div>
               </div>
             </div>
@@ -78,7 +78,7 @@ const Header = () => {
           <div className="hidden md:flex items-center">
             <motion.button 
               onClick={handleDownload}
-              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-white to-gray-200 text-black rounded-full hover:shadow-lg transition-all"
+              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-white to-gray-200 text-black rounded-full hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all border border-white/80"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -108,6 +108,7 @@ const Header = () => {
           >
             <div className="p-4 pt-8">
               <div className="space-y-4">
+                <MobileNavLink to="/" icon={Home}>Home</MobileNavLink>
                 <MobileNavLink to="/features" icon={FileText}>Features</MobileNavLink>
                 <MobileNavLink to="/pricing" icon={FileText}>Pricing</MobileNavLink>
                 <MobileNavLink to="/about" icon={Clipboard}>About</MobileNavLink>
@@ -139,16 +140,17 @@ const Header = () => {
   );
 };
 
-const NavLink = ({ children, to }: { children: React.ReactNode; to: string }) => {
+const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: string; icon: React.ElementType }) => {
   const location = useLocation();
   const isActive = location.pathname === to || (to.includes('#') && location.pathname + to.substring(to.indexOf('#')) === to);
   
   return (
     <Link 
       to={to} 
-      className={`relative text-gray-300 hover:text-white transition-colors ${isActive ? 'text-white' : ''}`}
+      className={`relative flex items-center space-x-1 text-gray-300 hover:text-white transition-colors group ${isActive ? 'text-white' : ''}`}
     >
-      {children}
+      <Icon className="w-4 h-4 mr-1 group-hover:rotate-3 transition-transform duration-300" />
+      <span>{children}</span>
       {isActive && (
         <motion.div 
           layoutId="navbar-indicator"

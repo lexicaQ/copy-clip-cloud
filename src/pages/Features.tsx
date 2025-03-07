@@ -9,8 +9,15 @@ import FeatureShowcase from "@/components/features/FeatureShowcase";
 import FeatureHero from "@/components/features/FeatureHero";
 import FeatureCallToAction from "@/components/features/FeatureCallToAction";
 import { featureCards, showcaseFeatures } from "@/components/features/FeaturesData";
+import { ComingSoon } from "@/components/ui/coming-soon";
 
 const Features = () => {
+  // Set some features as "coming soon" for demonstration
+  const enhancedFeatureCards = featureCards.map((feature, index) => ({
+    ...feature,
+    comingSoon: index % 3 === 2 // Every third feature will be marked as coming soon
+  }));
+
   return (
     <div className="min-h-screen bg-background">
       <InteractiveBackground />
@@ -45,6 +52,11 @@ const Features = () => {
               {index % 2 === 1 && (
                 <div className="absolute -left-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
               )}
+              
+              {/* Coming soon badge for selected features */}
+              {index % 2 === 1 && (
+                <ComingSoon className="absolute top-0 right-0 lg:right-auto lg:-left-16 transform -translate-y-1/2" />
+              )}
             </motion.div>
           ))}
         </div>
@@ -60,7 +72,7 @@ const Features = () => {
         
         {/* Metro-style grid layout for feature cards */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-40">
-          {featureCards.map((feature, index) => {
+          {enhancedFeatureCards.map((feature, index) => {
             // Create varied card sizes for metro style
             const isWide = index % 3 === 0;
             const isTall = index % 4 === 0;
@@ -82,6 +94,7 @@ const Features = () => {
                   description={feature.description}
                   icon={feature.icon}
                   color={feature.color}
+                  comingSoon={feature.comingSoon}
                 />
               </motion.div>
             );
