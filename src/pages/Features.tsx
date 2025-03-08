@@ -1,6 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { Shield } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
@@ -26,7 +27,7 @@ const Features = () => {
       <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto relative z-10">
         <FeatureHero />
 
-        {/* Metro-style Feature Showcase Section with improved layout */}
+        {/* Enhanced Metro-style Feature Showcase Section with 3D effects */}
         <div className="mb-40">
           {showcaseFeatures.map((feature, index) => (
             <motion.div
@@ -45,15 +46,38 @@ const Features = () => {
                 delay={index * 0.1}
               />
               
-              {/* Decorative elements for metro styling */}
+              {/* Enhanced decorative elements for metro styling */}
               {index % 2 === 0 && (
-                <div className="absolute -right-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
+                <motion.div 
+                  className="absolute -right-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block"
+                  animate={{
+                    width: ["0px", "96px", "0px"],
+                    opacity: [0, 1, 0]
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
               )}
               {index % 2 === 1 && (
-                <div className="absolute -left-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
+                <motion.div 
+                  className="absolute -left-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block"
+                  animate={{
+                    width: ["0px", "96px", "0px"],
+                    opacity: [0, 1, 0]
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 2
+                  }}
+                />
               )}
               
-              {/* Coming soon badge for selected features */}
+              {/* Enhanced coming soon badge for selected features */}
               {index % 2 === 1 && (
                 <ComingSoon className="absolute top-0 right-0 lg:right-auto lg:-left-16 transform -translate-y-1/2" />
               )}
@@ -70,7 +94,7 @@ const Features = () => {
           <span className="text-gradient">All Features</span>
         </motion.h2>
         
-        {/* Metro-style grid layout for feature cards */}
+        {/* Enhanced Metro-style grid layout for feature cards */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-40">
           {enhancedFeatureCards.map((feature, index) => {
             // Create varied card sizes for metro style
@@ -88,6 +112,9 @@ const Features = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 viewport={{ once: true, margin: "-50px" }}
+                style={{ 
+                  perspective: "1000px"
+                }}
               >
                 <FeatureCard
                   title={feature.title}
@@ -95,6 +122,7 @@ const Features = () => {
                   icon={feature.icon}
                   color={feature.color}
                   comingSoon={feature.comingSoon}
+                  delay={index * 0.05}
                 />
               </motion.div>
             );

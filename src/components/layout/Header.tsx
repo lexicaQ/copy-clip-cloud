@@ -70,6 +70,7 @@ const Header = () => {
                 >
                   <DropdownLink to="/support" icon={MessageSquare}>Support Center</DropdownLink>
                   <DropdownLink to="/privacy" icon={Shield}>Privacy</DropdownLink>
+                  <DropdownLink to="/tutorials" icon={FileText}>Tutorials</DropdownLink>
                 </motion.div>
               </div>
             </div>
@@ -119,6 +120,7 @@ const Header = () => {
                   <div className="space-y-4 pl-4">
                     <MobileNavLink to="/support" icon={MessageSquare}>Support Center</MobileNavLink>
                     <MobileNavLink to="/privacy" icon={Shield}>Privacy</MobileNavLink>
+                    <MobileNavLink to="/tutorials" icon={FileText}>Tutorials</MobileNavLink>
                   </div>
                 </div>
                 
