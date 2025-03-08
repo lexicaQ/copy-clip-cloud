@@ -24,33 +24,43 @@ const InteractiveBackground = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Canvas setup
+    // Enhanced canvas setup with smoother rendering
     const setCanvasSize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight * 1.5; // Larger canvas for scrolling effects
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * 1.5 * dpr; // Larger canvas for scrolling effects
+      
+      // Scale the drawing context
+      ctx.scale(dpr, dpr);
+      
+      // Set display size
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight * 1.5}px`;
     };
     
     setCanvasSize();
     window.addEventListener("resize", setCanvasSize);
 
-    // Mouse tracking
+    // Enhanced mouse tracking with improved interpolation
     let mouse = {
       x: undefined as number | undefined,
       y: undefined as number | undefined,
-      radius: 100 // Smaller, more subtle interaction radius
+      targetX: undefined as number | undefined,
+      targetY: undefined as number | undefined,
+      radius: 120 // Slightly increased interaction radius
     };
 
     window.addEventListener("mousemove", function(e) {
-      mouse.x = e.x;
-      mouse.y = e.y + window.scrollY; // Adjust for scroll position
+      mouse.targetX = e.x;
+      mouse.targetY = e.y + window.scrollY; // Adjust for scroll position
     });
 
     window.addEventListener("mouseout", function() {
-      mouse.x = undefined;
-      mouse.y = undefined;
+      mouse.targetX = undefined;
+      mouse.targetY = undefined;
     });
 
-    // Particles with scroll sensitivity
+    // Particles with improved scroll sensitivity and visual appeal
     class Particle {
       x: number;
       y: number;
@@ -62,18 +72,20 @@ const InteractiveBackground = () => {
       opacity: number;
       velocityX: number;
       velocityY: number;
+      hue: number;
 
       constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
         this.baseX = x;
         this.baseY = y;
-        this.size = Math.random() * 1.5 + 0.3; // Smaller, more subtle particles
-        this.density = Math.random() * 20 + 1;
-        this.opacity = Math.random() * 0.15 + 0.05; // More subtle opacity
-        this.color = `rgba(255, 255, 255, ${this.opacity})`;
-        this.velocityX = Math.random() * 0.1 - 0.05; // Slower movement
-        this.velocityY = Math.random() * 0.1 - 0.05;
+        this.size = Math.random() * 2 + 0.5; // Slightly larger, more visible particles
+        this.density = Math.random() * 25 + 1;
+        this.opacity = Math.random() * 0.2 + 0.05; // More varied opacity
+        this.hue = Math.random() * 20; // Slight color variation
+        this.color = `rgba(255, 255, ${255 - this.hue}, ${this.opacity})`;
+        this.velocityX = Math.random() * 0.15 - 0.075; // Slightly more movement
+        this.velocityY = Math.random() * 0.15 - 0.075;
       }
 
       draw() {
@@ -86,52 +98,62 @@ const InteractiveBackground = () => {
 
       update(scrollOffset: number) {
         if (mouse.x && mouse.y) {
+          // Smooth mouse tracking with interpolation
+          mouse.x = mouse.targetX ?? mouse.x;
+          mouse.y = mouse.targetY ?? mouse.y;
+          
           // Calculate distance between mouse and particle, adjusted for scroll
           const dx = mouse.x - this.x;
           const dy = (mouse.y - scrollOffset) - this.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
           if (distance < mouse.radius) {
-            // Subtle repel effect
+            // Enhanced repel effect with smoother falloff
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (mouse.radius - distance) / mouse.radius;
+            const maxForce = 5; // Maximum force to limit extreme movements
             
-            this.x -= forceDirectionX * force * this.density * 0.03;
-            this.y -= forceDirectionY * force * this.density * 0.03;
+            const moveX = forceDirectionX * force * this.density * 0.05;
+            const moveY = forceDirectionY * force * this.density * 0.05;
+            
+            this.x -= Math.min(Math.abs(moveX), maxForce) * Math.sign(moveX);
+            this.y -= Math.min(Math.abs(moveY), maxForce) * Math.sign(moveY);
           } else {
-            // Very gentle drift back to original position
+            // More natural drift back to original position
             if (Math.abs(this.x - this.baseX) > 0.5) {
-              this.x -= (this.x - this.baseX) * 0.01;
+              this.x -= (this.x - this.baseX) * 0.02;
             }
             if (Math.abs(this.y - this.baseY) > 0.5) {
-              this.y -= (this.y - this.baseY) * 0.01;
+              this.y -= (this.y - this.baseY) * 0.02;
             }
             
-            // Slightly affected by scroll position
-            const scrollFactor = scrollOffset * 0.01;
-            this.y += Math.sin(Date.now() * 0.0005 * this.density) * 0.1 + scrollFactor * 0.02;
+            // Enhanced scroll effect with more natural movement
+            const scrollFactor = scrollOffset * 0.015;
+            this.y += Math.sin(Date.now() * 0.0005 * this.density) * 0.15 + scrollFactor * 0.03;
             
-            // Very subtle random movement
-            this.x += this.velocityX;
-            this.y += this.velocityY;
+            // Enhanced random movement with sinusoidal variations
+            this.x += this.velocityX + Math.sin(Date.now() * 0.001 + this.density) * 0.1;
+            this.y += this.velocityY + Math.cos(Date.now() * 0.001 + this.density) * 0.1;
             
-            // Gentle edge bounce
-            if (this.x < 0 || this.x > canvas.width) this.velocityX *= -0.5;
-            if (this.y < 0 || this.y > canvas.height) this.velocityY *= -0.5;
+            // Improved edge bounce with damping
+            if (this.x < 0 || this.x > window.innerWidth) this.velocityX *= -0.6;
+            if (this.y < 0 || this.y > window.innerHeight * 1.5) this.velocityY *= -0.6;
           }
         } else {
-          // No mouse interaction, extremely subtle floating effect with scroll influence
-          const scrollInfluence = scrollOffset * 0.002;
-          this.x += Math.sin(Date.now() * 0.0003 * this.density + scrollInfluence) * 0.1;
-          this.y += Math.cos(Date.now() * 0.0003 * this.density + scrollInfluence) * 0.1;
+          // Enhanced background movement when no mouse interaction
+          const scrollInfluence = scrollOffset * 0.003;
+          const time = Date.now() * 0.0004;
           
-          // Very gradually return to base position
+          this.x += Math.sin(time * this.density + scrollInfluence) * 0.15;
+          this.y += Math.cos(time * this.density + scrollInfluence) * 0.15;
+          
+          // Improved return to base position with natural damping
           if (Math.abs(this.x - this.baseX) > 50) {
-            this.x -= (this.x - this.baseX) * 0.005;
+            this.x -= (this.x - this.baseX) * 0.008;
           }
           if (Math.abs(this.y - this.baseY) > 50) {
-            this.y -= (this.y - this.baseY) * 0.005;
+            this.y -= (this.y - this.baseY) * 0.008;
           }
         }
         
@@ -139,16 +161,18 @@ const InteractiveBackground = () => {
       }
     }
 
-    // Generate particles
+    // Generate particles with improved density on high-DPI screens
     let particlesArray: Particle[] = [];
     
     function init() {
       particlesArray = [];
-      const numberOfParticles = Math.min(100, window.innerWidth * window.innerHeight / 20000);
+      const dpr = window.devicePixelRatio || 1;
+      const baseCount = Math.min(120, window.innerWidth * window.innerHeight / 18000);
+      const numberOfParticles = Math.round(baseCount * Math.min(dpr, 2)); // Scale with DPR but cap at 2x
       
       for (let i = 0; i < numberOfParticles; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * (window.innerHeight * 1.5);
         particlesArray.push(new Particle(x, y));
       }
     }
@@ -160,12 +184,14 @@ const InteractiveBackground = () => {
           const dy = particlesArray[a].y - particlesArray[b].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          const maxDistance = 80 + scrollOffset * 0.05; // Connection distance changes with scroll
+          // Enhanced connection distance with scroll effects
+          const maxDistance = 80 + scrollOffset * 0.08;
           
           if (distance < maxDistance) {
-            const opacity = (1 - distance / maxDistance) * 0.08; // More subtle connections
+            // Enhanced opacity calculation for more visible connections
+            const opacity = (1 - distance / maxDistance) * 0.1;
             ctx!.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
-            ctx!.lineWidth = 0.3; // Thinner lines
+            ctx!.lineWidth = 0.5; // Slightly thicker lines for better visibility
             ctx!.beginPath();
             ctx!.moveTo(particlesArray[a].x, particlesArray[a].y);
             ctx!.lineTo(particlesArray[b].x, particlesArray[b].y);
@@ -175,7 +201,7 @@ const InteractiveBackground = () => {
       }
     }
 
-    // Animation loop with scroll awareness
+    // Animation loop with improved scroll awareness
     let scrollOffset = 0;
     window.addEventListener('scroll', () => {
       scrollOffset = window.scrollY;
@@ -183,7 +209,7 @@ const InteractiveBackground = () => {
 
     function animate() {
       requestAnimationFrame(animate);
-      ctx!.clearRect(0, 0, canvas.width, canvas.height);
+      ctx!.clearRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
       
       particlesArray.forEach(particle => particle.update(scrollOffset));
       connectParticles(scrollOffset);
@@ -205,27 +231,59 @@ const InteractiveBackground = () => {
     <div ref={containerRef} className="absolute inset-0 z-0 overflow-hidden">
       <canvas ref={canvasRef} className="fixed inset-0 w-full h-full" />
       
-      {/* Subtle gradient overlays */}
-      <div className="fixed top-0 left-0 right-0 h-32 bg-gradient-to-b from-black to-transparent opacity-30" />
-      <div className="fixed bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent opacity-30" />
+      {/* Enhanced gradient overlays with smoother transitions */}
+      <div className="fixed top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent opacity-40" />
+      <div className="fixed bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent opacity-40" />
       
-      {/* Scroll-reactive ambient elements */}
+      {/* Enhanced ambient elements with better positioning and blending */}
       <motion.div
         style={{ y: translateY1, opacity: opacity1 }}
-        className="fixed top-1/4 right-1/4 w-64 h-64 rounded-full bg-white/5 blur-3xl"
+        className="fixed top-1/4 right-1/4 w-72 h-72 rounded-full bg-gradient-to-r from-white/8 to-white/3 blur-3xl"
       />
       
       <motion.div
         style={{ y: translateY2, scale: scale1 }}
-        className="fixed bottom-1/4 left-1/4 w-96 h-96 rounded-full bg-white/3 blur-3xl"
+        className="fixed bottom-1/4 left-1/4 w-96 h-96 rounded-full bg-gradient-to-r from-white/5 to-white/2 blur-3xl"
       />
       
       <motion.div
         style={{ y: translateY3 }}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-10"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-15"
       >
-        <div className="w-full h-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_0%,_transparent_70%)]" />
+        <div className="w-full h-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.15)_0%,_transparent_70%)]" />
       </motion.div>
+      
+      {/* New dynamic light rays effect */}
+      <div className="fixed inset-0 overflow-hidden opacity-10 pointer-events-none">
+        <motion.div 
+          className="absolute top-0 -left-20 w-40 h-[200vh] bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
+          animate={{ 
+            x: ['-100%', '200%'],
+            opacity: [0, 0.5, 0]
+          }}
+          transition={{
+            duration: 8,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatDelay: 5
+          }}
+        />
+        
+        <motion.div 
+          className="absolute top-0 -right-20 w-40 h-[200vh] bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+          animate={{ 
+            x: ['200%', '-100%'],
+            opacity: [0, 0.3, 0]
+          }}
+          transition={{
+            duration: 12,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatDelay: 3,
+            delay: 2
+          }}
+        />
+      </div>
     </div>
   );
 };

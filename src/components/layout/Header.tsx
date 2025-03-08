@@ -26,19 +26,52 @@ const Header = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-3 bg-black/90 backdrop-blur-lg border-b border-white/10 shadow-lg' : 'py-5'}`}>
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+      <motion.header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled 
+            ? 'py-3 bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg' 
+            : 'py-5'
+        }`}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between relative">
+          {/* Enhanced logo with interactive animation */}
           <Link to="/" className="flex items-center space-x-3 group">
             <motion.div 
               className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.1,
+                boxShadow: "0 0 25px rgba(255,255,255,0.2)" 
+              }}
               whileTap={{ scale: 0.95 }}
             >
-              <Clipboard className="w-5 h-5 text-white" />
+              <Clipboard className="w-5 h-5 text-white group-hover:text-white/90" />
+              
+              {/* Add shine effect on hover */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100"
+                animate={{ 
+                  x: ['-100%', '100%'],
+                }}
+                transition={{
+                  duration: 1.5,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                }}
+              />
             </motion.div>
-            <span className="font-bold text-white text-lg tracking-tight">CopyClipCloud</span>
+            <motion.span 
+              className="font-bold text-white text-lg tracking-tight"
+              whileHover={{ letterSpacing: "0.03em" }}
+              transition={{ duration: 0.3 }}
+            >
+              CopyClipCloud
+            </motion.span>
           </Link>
           
+          {/* Enhanced navigation with more interactive effects */}
           <nav className="hidden md:flex items-center space-x-10">
             <NavLink to="/" icon={Home}>Home</NavLink>
             <NavLink to="/features" icon={FileText}>Features</NavLink>
@@ -52,7 +85,6 @@ const Header = () => {
                 <motion.span 
                   className="ml-1.5 inline-block"
                   initial={{ rotate: 0 }}
-                  animate={{ rotate: 0 }}
                   whileHover={{ rotate: 180 }}
                   transition={{ duration: 0.2, ease: "easeInOut" }}
                   style={{ transformOrigin: "center" }}
@@ -62,6 +94,8 @@ const Header = () => {
                   </svg>
                 </motion.span>
               </button>
+              
+              {/* Enhanced dropdown with smoother animations */}
               <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
                 <motion.div 
                   className="py-3 glass-panel backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
@@ -77,36 +111,56 @@ const Header = () => {
             </div>
           </nav>
           
+          {/* Enhanced download button */}
           <div className="hidden md:flex items-center">
             <motion.button 
               onClick={handleDownload}
-              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-white to-gray-200 text-black rounded-full hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all border border-white/80"
-              whileHover={{ scale: 1.03 }}
+              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-white to-gray-200 text-black rounded-full hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all border border-white/80 relative overflow-hidden"
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
             >
               <Download className="w-4 h-4" />
               <span className="font-medium">Download</span>
+              
+              {/* Add a subtle shimmer effect */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/90 to-transparent opacity-0"
+                animate={{ 
+                  x: ['-100%', '100%'],
+                  opacity: [0, 0.5, 0]
+                }}
+                transition={{
+                  duration: 1.5,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatDelay: 3
+                }}
+              />
             </motion.button>
           </div>
           
-          <button 
-            className="md:hidden text-white"
+          {/* Enhanced mobile menu button */}
+          <motion.button 
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full glass-panel text-white"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </motion.button>
         </div>
-      </header>
+      </motion.header>
       
+      {/* Enhanced mobile menu with better animation */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-sm mt-16"
+            className="fixed inset-0 z-40 bg-black/90 backdrop-blur-lg mt-16"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="p-4 pt-8">
               <div className="space-y-4">
@@ -126,13 +180,30 @@ const Header = () => {
                 </div>
                 
                 <div className="pt-4 border-t border-white/10 flex flex-col space-y-4">
-                  <button 
+                  <motion.button 
                     onClick={handleDownload}
-                    className="w-full bg-white text-black py-3 rounded-lg flex items-center justify-center space-x-2"
+                    className="w-full bg-white text-black py-3 rounded-lg flex items-center justify-center space-x-2 relative overflow-hidden"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <Download className="w-5 h-5" />
                     <span>Download Now</span>
-                  </button>
+                    
+                    {/* Add shimmer effect */}
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/90 to-transparent opacity-0"
+                      animate={{ 
+                        x: ['-100%', '100%'],
+                        opacity: [0, 0.5, 0]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        ease: "easeInOut",
+                        repeat: Infinity,
+                        repeatDelay: 3
+                      }}
+                    />
+                  </motion.button>
                 </div>
               </div>
             </div>
@@ -157,7 +228,7 @@ const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: 
       {isActive && (
         <motion.div 
           layoutId="navbar-indicator"
-          className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full transform translate-y-2"
+          className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-white/60 to-white rounded-full transform translate-y-2"
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
@@ -168,10 +239,16 @@ const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: 
 const DropdownLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: string; icon: React.ElementType }) => (
   <Link 
     to={to} 
-    className="flex items-center px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+    className="flex items-center px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors group"
   >
-    <Icon className="w-4 h-4 mr-2" />
-    {children}
+    <motion.div
+      className="w-4 h-4 mr-2 text-white/70 group-hover:text-white"
+      whileHover={{ rotate: 5, scale: 1.1 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Icon className="w-4 h-4" />
+    </motion.div>
+    <span>{children}</span>
   </Link>
 );
 
@@ -184,9 +261,13 @@ const MobileNavLink = ({ children, to, icon: Icon }: { children: React.ReactNode
       to={to} 
       className={`flex items-center space-x-3 text-lg px-2 py-2 rounded-xl ${isActive ? 'bg-white/10' : ''}`}
     >
-      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive ? 'bg-white/20' : 'bg-white/10'}`}>
+      <motion.div 
+        className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive ? 'bg-white/20' : 'bg-white/10'}`}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
         <Icon className="w-5 h-5" />
-      </div>
+      </motion.div>
       <span>{children}</span>
     </Link>
   );

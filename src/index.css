@@ -12,20 +12,19 @@
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
   }
   
+  /* Enhanced animated border button with more dynamic effects */
   .animated-border-button {
     @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl;
-    background: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
-    background-size: 200% 100%;
-    background-position: 100% 50%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
   }
 
   .animated-border-button:hover {
-    @apply bg-white text-black shadow-2xl;
-    background-position: 0% 50%;
+    @apply shadow-2xl;
     transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 25px -5px rgba(255, 255, 255, 0.1);
   }
 
   .animated-border-button::before {
@@ -34,6 +33,7 @@
     animation: border-pulse 2s linear infinite;
   }
 
+  /* Enhanced download button with more visible animation */
   .download-button {
     position: relative;
     overflow: hidden;
@@ -50,6 +50,7 @@
     animation: download-border-animation 2s linear infinite;
   }
   
+  /* Enhanced floating animation */
   .floating-element {
     animation: float 6s ease-in-out infinite;
   }
@@ -58,6 +59,7 @@
     animation: pulse 1.5s infinite;
   }
   
+  /* Enhanced text gradient */
   .text-gradient {
     @apply text-transparent bg-clip-text;
     background-image: linear-gradient(to right, #ffffff, #a0a0a0);
@@ -75,13 +77,14 @@
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
   }
 
-  /* Modern Metro-style elements */
+  /* Enhanced modern Metro-style elements */
   .metro-card {
     @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl transition-all duration-300 overflow-hidden;
   }
   
   .metro-card:hover {
     @apply border-white/20 shadow-lg transform -translate-y-1;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3), 0 0 30px -5px rgba(255, 255, 255, 0.1);
   }
   
   .metro-border-left {
@@ -95,17 +98,47 @@
   .metro-navbar {
     @apply backdrop-blur-lg bg-black/40 border-b border-white/10 shadow-lg;
   }
+  
+  /* Enhanced toast styling */
+  [data-sonner-toast] {
+    @apply bg-black/90 border border-white/10 backdrop-blur-md shadow-2xl !important;
+  }
+  
+  [data-sonner-toast] [data-title] {
+    @apply text-white !important;
+  }
+  
+  [data-sonner-toast] [data-description] {
+    @apply text-gray-300 !important;
+  }
+  
+  /* Custom shadow for toast */
+  [data-sonner-toast][data-styled="true"] {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5) !important;
+  }
+  
+  /* Custom success toast icon */
+  [data-sonner-toast][data-type="success"] [data-icon] {
+    @apply bg-gradient-to-br from-white/20 to-white/5 !important;
+  }
 }
 
+/* Enhanced animations */
 @keyframes download-border-animation {
   0% {
     left: -100%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
   }
   50% {
     left: 100%;
+    opacity: 1;
   }
   100% {
     left: 100%;
+    opacity: 0;
   }
 }
 
@@ -115,7 +148,7 @@
     transform: scale(1);
   }
   50% {
-    opacity: 0.7;
+    opacity: 0.8;
     transform: scale(1.05);
   }
 }
@@ -123,15 +156,19 @@
 @keyframes border-pulse {
   0%, 100% {
     clip-path: inset(0 0 98% 0);
+    opacity: 0.8;
   }
   25% {
     clip-path: inset(0 98% 0 0);
+    opacity: 1;
   }
   50% {
     clip-path: inset(98% 0 0 0);
+    opacity: 0.8;
   }
   75% {
     clip-path: inset(0 0 0 98%);
+    opacity: 1;
   }
 }
 
@@ -144,15 +181,16 @@
   }
 }
 
+/* Enhanced gradient background */
 .gradient-bg {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.02) 100%
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.03) 100%
   );
 }
 
-/* Modern hover effects for navigation */
+/* Enhanced hover effects for navigation */
 .nav-link-hover {
   position: relative;
 }
@@ -175,7 +213,7 @@
   transform-origin: bottom left;
 }
 
-/* Scroll indicator animation */
+/* Enhanced scroll indicator animation */
 .scroll-indicator {
   animation: scroll-bounce 2s infinite;
 }
@@ -189,5 +227,58 @@
   }
   60% {
     transform: translateY(-5px);
+  }
+}
+
+/* New: Shimmer effect for buttons and cards */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%);
+  animation: shimmer 2.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* New: 3D tilt effect for cards */
+.tilt-card {
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+.tilt-card:hover {
+  transform: rotateX(5deg) rotateY(5deg);
+}
+
+/* New: Pulse effect for highlights */
+.pulse-highlight {
+  animation: pulse-highlight 2s infinite;
+}
+
+@keyframes pulse-highlight {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
   }
 }
