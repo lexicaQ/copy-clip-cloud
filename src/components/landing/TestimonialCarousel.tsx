@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ArrowLeft, ArrowRight, Quote, ShieldCheck, Award } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight, Quote, ShieldCheck, Award, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Types for our testimonials
 interface TestimonialProps {
@@ -89,61 +89,99 @@ const testimonials = [
   }
 ];
 
-// Modern testimonial card component
+// Enhanced testimonial card with better animations and effects
 const TestimonialCard = ({ 
   name, role, content, rating, image, company, verified = true 
 }: TestimonialProps) => {
   return (
     <motion.div 
-      className="glass-panel hover:bg-white/5 transition-all duration-300 flex flex-col h-full relative overflow-hidden group"
+      className="card-futuristic h-full relative overflow-hidden group"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
       whileHover={{ y: -5 }}
     >
-      {/* Decorative elements */}
+      {/* Enhanced decorative elements */}
       <div className="absolute top-0 right-0 h-20 w-20 bg-gradient-to-bl from-white/5 to-transparent rounded-bl-3xl" />
       <div className="absolute bottom-0 left-0 h-20 w-20 bg-gradient-to-tr from-white/5 to-transparent rounded-tr-3xl" />
       
       <div className="p-8 relative z-10 flex flex-col h-full">
-        {/* Quote icon */}
-        <Quote className="w-10 h-10 text-white/10 absolute top-6 right-6" />
+        {/* Enhanced quote icon */}
+        <motion.div
+          initial={{ opacity: 0.2, y: 5 }}
+          animate={{ opacity: 0.1, y: 0 }}
+          transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+        >
+          <Quote className="w-10 h-10 text-white absolute top-6 right-6" />
+        </motion.div>
         
-        {/* Rating */}
+        {/* Enhanced rating with animated stars */}
         <div className="flex text-white mb-6">
           {[...Array(5)].map((_, i) => (
-            <Star 
-              key={i} 
-              className={`w-4 h-4 mr-1 ${i < Math.floor(rating) ? 'text-white' : 'text-gray-600'}`}
-              fill={i < Math.floor(rating) ? "currentColor" : "none"} 
-            />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, delay: i * 0.1 }}
+            >
+              <Star 
+                className={`w-4 h-4 mr-1 ${i < Math.floor(rating) ? 'text-white' : 'text-gray-600'}`}
+                fill={i < Math.floor(rating) ? "currentColor" : "none"} 
+              />
+            </motion.div>
           ))}
-          <span className="text-xs ml-2 text-gray-400">
+          <motion.span 
+            className="text-xs ml-2 text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
             {rating.toFixed(1)}
-          </span>
+          </motion.span>
         </div>
         
-        {/* Content */}
-        <p className="text-gray-300 italic leading-relaxed flex-grow mb-6">{`"${content}"`}</p>
+        {/* Content with improved layout */}
+        <p className="text-gray-300 italic leading-relaxed flex-grow mb-6 font-light">{`"${content}"`}</p>
         
-        {/* User info */}
+        {/* Enhanced user info with better animations */}
         <div className="flex items-center mt-auto pt-6 border-t border-white/10">
-          <div className="relative">
-            <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20">
+          <motion.div 
+            className="relative"
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20 shadow-lg">
               <img src={image} alt={name} className="w-full h-full object-cover" />
             </div>
             {verified && (
-              <div className="absolute -bottom-1 -right-1 bg-white/10 p-1 rounded-full">
+              <motion.div 
+                className="absolute -bottom-1 -right-1 bg-white/10 p-1 rounded-full"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.5, type: "spring" }}
+              >
                 <ShieldCheck className="w-3 h-3 text-white" />
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
           <div className="ml-4">
-            <h4 className="font-medium text-white text-base">{name}</h4>
-            <p className="text-xs text-gray-400 flex items-center">
+            <motion.h4 
+              className="font-medium text-white text-base"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {name}
+            </motion.h4>
+            <motion.p 
+              className="text-xs text-gray-400 flex items-center"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+            >
               {role} {company && <span className="mx-1">•</span>} {company}
-            </p>
+            </motion.p>
           </div>
         </div>
       </div>
@@ -156,6 +194,7 @@ const TestimonialCarousel = () => {
   const [autoplay, setAutoplay] = useState(true);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   
   // Calculate items per page based on screen size
@@ -177,31 +216,41 @@ const TestimonialCarousel = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // Autoplay logic
+  // Improved autoplay logic with better transitioning
   useEffect(() => {
-    if (!autoplay) return;
+    if (!autoplay || isTransitioning) return;
     
     const interval = setInterval(() => {
-      nextSlide();
+      handleNext();
     }, 5000);
     
     return () => clearInterval(interval);
-  }, [currentIndex, autoplay, itemsPerPage]);
+  }, [currentIndex, autoplay, itemsPerPage, isTransitioning]);
   
-  // Navigation functions
-  const nextSlide = () => {
+  // Enhanced navigation functions with smoother transitions
+  const handleNext = () => {
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
     setCurrentIndex((prevIndex) => 
       prevIndex >= testimonials.length - itemsPerPage ? 0 : prevIndex + 1
     );
+    
+    setTimeout(() => setIsTransitioning(false), 600); // Match transition duration
   };
   
-  const prevSlide = () => {
+  const handlePrev = () => {
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
     setCurrentIndex((prevIndex) => 
       prevIndex === 0 ? testimonials.length - itemsPerPage : prevIndex - 1
     );
+    
+    setTimeout(() => setIsTransitioning(false), 600); // Match transition duration
   };
   
-  // Touch handlers for mobile swiping
+  // Enhanced touch handlers for mobile swiping
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX);
     setAutoplay(false);
@@ -212,12 +261,14 @@ const TestimonialCarousel = () => {
   };
   
   const handleTouchEnd = () => {
+    if (isTransitioning) return;
+    
     if (touchStart - touchEnd > 100) {
-      nextSlide(); // Swipe left
+      handleNext(); // Swipe left
     }
     
     if (touchStart - touchEnd < -100) {
-      prevSlide(); // Swipe right
+      handlePrev(); // Swipe right
     }
     
     setTimeout(() => setAutoplay(true), 5000);
@@ -226,37 +277,38 @@ const TestimonialCarousel = () => {
   // Get current visible testimonials
   const currentTestimonials = testimonials.slice(currentIndex, currentIndex + itemsPerPage);
   
-  // Calculate the total number of pages
+  // Calculate the total number of pages for pagination dots
   const totalPages = Math.ceil(testimonials.length / itemsPerPage);
   const currentPage = Math.floor(currentIndex / itemsPerPage);
   
   return (
-    <div className="mt-20 pt-16 border-t border-white/10">
+    <div className="mt-24 pt-16 border-t border-white/10">
       <motion.div 
-        className="text-center mb-14 relative"
+        className="text-center mb-16 relative"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
         <motion.div 
-          className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 text-sm mb-4"
+          className="inline-flex items-center px-3 py-1.5 rounded-full bg-white/5 text-sm mb-5 border border-white/10"
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
+          whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.08)" }}
         >
           <Award className="w-4 h-4 mr-2" />
-          User Reviews
+          User Testimonials
         </motion.div>
         
         <motion.h2 
-          className="text-3xl md:text-4xl font-bold mb-3"
+          className="text-3xl md:text-4xl font-bold mb-4"
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          <span className="text-gradient">Trusted by Professionals</span>
+          <span className="text-gradient">What Our Users Say</span>
         </motion.h2>
         
         <motion.p 
@@ -266,11 +318,11 @@ const TestimonialCarousel = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          Hear what our users have to say about their experience with CopyClipCloud
+          Join thousands of professionals who trust CopyClipCloud for their clipboard management needs
         </motion.p>
         
         <motion.div 
-          className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-10 w-28 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+          className="absolute left-1/2 transform -translate-x-1/2 translate-y-10 w-28 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -285,74 +337,106 @@ const TestimonialCarousel = () => {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Control buttons */}
-        <div className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 hidden md:block">
+        {/* Enhanced control buttons with better positioning and animations */}
+        <div className="absolute -left-7 top-1/2 -translate-y-1/2 z-10 hidden md:block">
           <motion.button 
-            onClick={prevSlide} 
-            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
+            onClick={handlePrev} 
+            className="w-14 h-14 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
             onMouseEnter={() => setAutoplay(false)}
             onMouseLeave={() => setAutoplay(true)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(255,255,255,0.1)" }}
+            whileTap={{ scale: 0.95 }}
+            disabled={isTransitioning}
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ChevronLeft className="w-6 h-6" />
           </motion.button>
         </div>
         
-        <div className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 hidden md:block">
+        <div className="absolute -right-7 top-1/2 -translate-y-1/2 z-10 hidden md:block">
           <motion.button 
-            onClick={nextSlide} 
-            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
+            onClick={handleNext} 
+            className="w-14 h-14 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
             onMouseEnter={() => setAutoplay(false)}
             onMouseLeave={() => setAutoplay(true)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(255,255,255,0.1)" }}
+            whileTap={{ scale: 0.95 }}
+            disabled={isTransitioning}
           >
-            <ArrowRight className="w-5 h-5" />
+            <ChevronRight className="w-6 h-6" />
           </motion.button>
         </div>
         
-        {/* Carousel content */}
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={currentIndex}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        {/* Mobile navigation buttons */}
+        <div className="flex justify-between md:hidden absolute top-1/2 -translate-y-1/2 w-full z-10 px-2">
+          <motion.button 
+            onClick={handlePrev} 
+            className="w-10 h-10 rounded-full glass-panel flex items-center justify-center bg-black/50 backdrop-blur-lg"
+            whileTap={{ scale: 0.9 }}
+            disabled={isTransitioning}
           >
-            {currentTestimonials.map((testimonial, index) => (
-              <TestimonialCard 
-                key={`${currentIndex}-${index}`}
-                name={testimonial.name}
-                role={testimonial.role}
-                company={testimonial.company}
-                content={testimonial.content}
-                rating={testimonial.rating}
-                image={testimonial.image}
-                verified={testimonial.verified}
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+            <ChevronLeft className="w-5 h-5" />
+          </motion.button>
+          
+          <motion.button 
+            onClick={handleNext} 
+            className="w-10 h-10 rounded-full glass-panel flex items-center justify-center bg-black/50 backdrop-blur-lg"
+            whileTap={{ scale: 0.9 }}
+            disabled={isTransitioning}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </motion.button>
+        </div>
         
-        {/* Pagination indicators */}
+        {/* Carousel content with improved transitions */}
+        <div className="overflow-hidden py-8">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div 
+              key={currentIndex}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {currentTestimonials.map((testimonial, index) => (
+                <TestimonialCard 
+                  key={`${currentIndex}-${index}`}
+                  name={testimonial.name}
+                  role={testimonial.role}
+                  company={testimonial.company}
+                  content={testimonial.content}
+                  rating={testimonial.rating}
+                  image={testimonial.image}
+                  verified={testimonial.verified}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        
+        {/* Enhanced pagination indicators with better animations */}
         <div className="flex justify-center mt-10 space-x-2">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
+          {Array.from({ length: testimonials.length - itemsPerPage + 1 }).map((_, index) => (
+            <motion.button
               key={index}
               aria-label={`Go to slide ${index + 1}`}
-              className={`transition-all duration-300 ${
-                index === currentPage 
-                  ? 'w-8 h-2 bg-white rounded-full' 
-                  : 'w-2 h-2 bg-white/30 rounded-full hover:bg-white/50'
+              className={`transition-all duration-300 rounded-full ${
+                index === currentIndex 
+                  ? 'w-10 h-2 bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]' 
+                  : 'w-2 h-2 bg-white/20 hover:bg-white/50'
               }`}
               onClick={() => {
-                setCurrentIndex(index * itemsPerPage);
+                if (isTransitioning) return;
+                setIsTransitioning(true);
+                setCurrentIndex(index);
                 setAutoplay(false);
-                setTimeout(() => setAutoplay(true), 5000);
+                setTimeout(() => {
+                  setIsTransitioning(false);
+                  setAutoplay(true);
+                }, 600);
               }}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
             />
           ))}
         </div>

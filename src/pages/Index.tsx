@@ -12,12 +12,35 @@ import AppFAQ from "@/components/landing/AppFAQ";
 import HowItWorks from "@/components/landing/HowItWorks";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Shield, Sparkles, Zap } from "lucide-react";
+import { Shield, Sparkles, Zap, ChevronDown } from "lucide-react";
 
 const Index = () => {
+  // Staggered animation variants for child elements
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      } 
+    }
+  };
+
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Background effects */}
+      {/* Enhanced background effects */}
       <InteractiveBackground />
 
       {/* Header */}
@@ -25,14 +48,12 @@ const Index = () => {
 
       <motion.div 
         className="max-w-7xl mx-auto px-4 pt-32 pb-24"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        initial="hidden"
+        animate="show"
+        variants={containerVariants}
       >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          variants={itemVariants}
           className="w-full max-w-4xl mx-auto text-center relative z-10"
         >
           {/* Logo and Badge */}
@@ -41,64 +62,95 @@ const Index = () => {
           {/* Title and Description */}
           <AppTitle />
 
-          {/* Top Feature Highlights */}
+          {/* Enhanced feature highlights with improved animations */}
           <motion.div 
-            className="mt-12 flex flex-wrap justify-center gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            className="mt-16 flex flex-wrap justify-center gap-5"
+            variants={containerVariants}
           >
             {[
-              { icon: Sparkles, title: "AI Powered", desc: "Smart organization" },
-              { icon: Shield, title: "Encrypted", desc: "End-to-end security" },
-              { icon: Zap, title: "Lightning Fast", desc: "Optimized performance" }
+              { icon: Sparkles, title: "AI Powered", desc: "Smart organization with machine learning" },
+              { icon: Shield, title: "End-to-End Encrypted", desc: "Military-grade security" },
+              { icon: Zap, title: "Lightning Fast", desc: "Optimized native performance" }
             ].map((feature, i) => (
               <motion.div 
                 key={i}
-                className="glass-panel px-6 py-4 flex items-center gap-3 backdrop-blur-md"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 + (i * 0.1) }}
-                whileHover={{ y: -5, boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.3)" }}
+                className="glass-panel px-6 py-5 flex items-center gap-4 backdrop-blur-md"
+                variants={itemVariants}
+                whileHover={{ 
+                  y: -5, 
+                  boxShadow: "0 15px 30px -10px rgba(0, 0, 0, 0.3)",
+                  backgroundColor: "rgba(255, 255, 255, 0.08)" 
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
               >
-                <div className="p-2 rounded-lg bg-white/10">
-                  <feature.icon className="w-5 h-5" />
+                <div className="p-3 rounded-lg bg-white/10">
+                  <feature.icon className="w-6 h-6" />
                 </div>
                 <div className="text-left">
-                  <p className="font-medium text-white">{feature.title}</p>
-                  <p className="text-xs text-gray-400">{feature.desc}</p>
+                  <p className="font-medium text-white text-base">{feature.title}</p>
+                  <p className="text-sm text-gray-400">{feature.desc}</p>
                 </div>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Download Button - added more spacing */}
-          <div className="mt-12">
+          {/* Enhanced download button section */}
+          <motion.div 
+            className="mt-16 relative"
+            variants={itemVariants}
+          >
             <DownloadButton />
-          </div>
+            
+            {/* Scroll indicator */}
+            <motion.div 
+              className="absolute left-1/2 transform -translate-x-1/2 mt-16 flex flex-col items-center text-white/50 scroll-indicator"
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <span className="text-sm mb-2">Scroll to explore</span>
+              <ChevronDown className="w-5 h-5" />
+            </motion.div>
+          </motion.div>
 
           {/* Features Grid */}
-          <AppFeatures />
+          <motion.div 
+            variants={itemVariants}
+            className="mt-32"
+          >
+            <AppFeatures />
+          </motion.div>
           
           {/* How It Works */}
-          <div className="mt-24">
+          <motion.div 
+            className="mt-32"
+            variants={itemVariants}
+          >
             <HowItWorks />
-          </div>
+          </motion.div>
           
           {/* Stats Dashboard */}
-          <div className="mt-24">
+          <motion.div 
+            className="mt-32"
+            variants={itemVariants}
+          >
             <AppStats />
-          </div>
+          </motion.div>
           
           {/* Testimonials */}
-          <div className="mt-24">
+          <motion.div 
+            className="mt-32"
+            variants={itemVariants}
+          >
             <TestimonialCarousel />
-          </div>
+          </motion.div>
           
           {/* FAQ Section */}
-          <div className="mt-24">
+          <motion.div 
+            className="mt-32"
+            variants={itemVariants}
+          >
             <AppFAQ />
-          </div>
+          </motion.div>
         </motion.div>
       </motion.div>
       

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home } from "lucide-react";
+import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useFileDownload } from "@/hooks/useFileDownload";
 
@@ -27,20 +27,20 @@ const Header = () => {
   return (
     <>
       <motion.header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled 
-            ? 'py-3 bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg' 
-            : 'py-5'
+            ? 'py-3 bg-black/85 backdrop-blur-xl border-b border-white/10 shadow-lg' 
+            : 'py-5 bg-transparent'
         }`}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between relative">
-          {/* Enhanced logo with interactive animation */}
+          {/* Enhanced logo with more interactive animation */}
           <Link to="/" className="flex items-center space-x-3 group">
             <motion.div 
-              className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+              className="w-10 h-10 rounded-lg glass-panel flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
               whileHover={{ 
                 scale: 1.1,
                 boxShadow: "0 0 25px rgba(255,255,255,0.2)" 
@@ -49,7 +49,7 @@ const Header = () => {
             >
               <Clipboard className="w-5 h-5 text-white group-hover:text-white/90" />
               
-              {/* Add shine effect on hover */}
+              {/* Enhanced shine effect on hover */}
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100"
                 animate={{ 
@@ -80,28 +80,25 @@ const Header = () => {
             <NavLink to="/contact" icon={MessageSquare}>Contact</NavLink>
             
             <div className="relative group">
-              <button className="flex items-center text-gray-300 hover:text-white transition-colors">
+              <button className="flex items-center text-gray-300 hover:text-white transition-colors nav-link-hover">
                 Support
-                <motion.span 
+                <motion.div
                   className="ml-1.5 inline-block"
-                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 0 }}
                   whileHover={{ rotate: 180 }}
-                  transition={{ duration: 0.2, ease: "easeInOut" }}
-                  style={{ transformOrigin: "center" }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </motion.span>
+                  <ChevronDown className="h-4 w-4" />
+                </motion.div>
               </button>
               
               {/* Enhanced dropdown with smoother animations */}
-              <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
+              <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
                 <motion.div 
                   className="py-3 glass-panel backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <DropdownLink to="/support" icon={MessageSquare}>Support Center</DropdownLink>
                   <DropdownLink to="/privacy" icon={Shield}>Privacy</DropdownLink>
@@ -115,25 +112,43 @@ const Header = () => {
           <div className="hidden md:flex items-center">
             <motion.button 
               onClick={handleDownload}
-              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-white to-gray-200 text-black rounded-full hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all border border-white/80 relative overflow-hidden"
-              whileHover={{ scale: 1.05 }}
+              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-white/90 to-white/80 text-black rounded-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all border border-white/80 relative overflow-hidden"
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
               <Download className="w-4 h-4" />
               <span className="font-medium">Download</span>
               
-              {/* Add a subtle shimmer effect */}
+              {/* Enhanced shimmer effect */}
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/90 to-transparent opacity-0"
                 animate={{ 
                   x: ['-100%', '100%'],
-                  opacity: [0, 0.5, 0]
+                  opacity: [0, 0.6, 0]
                 }}
                 transition={{
-                  duration: 1.5,
+                  duration: 1.8,
                   ease: "easeInOut",
                   repeat: Infinity,
-                  repeatDelay: 3
+                  repeatDelay: 2.5
+                }}
+              />
+
+              {/* Button border animation */}
+              <motion.div
+                className="absolute inset-0 border border-white/0 rounded-lg"
+                animate={{
+                  borderColor: ["rgba(255,255,255,0.2)", "rgba(255,255,255,0.8)", "rgba(255,255,255,0.2)"],
+                  boxShadow: [
+                    "0 0 0 rgba(255,255,255,0)",
+                    "0 0 10px rgba(255,255,255,0.3)",
+                    "0 0 0 rgba(255,255,255,0)"
+                  ]
+                }}
+                transition={{
+                  duration: 2.5,
+                  ease: "easeInOut",
+                  repeat: Infinity,
                 }}
               />
             </motion.button>
@@ -141,7 +156,7 @@ const Header = () => {
           
           {/* Enhanced mobile menu button */}
           <motion.button 
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full glass-panel text-white"
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg glass-panel text-white"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
             whileHover={{ scale: 1.05 }}
@@ -156,7 +171,7 @@ const Header = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            className="fixed inset-0 z-40 bg-black/90 backdrop-blur-lg mt-16"
+            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-lg mt-16"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -221,7 +236,7 @@ const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: 
   return (
     <Link 
       to={to} 
-      className={`relative flex items-center space-x-1 text-gray-300 hover:text-white transition-colors group ${isActive ? 'text-white' : ''}`}
+      className={`relative flex items-center space-x-1 text-gray-300 hover:text-white transition-colors group nav-link-hover ${isActive ? 'text-white' : ''}`}
     >
       <Icon className="w-4 h-4 mr-1 group-hover:rotate-3 transition-transform duration-300" />
       <span>{children}</span>
