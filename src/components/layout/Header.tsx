@@ -52,7 +52,8 @@ const Header = () => {
                 <motion.span 
                   className="ml-1.5 inline-block"
                   initial={{ rotate: 0 }}
-                  animate={{ rotate: 180 }}
+                  animate={{ rotate: 0 }}
+                  whileHover={{ rotate: 180 }}
                   transition={{ duration: 0.2, ease: "easeInOut" }}
                   style={{ transformOrigin: "center" }}
                 >
