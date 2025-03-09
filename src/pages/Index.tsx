@@ -1,6 +1,6 @@
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
 import AppFeatures from "@/components/landing/AppFeatures";
 import AppLogo from "@/components/landing/AppLogo";
 import DownloadButton from "@/components/landing/DownloadButton";
@@ -12,9 +12,35 @@ import AppFAQ from "@/components/landing/AppFAQ";
 import HowItWorks from "@/components/landing/HowItWorks";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Shield, Sparkles, Zap } from "lucide-react";
+import { Shield, Sparkles, Zap, ArrowDown } from "lucide-react";
 
 const Index = () => {
+  const controls = useAnimation();
+  
+  useEffect(() => {
+    controls.start("visible");
+  }, [controls]);
+  
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: [0.6, 0.05, -0.01, 0.9] }
+    }
+  };
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background effects */}
@@ -24,81 +50,136 @@ const Index = () => {
       <Header />
 
       <motion.div 
-        className="max-w-7xl mx-auto px-4 pt-32 pb-24"
+        className="max-w-7xl mx-auto px-4 pt-32 pb-24 relative z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.8 }}
       >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl mx-auto text-center relative z-10"
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+          className="w-full max-w-4xl mx-auto text-center"
         >
           {/* Logo and Badge */}
-          <AppLogo />
+          <motion.div variants={itemVariants}>
+            <AppLogo />
+          </motion.div>
           
           {/* Title and Description */}
-          <AppTitle />
+          <motion.div variants={itemVariants}>
+            <AppTitle />
+          </motion.div>
 
           {/* Top Feature Highlights */}
           <motion.div 
-            className="mt-12 flex flex-wrap justify-center gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            className="mt-12 flex flex-wrap justify-center gap-5"
+            variants={itemVariants}
           >
             {[
-              { icon: Sparkles, title: "AI Powered", desc: "Smart organization" },
-              { icon: Shield, title: "Encrypted", desc: "End-to-end security" },
-              { icon: Zap, title: "Lightning Fast", desc: "Optimized performance" }
+              { icon: Sparkles, title: "AI Powered", desc: "Smart organization", color: "from-purple-500/20 to-purple-500/5" },
+              { icon: Shield, title: "Encrypted", desc: "End-to-end security", color: "from-green-500/20 to-green-500/5" },
+              { icon: Zap, title: "Lightning Fast", desc: "Optimized performance", color: "from-yellow-500/20 to-yellow-500/5" }
             ].map((feature, i) => (
               <motion.div 
                 key={i}
-                className="glass-panel px-6 py-4 flex items-center gap-3 backdrop-blur-md"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 + (i * 0.1) }}
-                whileHover={{ y: -5, boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.3)" }}
+                className={`glass-panel px-7 py-5 flex items-center gap-4 backdrop-blur-lg bg-gradient-to-br ${feature.color} hover:bg-white/5 transition-all duration-500 group`}
+                whileHover={{ 
+                  y: -8, 
+                  boxShadow: "0 15px 30px -10px rgba(0, 0, 0, 0.3)",
+                  transition: { type: "spring", stiffness: 500, damping: 15 }
+                }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="p-2 rounded-lg bg-white/10">
-                  <feature.icon className="w-5 h-5" />
+                <div className="p-3 rounded-xl bg-white/10 group-hover:bg-white/15 transition-colors duration-500">
+                  <feature.icon className="w-6 h-6 group-hover:text-white transition-colors duration-500" />
                 </div>
                 <div className="text-left">
-                  <p className="font-medium text-white">{feature.title}</p>
-                  <p className="text-xs text-gray-400">{feature.desc}</p>
+                  <p className="font-medium text-white text-lg">{feature.title}</p>
+                  <p className="text-sm text-gray-300">{feature.desc}</p>
                 </div>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Download Button - added more spacing */}
-          <div className="mt-12">
-            <DownloadButton />
-          </div>
+          {/* Scroll indicator */}
+          <motion.div 
+            className="mt-16 mb-8 flex flex-col items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+          >
+            <motion.div 
+              className="text-gray-400 text-sm mb-2"
+              animate={{ y: [0, 5, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+            >
+              Scroll to discover
+            </motion.div>
+            <motion.div
+              animate={{ 
+                y: [0, 5, 0],
+                opacity: [0.6, 1, 0.6]
+              }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+            >
+              <ArrowDown className="w-5 h-5 text-gray-400" />
+            </motion.div>
+          </motion.div>
 
+          {/* Download Button - with enhanced design */}
+          <motion.div 
+            className="mt-12 relative"
+            variants={itemVariants}
+          >
+            <div className="absolute -inset-10 bg-gradient-to-r from-purple-500/0 via-purple-500/10 to-blue-500/0 rounded-full blur-3xl opacity-20"></div>
+            <DownloadButton />
+          </motion.div>
+          
           {/* Features Grid */}
-          <AppFeatures />
+          <motion.div 
+            variants={itemVariants}
+            className="mt-32 relative"
+          >
+            <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-purple-500/0 rounded-full blur-3xl opacity-20 -z-10"></div>
+            <AppFeatures />
+          </motion.div>
           
           {/* How It Works */}
-          <div className="mt-24">
+          <motion.div 
+            className="mt-32 relative"
+            variants={itemVariants}
+          >
+            <div className="absolute -inset-10 bg-gradient-to-r from-green-500/0 via-green-500/5 to-blue-500/0 rounded-full blur-3xl opacity-20 -z-10"></div>
             <HowItWorks />
-          </div>
+          </motion.div>
           
           {/* Stats Dashboard */}
-          <div className="mt-24">
+          <motion.div 
+            className="mt-32 relative"
+            variants={itemVariants}
+          >
+            <div className="absolute -inset-10 bg-gradient-to-r from-yellow-500/0 via-yellow-500/5 to-green-500/0 rounded-full blur-3xl opacity-20 -z-10"></div>
             <AppStats />
-          </div>
+          </motion.div>
           
           {/* Testimonials */}
-          <div className="mt-24">
+          <motion.div 
+            className="mt-32 relative"
+            variants={itemVariants}
+          >
+            <div className="absolute -inset-10 bg-gradient-to-r from-purple-500/0 via-purple-500/5 to-blue-500/0 rounded-full blur-3xl opacity-20 -z-10"></div>
             <TestimonialCarousel />
-          </div>
+          </motion.div>
           
           {/* FAQ Section */}
-          <div className="mt-24">
+          <motion.div 
+            className="mt-32 relative"
+            variants={itemVariants}
+          >
+            <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-purple-500/0 rounded-full blur-3xl opacity-20 -z-10"></div>
             <AppFAQ />
-          </div>
+          </motion.div>
         </motion.div>
       </motion.div>
       
