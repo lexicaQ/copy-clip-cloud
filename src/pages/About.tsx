@@ -1,46 +1,41 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Users, Shield, Award, Zap, Clock, Building, Calendar, MapPin } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
-
 const About = () => {
-  const teamMembers = [
-    {
-      name: "Alex Chen",
-      role: "Founder & CEO",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    {
-      name: "Sarah Johnson",
-      role: "CTO",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    {
-      name: "Michael Davis",
-      role: "Head of Design",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    {
-      name: "Rebecca Wong",
-      role: "Product Manager",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const teamMembers = [{
+    name: "Alex Chen",
+    role: "Founder & CEO",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+  }, {
+    name: "Sarah Johnson",
+    role: "CTO",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+  }, {
+    name: "Michael Davis",
+    role: "Head of Design",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+  }, {
+    name: "Rebecca Wong",
+    role: "Product Manager",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+  }];
+  return <div className="min-h-screen bg-background">
       <InteractiveBackground />
       <Header />
       
       <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }}>
           <div className="text-center mb-16">
             <h1 className="text-5xl font-bold mb-4">About CopyClipCloud</h1>
             <p className="text-gray-400 text-lg max-w-3xl mx-auto">
@@ -69,17 +64,13 @@ const About = () => {
                   </div>
                   <div className="flex items-center">
                     <MapPin className="w-4 h-4 mr-2" />
-                    <span>San Francisco</span>
+                    <span>Munich</span>
                   </div>
                 </div>
               </div>
               <div className="w-full md:w-1/2">
                 <div className="relative aspect-video overflow-hidden rounded-xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-                    alt="Our team" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Our team" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
@@ -88,35 +79,17 @@ const About = () => {
           <div className="mb-16">
             <h2 className="text-3xl font-bold mb-10 text-center">Our Values</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              <ValueCard 
-                icon={Shield} 
-                title="Security First" 
-                description="We implement military-grade encryption and take your privacy seriously. Your data remains yours."
-              />
-              <ValueCard 
-                icon={Zap} 
-                title="Efficiency" 
-                description="We design intuitive tools that boost productivity and save you valuable time."
-              />
-              <ValueCard 
-                icon={Users} 
-                title="User-Centered" 
-                description="Our development is guided by real user needs and feedback from our community."
-              />
-              <ValueCard 
-                icon={Award} 
-                title="Excellence" 
-                description="We strive for the highest quality in design, performance, and reliability."
-              />
+              <ValueCard icon={Shield} title="Security First" description="We implement military-grade encryption and take your privacy seriously. Your data remains yours." />
+              <ValueCard icon={Zap} title="Efficiency" description="We design intuitive tools that boost productivity and save you valuable time." />
+              <ValueCard icon={Users} title="User-Centered" description="Our development is guided by real user needs and feedback from our community." />
+              <ValueCard icon={Award} title="Excellence" description="We strive for the highest quality in design, performance, and reliability." />
             </div>
           </div>
           
           <div className="mb-16">
             <h2 className="text-3xl font-bold mb-10 text-center">Our Team</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {teamMembers.map((member, index) => (
-                <TeamMemberCard key={index} member={member} index={index} />
-              ))}
+              {teamMembers.map((member, index) => <TeamMemberCard key={index} member={member} index={index} />)}
             </div>
           </div>
           
@@ -133,37 +106,58 @@ const About = () => {
       </div>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
-const ValueCard = ({ icon: Icon, title, description }: { icon: React.ElementType; title: string; description: string }) => {
-  return (
-    <motion.div 
-      className="glass-panel p-6 rounded-xl flex flex-col items-center text-center"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
-    >
+const ValueCard = ({
+  icon: Icon,
+  title,
+  description
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}) => {
+  return <motion.div className="glass-panel p-6 rounded-xl flex flex-col items-center text-center" initial={{
+    opacity: 0,
+    y: 20
+  }} whileInView={{
+    opacity: 1,
+    y: 0
+  }} transition={{
+    duration: 0.5
+  }} viewport={{
+    once: true
+  }}>
       <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-4">
         <Icon className="w-6 h-6" />
       </div>
       <h3 className="text-xl font-bold mb-2">{title}</h3>
       <p className="text-gray-400">{description}</p>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
-const TeamMemberCard = ({ member, index }: { member: { name: string; role: string; image: string }; index: number }) => {
-  return (
-    <motion.div 
-      className="glass-panel p-6 rounded-xl text-center"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true }}
-    >
+const TeamMemberCard = ({
+  member,
+  index
+}: {
+  member: {
+    name: string;
+    role: string;
+    image: string;
+  };
+  index: number;
+}) => {
+  return <motion.div className="glass-panel p-6 rounded-xl text-center" initial={{
+    opacity: 0,
+    y: 20
+  }} whileInView={{
+    opacity: 1,
+    y: 0
+  }} transition={{
+    duration: 0.5,
+    delay: index * 0.1
+  }} viewport={{
+    once: true
+  }}>
       <div className="w-24 h-24 mx-auto rounded-full overflow-hidden mb-4 border-2 border-white/20">
         <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
       </div>
@@ -180,8 +174,6 @@ const TeamMemberCard = ({ member, index }: { member: { name: string; role: strin
           <Calendar className="w-4 h-4" />
         </button>
       </div>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
 export default About;
