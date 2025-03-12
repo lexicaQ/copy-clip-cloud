@@ -100,9 +100,7 @@ const Footer = () => {
               <span>Cookies</span>
               <ExternalLink className="w-3 h-3 ml-1" />
             </Link>
-            <span className="text-gray-400 text-sm flex items-center">
-              Made with <Heart className="w-3 h-3 mx-1 text-white animate-pulse" /> in San Francisco
-            </span>
+            
           </div>
         </div>
       </div>
