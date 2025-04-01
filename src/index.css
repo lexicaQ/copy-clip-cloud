@@ -11,8 +11,10 @@
 }
 
 @layer components {
+  /* Modern glass panel styling */
   .glass-panel {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
+    @apply backdrop-blur-xl border border-white/10 rounded-xl shadow-xl transition-all duration-300;
+    background: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
   }
   
   .animated-border-button {
@@ -36,9 +38,11 @@
     animation: shine 1.5s infinite;
   }
 
+  /* Enhanced download button */
   .download-button {
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
   }
   
   .download-button::after {
@@ -52,25 +56,40 @@
     animation: download-border-animation 2s linear infinite;
   }
   
+  .download-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Modern floating element animation */
   .floating-element {
     animation: float 6s ease-in-out infinite;
   }
   
+  /* Enhanced pulse animation */
   .animate-border-pulse {
     animation: pulse 1.5s infinite;
   }
   
+  /* Modern text gradients */
   .text-gradient {
     @apply text-transparent bg-clip-text;
     background-image: linear-gradient(to right, #ffffff, #a0a0a0);
   }
   
-  .gradient-bg {
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  .text-gradient-blue {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #60a5fa, #3b82f6);
   }
   
+  /* Enhanced panel background */
+  .gradient-bg {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  }
+  
+  /* Modern shadows */
   .elegant-shadow {
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
   }
   
   .subtle-glow {
@@ -79,7 +98,8 @@
 
   /* Modern Metro-style elements */
   .metro-card {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl transition-all duration-300 overflow-hidden;
+    @apply backdrop-blur-xl border border-white/10 rounded-xl transition-all duration-300 overflow-hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
   }
   
   .metro-card:hover {
@@ -91,23 +111,28 @@
   }
   
   .metro-badge {
-    @apply inline-flex items-center px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium;
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.1);
   }
   
+  /* Enhanced navbar */
   .metro-navbar {
-    @apply backdrop-blur-xl bg-black/40 border-b border-white/10 shadow-lg;
+    @apply backdrop-blur-xl border-b border-white/10 shadow-lg;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
   }
   
   /* Enhanced notification style */
   .notification {
-    @apply bg-black/80 backdrop-blur-md border border-white/10 text-white rounded-lg shadow-2xl;
+    @apply backdrop-blur-md border border-white/10 text-white rounded-lg shadow-2xl;
+    background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(0,0,0,0.75));
     animation: fade-in-up 0.3s ease-out forwards;
   }
   
   /* Modern button styles */
   .btn-modern {
     @apply relative overflow-hidden backdrop-blur-md px-6 py-3 rounded-lg border border-white/20 transition-all duration-300;
-    background: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
   }
   
   .btn-modern:hover {
@@ -118,7 +143,7 @@
   .btn-modern::after {
     content: '';
     @apply absolute inset-0 opacity-0 transition-opacity duration-300;
-    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
   }
   
   .btn-modern:hover::after {
@@ -126,14 +151,12 @@
   }
 }
 
+/* Enhanced animations */
 @keyframes download-border-animation {
   0% {
     left: -100%;
   }
-  50% {
-    left: 100%;
-  }
-  100% {
+  50%, 100% {
     left: 100%;
   }
 }
@@ -189,6 +212,7 @@
   }
 }
 
+/* Enhanced gradient backgrounds */
 .gradient-bg {
   background: linear-gradient(
     135deg,
@@ -220,7 +244,7 @@
   transform-origin: bottom left;
 }
 
-/* Scroll indicator animation */
+/* Enhanced scroll indicator animation */
 .scroll-indicator {
   animation: scroll-bounce 2s infinite;
 }
@@ -239,16 +263,17 @@
 
 /* Enhanced 3D hover effect */
 .hover-3d {
-  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
 
 .hover-3d:hover {
   transform: translateY(-5px) rotateX(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 /* Custom toast notifications for Sonner */
 :root {
-  --toast-bg: rgba(0, 0, 0, 0.8);
+  --toast-bg: rgba(0, 0, 0, 0.85);
   --toast-border: rgba(255, 255, 255, 0.1);
   --toast-text: #ffffff;
   --toast-success: rgba(72, 187, 120, 0.2);
@@ -271,7 +296,7 @@
   background: linear-gradient(90deg, var(--toast-error), transparent 50%) !important;
 }
 
-/* Subtle animation for toasts */
+/* Enhanced animation for toasts */
 @keyframes toast-appear {
   0% {
     opacity: 0;
@@ -287,7 +312,7 @@
   animation: toast-appear 0.3s ease-out forwards !important;
 }
 
-/* Enhance loading states */
+/* Enhanced loading state */
 .loading-indicator {
   @apply relative inline-block;
 }

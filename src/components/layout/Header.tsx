@@ -11,34 +11,60 @@ const Header = () => {
   const location = useLocation();
   const { handleDownload } = useFileDownload();
   
+  // Enhanced scroll detection with smoother transition trigger
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
     
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'py-3 bg-black/90 backdrop-blur-lg border-b border-white/10 shadow-lg' : 'py-5'}`}>
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+      <motion.header 
+        className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-lg transition-all duration-300 ${
+          isScrolled 
+            ? 'py-3 bg-black/80 border-b border-white/10 shadow-lg' 
+            : 'py-5 bg-transparent'
+        }`}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          {/* Logo with enhanced hover animation */}
           <Link to="/" className="flex items-center space-x-3 group">
             <motion.div 
-              className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-              whileHover={{ scale: 1.05 }}
+              className="w-10 h-10 rounded-full flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300"
+              style={{
+                background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)"
+              }}
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 10px 40px rgba(255, 255, 255, 0.1)"
+              }}
               whileTap={{ scale: 0.95 }}
             >
               <Clipboard className="w-5 h-5 text-white" />
             </motion.div>
-            <span className="font-bold text-white text-lg tracking-tight">CopyClipCloud</span>
+            <motion.span 
+              className="font-bold text-white text-lg tracking-tight"
+              whileHover={{ letterSpacing: "0.02em" }}
+              transition={{ duration: 0.3 }}
+            >
+              CopyClipCloud
+            </motion.span>
           </Link>
           
+          {/* Desktop navigation with modern hover effects */}
           <nav className="hidden md:flex items-center space-x-10">
             <NavLink to="/" icon={Home}>Home</NavLink>
             <NavLink to="/features" icon={FileText}>Features</NavLink>
@@ -46,24 +72,33 @@ const Header = () => {
             <NavLink to="/about" icon={Clipboard}>About</NavLink>
             <NavLink to="/contact" icon={MessageSquare}>Contact</NavLink>
             
+            {/* Enhanced dropdown with smoother animations */}
             <div className="relative group">
-              <button className="flex items-center text-gray-300 hover:text-white transition-colors">
+              <motion.button 
+                className="flex items-center text-gray-300 hover:text-white transition-colors"
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.2 }}
+              >
                 Support
                 <motion.span 
                   className="ml-1.5 inline-block"
                   initial={{ rotate: 0 }}
-                  animate={{ rotate: 180 }}
-                  transition={{ duration: 0.2, ease: "easeInOut" }}
-                  style={{ transformOrigin: "center" }}
+                  animate={{ rotate: 0 }}
+                  whileHover={{ rotate: 180 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
                   <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </motion.span>
-              </button>
-              <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
+              </motion.button>
+              
+              <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
                 <motion.div 
-                  className="py-3 glass-panel backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
+                  className="py-3 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))"
+                  }}
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.2 }}
@@ -75,61 +110,107 @@ const Header = () => {
             </div>
           </nav>
           
+          {/* Enhanced download button */}
           <div className="hidden md:flex items-center">
             <motion.button 
               onClick={handleDownload}
-              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-white to-gray-200 text-black rounded-full hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all border border-white/80"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              className="flex items-center space-x-2 px-5 py-2.5 rounded-full relative overflow-hidden group"
+              style={{
+                background: "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7))"
+              }}
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 10px 25px rgba(255, 255, 255, 0.2)"
+              }}
+              whileTap={{ scale: 0.95 }}
             >
-              <Download className="w-4 h-4" />
-              <span className="font-medium">Download</span>
+              {/* Animated background effect */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0"
+                animate={{
+                  x: ['-100%', '100%'],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  repeatDelay: 2
+                }}
+              />
+              
+              <Download className="w-4 h-4 text-black relative z-10" />
+              <span className="font-medium text-black relative z-10">Download</span>
             </motion.button>
           </div>
           
-          <button 
-            className="md:hidden text-white"
+          {/* Mobile menu button with animation */}
+          <motion.button 
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white backdrop-blur-md"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            whileTap={{ scale: 0.95 }}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            <AnimatePresence mode="wait">
+              {isMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X className="w-5 h-5" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu className="w-5 h-5" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
         </div>
-      </header>
+      </motion.header>
       
+      {/* Enhanced mobile menu with animations */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-sm mt-16"
+            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-md pt-20"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className="p-4 pt-8">
-              <div className="space-y-4">
+            <div className="p-6 pt-8">
+              <div className="space-y-2">
                 <MobileNavLink to="/" icon={Home}>Home</MobileNavLink>
                 <MobileNavLink to="/features" icon={FileText}>Features</MobileNavLink>
                 <MobileNavLink to="/pricing" icon={FileText}>Pricing</MobileNavLink>
                 <MobileNavLink to="/about" icon={Clipboard}>About</MobileNavLink>
                 <MobileNavLink to="/contact" icon={MessageSquare}>Contact</MobileNavLink>
                 
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-gray-400 mb-4 text-sm">Support</p>
-                  <div className="space-y-4 pl-4">
+                <div className="pt-4 mt-4 border-t border-white/10">
+                  <p className="text-gray-400 mb-3 text-sm font-medium pl-2">Support</p>
+                  <div className="space-y-2 pl-2">
                     <MobileNavLink to="/support" icon={MessageSquare}>Support Center</MobileNavLink>
                     <MobileNavLink to="/privacy" icon={Shield}>Privacy</MobileNavLink>
                   </div>
                 </div>
                 
-                <div className="pt-4 border-t border-white/10 flex flex-col space-y-4">
-                  <button 
+                <div className="pt-6 mt-6 border-t border-white/10">
+                  <motion.button 
                     onClick={handleDownload}
-                    className="w-full bg-white text-black py-3 rounded-lg flex items-center justify-center space-x-2"
+                    className="w-full py-3.5 rounded-xl bg-white flex items-center justify-center space-x-2 text-black font-medium"
+                    whileTap={{ scale: 0.97 }}
                   >
                     <Download className="w-5 h-5" />
                     <span>Download Now</span>
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             </div>
@@ -140,21 +221,31 @@ const Header = () => {
   );
 };
 
+// Enhanced NavLink component with smoother animations
 const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: string; icon: React.ElementType }) => {
   const location = useLocation();
-  const isActive = location.pathname === to || (to.includes('#') && location.pathname + to.substring(to.indexOf('#')) === to);
+  const isActive = location.pathname === to;
   
   return (
     <Link 
       to={to} 
-      className={`relative flex items-center space-x-1 text-gray-300 hover:text-white transition-colors group ${isActive ? 'text-white' : ''}`}
+      className="relative group flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
     >
       <Icon className="w-4 h-4 mr-1 group-hover:rotate-3 transition-transform duration-300" />
-      <span>{children}</span>
+      <span className="relative">
+        {children}
+        <motion.span 
+          className="absolute inset-x-0 -bottom-1 h-px bg-white origin-left"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: isActive ? 1 : 0 }}
+          whileHover={{ scaleX: 1 }}
+          transition={{ duration: 0.3 }}
+        />
+      </span>
       {isActive && (
         <motion.div 
           layoutId="navbar-indicator"
-          className="absolute bottom-0 left-0 right-0 h-0.5 bg-white rounded-full transform translate-y-2"
+          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-white/80 to-white/40 rounded-full"
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
@@ -162,30 +253,50 @@ const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: 
   );
 };
 
+// Enhanced DropdownLink component
 const DropdownLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: string; icon: React.ElementType }) => (
   <Link 
     to={to} 
-    className="flex items-center px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+    className="flex items-center px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all"
   >
     <Icon className="w-4 h-4 mr-2" />
-    {children}
+    <motion.span whileHover={{ x: 2 }} transition={{ duration: 0.2 }}>
+      {children}
+    </motion.span>
   </Link>
 );
 
+// Enhanced MobileNavLink component with better animations
 const MobileNavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: string; icon: React.ElementType }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
   
   return (
-    <Link 
-      to={to} 
-      className={`flex items-center space-x-3 text-lg px-2 py-2 rounded-xl ${isActive ? 'bg-white/10' : ''}`}
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.2 }}
     >
-      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive ? 'bg-white/20' : 'bg-white/10'}`}>
-        <Icon className="w-5 h-5" />
-      </div>
-      <span>{children}</span>
-    </Link>
+      <Link 
+        to={to} 
+        className={`flex items-center space-x-3 text-base p-2 rounded-xl transition-all ${
+          isActive 
+            ? 'bg-white/10 text-white' 
+            : 'text-gray-300 hover:bg-white/5 hover:text-white'
+        }`}
+      >
+        <motion.div 
+          className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+            isActive ? 'bg-white/20' : 'bg-white/5'
+          }`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Icon className="w-5 h-5" />
+        </motion.div>
+        <span>{children}</span>
+      </Link>
+    </motion.div>
   );
 };
 

@@ -1,7 +1,13 @@
-
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, ArrowLeft, ArrowRight, Quote, ShieldCheck, Award } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 // Types for our testimonials
 interface TestimonialProps {
@@ -95,56 +101,82 @@ const TestimonialCard = ({
 }: TestimonialProps) => {
   return (
     <motion.div 
-      className="glass-panel hover:bg-white/5 transition-all duration-300 flex flex-col h-full relative overflow-hidden group"
-      initial={{ opacity: 0, y: 20 }}
+      className="h-full glass-panel backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl p-6 relative group transition-all duration-300"
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5 }}
-      whileHover={{ y: -5 }}
+      transition={{ duration: 0.4 }}
+      whileHover={{ y: -5, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)" }}
     >
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 h-20 w-20 bg-gradient-to-bl from-white/5 to-transparent rounded-bl-3xl" />
-      <div className="absolute bottom-0 left-0 h-20 w-20 bg-gradient-to-tr from-white/5 to-transparent rounded-tr-3xl" />
+      {/* Quote icon with enhanced styling */}
+      <div className="absolute -top-3 -right-3 rounded-full p-2 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl border border-white/20 shadow-xl">
+        <Quote className="w-4 h-4 text-white" />
+      </div>
       
-      <div className="p-8 relative z-10 flex flex-col h-full">
-        {/* Quote icon */}
-        <Quote className="w-10 h-10 text-white/10 absolute top-6 right-6" />
-        
-        {/* Rating */}
-        <div className="flex text-white mb-6">
-          {[...Array(5)].map((_, i) => (
+      {/* Rating */}
+      <div className="flex text-white mb-4 mt-1">
+        {[...Array(5)].map((_, i) => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.1, duration: 0.3 }}
+          >
             <Star 
-              key={i} 
               className={`w-4 h-4 mr-1 ${i < Math.floor(rating) ? 'text-white' : 'text-gray-600'}`}
               fill={i < Math.floor(rating) ? "currentColor" : "none"} 
             />
-          ))}
-          <span className="text-xs ml-2 text-gray-400">
-            {rating.toFixed(1)}
-          </span>
+          </motion.div>
+        ))}
+        <span className="text-xs ml-2 text-gray-400">{rating.toFixed(1)}</span>
+      </div>
+      
+      {/* Content with subtle animation */}
+      <motion.p 
+        className="text-gray-300 italic leading-relaxed mb-6 text-base"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.4 }}
+      >
+        "{content}"
+      </motion.p>
+      
+      {/* User info with enhanced styling */}
+      <div className="flex items-center pt-4 border-t border-white/10 mt-auto">
+        <div className="relative">
+          <motion.div 
+            className="w-12 h-12 rounded-full overflow-hidden border border-white/20 shadow-lg bg-white/5"
+            whileHover={{ scale: 1.05 }}
+          >
+            <img src={image} alt={name} className="w-full h-full object-cover" />
+          </motion.div>
+          {verified && (
+            <motion.div 
+              className="absolute -bottom-1 -right-1 bg-white/10 p-1 rounded-full backdrop-blur-md"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.3 }}
+            >
+              <ShieldCheck className="w-3 h-3 text-white" />
+            </motion.div>
+          )}
         </div>
-        
-        {/* Content */}
-        <p className="text-gray-300 italic leading-relaxed flex-grow mb-6">{`"${content}"`}</p>
-        
-        {/* User info */}
-        <div className="flex items-center mt-auto pt-6 border-t border-white/10">
-          <div className="relative">
-            <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20">
-              <img src={image} alt={name} className="w-full h-full object-cover" />
-            </div>
-            {verified && (
-              <div className="absolute -bottom-1 -right-1 bg-white/10 p-1 rounded-full">
-                <ShieldCheck className="w-3 h-3 text-white" />
-              </div>
-            )}
-          </div>
-          <div className="ml-4">
-            <h4 className="font-medium text-white text-base">{name}</h4>
-            <p className="text-xs text-gray-400 flex items-center">
-              {role} {company && <span className="mx-1">•</span>} {company}
-            </p>
-          </div>
+        <div className="ml-4">
+          <motion.h4 
+            className="font-medium text-white text-base"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.3 }}
+          >
+            {name}
+          </motion.h4>
+          <motion.p 
+            className="text-xs text-gray-400"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.45, duration: 0.3 }}
+          >
+            {role} {company && <span className="opacity-60 mx-1">•</span>} {company}
+          </motion.p>
         </div>
       </div>
     </motion.div>
@@ -152,23 +184,21 @@ const TestimonialCard = ({
 };
 
 const TestimonialCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const [api, setApi] = useState<any>(null);
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
   
-  // Calculate items per page based on screen size
-  const [itemsPerPage, setItemsPerPage] = useState(3);
+  // Handle viewport changes responsively
+  const [itemsPerView, setItemsPerView] = useState(3);
   
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1280) {
-        setItemsPerPage(3);
+        setItemsPerView(3);
       } else if (window.innerWidth >= 768) {
-        setItemsPerPage(2);
+        setItemsPerView(2);
       } else {
-        setItemsPerPage(1);
+        setItemsPerView(1);
       }
     };
     
@@ -177,76 +207,36 @@ const TestimonialCarousel = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
-  // Autoplay logic
+  // Update current slide when API changes
   useEffect(() => {
-    if (!autoplay) return;
+    if (!api) return;
     
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 5000);
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
     
-    return () => clearInterval(interval);
-  }, [currentIndex, autoplay, itemsPerPage]);
-  
-  // Navigation functions
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex >= testimonials.length - itemsPerPage ? 0 : prevIndex + 1
-    );
-  };
-  
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? testimonials.length - itemsPerPage : prevIndex - 1
-    );
-  };
-  
-  // Touch handlers for mobile swiping
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-    setAutoplay(false);
-  };
-  
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-  
-  const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 100) {
-      nextSlide(); // Swipe left
-    }
-    
-    if (touchStart - touchEnd < -100) {
-      prevSlide(); // Swipe right
-    }
-    
-    setTimeout(() => setAutoplay(true), 5000);
-  };
-  
-  // Get current visible testimonials
-  const currentTestimonials = testimonials.slice(currentIndex, currentIndex + itemsPerPage);
-  
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(testimonials.length / itemsPerPage);
-  const currentPage = Math.floor(currentIndex / itemsPerPage);
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
   
   return (
     <div className="mt-20 pt-16 border-t border-white/10">
+      {/* Section header with enhanced animations */}
       <motion.div 
-        className="text-center mb-14 relative"
+        className="text-center mb-16 relative"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
         <motion.div 
-          className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 text-sm mb-4"
+          className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 text-sm mb-4 border border-white/10"
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
           <Award className="w-4 h-4 mr-2" />
-          User Reviews
+          What Our Users Say
         </motion.div>
         
         <motion.h2 
@@ -256,7 +246,7 @@ const TestimonialCarousel = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          <span className="text-gradient">Trusted by Professionals</span>
+          <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Trusted by Professionals</span>
         </motion.h2>
         
         <motion.p 
@@ -266,7 +256,7 @@ const TestimonialCarousel = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          Hear what our users have to say about their experience with CopyClipCloud
+          Discover how CopyClipCloud has transformed workflows for users around the world
         </motion.p>
         
         <motion.div 
@@ -278,84 +268,62 @@ const TestimonialCarousel = () => {
         />
       </motion.div>
       
-      <div 
-        className="relative px-4 max-w-7xl mx-auto"
-        ref={carouselRef}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {/* Control buttons */}
-        <div className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 hidden md:block">
-          <motion.button 
-            onClick={prevSlide} 
-            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
-            onMouseEnter={() => setAutoplay(false)}
-            onMouseLeave={() => setAutoplay(true)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </motion.button>
-        </div>
-        
-        <div className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 hidden md:block">
-          <motion.button 
-            onClick={nextSlide} 
-            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
-            onMouseEnter={() => setAutoplay(false)}
-            onMouseLeave={() => setAutoplay(true)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <ArrowRight className="w-5 h-5" />
-          </motion.button>
-        </div>
-        
-        {/* Carousel content */}
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={currentIndex}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {currentTestimonials.map((testimonial, index) => (
-              <TestimonialCard 
-                key={`${currentIndex}-${index}`}
-                name={testimonial.name}
-                role={testimonial.role}
-                company={testimonial.company}
-                content={testimonial.content}
-                rating={testimonial.rating}
-                image={testimonial.image}
-                verified={testimonial.verified}
-              />
+      {/* Modern carousel using Shadcn UI Carousel */}
+      <div className="max-w-7xl mx-auto px-6">
+        <Carousel 
+          setApi={setApi}
+          className="w-full"
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+        >
+          <CarouselContent className="-ml-4">
+            {testimonials.map((testimonial, index) => (
+              <CarouselItem 
+                key={index} 
+                className={`pl-4 ${
+                  itemsPerView === 3 ? 'lg:basis-1/3' : 
+                  itemsPerView === 2 ? 'md:basis-1/2' : 
+                  'basis-full'
+                }`}
+              >
+                <TestimonialCard
+                  name={testimonial.name}
+                  role={testimonial.role}
+                  company={testimonial.company}
+                  content={testimonial.content}
+                  rating={testimonial.rating}
+                  image={testimonial.image}
+                  verified={testimonial.verified}
+                />
+              </CarouselItem>
             ))}
-          </motion.div>
-        </AnimatePresence>
-        
-        {/* Pagination indicators */}
-        <div className="flex justify-center mt-10 space-x-2">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              aria-label={`Go to slide ${index + 1}`}
-              className={`transition-all duration-300 ${
-                index === currentPage 
-                  ? 'w-8 h-2 bg-white rounded-full' 
-                  : 'w-2 h-2 bg-white/30 rounded-full hover:bg-white/50'
-              }`}
-              onClick={() => {
-                setCurrentIndex(index * itemsPerPage);
-                setAutoplay(false);
-                setTimeout(() => setAutoplay(true), 5000);
-              }}
-            />
-          ))}
-        </div>
+          </CarouselContent>
+          
+          {/* Custom styled navigation buttons */}
+          <div className="flex items-center justify-center mt-8 space-x-2">
+            <CarouselPrevious className="relative static lg:-left-0 h-11 w-11 rounded-full bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 hover:scale-105 transition-all" />
+            
+            {/* Slide indicator dots */}
+            <div className="flex items-center justify-center space-x-1 px-4">
+              {Array.from({ length: count }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => api?.scrollTo(i)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    current === i + 1 
+                      ? 'w-4 bg-white' 
+                      : 'bg-white/20 hover:bg-white/40'
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+            
+            <CarouselNext className="relative static lg:-right-0 h-11 w-11 rounded-full bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 hover:scale-105 transition-all" />
+          </div>
+        </Carousel>
       </div>
     </div>
   );
