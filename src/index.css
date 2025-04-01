@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -306,7 +307,18 @@
   animation: toast-appear 0.3s ease-out forwards !important;
 }
 
-/* Enhanced web notifications */
+/* Enhanced loading state */
+.loading-indicator {
+  @apply relative inline-block;
+}
+
+.loading-indicator::after {
+  content: '';
+  @apply absolute inset-0 bg-white/10 rounded-full;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Web notifications */
 .web-notification {
   @apply fixed right-4 bottom-4 p-4 backdrop-blur-xl bg-black/90 border border-white/10 rounded-lg shadow-xl text-white transform transition-all duration-300 z-50 max-w-xs;
   animation: notification-slide-in 0.3s ease forwards;
@@ -336,27 +348,4 @@
     transform: translateX(100%);
     opacity: 0;
   }
-}
-
-/* Updated positioning for multiple notifications */
-.web-notification:nth-child(1) {
-  bottom: 1rem;
-}
-
-.web-notification:nth-child(2) {
-  bottom: 8rem;
-}
-
-.web-notification:nth-child(3) {
-  bottom: 15rem;
-}
-
-.web-notification:nth-child(4) {
-  bottom: 22rem;
-}
-
-/* Enhanced position for Sonner toasts */
-[data-sonner-toaster][data-position="bottom-right"] {
-  right: 1.5rem !important;
-  bottom: 1.5rem !important;
 }
