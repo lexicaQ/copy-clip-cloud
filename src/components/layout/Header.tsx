@@ -45,11 +45,9 @@ const Header = () => {
               className="w-10 h-10 rounded-full flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300"
               style={{
                 background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)"
               }}
               whileHover={{ 
                 scale: 1.05,
-                boxShadow: "0 10px 40px rgba(255, 255, 255, 0.1)"
               }}
               whileTap={{ scale: 0.95 }}
             >
@@ -72,7 +70,7 @@ const Header = () => {
             <NavLink to="/about" icon={Clipboard}>About</NavLink>
             <NavLink to="/contact" icon={MessageSquare}>Contact</NavLink>
             
-            {/* Enhanced dropdown with smoother animations */}
+            {/* Enhanced dropdown with improved styling and black background */}
             <div className="relative group">
               <motion.button 
                 className="flex items-center text-gray-300 hover:text-white transition-colors"
@@ -95,9 +93,10 @@ const Header = () => {
               
               <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
                 <motion.div 
-                  className="py-3 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
+                  className="py-3 rounded-xl shadow-2xl overflow-hidden"
                   style={{
-                    background: "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))"
+                    background: "rgba(0, 0, 0, 0.95)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)"
                   }}
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -116,17 +115,18 @@ const Header = () => {
               onClick={handleDownload}
               className="flex items-center space-x-2 px-5 py-2.5 rounded-full relative overflow-hidden group"
               style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7))"
+                background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
+                border: "1px solid rgba(255, 255, 255, 0.2)"
               }}
               whileHover={{ 
                 scale: 1.05,
-                boxShadow: "0 10px 25px rgba(255, 255, 255, 0.2)"
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)"
               }}
               whileTap={{ scale: 0.95 }}
             >
               {/* Animated background effect */}
               <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0"
+                className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0"
                 animate={{
                   x: ['-100%', '100%'],
                 }}
@@ -137,8 +137,8 @@ const Header = () => {
                 }}
               />
               
-              <Download className="w-4 h-4 text-black relative z-10" />
-              <span className="font-medium text-black relative z-10">Download</span>
+              <Download className="w-4 h-4 text-white relative z-10" />
+              <span className="font-medium text-white relative z-10">Download</span>
             </motion.button>
           </div>
           
@@ -205,7 +205,7 @@ const Header = () => {
                 <div className="pt-6 mt-6 border-t border-white/10">
                   <motion.button 
                     onClick={handleDownload}
-                    className="w-full py-3.5 rounded-xl bg-white flex items-center justify-center space-x-2 text-black font-medium"
+                    className="w-full py-3.5 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center space-x-2 text-white font-medium"
                     whileTap={{ scale: 0.97 }}
                   >
                     <Download className="w-5 h-5" />
@@ -245,7 +245,7 @@ const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: 
       {isActive && (
         <motion.div 
           layoutId="navbar-indicator"
-          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-white/80 to-white/40 rounded-full"
+          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-white/60 rounded-full"
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
@@ -287,7 +287,7 @@ const MobileNavLink = ({ children, to, icon: Icon }: { children: React.ReactNode
       >
         <motion.div 
           className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-            isActive ? 'bg-white/20' : 'bg-white/5'
+            isActive ? 'bg-white/10' : 'bg-white/5'
           }`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

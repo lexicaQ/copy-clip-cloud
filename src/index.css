@@ -11,7 +11,7 @@
 }
 
 @layer components {
-  /* Modern glass panel styling */
+  /* Modern glass panel styling - monochrome */
   .glass-panel {
     @apply backdrop-blur-xl border border-white/10 rounded-xl shadow-xl transition-all duration-300;
     background: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
@@ -71,15 +71,10 @@
     animation: pulse 1.5s infinite;
   }
   
-  /* Modern text gradients */
+  /* Modern text gradients - monochrome */
   .text-gradient {
     @apply text-transparent bg-clip-text;
     background-image: linear-gradient(to right, #ffffff, #a0a0a0);
-  }
-  
-  .text-gradient-blue {
-    @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, #60a5fa, #3b82f6);
   }
   
   /* Enhanced panel background */
@@ -212,7 +207,7 @@
   }
 }
 
-/* Enhanced gradient backgrounds */
+/* Enhanced gradient backgrounds - monochrome */
 .gradient-bg {
   background: linear-gradient(
     135deg,
@@ -273,11 +268,11 @@
 
 /* Custom toast notifications for Sonner */
 :root {
-  --toast-bg: rgba(0, 0, 0, 0.85);
+  --toast-bg: rgba(0, 0, 0, 0.95);
   --toast-border: rgba(255, 255, 255, 0.1);
   --toast-text: #ffffff;
-  --toast-success: rgba(72, 187, 120, 0.2);
-  --toast-error: rgba(245, 101, 101, 0.2);
+  --toast-success: rgba(200, 200, 200, 0.15);
+  --toast-error: rgba(220, 220, 220, 0.15);
 }
 
 [data-sonner-toast] {
@@ -287,12 +282,12 @@
 }
 
 [data-sonner-toast][data-type="success"] {
-  border-left: 3px solid rgb(72, 187, 120) !important;
+  border-left: 3px solid rgb(220, 220, 220) !important;
   background: linear-gradient(90deg, var(--toast-success), transparent 50%) !important;
 }
 
 [data-sonner-toast][data-type="error"] {
-  border-left: 3px solid rgb(245, 101, 101) !important;
+  border-left: 3px solid rgb(220, 220, 220) !important;
   background: linear-gradient(90deg, var(--toast-error), transparent 50%) !important;
 }
 
@@ -321,4 +316,36 @@
   content: '';
   @apply absolute inset-0 bg-white/10 rounded-full;
   animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Web notifications */
+.web-notification {
+  @apply fixed right-4 bottom-4 p-4 backdrop-blur-xl bg-black/90 border border-white/10 rounded-lg shadow-xl text-white transform transition-all duration-300 z-50 max-w-xs;
+  animation: notification-slide-in 0.3s ease forwards;
+}
+
+.web-notification.exit {
+  animation: notification-slide-out 0.3s ease forwards;
+}
+
+@keyframes notification-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes notification-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Check, ExternalLink, ArrowRight, SparkleIcon, Shield } from "lucide-react";
+import { Download, Check, ExternalLink, ArrowRight } from "lucide-react";
 import { useFileDownload } from "@/hooks/useFileDownload";
 import { toast } from "sonner";
 
@@ -33,7 +33,7 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
           downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'
         }`}
         style={{
-          background: "linear-gradient(to right, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04))"
+          background: "linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02))"
         }}
         whileHover={{ 
           scale: 1.05,
@@ -41,15 +41,15 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
         }}
         whileTap={{ scale: 0.98 }}
       >
-        {/* Subtle background glow */}
+        {/* Subtle background shimmer */}
         <motion.div 
           className="absolute inset-0 opacity-0"
           animate={{ 
             opacity: [0, 0.2, 0],
             background: [
-              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%)",
-              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 70%)",
-              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%)"
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%)"
             ]
           }}
           transition={{ 
@@ -79,14 +79,14 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
           className={`relative overflow-hidden rounded-xl ${
             downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'
           }`}
-          aria-label="Download for Mac"
+          aria-label="Download App"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
-          {/* Modern gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/15 to-white/10 rounded-xl z-0" />
+          {/* Modern black/white gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/80 rounded-xl z-0" />
           
           {/* Dynamic border */}
           <motion.div 
@@ -99,7 +99,7 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
             transition={{ duration: 0.2 }}
           />
           
-          {/* Gradient border animation */}
+          {/* Subtle border animation */}
           <div className="absolute inset-0 overflow-hidden rounded-xl z-10 pointer-events-none">
             <motion.div 
               className="absolute -inset-[100%] z-10"
@@ -108,7 +108,7 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
               }}
               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
               style={{
-                background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.4) 20%, transparent 40%)",
+                background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2) 20%, transparent 40%)",
               }}
             />
           </div>
@@ -161,9 +161,9 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                       ease: "easeInOut"
                     }}
                   >
-                    <Check className="w-5 h-5" />
+                    <Check className="w-5 h-5 text-white" />
                   </motion.div>
-                  <span className="text-lg font-medium">Downloading...</span>
+                  <span className="text-lg font-medium text-white">Downloading...</span>
                 </motion.div>
               ) : (
                 <motion.div 
@@ -183,14 +183,14 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                       ease: "easeInOut"
                     }}
                   >
-                    <Download className="w-5 h-5" />
+                    <Download className="w-5 h-5 text-white" />
                   </motion.div>
-                  <span className="text-lg font-medium">Download for Mac</span>
+                  <span className="text-lg font-medium text-white">Download Now</span>
                   <motion.div 
                     animate={{ x: isHovered ? 5 : 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 10 }}
                   >
-                    <ArrowRight className={`w-4 h-4 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+                    <ArrowRight className={`w-4 h-4 text-white transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
                   </motion.div>
                 </motion.div>
               )}
@@ -200,7 +200,7 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
           {/* Bottom highlighting border */}
           <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden rounded-b-xl z-10">
             <motion.div 
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
               animate={{
                 x: [-100, 100]
               }}
@@ -232,20 +232,21 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                   Version {fileInfo?.version || "1.0.0"}
                 </motion.div>
                 <motion.div 
-                  className="px-2 py-1 rounded-full backdrop-blur-md border border-white/10 text-xs flex items-center gap-1"
-                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Shield className="w-3 h-3" />
-                  macOS 15+
-                </motion.div>
-                <motion.div 
                   className="px-2 py-1 rounded-full backdrop-blur-md border border-white/10 text-xs"
                   whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
                   transition={{ duration: 0.2 }}
                 >
                   {fileInfo?.extension || "ZIP"} Archive
                 </motion.div>
+                {fileInfo?.size && (
+                  <motion.div 
+                    className="px-2 py-1 rounded-full backdrop-blur-md border border-white/10 text-xs"
+                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {fileInfo.size}
+                  </motion.div>
+                )}
               </div>
 
               <div className="flex flex-col items-center gap-2">
@@ -272,9 +273,7 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                 )}
 
                 <motion.a
-                  href="https://docs.copyclipcloud.com/installation"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#"
                   className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1 group"
                   whileHover={{ x: 3 }}
                 >

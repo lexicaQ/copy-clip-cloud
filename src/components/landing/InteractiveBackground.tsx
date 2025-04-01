@@ -33,12 +33,12 @@ const InteractiveBackground = () => {
   
   return (
     <div ref={containerRef} className="absolute inset-0 z-0 overflow-hidden">
-      {/* Modern gradient background */}
+      {/* Modern gradient background - pure black */}
       <motion.div 
         className="fixed inset-0 bg-gradient-to-b from-black via-black/95 to-black/90" 
       />
       
-      {/* Modern aurora effect with subtle animations */}
+      {/* Modern aurora effect with subtle animations - monochrome */}
       <motion.div
         className="fixed inset-0 opacity-30"
         animate={{
@@ -51,19 +51,19 @@ const InteractiveBackground = () => {
           ease: "linear"
         }}
         style={{
-          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(60, 70, 90, 0.3) 0%, rgba(10, 15, 25, 0) 70%)',
+          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, rgba(10, 15, 25, 0) 70%)',
           backgroundSize: '120% 120%'
         }}
       />
       
-      {/* Responsive nebula elements that follow mouse movement slightly */}
+      {/* Monochrome nebula elements that follow mouse movement */}
       <motion.div
         style={{ 
           y: translateY1, 
           opacity: opacity1,
           x: mousePosition.x * -20,
         }}
-        className="fixed top-1/4 right-1/4 w-[800px] h-[800px] rounded-full bg-purple-500/5 blur-[120px]"
+        className="fixed top-1/4 right-1/4 w-[800px] h-[800px] rounded-full bg-white/5 blur-[120px]"
       />
       
       <motion.div
@@ -71,9 +71,9 @@ const InteractiveBackground = () => {
           y: translateY2, 
           scale: scale1,
           x: mousePosition.x * 15,
-          translateY: mousePosition.y * 20, // Fixed: Changed to translateY instead of duplicating y
+          translateY: mousePosition.y * 20,
         }}
-        className="fixed bottom-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-blue-500/5 blur-[100px]"
+        className="fixed bottom-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-white/5 blur-[100px]"
       />
       
       <motion.div
@@ -81,7 +81,7 @@ const InteractiveBackground = () => {
           y: translateY3,
           x: mousePosition.x * -25,
         }}
-        className="fixed top-1/3 left-2/3 w-[500px] h-[500px] rounded-full bg-teal-500/5 blur-[80px]"
+        className="fixed top-1/3 left-2/3 w-[500px] h-[500px] rounded-full bg-white/5 blur-[80px]"
       />
 
       {/* Elegant floating particles with enhanced motion */}
