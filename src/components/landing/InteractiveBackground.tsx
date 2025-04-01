@@ -71,7 +71,7 @@ const InteractiveBackground = () => {
           y: translateY2, 
           scale: scale1,
           x: mousePosition.x * 15,
-          y: translateY2.get() + (mousePosition.y * 20),
+          translateY: mousePosition.y * 20, // Fixed: Changed to translateY instead of duplicating y
         }}
         className="fixed bottom-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-blue-500/5 blur-[100px]"
       />
