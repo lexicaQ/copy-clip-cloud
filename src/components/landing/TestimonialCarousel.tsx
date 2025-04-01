@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { Star, ArrowLeft, ArrowRight, Quote, ShieldCheck, Award } from "lucide-react";
 
 // Types for our testimonials
@@ -89,33 +89,62 @@ const testimonials = [
   }
 ];
 
-// Modern testimonial card component
+// Modern testimonial card component with 3D effect
 const TestimonialCard = ({ 
   name, role, content, rating, image, company, verified = true 
 }: TestimonialProps) => {
+  const controls = useAnimation();
+  
+  useEffect(() => {
+    controls.start({
+      y: [5, -5, 5],
+      transition: {
+        duration: 6,
+        ease: "easeInOut",
+        repeat: Infinity,
+        repeatType: "reverse"
+      }
+    });
+  }, [controls]);
+  
   return (
     <motion.div 
-      className="glass-panel hover:bg-white/5 transition-all duration-300 flex flex-col h-full relative overflow-hidden group"
+      className="card-3d h-full"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
-      whileHover={{ y: -5 }}
+      whileHover={{ scale: 1.02 }}
     >
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 h-20 w-20 bg-gradient-to-bl from-white/5 to-transparent rounded-bl-3xl" />
-      <div className="absolute bottom-0 left-0 h-20 w-20 bg-gradient-to-tr from-white/5 to-transparent rounded-tr-3xl" />
+      {/* Floating background elements */}
+      <motion.div 
+        className="absolute top-0 right-0 w-24 h-24 rounded-full bg-gradient-to-br from-blue-500/10 to-transparent blur-xl"
+        animate={controls}
+      />
+      <motion.div 
+        className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-gradient-to-tr from-purple-500/10 to-transparent blur-xl"
+        animate={{
+          y: [-5, 5, -5],
+          transition: {
+            duration: 5, 
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: 1
+          }
+        }}
+      />
       
-      <div className="p-8 relative z-10 flex flex-col h-full">
+      <div className="card-3d-content p-8 relative z-10 flex flex-col h-full">
         {/* Quote icon */}
-        <Quote className="w-10 h-10 text-white/10 absolute top-6 right-6" />
+        <Quote className="w-10 h-10 text-blue-500/10 absolute top-6 right-6" />
         
         {/* Rating */}
         <div className="flex text-white mb-6">
           {[...Array(5)].map((_, i) => (
             <Star 
               key={i} 
-              className={`w-4 h-4 mr-1 ${i < Math.floor(rating) ? 'text-white' : 'text-gray-600'}`}
+              className={`w-4 h-4 mr-1 ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-600'}`}
               fill={i < Math.floor(rating) ? "currentColor" : "none"} 
             />
           ))}
@@ -130,11 +159,11 @@ const TestimonialCard = ({
         {/* User info */}
         <div className="flex items-center mt-auto pt-6 border-t border-white/10">
           <div className="relative">
-            <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20">
+            <div className="w-12 h-12 rounded-full overflow-hidden border border-white/20 shadow-inner-glow">
               <img src={image} alt={name} className="w-full h-full object-cover" />
             </div>
             {verified && (
-              <div className="absolute -bottom-1 -right-1 bg-white/10 p-1 rounded-full">
+              <div className="absolute -bottom-1 -right-1 bg-gradient-to-r from-blue-500 to-purple-500 p-1 rounded-full">
                 <ShieldCheck className="w-3 h-3 text-white" />
               </div>
             )}
@@ -239,13 +268,13 @@ const TestimonialCarousel = () => {
         viewport={{ once: true }}
       >
         <motion.div 
-          className="inline-flex items-center px-3 py-1 rounded-full bg-white/5 text-sm mb-4"
+          className="inline-flex items-center px-3 py-1 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-sm mb-4"
           initial={{ opacity: 0, y: -10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
-          <Award className="w-4 h-4 mr-2" />
+          <Award className="w-4 h-4 mr-2 text-blue-400" />
           User Reviews
         </motion.div>
         
@@ -256,7 +285,7 @@ const TestimonialCarousel = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          <span className="text-gradient">Trusted by Professionals</span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Trusted by Professionals</span>
         </motion.h2>
         
         <motion.p 
@@ -286,30 +315,42 @@ const TestimonialCarousel = () => {
         onTouchEnd={handleTouchEnd}
       >
         {/* Control buttons */}
-        <div className="absolute -left-6 top-1/2 -translate-y-1/2 z-10 hidden md:block">
+        <div className="absolute -left-6 lg:-left-12 top-1/2 -translate-y-1/2 z-10 hidden md:block">
           <motion.button 
             onClick={prevSlide} 
-            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
+            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10 bg-gradient-to-br from-blue-500/10 to-purple-500/10"
             onMouseEnter={() => setAutoplay(false)}
             onMouseLeave={() => setAutoplay(true)}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" }}
             whileTap={{ scale: 0.9 }}
           >
             <ArrowLeft className="w-5 h-5" />
           </motion.button>
         </div>
         
-        <div className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 hidden md:block">
+        <div className="absolute -right-6 lg:-right-12 top-1/2 -translate-y-1/2 z-10 hidden md:block">
           <motion.button 
             onClick={nextSlide} 
-            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
+            className="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-all border border-white/10 bg-gradient-to-br from-blue-500/10 to-purple-500/10"
             onMouseEnter={() => setAutoplay(false)}
             onMouseLeave={() => setAutoplay(true)}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" }}
             whileTap={{ scale: 0.9 }}
           >
             <ArrowRight className="w-5 h-5" />
           </motion.button>
+        </div>
+        
+        {/* Progress indicator */}
+        <div className="absolute -top-10 left-0 w-full">
+          <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+            <motion.div 
+              className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+              initial={{ width: `${(currentPage / totalPages) * 100}%` }}
+              animate={{ width: `${((currentPage + 1) / totalPages) * 100}%` }}
+              transition={{ duration: 0.5 }}
+            />
+          </div>
         </div>
         
         {/* Carousel content */}
@@ -345,7 +386,7 @@ const TestimonialCarousel = () => {
               aria-label={`Go to slide ${index + 1}`}
               className={`transition-all duration-300 ${
                 index === currentPage 
-                  ? 'w-8 h-2 bg-white rounded-full' 
+                  ? 'w-8 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full' 
                   : 'w-2 h-2 bg-white/30 rounded-full hover:bg-white/50'
               }`}
               onClick={() => {

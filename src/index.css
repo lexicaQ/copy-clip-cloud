@@ -4,39 +4,54 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --glow-blue: rgba(59, 130, 246, 0.3);
+    --glow-purple: rgba(168, 85, 247, 0.3);
+  }
+  
   body {
     @apply bg-background text-foreground antialiased;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  ::selection {
+    @apply bg-blue-500/30 text-white;
   }
 }
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
   }
   
   .animated-border-button {
-    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl;
-    background: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
-    background-size: 200% 100%;
-    background-position: 100% 50%;
-  }
-
-  .animated-border-button:hover {
-    @apply bg-white text-black shadow-2xl;
-    background-position: 0% 50%;
-    transform: translateY(-2px);
+    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl overflow-hidden;
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
   }
 
   .animated-border-button::before {
     content: '';
-    @apply absolute inset-0 border border-white/50 rounded-xl;
+    @apply absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor; 
+    padding: 1px;
+    border-radius: 12px;
+  }
+
+  .animated-border-button:hover::before {
+    @apply opacity-100;
     animation: border-pulse 2s linear infinite;
+  }
+
+  .animated-border-button:hover {
+    @apply transform -translate-y-1 shadow-[0_7px_25px_-5px_var(--glow-blue)];
   }
 
   .download-button {
     position: relative;
     overflow: hidden;
+    @apply bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium py-3 px-6 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] transition-all duration-300;
   }
   
   .download-button::after {
@@ -60,11 +75,16 @@
   
   .text-gradient {
     @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, #ffffff, #a0a0a0);
+    background-image: linear-gradient(to right, #fff, #a0a0a0);
+  }
+  
+  .text-gradient-blue {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, #3b82f6, #8b5cf6);
   }
   
   .gradient-bg {
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
   }
   
   .elegant-shadow {
@@ -72,12 +92,12 @@
   }
   
   .subtle-glow {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
   }
 
   /* Modern Metro-style elements */
   .metro-card {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl transition-all duration-300 overflow-hidden;
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl transition-all duration-300 overflow-hidden;
   }
   
   .metro-card:hover {
@@ -85,15 +105,55 @@
   }
   
   .metro-border-left {
-    @apply border-l-4 border-white/20 pl-4;
+    @apply border-l-4 border-gradient-to-b from-blue-400 to-purple-500 pl-4;
   }
   
   .metro-badge {
-    @apply inline-flex items-center px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium;
+    @apply inline-flex items-center px-2.5 py-1 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/10 text-xs font-medium;
   }
   
   .metro-navbar {
-    @apply backdrop-blur-lg bg-black/40 border-b border-white/10 shadow-lg;
+    @apply backdrop-blur-xl bg-black/40 border-b border-white/10 shadow-lg;
+  }
+  
+  /* 3D Card effect */
+  .card-3d {
+    @apply transition-all duration-300 backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl overflow-hidden relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  .card-3d:hover {
+    transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+    @apply shadow-[0_10px_30px_-5px_rgba(59,130,246,0.3)] border-white/20;
+  }
+  
+  .card-3d-content {
+    @apply relative z-10;
+  }
+  
+  .card-3d::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 transition-opacity duration-300;
+    z-index: 0;
+  }
+  
+  .card-3d:hover::before {
+    @apply opacity-100;
+  }
+  
+  /* Glowing button */
+  .glow-button {
+    @apply relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg px-6 py-3 transition-all duration-300 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)];
+  }
+  
+  .glow-button::after {
+    content: '';
+    @apply absolute inset-0 bg-white/20 opacity-0 transition-opacity duration-300;
+  }
+  
+  .glow-button:hover::after {
+    @apply opacity-100;
   }
 }
 
@@ -122,16 +182,10 @@
 
 @keyframes border-pulse {
   0%, 100% {
-    clip-path: inset(0 0 98% 0);
-  }
-  25% {
-    clip-path: inset(0 98% 0 0);
+    opacity: 1;
   }
   50% {
-    clip-path: inset(98% 0 0 0);
-  }
-  75% {
-    clip-path: inset(0 0 0 98%);
+    opacity: 0.5;
   }
 }
 
@@ -144,15 +198,6 @@
   }
 }
 
-.gradient-bg {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
-}
-
-/* Modern hover effects for navigation */
 .nav-link-hover {
   position: relative;
 }
@@ -162,10 +207,10 @@
   position: absolute;
   width: 100%;
   transform: scaleX(0);
-  height: 1px;
+  height: 2px;
   bottom: -4px;
   left: 0;
-  background-color: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
   transform-origin: bottom right;
   transition: transform 0.3s ease-out;
 }
@@ -189,5 +234,68 @@
   }
   60% {
     transform: translateY(-5px);
+  }
+}
+
+/* Modern gradient border */
+.gradient-border {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  padding: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(59, 130, 246, 0.5),
+    rgba(168, 85, 247, 0.5)
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Modern glassy backdrop */
+.glassy-backdrop {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(10, 10, 30, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Loading spinner */
+.spinner {
+  @apply relative w-10 h-10;
+}
+
+.spinner div {
+  @apply absolute w-full h-full border-4 border-t-blue-500 rounded-full;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Futuristic layout grid */
+.futuristic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .futuristic-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   }
 }
