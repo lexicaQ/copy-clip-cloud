@@ -12,26 +12,28 @@
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl shadow-xl transition-all duration-300;
   }
   
   .animated-border-button {
-    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl;
-    background: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
-    background-size: 200% 100%;
-    background-position: 100% 50%;
+    @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium tracking-wider uppercase transition-all duration-300 ease-out rounded-xl overflow-hidden;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
   }
 
   .animated-border-button:hover {
-    @apply bg-white text-black shadow-2xl;
-    background-position: 0% 50%;
+    @apply shadow-2xl;
     transform: translateY(-2px);
   }
 
   .animated-border-button::before {
     content: '';
-    @apply absolute inset-0 border border-white/50 rounded-xl;
-    animation: border-pulse 2s linear infinite;
+    @apply absolute inset-0 rounded-xl opacity-50;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.5s ease;
+  }
+  
+  .animated-border-button:hover::before {
+    animation: shine 1.5s infinite;
   }
 
   .download-button {
@@ -77,7 +79,7 @@
 
   /* Modern Metro-style elements */
   .metro-card {
-    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl transition-all duration-300 overflow-hidden;
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl transition-all duration-300 overflow-hidden;
   }
   
   .metro-card:hover {
@@ -93,7 +95,34 @@
   }
   
   .metro-navbar {
-    @apply backdrop-blur-lg bg-black/40 border-b border-white/10 shadow-lg;
+    @apply backdrop-blur-xl bg-black/40 border-b border-white/10 shadow-lg;
+  }
+  
+  /* Enhanced notification style */
+  .notification {
+    @apply bg-black/80 backdrop-blur-md border border-white/10 text-white rounded-lg shadow-2xl;
+    animation: fade-in-up 0.3s ease-out forwards;
+  }
+  
+  /* Modern button styles */
+  .btn-modern {
+    @apply relative overflow-hidden backdrop-blur-md px-6 py-3 rounded-lg border border-white/20 transition-all duration-300;
+    background: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+  }
+  
+  .btn-modern:hover {
+    @apply border-white/30 shadow-lg;
+    transform: translateY(-2px);
+  }
+  
+  .btn-modern::after {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  }
+  
+  .btn-modern:hover::after {
+    @apply opacity-100;
   }
 }
 
@@ -122,16 +151,12 @@
 
 @keyframes border-pulse {
   0%, 100% {
-    clip-path: inset(0 0 98% 0);
-  }
-  25% {
-    clip-path: inset(0 98% 0 0);
+    opacity: 0.5;
+    transform: scale(1);
   }
   50% {
-    clip-path: inset(98% 0 0 0);
-  }
-  75% {
-    clip-path: inset(0 0 0 98%);
+    opacity: 1;
+    transform: scale(1.05);
   }
 }
 
@@ -141,6 +166,26 @@
   }
   50% {
     transform: translateY(-20px);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -190,4 +235,65 @@
   60% {
     transform: translateY(-5px);
   }
+}
+
+/* Enhanced 3D hover effect */
+.hover-3d {
+  transition: transform 0.3s ease-out;
+}
+
+.hover-3d:hover {
+  transform: translateY(-5px) rotateX(5deg);
+}
+
+/* Custom toast notifications for Sonner */
+:root {
+  --toast-bg: rgba(0, 0, 0, 0.8);
+  --toast-border: rgba(255, 255, 255, 0.1);
+  --toast-text: #ffffff;
+  --toast-success: rgba(72, 187, 120, 0.2);
+  --toast-error: rgba(245, 101, 101, 0.2);
+}
+
+[data-sonner-toast] {
+  @apply backdrop-blur-lg border border-white/10 rounded-lg shadow-2xl !important;
+  background: var(--toast-bg) !important;
+  color: var(--toast-text) !important;
+}
+
+[data-sonner-toast][data-type="success"] {
+  border-left: 3px solid rgb(72, 187, 120) !important;
+  background: linear-gradient(90deg, var(--toast-success), transparent 50%) !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  border-left: 3px solid rgb(245, 101, 101) !important;
+  background: linear-gradient(90deg, var(--toast-error), transparent 50%) !important;
+}
+
+/* Subtle animation for toasts */
+@keyframes toast-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+[data-sonner-toast] {
+  animation: toast-appear 0.3s ease-out forwards !important;
+}
+
+/* Enhance loading states */
+.loading-indicator {
+  @apply relative inline-block;
+}
+
+.loading-indicator::after {
+  content: '';
+  @apply absolute inset-0 bg-white/10 rounded-full;
+  animation: pulse 1.5s infinite ease-in-out;
 }

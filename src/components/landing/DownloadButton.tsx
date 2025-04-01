@@ -29,12 +29,36 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
       <motion.button
         onClick={handleButtonClick}
         disabled={downloading}
-        className={`px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all flex items-center gap-2 ${
+        className={`px-4 py-2 rounded-lg backdrop-blur-md border border-white/20 transition-all flex items-center gap-2 relative overflow-hidden ${
           downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'
         }`}
-        whileHover={{ scale: 1.05 }}
+        style={{
+          background: "linear-gradient(to right, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04))"
+        }}
+        whileHover={{ 
+          scale: 1.05,
+          boxShadow: "0 5px 15px rgba(0, 0, 0, 0.2)"
+        }}
         whileTap={{ scale: 0.98 }}
       >
+        {/* Subtle background glow */}
+        <motion.div 
+          className="absolute inset-0 opacity-0"
+          animate={{ 
+            opacity: [0, 0.2, 0],
+            background: [
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%)"
+            ]
+          }}
+          transition={{ 
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
         {downloading ? <Check className="w-4 h-4" /> : <Download className="w-4 h-4" />}
         <span className="text-sm font-medium">Download</span>
       </motion.button>
@@ -52,7 +76,7 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
         <motion.button
           onClick={handleButtonClick}
           disabled={downloading}
-          className={`animated-border-button glass-panel download-button group relative overflow-hidden ${
+          className={`relative overflow-hidden rounded-xl ${
             downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'
           }`}
           aria-label="Download for Mac"
@@ -61,14 +85,40 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+          {/* Modern gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/15 to-white/10 rounded-xl z-0" />
+          
+          {/* Dynamic border */}
+          <motion.div 
+            className="absolute inset-0 rounded-xl z-10 pointer-events-none"
+            animate={{
+              boxShadow: isHovered 
+                ? "inset 0 0 0 1.5px rgba(255,255,255,0.5)" 
+                : "inset 0 0 0 1px rgba(255,255,255,0.2)"
+            }}
+            transition={{ duration: 0.2 }}
+          />
+          
+          {/* Gradient border animation */}
+          <div className="absolute inset-0 overflow-hidden rounded-xl z-10 pointer-events-none">
+            <motion.div 
+              className="absolute -inset-[100%] z-10"
+              animate={{
+                transform: isHovered ? "rotate(180deg)" : "rotate(0deg)",
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              style={{
+                background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.4) 20%, transparent 40%)",
+              }}
+            />
+          </div>
           
           {/* Subtle animated particles in the background */}
-          <div className="absolute inset-0 overflow-hidden">
-            {Array.from({ length: 5 }).map((_, i) => (
+          <div className="absolute inset-0 overflow-hidden rounded-xl z-0">
+            {Array.from({ length: 8 }).map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1 h-1 bg-white/30 rounded-full"
+                className="absolute w-1 h-1 bg-white/40 rounded-full"
                 initial={{ 
                   x: Math.random() * 100 + "%", 
                   y: Math.random() * 100 + "%", 
@@ -76,8 +126,8 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                 }}
                 animate={{ 
                   y: [Math.random() * 100 + "%", Math.random() * 100 + "%"],
-                  opacity: [0, 0.8, 0],
-                  scale: [0.5, 1, 0.5]
+                  opacity: [0, isHovered ? 0.8 : 0.4, 0],
+                  scale: [0.5, 1.5, 0.5]
                 }}
                 transition={{ 
                   repeat: Infinity, 
@@ -89,7 +139,8 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
             ))}
           </div>
           
-          <span className="relative z-10 flex items-center space-x-2">
+          {/* Button content */}
+          <div className="px-8 py-4 relative z-20 backdrop-blur-sm">
             <AnimatePresence mode="wait">
               {downloading ? (
                 <motion.div 
@@ -97,10 +148,22 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  className="animate-border-pulse flex items-center gap-2"
+                  className="flex items-center gap-2"
                 >
-                  <Check className="w-5 h-5" />
-                  <span>Downloading...</span>
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.1, 1],
+                      opacity: [1, 0.8, 1]
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <Check className="w-5 h-5" />
+                  </motion.div>
+                  <span className="text-lg font-medium">Downloading...</span>
                 </motion.div>
               ) : (
                 <motion.div 
@@ -110,21 +173,44 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                   exit={{ opacity: 0, scale: 0.8 }}
                   className="flex items-center gap-2"
                 >
-                  <Download className="w-5 h-5 group-hover:animate-bounce" />
-                  <span>Download for Mac</span>
+                  <motion.div
+                    animate={{ 
+                      y: isHovered ? [-1, 1, -1] : 0
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      repeat: isHovered ? Infinity : 0,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <Download className="w-5 h-5" />
+                  </motion.div>
+                  <span className="text-lg font-medium">Download for Mac</span>
                   <motion.div 
                     animate={{ x: isHovered ? 5 : 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 10 }}
                   >
-                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowRight className={`w-4 h-4 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
                   </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
-          </span>
-          <div className="absolute inset-0 rounded-xl overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent" style={{ transform: 'translateX(-100%)', animation: 'download-border-animation 2s linear infinite' }} />
+          </div>
+          
+          {/* Bottom highlighting border */}
+          <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden rounded-b-xl z-10">
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+              animate={{
+                x: [-100, 100]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                repeatDelay: 0.5
+              }}
+            />
           </div>
         </motion.button>
 
@@ -134,19 +220,32 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
               className="flex flex-col items-center"
             >
-              <div className="text-sm text-gray-400 flex items-center space-x-3 mb-2">
-                <div className="px-2 py-1 rounded-full bg-white/10 text-xs">
+              <div className="text-sm text-gray-400 flex flex-wrap justify-center gap-3 mb-2">
+                <motion.div 
+                  className="px-2 py-1 rounded-full backdrop-blur-md border border-white/10 text-xs"
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                  transition={{ duration: 0.2 }}
+                >
                   Version {fileInfo?.version || "1.0.0"}
-                </div>
-                <div className="px-2 py-1 rounded-full bg-white/10 text-xs flex items-center gap-1">
+                </motion.div>
+                <motion.div 
+                  className="px-2 py-1 rounded-full backdrop-blur-md border border-white/10 text-xs flex items-center gap-1"
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                  transition={{ duration: 0.2 }}
+                >
                   <Shield className="w-3 h-3" />
                   macOS 15+
-                </div>
-                <div className="px-2 py-1 rounded-full bg-white/10 text-xs">
+                </motion.div>
+                <motion.div 
+                  className="px-2 py-1 rounded-full backdrop-blur-md border border-white/10 text-xs"
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                  transition={{ duration: 0.2 }}
+                >
                   {fileInfo?.extension || "ZIP"} Archive
-                </div>
+                </motion.div>
               </div>
 
               <div className="flex flex-col items-center gap-2">
@@ -157,7 +256,18 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
                   >
-                    {downloadCount.toLocaleString()}+ users already downloaded
+                    <motion.span
+                      animate={{ 
+                        opacity: [0.7, 1, 0.7]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      {downloadCount.toLocaleString()}+ users already downloaded
+                    </motion.span>
                   </motion.div>
                 )}
 
@@ -165,10 +275,21 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                   href="https://docs.copyclipcloud.com/installation"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1"
+                  className="text-xs text-gray-500 hover:text-white transition-colors flex items-center gap-1 group"
                   whileHover={{ x: 3 }}
                 >
-                  Installation guide <ExternalLink className="w-3 h-3" />
+                  Installation guide 
+                  <motion.div
+                    animate={{ x: [0, 2, 0] }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      repeatDelay: 1
+                    }}
+                  >
+                    <ExternalLink className="w-3 h-3 transition-transform group-hover:scale-110" />
+                  </motion.div>
                 </motion.a>
               </div>
             </motion.div>
