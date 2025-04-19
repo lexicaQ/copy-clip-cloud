@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Code, PenTool, Briefcase, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const UserExamples = () => {
   const userProfiles = [
@@ -17,21 +18,24 @@ const UserExamples = () => {
       icon: PenTool,
       description: "Share colors, images, and designs seamlessly between laptop and tablet",
       useCases: ["Color Codes", "Design Assets", "Image Snippets", "Inspiration"],
-      color: "from-white/10 to-white/5"
+      color: "from-white/10 to-white/5",
+      link: "/use-cases/designer"
     },
     {
       title: "Business",
       icon: Briefcase,
       description: "Always have important business information at hand",
       useCases: ["Contact Information", "Meeting Notes", "Statistics", "Presentation Text"],
-      color: "from-white/10 to-white/5"
+      color: "from-white/10 to-white/5",
+      link: "/use-cases/business"
     },
     {
       title: "Science",
       icon: BookOpen,
       description: "Organize research results and literature",
       useCases: ["Quotes", "Research Data", "Literature References", "Statistics"],
-      color: "from-white/10 to-white/5"
+      color: "from-white/10 to-white/5",
+      link: "/use-cases/science"
     }
   ];
 
