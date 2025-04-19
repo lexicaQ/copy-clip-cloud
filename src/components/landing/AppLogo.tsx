@@ -220,53 +220,58 @@ const AppLogo = () => {
         </motion.div>
       </div>
 
-      {/* Enhanced badge */}
-      <motion.div 
-        className="inline-flex items-center px-4 py-2 rounded-full space-x-2 backdrop-blur-lg"
-        style={{
-          background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-          border: "1px solid rgba(255,255,255,0.1)"
-        }}
+      {/* Badge Container - Updated to display badges side by side */}
+      <motion.div
+        className="flex flex-wrap justify-center items-center gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        whileHover={{ 
-          scale: 1.05, 
-          boxShadow: "0 0 20px rgba(255, 255, 255, 0.1)" 
-        }}
       >
-        <Apple className="w-4 h-4" />
-        <span className="text-sm font-medium">Built for macOS 15+</span>
-      </motion.div>
+        {/* macOS Badge */}
+        <motion.div 
+          className="inline-flex items-center px-4 py-2 rounded-full space-x-2 backdrop-blur-lg"
+          style={{
+            background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
+            border: "1px solid rgba(255,255,255,0.1)"
+          }}
+          whileHover={{ 
+            scale: 1.05, 
+            boxShadow: "0 0 20px rgba(255, 255, 255, 0.1)" 
+          }}
+        >
+          <Apple className="w-4 h-4" />
+          <span className="text-sm font-medium">Built for macOS 15+</span>
+        </motion.div>
 
-      {/* Enhanced download indicator */}
-      <motion.div
-        className="inline-flex items-center px-3 py-1 rounded-full text-white text-xs font-medium shadow-lg backdrop-blur-md"
-        style={{
-          background: "linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-          border: "1px solid rgba(255,255,255,0.1)"
-        }}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        whileHover={{ 
-          scale: 1.05,
-          boxShadow: "0 0 15px rgba(255, 255, 255, 0.15)"
-        }}
-      >
-        <motion.span 
-          className="w-1.5 h-1.5 rounded-full bg-white mr-1.5"
-          animate={{ 
-            scale: [1, 1.5, 1],
-            opacity: [0.7, 1, 0.7]
+        {/* Free Download Badge - Redesigned */}
+        <motion.div
+          className="inline-flex items-center px-4 py-2 rounded-full text-white text-sm font-medium backdrop-blur-md"
+          style={{
+            background: "linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))",
+            border: "1px solid rgba(255,255,255,0.15)"
           }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: "0 0 15px rgba(255, 255, 255, 0.15)"
           }}
-        />
-        Free Download
+        >
+          <motion.span 
+            className="w-2 h-2 rounded-full bg-white mr-2"
+            animate={{ 
+              scale: [1, 1.5, 1],
+              opacity: [0.7, 1, 0.7]
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          Free Download
+        </motion.div>
       </motion.div>
     </div>
   );

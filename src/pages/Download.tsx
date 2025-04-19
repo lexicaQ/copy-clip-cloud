@@ -1,11 +1,10 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import DownloadButton from "@/components/landing/DownloadButton";
 import { 
-  Download as DownloadIcon, 
+  Download, 
   Apple, 
   FileCheck, 
   Lock, 
@@ -80,18 +79,20 @@ const DownloadOption = ({ title, description, icon: Icon, primary = false, comin
     {coming ? (
       <button 
         disabled
-        className="w-full px-6 py-3 bg-white/10 text-gray-300 rounded-full flex items-center justify-center cursor-not-allowed"
+        className="w-full px-6 py-3 bg-white/5 border border-white/10 text-gray-300 rounded-full flex items-center justify-center cursor-not-allowed backdrop-blur-sm"
       >
         <span>Coming Soon</span>
       </button>
     ) : beta ? (
-      <a 
+      <motion.a 
         href="#beta-download"
-        className="w-full px-6 py-3 bg-blue-500/20 text-white rounded-full flex items-center justify-center hover:bg-blue-500/30 transition-all"
+        className="w-full px-6 py-3 bg-blue-500/10 border border-blue-400/20 text-white rounded-full flex items-center justify-center hover:bg-blue-500/20 transition-all"
+        whileHover={{ scale: 1.02, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }}
+        whileTap={{ scale: 0.98 }}
       >
-        <DownloadIcon className="w-4 h-4 mr-2" />
+        <Download className="w-4 h-4 mr-2" />
         <span>Download Beta</span>
-      </a>
+      </motion.a>
     ) : primary ? (
       <div className="flex flex-col space-y-4">
         <DownloadButton />
@@ -100,13 +101,15 @@ const DownloadOption = ({ title, description, icon: Icon, primary = false, comin
         </p>
       </div>
     ) : (
-      <a 
+      <motion.a 
         href="#download-stable"
-        className="w-full px-6 py-3 bg-white/10 text-white rounded-full flex items-center justify-center hover:bg-white/20 transition-all"
+        className="w-full px-6 py-3 bg-white/10 border border-white/15 text-white rounded-full flex items-center justify-center hover:bg-white/15 transition-all backdrop-blur-sm"
+        whileHover={{ scale: 1.02, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }}
+        whileTap={{ scale: 0.98 }}
       >
-        <DownloadIcon className="w-4 h-4 mr-2" />
+        <Download className="w-4 h-4 mr-2" />
         <span>Download</span>
-      </a>
+      </motion.a>
     )}
   </motion.div>
 );
@@ -159,7 +162,7 @@ const DownloadPage = () => {
             <DownloadOption 
               title="Windows"
               description="Coming soon to Windows with cross-platform syncing capabilities."
-              icon={DownloadIcon}
+              icon={Download}
               coming={true}
             />
             <DownloadOption 
@@ -171,7 +174,7 @@ const DownloadPage = () => {
             <DownloadOption 
               title="Beta Channel"
               description="Get early access to new features and help us improve with your feedback."
-              icon={DownloadIcon}
+              icon={Download}
               beta={true}
             />
           </div>
@@ -239,7 +242,7 @@ const DownloadPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           <motion.div
-            className="glass-panel p-6"
+            className="glass-panel p-6 border border-white/10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -254,16 +257,21 @@ const DownloadPage = () => {
             <p className="text-gray-400 text-sm mb-6">
               Need an older version of CopyClipCloud? We maintain archives of previous releases.
             </p>
-            <a 
+            <motion.a 
               href="#previous-versions"
-              className="inline-flex items-center text-white hover:underline"
+              className="inline-flex items-center text-white hover:text-white/90 group"
+              whileHover={{ x: 3 }}
             >
-              Browse version history <ArrowRight className="w-4 h-4 ml-1" />
-            </a>
+              <span className="relative">
+                Browse version history
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-gradient-to-r from-white/60 to-transparent group-hover:w-full transition-all duration-300 ease-out"></span>
+              </span>
+              <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
+            </motion.a>
           </motion.div>
 
           <motion.div
-            className="glass-panel p-6"
+            className="glass-panel p-6 border border-white/10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -278,12 +286,17 @@ const DownloadPage = () => {
             <p className="text-gray-400 text-sm mb-6">
               Verify the authenticity of your downloads using our checksums and digital signatures.
             </p>
-            <a 
+            <motion.a 
               href="#verify-downloads"
-              className="inline-flex items-center text-white hover:underline"
+              className="inline-flex items-center text-white hover:text-white/90 group"
+              whileHover={{ x: 3 }}
             >
-              Learn how to verify <ArrowRight className="w-4 h-4 ml-1" />
-            </a>
+              <span className="relative">
+                Learn how to verify
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-gradient-to-r from-white/60 to-transparent group-hover:w-full transition-all duration-300 ease-out"></span>
+              </span>
+              <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
+            </motion.a>
           </motion.div>
         </div>
 
@@ -299,18 +312,22 @@ const DownloadPage = () => {
             Having trouble with your download or installation? Our support team is here to help.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a 
+            <motion.a 
               href="/support" 
               className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
             >
               Get Support
-            </a>
-            <a 
+            </motion.a>
+            <motion.a 
               href="/tutorials" 
-              className="px-6 py-3 bg-white/10 rounded-full inline-flex items-center hover:bg-white/20 transition-all"
+              className="px-6 py-3 bg-white/10 border border-white/20 rounded-full inline-flex items-center hover:bg-white/15 transition-all"
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
             >
               Installation Guide
-            </a>
+            </motion.a>
           </div>
         </motion.div>
       </main>

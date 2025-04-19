@@ -37,14 +37,17 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
         <motion.button
           onClick={handleButtonClick}
           disabled={downloading}
-          className={`relative overflow-hidden rounded-xl ${
+          className={`relative overflow-hidden rounded-xl border border-white/30 ${
             downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'
           }`}
           aria-label="Download App"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          whileHover={{ scale: 1.03 }}
+          whileHover={{ scale: 1.03, boxShadow: "0 0 25px rgba(255, 255, 255, 0.2)" }}
           whileTap={{ scale: 0.98 }}
+          style={{
+            background: "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)",
+          }}
         >
           <DownloadButtonBackground isHovered={isHovered} />
           <DownloadButtonContent downloading={downloading} isHovered={isHovered} />
