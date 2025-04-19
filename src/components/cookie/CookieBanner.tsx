@@ -1,23 +1,46 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Info, Shield, CheckCheck, FileText, Lock, Cookie } from "lucide-react";
+import { 
+  Shield, 
+  BarChart3, 
+  Send, 
+  Settings, 
+  Info, 
+  X, 
+  Check, 
+  Cookie, 
+  ExternalLink
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { 
+  AlertDialog, 
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const CookieBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [activeTab, setActiveTab] = useState("preferences");
   const [cookiePreferences, setCookiePreferences] = useState({
     essential: true,
     analytics: false,
     marketing: false,
     functional: false
   });
-  const [activeTab, setActiveTab] = useState("privacy");
 
+  // Check if cookie consent already exists
   useEffect(() => {
     const consent = localStorage.getItem("cookie-consent");
     if (!consent) {
@@ -25,6 +48,35 @@ const CookieBanner = () => {
       return () => clearTimeout(timer);
     }
   }, []);
+
+  // Cookie types configuration
+  const cookieTypes = [
+    {
+      id: "essential",
+      title: "Erforderliche Cookies",
+      description: "Diese Cookies sind für die Grundfunktionen der Website unerlässlich und können nicht deaktiviert werden.",
+      required: true,
+      icon: Shield
+    },
+    {
+      id: "analytics",
+      title: "Analyse Cookies",
+      description: "Helfen uns zu verstehen, wie Besucher mit unserer Website interagieren.",
+      icon: BarChart3
+    },
+    {
+      id: "marketing",
+      title: "Marketing Cookies",
+      description: "Ermöglichen personalisierte Werbung und Marketing.",
+      icon: Send
+    },
+    {
+      id: "functional",
+      title: "Funktionale Cookies",
+      description: "Verbessern die Funktionalität und Personalisierung der Website.",
+      icon: Settings
+    }
+  ];
 
   const handleAcceptAll = () => {
     const preferences = {
@@ -35,10 +87,12 @@ const CookieBanner = () => {
     };
     setCookiePreferences(preferences);
     savePreferences(preferences, "all");
+    setShowDialog(false);
   };
 
   const handleSavePreferences = () => {
     savePreferences(cookiePreferences, "custom");
+    setShowDialog(false);
   };
 
   const savePreferences = (preferences: typeof cookiePreferences, type: "all" | "custom") => {
@@ -46,104 +100,77 @@ const CookieBanner = () => {
     localStorage.setItem("cookie-preferences", JSON.stringify(preferences));
     localStorage.setItem("cookie-consent-timestamp", new Date().toString());
     setShowBanner(false);
-    toast.success("Cookie preferences saved successfully");
+    toast.success("Cookie-Einstellungen erfolgreich gespeichert");
   };
 
-  const cookieTypes = [
-    {
-      id: "essential",
-      title: "Essential Cookies",
-      description: "Required for the website to function properly. These cannot be disabled.",
-      required: true,
-      icon: Shield
-    },
-    {
-      id: "analytics",
-      title: "Analytics Cookies",
-      description: "Help us understand how visitors interact with our website.",
-      icon: Info
-    },
-    {
-      id: "marketing",
-      title: "Marketing Cookies",
-      description: "Enable personalized advertisements and marketing.",
-      icon: Cookie
-    },
-    {
-      id: "functional",
-      title: "Functional Cookies",
-      description: "Enhance website functionality and personalization.",
-      icon: CheckCheck
-    }
-  ];
-
-  const PolicyLink = ({ to, children }: { to: string; children: React.ReactNode }) => (
-    <Link
-      to={to}
-      className="text-white underline decoration-white/30 hover:decoration-white"
-      onClick={(e) => e.stopPropagation()}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {children}
-    </Link>
-  );
-
-  if (!showBanner) return null;
+  const openSettings = () => {
+    setShowDialog(true);
+  };
 
   return (
-    <motion.div
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-black/90 backdrop-blur-xl border-t border-white/10"
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-          <div className="flex items-start space-x-4 flex-1">
-            <div className="p-2 rounded-lg bg-white/10">
-              <Cookie className="h-6 w-6" />
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-lg font-medium">Cookie Preferences</h3>
-              <p className="text-sm text-gray-400 max-w-2xl">
-                We use cookies to enhance your browsing experience and analyze our traffic. Please select your preferences below.
-                <button 
-                  onClick={() => setActiveTab("details")}
-                  className="text-white underline decoration-white/30 hover:decoration-white ml-1"
+    <>
+      <AnimatePresence>
+        {showBanner && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed bottom-0 left-0 right-0 z-50 p-4 backdrop-blur-lg bg-black/80 border-t border-white/10"
+          >
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-center space-x-3 flex-1">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <Cookie className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-medium">Cookie-Einstellungen</h2>
+                  <p className="text-sm text-gray-300 max-w-2xl">
+                    Wir verwenden Cookies, um Ihre Browsing-Erfahrung zu verbessern, Inhalte zu personalisieren und Ihnen das beste Erlebnis auf unserer Website zu bieten.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3 w-full md:w-auto">
+                <Button
+                  variant="outline"
+                  onClick={openSettings}
+                  className="bg-transparent border-white/20 hover:bg-white/10 hover:text-white flex-1 md:flex-none"
                 >
-                  Learn more
-                </button>
-              </p>
+                  Einstellungen
+                </Button>
+                <Button
+                  onClick={handleAcceptAll}
+                  className="bg-white text-black hover:bg-white/90 flex-1 md:flex-none"
+                >
+                  Alle akzeptieren
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-            <Button
-              variant="outline"
-              onClick={handleSavePreferences}
-              className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white w-full sm:w-auto"
-            >
-              Save Preferences
-            </Button>
-            <Button
-              onClick={handleAcceptAll}
-              className="bg-white text-black hover:bg-white/90 w-full sm:w-auto"
-            >
-              Accept All
-            </Button>
-          </div>
-        </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        <div className="mt-6">
-          <Tabs defaultValue="privacy" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="bg-white/5 border border-white/10">
-              <TabsTrigger value="privacy">Privacy Settings</TabsTrigger>
-              <TabsTrigger value="details">Cookie Details</TabsTrigger>
-              <TabsTrigger value="policy">Our Policy</TabsTrigger>
+      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
+        <AlertDialogContent className="md:max-w-2xl bg-black/95 text-white border border-white/10 backdrop-blur-xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl flex items-center gap-2">
+              <Cookie className="w-5 h-5" />
+              Cookie-Einstellungen
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-300 text-base">
+              Passen Sie Ihre Cookie-Präferenzen an oder akzeptieren Sie alle Cookies für ein optimales Website-Erlebnis.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <Tabs defaultValue="preferences" value={activeTab} onValueChange={setActiveTab} className="mt-4">
+            <TabsList className="bg-white/5 border border-white/10 w-full grid grid-cols-3">
+              <TabsTrigger value="preferences">Einstellungen</TabsTrigger>
+              <TabsTrigger value="info">Informationen</TabsTrigger>
+              <TabsTrigger value="policy">Datenschutz</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="privacy" className="mt-4">
-              <div className="grid gap-4 sm:grid-cols-2">
+            <TabsContent value="preferences" className="mt-4 space-y-5">
+              <div className="space-y-4">
                 {cookieTypes.map((type) => {
                   const Icon = type.icon;
                   return (
@@ -156,8 +183,10 @@ const CookieBanner = () => {
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center space-x-2">
-                          <Icon className="h-4 w-4" />
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                            <Icon className="h-4 w-4" />
+                          </div>
                           <span className="font-medium">{type.title}</span>
                         </div>
                         <Switch
@@ -171,104 +200,153 @@ const CookieBanner = () => {
                             }
                           }}
                           disabled={type.required}
+                          className={type.required ? "opacity-60" : ""}
                         />
                       </div>
-                      <p className="text-sm text-gray-400 ml-6">{type.description}</p>
+                      <p className="text-sm text-gray-400 ml-11">{type.description}</p>
+                      {type.required && (
+                        <div className="ml-11 mt-2 text-xs text-white/60 flex items-center">
+                          <Info className="h-3 w-3 mr-1" />
+                          <span>Diese Cookies können nicht deaktiviert werden</span>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
               </div>
             </TabsContent>
 
-            <TabsContent value="details" className="mt-4">
-              <div className="space-y-4">
-                <div className="bg-white/5 p-4 rounded-lg">
-                  <h4 className="font-medium mb-2 flex items-center gap-2">
-                    <Cookie className="h-4 w-4" />
-                    What are Cookies?
-                  </h4>
-                  <p className="text-sm text-gray-400">
-                    Cookies are small text files stored on your device that help us provide and improve our services.
-                    They're used for technical functionality, analytics, and personalization. Learn more in our{' '}
-                    <PolicyLink to="/cookies">Cookie Policy</PolicyLink>.
-                  </p>
-                </div>
-                
-                <div className="bg-white/5 p-4 rounded-lg">
-                  <h4 className="font-medium mb-2 flex items-center gap-2">
-                    <Lock className="h-4 w-4" />
-                    How We Protect Your Privacy
-                  </h4>
-                  <p className="text-sm text-gray-400">
-                    We take data protection seriously and ensure all cookies are securely processed.
-                    Read more in our <PolicyLink to="/privacy">Privacy Policy</PolicyLink> and{' '}
-                    <PolicyLink to="/terms">Terms of Service</PolicyLink>.
-                  </p>
-                </div>
+            <TabsContent value="info" className="mt-4 space-y-5">
+              <div className="bg-white/5 rounded-lg p-4">
+                <h3 className="font-medium mb-2 flex items-center">
+                  <Cookie className="h-4 w-4 mr-2" />
+                  Was sind Cookies?
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Cookies sind kleine Textdateien, die auf Ihrem Gerät gespeichert werden und uns helfen, unsere Dienste zu verbessern und bereitzustellen. Sie werden für technische Funktionen, Analysen und Personalisierung verwendet.
+                </p>
+              </div>
+              
+              <div className="bg-white/5 rounded-lg p-4">
+                <h3 className="font-medium mb-2 flex items-center">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Wie wir Ihre Daten schützen
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Wir nehmen den Datenschutz ernst und stellen sicher, dass alle Cookies sicher verarbeitet werden. Weitere Informationen finden Sie in unserer <Link to="/privacy" className="text-white underline decoration-white/30 hover:decoration-white">Datenschutzrichtlinie</Link>.
+                </p>
+              </div>
+              
+              <div className="bg-white/5 rounded-lg p-4">
+                <h3 className="font-medium mb-2 flex items-center">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Cookie-Dauer
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Erforderliche Cookies: Für die Dauer Ihrer Sitzung bis zu 24 Stunden<br />
+                  Funktionale Cookies: Bis zu 1 Jahr zur Speicherung Ihrer Einstellungen<br />
+                  Analyse-Cookies: Laufen nach 2 Jahren ab<br />
+                  Marketing-Cookies: Variieren je nach Anbieter, können bis zu 2 Jahre bestehen
+                </p>
               </div>
             </TabsContent>
 
             <TabsContent value="policy" className="mt-4">
               <div className="space-y-4">
                 <p className="text-sm text-gray-400">
-                  Learn more about how we handle your data in our detailed policies:
+                  Erfahren Sie mehr über unsere Datenschutzrichtlinien:
                 </p>
                 
-                <div className="grid gap-4 sm:grid-cols-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <Link
                     to="/cookies"
-                    onClick={(e) => e.stopPropagation()}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
                   >
                     <h4 className="font-medium flex items-center gap-2 mb-1">
                       <Cookie className="h-4 w-4" />
-                      Cookie Policy
+                      Cookie-Richtlinie
+                      <ExternalLink className="h-3 w-3 ml-1" />
                     </h4>
                     <p className="text-sm text-gray-400">
-                      How we use cookies and similar technologies
+                      Wie wir Cookies verwenden
                     </p>
                   </Link>
                   
                   <Link
                     to="/privacy"
-                    onClick={(e) => e.stopPropagation()}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
                   >
                     <h4 className="font-medium flex items-center gap-2 mb-1">
                       <Shield className="h-4 w-4" />
-                      Privacy Policy
+                      Datenschutzrichtlinie
+                      <ExternalLink className="h-3 w-3 ml-1" />
                     </h4>
                     <p className="text-sm text-gray-400">
-                      How we protect and process your data
+                      Schutz Ihrer Daten
                     </p>
                   </Link>
 
                   <Link
                     to="/terms"
-                    onClick={(e) => e.stopPropagation()}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
                   >
                     <h4 className="font-medium flex items-center gap-2 mb-1">
-                      <FileText className="h-4 w-4" />
-                      Terms of Service
+                      <Info className="h-4 w-4" />
+                      Nutzungsbedingungen
+                      <ExternalLink className="h-3 w-3 ml-1" />
                     </h4>
                     <p className="text-sm text-gray-400">
-                      Our terms and conditions
+                      Unsere AGBs
                     </p>
                   </Link>
                 </div>
               </div>
             </TabsContent>
           </Tabs>
-        </div>
-      </div>
-    </motion.div>
+
+          <AlertDialogFooter className="mt-6 gap-3 sm:gap-0">
+            <div className="w-full flex flex-col sm:flex-row gap-3 sm:justify-between">
+              <ToggleGroup 
+                type="single" 
+                variant="outline" 
+                value={activeTab} 
+                onValueChange={(value) => value && setActiveTab(value)}
+                className="justify-start"
+              >
+                <ToggleGroupItem value="preferences">
+                  <Settings className="h-3.5 w-3.5 mr-1" />
+                  Einstellungen
+                </ToggleGroupItem>
+                <ToggleGroupItem value="info">
+                  <Info className="h-3.5 w-3.5 mr-1" />
+                  Info
+                </ToggleGroupItem>
+                <ToggleGroupItem value="policy">
+                  <Shield className="h-3.5 w-3.5 mr-1" />
+                  Richtlinien
+                </ToggleGroupItem>
+              </ToggleGroup>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  onClick={handleSavePreferences}
+                  className="flex-1 sm:flex-none bg-transparent border-white/20 hover:bg-white/10 hover:text-white"
+                >
+                  <Check className="h-4 w-4 mr-1" />
+                  Auswahl speichern
+                </Button>
+                <Button
+                  onClick={handleAcceptAll}
+                  className="flex-1 sm:flex-none bg-white text-black hover:bg-white/90"
+                >
+                  Alle akzeptieren
+                </Button>
+              </div>
+            </div>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
