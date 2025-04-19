@@ -9,13 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      download_stats: {
+        Row: {
+          download_count: number | null
+          id: string
+          last_downloaded: string | null
+          version: string
+        }
+        Insert: {
+          download_count?: number | null
+          id?: string
+          last_downloaded?: string | null
+          version: string
+        }
+        Update: {
+          download_count?: number | null
+          id?: string
+          last_downloaded?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_download_count: {
+        Args: { version_param: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

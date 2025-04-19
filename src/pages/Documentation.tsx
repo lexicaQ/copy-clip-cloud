@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -18,6 +17,7 @@ import {
   Copy,
   ChevronRight
 } from "lucide-react";
+import { toast } from "sonner";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
@@ -149,6 +149,7 @@ const CodeExample = ({ code, language = "javascript" }) => {
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
     setCopied(true);
+    toast.success("Code copied to clipboard");
     setTimeout(() => setCopied(false), 2000);
   };
   
@@ -233,7 +234,7 @@ const Documentation = () => {
       <SharedBackground />
       <Header />
       
-      <div className="pt-32 pb-24 px-4 max-w-6xl mx-auto">
+      <div className="pt-32 pb-24 container mx-auto px-4">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -249,7 +250,7 @@ const Documentation = () => {
         </motion.div>
 
         <motion.div
-          className="mb-12"
+          className="mb-12 max-w-6xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -353,6 +354,7 @@ const Documentation = () => {
                 onClick={() => {
                   setSearchTerm("");
                   setSelectedCategory("all");
+                  toast.success("Filters reset");
                 }}
               >
                 Reset filters
