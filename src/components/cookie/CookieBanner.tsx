@@ -25,7 +25,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
@@ -53,27 +52,27 @@ const CookieBanner = () => {
   const cookieTypes = [
     {
       id: "essential",
-      title: "Erforderliche Cookies",
-      description: "Diese Cookies sind für die Grundfunktionen der Website unerlässlich und können nicht deaktiviert werden.",
+      title: "Essential Cookies",
+      description: "These cookies are necessary for the basic functionality of the website and cannot be disabled.",
       required: true,
       icon: Shield
     },
     {
       id: "analytics",
-      title: "Analyse Cookies",
-      description: "Helfen uns zu verstehen, wie Besucher mit unserer Website interagieren.",
+      title: "Analytics Cookies",
+      description: "Help us understand how visitors interact with our website.",
       icon: BarChart3
     },
     {
       id: "marketing",
       title: "Marketing Cookies",
-      description: "Ermöglichen personalisierte Werbung und Marketing.",
+      description: "Enable personalized advertising and marketing.",
       icon: Send
     },
     {
       id: "functional",
-      title: "Funktionale Cookies",
-      description: "Verbessern die Funktionalität und Personalisierung der Website.",
+      title: "Functional Cookies",
+      description: "Improve website functionality and personalization.",
       icon: Settings
     }
   ];
@@ -100,7 +99,7 @@ const CookieBanner = () => {
     localStorage.setItem("cookie-preferences", JSON.stringify(preferences));
     localStorage.setItem("cookie-consent-timestamp", new Date().toString());
     setShowBanner(false);
-    toast.success("Cookie-Einstellungen erfolgreich gespeichert");
+    toast.success("Cookie preferences saved successfully");
   };
 
   const openSettings = () => {
@@ -116,33 +115,33 @@ const CookieBanner = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-0 left-0 right-0 z-50 p-4 backdrop-blur-lg bg-black/80 border-t border-white/10"
+            className="fixed bottom-0 left-0 right-0 z-50 p-6 backdrop-blur-lg bg-black/90 border-t border-white/10"
           >
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div className="flex items-center space-x-3 flex-1">
-                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                  <Cookie className="w-5 h-5" />
+            <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="flex items-start space-x-4 flex-1">
+                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <Cookie className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-medium">Cookie-Einstellungen</h2>
-                  <p className="text-sm text-gray-300 max-w-2xl">
-                    Wir verwenden Cookies, um Ihre Browsing-Erfahrung zu verbessern, Inhalte zu personalisieren und Ihnen das beste Erlebnis auf unserer Website zu bieten.
+                  <h2 className="text-xl font-medium text-white mb-2">Cookie Settings</h2>
+                  <p className="text-base text-gray-300 max-w-2xl">
+                    We use cookies to enhance your browsing experience, personalize content, and provide you with the best experience on our website.
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3 w-full md:w-auto">
+              <div className="flex items-center space-x-4 w-full md:w-auto">
                 <Button
                   variant="outline"
                   onClick={openSettings}
-                  className="bg-transparent border-white/20 hover:bg-white/10 hover:text-white flex-1 md:flex-none"
+                  className="bg-white/5 border-white/20 hover:bg-white/10 hover:text-white flex-1 md:flex-none px-6"
                 >
-                  Einstellungen
+                  Customize
                 </Button>
                 <Button
                   onClick={handleAcceptAll}
-                  className="bg-white text-black hover:bg-white/90 flex-1 md:flex-none"
+                  className="bg-white text-black hover:bg-white/90 flex-1 md:flex-none px-6"
                 >
-                  Alle akzeptieren
+                  Accept All
                 </Button>
               </div>
             </div>
@@ -152,45 +151,49 @@ const CookieBanner = () => {
 
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent className="md:max-w-2xl bg-black/95 text-white border border-white/10 backdrop-blur-xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-2xl flex items-center gap-2">
-              <Cookie className="w-5 h-5" />
-              Cookie-Einstellungen
+          <AlertDialogHeader className="space-y-4">
+            <AlertDialogTitle className="text-2xl flex items-center gap-3">
+              <Cookie className="w-6 h-6" />
+              Cookie Preferences
             </AlertDialogTitle>
             <AlertDialogDescription className="text-gray-300 text-base">
-              Passen Sie Ihre Cookie-Präferenzen an oder akzeptieren Sie alle Cookies für ein optimales Website-Erlebnis.
+              Customize your cookie preferences or accept all cookies for an optimal website experience.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
-          <Tabs defaultValue="preferences" value={activeTab} onValueChange={setActiveTab} className="mt-4">
+          <Tabs defaultValue="preferences" value={activeTab} onValueChange={setActiveTab} className="mt-6">
             <TabsList className="bg-white/5 border border-white/10 w-full grid grid-cols-3">
-              <TabsTrigger value="preferences">Einstellungen</TabsTrigger>
-              <TabsTrigger value="info">Informationen</TabsTrigger>
-              <TabsTrigger value="policy">Datenschutz</TabsTrigger>
+              <TabsTrigger value="preferences">Settings</TabsTrigger>
+              <TabsTrigger value="info">Information</TabsTrigger>
+              <TabsTrigger value="policy">Privacy</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="preferences" className="mt-4 space-y-5">
+            <TabsContent value="preferences" className="mt-6 space-y-6">
               <div className="space-y-4">
                 {cookieTypes.map((type) => {
                   const Icon = type.icon;
+                  const isEnabled = cookiePreferences[type.id as keyof typeof cookiePreferences];
+                  
                   return (
                     <div
                       key={type.id}
-                      className={`p-4 rounded-lg transition-all ${
-                        cookiePreferences[type.id as keyof typeof cookiePreferences]
+                      className={`p-6 rounded-xl transition-all ${
+                        isEnabled
                           ? "bg-white/10"
                           : "bg-white/5"
                       }`}
                     >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                            <Icon className="h-4 w-4" />
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center space-x-4">
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                            isEnabled ? "bg-white/20" : "bg-white/10"
+                          }`}>
+                            <Icon className="h-5 w-5" />
                           </div>
-                          <span className="font-medium">{type.title}</span>
+                          <span className="font-medium text-lg">{type.title}</span>
                         </div>
                         <Switch
-                          checked={cookiePreferences[type.id as keyof typeof cookiePreferences]}
+                          checked={isEnabled}
                           onCheckedChange={(checked) => {
                             if (!type.required) {
                               setCookiePreferences((prev) => ({
@@ -200,14 +203,14 @@ const CookieBanner = () => {
                             }
                           }}
                           disabled={type.required}
-                          className={type.required ? "opacity-60" : ""}
+                          className={`${type.required ? "opacity-60" : ""} data-[state=checked]:bg-white data-[state=unchecked]:bg-white/20`}
                         />
                       </div>
-                      <p className="text-sm text-gray-400 ml-11">{type.description}</p>
+                      <p className="text-base text-gray-300 ml-14">{type.description}</p>
                       {type.required && (
-                        <div className="ml-11 mt-2 text-xs text-white/60 flex items-center">
-                          <Info className="h-3 w-3 mr-1" />
-                          <span>Diese Cookies können nicht deaktiviert werden</span>
+                        <div className="ml-14 mt-3 text-sm text-white/60 flex items-center">
+                          <Info className="h-4 w-4 mr-2" />
+                          <span>These cookies cannot be disabled</span>
                         </div>
                       )}
                     </div>
@@ -216,87 +219,87 @@ const CookieBanner = () => {
               </div>
             </TabsContent>
 
-            <TabsContent value="info" className="mt-4 space-y-5">
-              <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="font-medium mb-2 flex items-center">
-                  <Cookie className="h-4 w-4 mr-2" />
-                  Was sind Cookies?
+            <TabsContent value="info" className="mt-6 space-y-6">
+              <div className="bg-white/5 rounded-xl p-6">
+                <h3 className="font-medium text-xl mb-3 flex items-center">
+                  <Cookie className="h-5 w-5 mr-3" />
+                  What are Cookies?
                 </h3>
-                <p className="text-sm text-gray-400">
-                  Cookies sind kleine Textdateien, die auf Ihrem Gerät gespeichert werden und uns helfen, unsere Dienste zu verbessern und bereitzustellen. Sie werden für technische Funktionen, Analysen und Personalisierung verwendet.
+                <p className="text-base text-gray-300">
+                  Cookies are small text files stored on your device that help us improve our services and deliver them effectively. They are used for technical functions, analytics, and personalization.
                 </p>
               </div>
               
-              <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="font-medium mb-2 flex items-center">
-                  <Shield className="h-4 w-4 mr-2" />
-                  Wie wir Ihre Daten schützen
+              <div className="bg-white/5 rounded-xl p-6">
+                <h3 className="font-medium text-xl mb-3 flex items-center">
+                  <Shield className="h-5 w-5 mr-3" />
+                  How We Protect Your Data
                 </h3>
-                <p className="text-sm text-gray-400">
-                  Wir nehmen den Datenschutz ernst und stellen sicher, dass alle Cookies sicher verarbeitet werden. Weitere Informationen finden Sie in unserer <Link to="/privacy" className="text-white underline decoration-white/30 hover:decoration-white">Datenschutzrichtlinie</Link>.
+                <p className="text-base text-gray-300">
+                  We take data protection seriously and ensure all cookies are processed securely. For more information, please refer to our <Link to="/privacy" className="text-white underline decoration-white/30 hover:decoration-white">Privacy Policy</Link>.
                 </p>
               </div>
               
-              <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="font-medium mb-2 flex items-center">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Cookie-Dauer
+              <div className="bg-white/5 rounded-xl p-6">
+                <h3 className="font-medium text-xl mb-3 flex items-center">
+                  <Settings className="h-5 w-5 mr-3" />
+                  Cookie Duration
                 </h3>
-                <p className="text-sm text-gray-400">
-                  Erforderliche Cookies: Für die Dauer Ihrer Sitzung bis zu 24 Stunden<br />
-                  Funktionale Cookies: Bis zu 1 Jahr zur Speicherung Ihrer Einstellungen<br />
-                  Analyse-Cookies: Laufen nach 2 Jahren ab<br />
-                  Marketing-Cookies: Variieren je nach Anbieter, können bis zu 2 Jahre bestehen
-                </p>
+                <div className="text-base text-gray-300 space-y-2">
+                  <p>Essential Cookies: Session duration up to 24 hours</p>
+                  <p>Functional Cookies: Up to 1 year to store your preferences</p>
+                  <p>Analytics Cookies: Expire after 2 years</p>
+                  <p>Marketing Cookies: Vary by provider, up to 2 years</p>
+                </div>
               </div>
             </TabsContent>
 
-            <TabsContent value="policy" className="mt-4">
-              <div className="space-y-4">
-                <p className="text-sm text-gray-400">
-                  Erfahren Sie mehr über unsere Datenschutzrichtlinien:
+            <TabsContent value="policy" className="mt-6">
+              <div className="space-y-6">
+                <p className="text-base text-gray-300">
+                  Learn more about our privacy policies:
                 </p>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <Link
                     to="/cookies"
-                    className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+                    className="block p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all"
                   >
-                    <h4 className="font-medium flex items-center gap-2 mb-1">
-                      <Cookie className="h-4 w-4" />
-                      Cookie-Richtlinie
-                      <ExternalLink className="h-3 w-3 ml-1" />
+                    <h4 className="font-medium text-lg flex items-center gap-2 mb-2">
+                      <Cookie className="h-5 w-5" />
+                      Cookie Policy
+                      <ExternalLink className="h-4 w-4 ml-1" />
                     </h4>
                     <p className="text-sm text-gray-400">
-                      Wie wir Cookies verwenden
+                      How we use cookies
                     </p>
                   </Link>
                   
                   <Link
                     to="/privacy"
-                    className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+                    className="block p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all"
                   >
-                    <h4 className="font-medium flex items-center gap-2 mb-1">
-                      <Shield className="h-4 w-4" />
-                      Datenschutzrichtlinie
-                      <ExternalLink className="h-3 w-3 ml-1" />
+                    <h4 className="font-medium text-lg flex items-center gap-2 mb-2">
+                      <Shield className="h-5 w-5" />
+                      Privacy Policy
+                      <ExternalLink className="h-4 w-4 ml-1" />
                     </h4>
                     <p className="text-sm text-gray-400">
-                      Schutz Ihrer Daten
+                      Protection of your data
                     </p>
                   </Link>
 
                   <Link
                     to="/terms"
-                    className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+                    className="block p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all"
                   >
-                    <h4 className="font-medium flex items-center gap-2 mb-1">
-                      <Info className="h-4 w-4" />
-                      Nutzungsbedingungen
-                      <ExternalLink className="h-3 w-3 ml-1" />
+                    <h4 className="font-medium text-lg flex items-center gap-2 mb-2">
+                      <Info className="h-5 w-5" />
+                      Terms of Service
+                      <ExternalLink className="h-4 w-4 ml-1" />
                     </h4>
                     <p className="text-sm text-gray-400">
-                      Unsere AGBs
+                      Our terms & conditions
                     </p>
                   </Link>
                 </div>
@@ -304,8 +307,8 @@ const CookieBanner = () => {
             </TabsContent>
           </Tabs>
 
-          <AlertDialogFooter className="mt-6 gap-3 sm:gap-0">
-            <div className="w-full flex flex-col sm:flex-row gap-3 sm:justify-between">
+          <AlertDialogFooter className="mt-8 gap-4 sm:gap-0">
+            <div className="w-full flex flex-col sm:flex-row gap-4 sm:justify-between">
               <ToggleGroup 
                 type="single" 
                 variant="outline" 
@@ -313,33 +316,33 @@ const CookieBanner = () => {
                 onValueChange={(value) => value && setActiveTab(value)}
                 className="justify-start"
               >
-                <ToggleGroupItem value="preferences">
-                  <Settings className="h-3.5 w-3.5 mr-1" />
-                  Einstellungen
+                <ToggleGroupItem value="preferences" className="data-[state=on]:bg-white/20">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Settings
                 </ToggleGroupItem>
-                <ToggleGroupItem value="info">
-                  <Info className="h-3.5 w-3.5 mr-1" />
+                <ToggleGroupItem value="info" className="data-[state=on]:bg-white/20">
+                  <Info className="h-4 w-4 mr-2" />
                   Info
                 </ToggleGroupItem>
-                <ToggleGroupItem value="policy">
-                  <Shield className="h-3.5 w-3.5 mr-1" />
-                  Richtlinien
+                <ToggleGroupItem value="policy" className="data-[state=on]:bg-white/20">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Privacy
                 </ToggleGroupItem>
               </ToggleGroup>
-              <div className="flex gap-3">
+              <div className="flex gap-4">
                 <Button
                   variant="outline"
                   onClick={handleSavePreferences}
                   className="flex-1 sm:flex-none bg-transparent border-white/20 hover:bg-white/10 hover:text-white"
                 >
-                  <Check className="h-4 w-4 mr-1" />
-                  Auswahl speichern
+                  <Check className="h-4 w-4 mr-2" />
+                  Save Preferences
                 </Button>
                 <Button
                   onClick={handleAcceptAll}
                   className="flex-1 sm:flex-none bg-white text-black hover:bg-white/90"
                 >
-                  Alle akzeptieren
+                  Accept All
                 </Button>
               </div>
             </div>
