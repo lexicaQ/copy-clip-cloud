@@ -42,6 +42,10 @@ import Templates from "./pages/docs/Templates";
 import SmartOrganization from "./pages/docs/SmartOrganization";
 import SearchFiltering from "./pages/docs/SearchFiltering";
 import SecurityDocs from "./pages/docs/SecurityDocs";
+import DeveloperCase from "./pages/use-cases/DeveloperCase";
+import DesignerCase from "./pages/use-cases/DesignerCase";
+import BusinessCase from "./pages/use-cases/BusinessCase";
+import ScienceCase from "./pages/use-cases/ScienceCase";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +94,13 @@ const App = () => (
           <Route path="/docs/smart-organization" element={<SmartOrganization />} />
           <Route path="/docs/search-filtering" element={<SearchFiltering />} />
           <Route path="/docs/security" element={<SecurityDocs />} />
+          
+          {/* Use Case Routes */}
+          <Route path="/use-cases/developer" element={<DeveloperCase />} />
+          <Route path="/use-cases/designer" element={<DesignerCase />} />
+          <Route path="/use-cases/business" element={<BusinessCase />} />
+          <Route path="/use-cases/science" element={<ScienceCase />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

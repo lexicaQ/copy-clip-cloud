@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Code, PenTool, Briefcase, BookOpen } from "lucide-react";
@@ -6,43 +5,43 @@ import { ArrowRight, Code, PenTool, Briefcase, BookOpen } from "lucide-react";
 const UserExamples = () => {
   const userProfiles = [
     {
-      title: "Entwickler",
+      title: "Developer",
       icon: Code,
-      description: "Code-Snippets und Entwicklungsressourcen über mehrere Geräte synchronisieren",
-      useCases: ["Code-Snippets", "API-Keys", "Git-Befehle", "Dokumentationslinks"],
-      color: "from-white/10 to-white/5"
+      description: "Sync code snippets and development resources across devices",
+      useCases: ["Code Snippets", "API Keys", "Git Commands", "Documentation Links"],
+      color: "from-white/10 to-white/5",
+      link: "/use-cases/developer"
     },
     {
       title: "Designer",
       icon: PenTool,
-      description: "Farben, Bilder und Designs nahtlos zwischen Laptop und Tablet teilen",
-      useCases: ["Farbcodes", "Design-Assets", "Bildausschnitte", "Inspirationen"],
+      description: "Share colors, images, and designs seamlessly between laptop and tablet",
+      useCases: ["Color Codes", "Design Assets", "Image Snippets", "Inspiration"],
       color: "from-white/10 to-white/5"
     },
     {
       title: "Business",
       icon: Briefcase,
-      description: "Wichtige geschäftliche Informationen stets zur Hand haben",
-      useCases: ["Kontaktinformationen", "Meeting-Notizen", "Statistiken", "Präsentationstexte"],
+      description: "Always have important business information at hand",
+      useCases: ["Contact Information", "Meeting Notes", "Statistics", "Presentation Text"],
       color: "from-white/10 to-white/5"
     },
     {
-      title: "Wissenschaft",
+      title: "Science",
       icon: BookOpen,
-      description: "Forschungsergebnisse und Literatur organisiert halten",
-      useCases: ["Zitate", "Forschungsdaten", "Literaturverweise", "Statistiken"],
+      description: "Organize research results and literature",
+      useCases: ["Quotes", "Research Data", "Literature References", "Statistics"],
       color: "from-white/10 to-white/5"
     }
   ];
 
   return (
     <motion.div 
-      className="py-24 relative"
+      className="py-24 relative overflow-x-hidden"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
     >
-      {/* Soft blurred background elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] opacity-20"></div>
         <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-gray-200/5 rounded-full blur-[80px] opacity-20"></div>
@@ -61,7 +60,7 @@ const UserExamples = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
-          Für jeden Anwendungsfall
+          For every use case
         </motion.h2>
         <motion.p 
           className="text-gray-400 max-w-2xl mx-auto"
@@ -70,7 +69,7 @@ const UserExamples = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          CopyClipCloud ist für verschiedene Berufsfelder und Anwendungsfälle optimiert
+          CopyClipCloud is optimized for various professions and use cases
         </motion.p>
       </motion.div>
       
@@ -78,7 +77,7 @@ const UserExamples = () => {
         {userProfiles.map((profile, index) => (
           <motion.div 
             key={index}
-            className={`glass-panel overflow-hidden relative group`}
+            className="glass-panel overflow-hidden relative group"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -105,13 +104,13 @@ const UserExamples = () => {
               </div>
               
               <div className="mt-6 pt-4 border-t border-white/10">
-                <motion.button 
+                <Link 
+                  to={profile.link}
                   className="text-sm flex items-center text-white/70 hover:text-white group/btn"
-                  whileHover={{ x: 5 }}
                 >
-                  Mehr erfahren 
+                  Learn more 
                   <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                </motion.button>
+                </Link>
               </div>
             </div>
           </motion.div>
