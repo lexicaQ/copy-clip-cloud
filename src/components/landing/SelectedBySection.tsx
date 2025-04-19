@@ -148,6 +148,11 @@ const SelectedBySection: React.FC = () => {
     // In a real application, this would update the file settings in the database
   };
 
+  // Create a handler function that accepts a Brand and sets it as the selected brand
+  const handleSelectBrand = (brand: Brand) => {
+    setSelectedBrand(brand);
+  };
+
   return (
     <motion.section
       className="py-24"
@@ -182,7 +187,7 @@ const SelectedBySection: React.FC = () => {
           >
             <BrandList 
               brands={dummyBrands} 
-              onSelectBrand={setSelectedBrand} 
+              onSelectBrand={handleSelectBrand} // Using the new handler function
             />
           </motion.div>
           

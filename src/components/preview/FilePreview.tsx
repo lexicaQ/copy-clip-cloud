@@ -1,14 +1,12 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
   FileText, 
   FileImage, 
-  FilePdf, 
-  FileAudio, 
-  FileVideo, 
   File,
+  FileVideo,
+  FileAudio,
   Settings,
   Info
 } from "lucide-react";
@@ -43,7 +41,7 @@ const getFileIcon = (type: FileType) => {
     case 'image':
       return <FileImage className="w-6 h-6 text-green-400" />;
     case 'pdf':
-      return <FilePdf className="w-6 h-6 text-red-400" />;
+      return <FileText className="w-6 h-6 text-red-400" />;
     case 'audio':
       return <FileAudio className="w-6 h-6 text-purple-400" />;
     case 'video':
@@ -69,7 +67,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onOpenSettings }) => {
       case 'pdf':
         return (
           <div className="w-full h-[300px] flex flex-col items-center justify-center bg-black/20 rounded-lg p-4">
-            <FilePdf className="w-12 h-12 text-red-400 mb-3" />
+            <FileText className="w-12 h-12 text-red-400 mb-3" />
             <div className="text-center">
               <div className="text-sm font-medium">{file.name}</div>
               <div className="text-xs text-white/60">PDF Document</div>
