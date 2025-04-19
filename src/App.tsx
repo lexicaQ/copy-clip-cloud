@@ -46,6 +46,8 @@ import DeveloperCase from "./pages/use-cases/DeveloperCase";
 import DesignerCase from "./pages/use-cases/DesignerCase";
 import BusinessCase from "./pages/use-cases/BusinessCase";
 import ScienceCase from "./pages/use-cases/ScienceCase";
+import DeveloperPortal from "./pages/docs/DeveloperPortal";
+import ApiExplorer from "./pages/docs/ApiExplorer";
 
 const queryClient = new QueryClient();
 
@@ -100,6 +102,9 @@ const App = () => (
           <Route path="/use-cases/designer" element={<DesignerCase />} />
           <Route path="/use-cases/business" element={<BusinessCase />} />
           <Route path="/use-cases/science" element={<ScienceCase />} />
+          
+          <Route path="/docs/developer-portal" element={<DeveloperPortal />} />
+          <Route path="/docs/api-explorer" element={<ApiExplorer />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
