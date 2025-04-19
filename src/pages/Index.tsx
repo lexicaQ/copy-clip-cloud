@@ -16,6 +16,32 @@ const Index = () => {
   return (
     <div className="relative min-h-screen">
       <Header />
+      
+      {/* Modern floating background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <motion.div 
+            key={i}
+            className="absolute rounded-full bg-white/5 backdrop-blur-xl"
+            style={{
+              width: Math.random() * 300 + 100,
+              height: Math.random() * 300 + 100,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              x: [0, Math.random() * 40 - 20],
+              y: [0, Math.random() * 40 - 20],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
 
       <motion.div 
         className="max-w-7xl mx-auto px-4 pt-20 pb-24"
