@@ -1,8 +1,7 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Cloud, ArrowRight, Check, Smartphone, Laptop, Desktop } from "lucide-react";
+import { ArrowLeft, Cloud, ArrowRight, Check, Smartphone, Laptop, Computer } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
@@ -47,7 +46,6 @@ const UniversalClipboard = () => {
           </div>
         </motion.div>
         
-        {/* Feature details */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -88,7 +86,7 @@ const UniversalClipboard = () => {
               {[
                 { icon: Smartphone, name: "Mobile", description: "iOS & Android" },
                 { icon: Laptop, name: "Laptop", description: "macOS & Windows" },
-                { icon: Desktop, name: "Desktop", description: "All platforms" }
+                { icon: Computer, name: "Desktop", description: "All platforms" }
               ].map((device, index) => (
                 <motion.div 
                   key={index}
@@ -109,7 +107,6 @@ const UniversalClipboard = () => {
           </motion.div>
         </div>
         
-        {/* Interactive demonstration */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -125,82 +122,77 @@ const UniversalClipboard = () => {
               </div>
             </div>
             
-            {/* Floating devices showing synchronization */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <motion.div 
-                className="absolute w-64 h-40 bg-white/5 border border-white/10 rounded-lg overflow-hidden shadow-lg"
-                animate={{ y: [-10, 10, -10], rotate: [-2, 2, -2] }}
-                transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-                style={{ left: "15%", top: "20%" }}
-              >
-                <div className="h-5 bg-white/10 flex items-center px-2">
-                  <div className="w-2 h-2 rounded-full bg-white/30 mr-1"></div>
-                  <div className="w-2 h-2 rounded-full bg-white/30 mr-1"></div>
-                  <div className="w-2 h-2 rounded-full bg-white/30"></div>
-                </div>
-                <div className="p-2 text-[10px] text-white/60 font-mono">
-                  const greeting = "Hello World!";
-                  <motion.div 
-                    className="bg-purple-500/30 rounded text-white/80 px-1 inline-block mt-1"
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                  >
-                    console.log(greeting);
-                  </motion.div>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute w-32 h-56 bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-lg"
-                animate={{ y: [5, -5, 5], rotate: [1, -1, 1] }}
-                transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
-                style={{ right: "20%", top: "25%" }}
-              >
-                <div className="h-3 bg-white/10 flex justify-center items-center">
-                  <div className="w-10 h-1 rounded-full bg-white/30"></div>
-                </div>
-                <div className="p-2 pt-4 text-[8px] text-white/60 font-mono flex justify-center">
-                  <motion.div 
-                    className="bg-purple-500/30 rounded text-white/80 px-1 inline-block"
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ repeat: Infinity, duration: 2, delay: 1 }}
-                  >
-                    console.log(greeting);
-                  </motion.div>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute flex items-center justify-center"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 1, 0.5] 
+            <motion.div 
+              className="absolute w-64 h-40 bg-white/5 border border-white/10 rounded-lg overflow-hidden shadow-lg"
+              animate={{ y: [-10, 10, -10], rotate: [-2, 2, -2] }}
+              transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+              style={{ left: "15%", top: "20%" }}
+            >
+              <div className="h-5 bg-white/10 flex items-center px-2">
+                <div className="w-2 h-2 rounded-full bg-white/30 mr-1"></div>
+                <div className="w-2 h-2 rounded-full bg-white/30 mr-1"></div>
+                <div className="w-2 h-2 rounded-full bg-white/30"></div>
+              </div>
+              <div className="p-2 text-[10px] text-white/60 font-mono">
+                const greeting = "Hello World!";
+                <motion.div 
+                  className="bg-purple-500/30 rounded text-white/80 px-1 inline-block mt-1"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                >
+                  console.log(greeting);
+                </motion.div>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="absolute w-32 h-56 bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-lg"
+              animate={{ y: [5, -5, 5], rotate: [1, -1, 1] }}
+              transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
+              style={{ right: "20%", top: "25%" }}
+            >
+              <div className="h-3 bg-white/10 flex justify-center items-center">
+                <div className="w-10 h-1 rounded-full bg-white/30"></div>
+              </div>
+              <div className="p-2 pt-4 text-[8px] text-white/60 font-mono flex justify-center">
+                <motion.div 
+                  className="bg-purple-500/30 rounded text-white/80 px-1 inline-block"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ repeat: Infinity, duration: 2, delay: 1 }}
+                >
+                  console.log(greeting);
+                </motion.div>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="absolute flex items-center justify-center"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.5, 1, 0.5] 
+              }}
+              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+            >
+              <Cloud className="w-12 h-12 text-purple-500/30" />
+            </motion.div>
+            
+            {[1, 2, 3].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute inset-0 rounded-full border border-purple-500/20"
+                initial={{ scale: 0.2, opacity: 0.8 }}
+                animate={{ scale: 2, opacity: 0 }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 3, 
+                  delay: i * 0.5,
+                  ease: "easeOut"
                 }}
-                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-              >
-                <Cloud className="w-12 h-12 text-purple-500/30" />
-              </motion.div>
-              
-              {/* Sync indicators */}
-              {[1, 2, 3].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute inset-0 rounded-full border border-purple-500/20"
-                  initial={{ scale: 0.2, opacity: 0.8 }}
-                  animate={{ scale: 2, opacity: 0 }}
-                  transition={{ 
-                    repeat: Infinity, 
-                    duration: 3, 
-                    delay: i * 0.5,
-                    ease: "easeOut"
-                  }}
-                />
-              ))}
-            </div>
+              />
+            ))}
           </div>
         </motion.div>
         
-        {/* Testimonials */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -227,7 +219,6 @@ const UniversalClipboard = () => {
           </div>
         </motion.div>
         
-        {/* Call to action */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
