@@ -1,45 +1,45 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Shield, 
-  BarChart3, 
-  Send, 
+  Cookie, 
   Settings, 
   Info, 
-  X, 
+  X,
   Check, 
-  Cookie, 
-  ExternalLink
+  Link 
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { 
-  AlertDialog, 
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const CookieBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [activeTab, setActiveTab] = useState("preferences");
+  const navigate = useNavigate();
+  
   const [cookiePreferences, setCookiePreferences] = useState({
     essential: true,
     analytics: false,
     marketing: false,
-    functional: false
+    functional: false,
+    personalization: false,
+    security: false,
+    social: false
   });
 
-  // Check if cookie consent already exists
   useEffect(() => {
     const consent = localStorage.getItem("cookie-consent");
     if (!consent) {
@@ -48,50 +48,62 @@ const CookieBanner = () => {
     }
   }, []);
 
-  // Cookie types configuration
   const cookieTypes = [
     {
       id: "essential",
       title: "Essential Cookies",
-      description: "These cookies are necessary for the basic functionality of the website and cannot be disabled.",
+      description: "Required for basic site functionality",
       required: true,
       icon: Shield
     },
     {
-      id: "analytics",
-      title: "Analytics Cookies",
-      description: "Help us understand how visitors interact with our website.",
-      icon: BarChart3
-    },
-    {
-      id: "marketing",
-      title: "Marketing Cookies",
-      description: "Enable personalized advertising and marketing.",
-      icon: Send
+      id: "security",
+      title: "Security Cookies",
+      description: "Enhance site security and prevent fraud",
+      icon: Shield
     },
     {
       id: "functional",
       title: "Functional Cookies",
-      description: "Improve website functionality and personalization.",
+      description: "Remember your preferences and settings",
       icon: Settings
+    },
+    {
+      id: "analytics",
+      title: "Analytics Cookies",
+      description: "Help us understand how you use our site",
+      icon: Info
+    },
+    {
+      id: "personalization",
+      title: "Personalization",
+      description: "Customize content based on your interests",
+      icon: Cookie
+    },
+    {
+      id: "marketing",
+      title: "Marketing",
+      description: "Help us deliver relevant advertisements",
+      icon: Cookie
+    },
+    {
+      id: "social",
+      title: "Social Media",
+      description: "Enable social sharing and interactions",
+      icon: Link
     }
   ];
 
   const handleAcceptAll = () => {
-    const preferences = {
-      essential: true,
-      analytics: true,
-      marketing: true,
-      functional: true
-    };
+    const preferences = Object.fromEntries(
+      cookieTypes.map(type => [type.id, true])
+    );
     setCookiePreferences(preferences);
     savePreferences(preferences, "all");
-    setShowDialog(false);
   };
 
   const handleSavePreferences = () => {
     savePreferences(cookiePreferences, "custom");
-    setShowDialog(false);
   };
 
   const savePreferences = (preferences: typeof cookiePreferences, type: "all" | "custom") => {
@@ -99,11 +111,14 @@ const CookieBanner = () => {
     localStorage.setItem("cookie-preferences", JSON.stringify(preferences));
     localStorage.setItem("cookie-consent-timestamp", new Date().toString());
     setShowBanner(false);
+    setShowDialog(false);
     toast.success("Cookie preferences saved successfully");
   };
 
-  const openSettings = () => {
-    setShowDialog(true);
+  const handlePrivacyClick = () => {
+    setShowDialog(false);
+    setShowBanner(false);
+    navigate("/privacy");
   };
 
   return (
@@ -115,108 +130,101 @@ const CookieBanner = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-0 left-0 right-0 z-50 p-6 backdrop-blur-lg bg-black/90 border-t border-white/10"
+            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-2xl mx-auto"
           >
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-              <div className="flex items-start space-x-4 flex-1">
-                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <Cookie className="w-6 h-6 text-white" />
+            <div className="glass-panel border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl p-6">
+              <div className="flex items-start space-x-4">
+                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <Cookie className="w-5 h-5" />
                 </div>
-                <div>
-                  <h2 className="text-xl font-medium text-white mb-2">Cookie Settings</h2>
-                  <p className="text-base text-gray-300 max-w-2xl">
-                    We use cookies to enhance your browsing experience, personalize content, and provide you with the best experience on our website.
+                <div className="flex-1">
+                  <h2 className="text-lg font-medium mb-2">Cookie Settings</h2>
+                  <p className="text-sm text-gray-300 mb-4">
+                    We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+                    View our <button onClick={handlePrivacyClick} className="text-white underline hover:text-white/80">Privacy Policy</button> for more information.
                   </p>
+                  <div className="flex items-center gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowDialog(true)}
+                      className="bg-white/5 border-white/10 hover:bg-white/10"
+                    >
+                      Customize
+                    </Button>
+                    <Button
+                      onClick={handleAcceptAll}
+                      className="bg-white text-black hover:bg-white/90"
+                    >
+                      Accept All
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center space-x-4 w-full md:w-auto">
-                <Button
-                  variant="outline"
-                  onClick={openSettings}
-                  className="bg-white/5 border-white/20 hover:bg-white/10 hover:text-white flex-1 md:flex-none px-6"
-                >
-                  Customize
-                </Button>
-                <Button
-                  onClick={handleAcceptAll}
-                  className="bg-white text-black hover:bg-white/90 flex-1 md:flex-none px-6"
-                >
-                  Accept All
-                </Button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
-        <AlertDialogContent className="md:max-w-2xl bg-black/95 text-white border border-white/10 backdrop-blur-xl">
-          <AlertDialogHeader className="space-y-4">
-            <AlertDialogTitle className="text-2xl flex items-center gap-3">
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="sm:max-w-2xl bg-black/95 text-white border border-white/10 backdrop-blur-xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl flex items-center gap-3">
               <Cookie className="w-6 h-6" />
               Cookie Preferences
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-gray-300 text-base">
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
               Customize your cookie preferences or accept all cookies for an optimal website experience.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+            </DialogDescription>
+          </DialogHeader>
 
-          <Tabs defaultValue="preferences" value={activeTab} onValueChange={setActiveTab} className="mt-6">
-            <TabsList className="bg-white/5 border border-white/10 w-full grid grid-cols-3">
+          <Tabs defaultValue="preferences" value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="bg-white/5 border border-white/10 grid grid-cols-3">
               <TabsTrigger value="preferences">Settings</TabsTrigger>
               <TabsTrigger value="info">Information</TabsTrigger>
               <TabsTrigger value="policy">Privacy</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="preferences" className="mt-6 space-y-6">
-              <div className="space-y-4">
-                {cookieTypes.map((type) => {
-                  const Icon = type.icon;
-                  const isEnabled = cookiePreferences[type.id as keyof typeof cookiePreferences];
-                  
-                  return (
-                    <div
-                      key={type.id}
-                      className={`p-6 rounded-xl transition-all ${
-                        isEnabled
-                          ? "bg-white/10"
-                          : "bg-white/5"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center space-x-4">
-                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                            isEnabled ? "bg-white/20" : "bg-white/10"
-                          }`}>
-                            <Icon className="h-5 w-5" />
-                          </div>
-                          <span className="font-medium text-lg">{type.title}</span>
+            <TabsContent value="preferences" className="space-y-4 mt-4">
+              {cookieTypes.map((type) => {
+                const Icon = type.icon;
+                const isEnabled = cookiePreferences[type.id as keyof typeof cookiePreferences];
+                
+                return (
+                  <div
+                    key={type.id}
+                    className={`p-4 rounded-xl transition-all ${
+                      isEnabled ? "bg-white/10" : "bg-white/5"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                          isEnabled ? "bg-white/20" : "bg-white/10"
+                        }`}>
+                          <Icon className="w-4 h-4" />
                         </div>
-                        <Switch
-                          checked={isEnabled}
-                          onCheckedChange={(checked) => {
-                            if (!type.required) {
-                              setCookiePreferences((prev) => ({
-                                ...prev,
-                                [type.id]: checked,
-                              }));
-                            }
-                          }}
-                          disabled={type.required}
-                          className={`${type.required ? "opacity-60" : ""} data-[state=checked]:bg-white data-[state=unchecked]:bg-white/20`}
-                        />
+                        <div>
+                          <h3 className="font-medium">{type.title}</h3>
+                          <p className="text-sm text-gray-400">{type.description}</p>
+                        </div>
                       </div>
-                      <p className="text-base text-gray-300 ml-14">{type.description}</p>
-                      {type.required && (
-                        <div className="ml-14 mt-3 text-sm text-white/60 flex items-center">
-                          <Info className="h-4 w-4 mr-2" />
-                          <span>These cookies cannot be disabled</span>
-                        </div>
-                      )}
+                      <Switch
+                        checked={isEnabled}
+                        onCheckedChange={(checked) => {
+                          if (!type.required) {
+                            setCookiePreferences(prev => ({
+                              ...prev,
+                              [type.id]: checked,
+                            }));
+                          }
+                        }}
+                        disabled={type.required}
+                        className={`${type.required ? "opacity-60" : ""}`}
+                      />
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </TabsContent>
 
             <TabsContent value="info" className="mt-6 space-y-6">
@@ -307,35 +315,34 @@ const CookieBanner = () => {
             </TabsContent>
           </Tabs>
 
-          <AlertDialogFooter className="mt-8 gap-4 sm:gap-0">
-            <div className="w-full flex flex-col sm:flex-row gap-4 sm:justify-between">
+          <DialogFooter className="mt-6">
+            <div className="w-full flex flex-col sm:flex-row gap-3 sm:justify-between">
               <ToggleGroup 
                 type="single" 
-                variant="outline" 
-                value={activeTab} 
+                value={activeTab}
                 onValueChange={(value) => value && setActiveTab(value)}
                 className="justify-start"
               >
                 <ToggleGroupItem value="preferences" className="data-[state=on]:bg-white/20">
-                  <Settings className="h-4 w-4 mr-2" />
+                  <Settings className="w-4 h-4 mr-2" />
                   Settings
                 </ToggleGroupItem>
                 <ToggleGroupItem value="info" className="data-[state=on]:bg-white/20">
-                  <Info className="h-4 w-4 mr-2" />
+                  <Info className="w-4 h-4 mr-2" />
                   Info
                 </ToggleGroupItem>
                 <ToggleGroupItem value="policy" className="data-[state=on]:bg-white/20">
-                  <Shield className="h-4 w-4 mr-2" />
+                  <Shield className="w-4 h-4 mr-2" />
                   Privacy
                 </ToggleGroupItem>
               </ToggleGroup>
-              <div className="flex gap-4">
+              <div className="flex gap-3">
                 <Button
                   variant="outline"
                   onClick={handleSavePreferences}
-                  className="flex-1 sm:flex-none bg-transparent border-white/20 hover:bg-white/10 hover:text-white"
+                  className="flex-1 sm:flex-none bg-transparent border-white/20 hover:bg-white/10"
                 >
-                  <Check className="h-4 w-4 mr-2" />
+                  <Check className="w-4 h-4 mr-2" />
                   Save Preferences
                 </Button>
                 <Button
@@ -346,9 +353,9 @@ const CookieBanner = () => {
                 </Button>
               </div>
             </div>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
