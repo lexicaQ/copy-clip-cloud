@@ -4,12 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useFileDownload } from "@/hooks/useFileDownload";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -76,47 +70,42 @@ const Header = () => {
             <NavLink to="/about" icon={Clipboard}>About</NavLink>
             <NavLink to="/contact" icon={MessageSquare}>Contact</NavLink>
             
-            {/* Improved dropdown using shadcn components */}
-            <div className="relative">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <motion.button 
-                    className="flex items-center text-gray-300 hover:text-white transition-colors"
-                    whileHover={{ y: -2 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    Support
-                    <motion.span 
-                      className="ml-1.5 inline-block"
-                      initial={{ rotate: 0 }}
-                      animate={{ rotate: 0 }}
-                      whileHover={{ rotate: 180 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                    >
-                      <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
-                      </svg>
-                    </motion.span>
-                  </motion.button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent 
-                  className="w-56 py-2 rounded-xl border border-white/10 backdrop-blur-xl"
-                  style={{ background: "rgba(0, 0, 0, 0.95)" }}
+            {/* Enhanced dropdown with improved styling and black background */}
+            <div className="relative group">
+              <motion.button 
+                className="flex items-center text-gray-300 hover:text-white transition-colors"
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.2 }}
+              >
+                Support
+                <motion.span 
+                  className="ml-1.5 inline-block"
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 0 }}
+                  whileHover={{ rotate: 180 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <DropdownMenuItem asChild className="px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5">
-                    <Link to="/support" className="flex items-center gap-2">
-                      <MessageSquare className="w-4 h-4" />
-                      <span>Support Center</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5">
-                    <Link to="/privacy" className="flex items-center gap-2">
-                      <Shield className="w-4 h-4" />
-                      <span>Privacy</span>
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </motion.span>
+              </motion.button>
+              
+              <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
+                <motion.div 
+                  className="py-3 rounded-xl shadow-2xl overflow-hidden"
+                  style={{
+                    background: "rgba(0, 0, 0, 0.95)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)"
+                  }}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <DropdownLink to="/support" icon={MessageSquare}>Support Center</DropdownLink>
+                  <DropdownLink to="/privacy" icon={Shield}>Privacy</DropdownLink>
+                </motion.div>
+              </div>
             </div>
           </nav>
           

@@ -10,13 +10,17 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
   const [isHovered, setIsHovered] = useState(false);
   const [downloadCount, setDownloadCount] = useState<number | null>(null);
 
-  // Simulate download count
+  // Simulate download count with a random number between 15,000 and 25,000
   useEffect(() => {
     setDownloadCount(Math.floor(Math.random() * (25000 - 15000) + 15000));
   }, []);
 
   const handleButtonClick = () => {
     handleDownload();
+    toast.success("Download started", {
+      description: "Your download will begin shortly",
+      position: "bottom-center",
+    });
   };
 
   // Compact variant for header buttons
@@ -37,6 +41,24 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
         }}
         whileTap={{ scale: 0.98 }}
       >
+        {/* Subtle background shimmer */}
+        <motion.div 
+          className="absolute inset-0 opacity-0"
+          animate={{ 
+            opacity: [0, 0.2, 0],
+            background: [
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 70%)",
+              "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%)"
+            ]
+          }}
+          transition={{ 
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
         {downloading ? <Check className="w-4 h-4" /> : <Download className="w-4 h-4" />}
         <span className="text-sm font-medium">Download</span>
       </motion.button>
@@ -63,8 +85,8 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
-          {/* Modern black background with slight gradient */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/90 rounded-xl z-0" />
+          {/* Modern black/white gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/80 rounded-xl z-0" />
           
           {/* Dynamic border */}
           <motion.div 
@@ -89,6 +111,32 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
                 background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2) 20%, transparent 40%)",
               }}
             />
+          </div>
+          
+          {/* Subtle animated particles in the background */}
+          <div className="absolute inset-0 overflow-hidden rounded-xl z-0">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-white/40 rounded-full"
+                initial={{ 
+                  x: Math.random() * 100 + "%", 
+                  y: Math.random() * 100 + "%", 
+                  opacity: 0 
+                }}
+                animate={{ 
+                  y: [Math.random() * 100 + "%", Math.random() * 100 + "%"],
+                  opacity: [0, isHovered ? 0.8 : 0.4, 0],
+                  scale: [0.5, 1.5, 0.5]
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 2 + Math.random() * 3,
+                  ease: "easeInOut",
+                  delay: Math.random() * 2
+                }}
+              />
+            ))}
           </div>
           
           {/* Button content */}
