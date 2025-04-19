@@ -8,9 +8,9 @@ const HeroBackground = () => {
       {/* Main gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90" />
       
-      {/* Animated blur elements */}
+      {/* Modern light effects */}
       <motion.div
-        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px]"
+        className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px]"
         animate={{
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3],
@@ -23,7 +23,7 @@ const HeroBackground = () => {
       />
       
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px]"
+        className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] bg-white/5 rounded-full blur-[140px]"
         animate={{
           scale: [1.2, 1, 1.2],
           opacity: [0.4, 0.2, 0.4],
@@ -34,10 +34,23 @@ const HeroBackground = () => {
           ease: "easeInOut"
         }}
       />
+
+      <motion.div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/3 rounded-full blur-[160px]"
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.2, 0.3, 0.2],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
       
-      {/* Grid pattern overlay */}
+      {/* Subtle grid pattern */}
       <div 
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
                            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px)`,
@@ -45,11 +58,10 @@ const HeroBackground = () => {
         }}
       />
       
-      {/* Subtle radial gradient overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.4)_100%)]" />
+      {/* Enhanced radial gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.5)_100%)]" />
     </div>
   );
 };
 
 export default HeroBackground;
-

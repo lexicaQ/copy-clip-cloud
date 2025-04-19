@@ -6,52 +6,52 @@ import { Info, HelpCircle, ShieldCheck, Settings, Tag, Zap, Search, CheckCircle 
 
 const faqs = [
   {
-    question: "Was ist CopyClipCloud?",
-    answer: "CopyClipCloud ist ein moderner Clipboard-Manager, der Ihre Zwischenablage über alle Apple-Geräte hinweg synchronisiert. Mit intelligenter Organisation und Verschlüsselung speichert die App Text, Bilder und Dateien für den schnellen Zugriff.",
+    question: "What is CopyClipCloud?",
+    answer: "CopyClipCloud is a modern clipboard manager that syncs your clipboard across all your Apple devices. The app intelligently organizes text, images, and files with encryption for quick access.",
     icon: Info,
-    category: "allgemein"
+    category: "general"
   },
   {
-    question: "Sind meine Daten sicher?",
-    answer: "Absolut. Wir verwenden Ende-zu-Ende-Verschlüsselung, um Ihre Daten zu schützen. Niemand, nicht einmal unser Team, kann auf Ihre Zwischenablage-Inhalte zugreifen. Alle Daten werden lokal verschlüsselt, bevor sie synchronisiert werden.",
+    question: "Is my data secure?",
+    answer: "Absolutely. We use end-to-end encryption to protect your data. No one, not even our team, can access your clipboard contents. All data is encrypted locally before being synchronized.",
     icon: ShieldCheck,
-    category: "sicherheit"
+    category: "security"
   },
   {
-    question: "Welche Geräte werden unterstützt?",
-    answer: "CopyClipCloud unterstützt aktuell alle Apple-Geräte mit macOS 15 oder neuer. Unterstützung für iOS, iPadOS und andere Plattformen ist in Entwicklung. Auch an Versionen für Windows und Linux wird aktiv gearbeitet.",
+    question: "Which devices are supported?",
+    answer: "CopyClipCloud currently supports all Apple devices running macOS 15 or newer. Support for iOS, iPadOS, and other platforms is in development. Windows and Linux versions are actively being worked on.",
     icon: Settings,
-    category: "kompatibilität"
+    category: "compatibility"
   },
   {
-    question: "Was kostet CopyClipCloud?",
-    answer: "CopyClipCloud ist kostenlos mit Basisfunktionen nutzbar. Für Power-User bieten wir ein Premium-Abonnement mit erweiterten Funktionen wie unbegrenztem Verlauf und priorisiertem Support. Abos beginnen bei 4,99€/Monat mit Rabatten für Jahresabonnements.",
+    question: "How much does CopyClipCloud cost?",
+    answer: "CopyClipCloud is free to use with basic features. For power users, we offer a premium subscription with advanced features like unlimited history and priority support. Subscriptions start at $4.99/month with discounts for yearly plans.",
     icon: Tag,
-    category: "preise"
+    category: "pricing"
   },
   {
-    question: "Wie beginne ich?",
-    answer: "Laden Sie einfach CopyClipCloud von unserer Website herunter, installieren Sie es auf Ihrem Mac, und schon kann es losgehen. Die App führt Sie durch die Einrichtung der Cloud-Synchronisation. Die Ersteinrichtung dauert weniger als 60 Sekunden.",
+    question: "How do I get started?",
+    answer: "Simply download CopyClipCloud from our website, install it on your Mac, and you're ready to go. The app will guide you through setting up cloud synchronization. Initial setup takes less than 60 seconds.",
     icon: Zap,
-    category: "nutzung"
+    category: "usage"
   },
   {
-    question: "Kann ich CopyClipCloud offline nutzen?",
-    answer: "Ja, CopyClipCloud funktioniert offline für grundlegende Zwischenablage-Verwaltung. Die Cloud-Synchronisation benötigt eine Internetverbindung, aber Ihr Verlauf wird automatisch synchronisiert, sobald Sie wieder online sind.",
+    question: "Can I use CopyClipCloud offline?",
+    answer: "Yes, CopyClipCloud works offline for basic clipboard management. Cloud synchronization requires an internet connection, but your history will automatically sync once you're back online.",
     icon: HelpCircle,
-    category: "nutzung"
+    category: "usage"
   },
   {
-    question: "Wie funktioniert das Organisationssystem?",
-    answer: "CopyClipCloud nutzt KI, um Ihre Zwischenablage-Elemente automatisch zu kategorisieren. Sie können auch eigene Kategorien, Tags und Favoriten für schnellen Zugriff erstellen. Die intelligente Suchfunktion hilft Ihnen, genau das zu finden, was Sie benötigen.",
+    question: "How does the organization system work?",
+    answer: "CopyClipCloud uses AI to automatically categorize your clipboard items. You can also create custom categories, tags, and favorites for quick access. The smart search feature helps you find exactly what you need.",
     icon: Info,
-    category: "funktionen"
+    category: "features"
   },
   {
-    question: "Was passiert mit sensiblen Informationen?",
-    answer: "CopyClipCloud erkennt automatisch, wenn Sie sensible Informationen wie Passwörter oder Kreditkartennummern kopieren. Diese werden mit einer zusätzlichen Sicherheitsebene verschlüsselt und können so eingestellt werden, dass sie nach einer bestimmten Zeit automatisch ablaufen.",
+    question: "What happens to sensitive information?",
+    answer: "CopyClipCloud automatically detects when you copy sensitive information like passwords or credit card numbers. These are encrypted with an additional security layer and can be set to automatically expire after a certain time.",
     icon: ShieldCheck,
-    category: "sicherheit"
+    category: "security"
   }
 ];
 
