@@ -34,56 +34,45 @@ const CookieBanner = () => {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 20 }}
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 100, opacity: 0 }}
         transition={{ type: "spring", stiffness: 400, damping: 40 }}
-        className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-4xl"
+        className="fixed bottom-0 inset-x-0 z-50"
       >
-        <div className="relative overflow-hidden glass-panel backdrop-blur-lg shadow-2xl rounded-xl border border-white/10">
-          <div className="relative p-6">
-            <div className="flex items-start gap-6 mb-6">
-              <div className="flex flex-wrap gap-4">
-                {[
-                  { icon: Lock, title: "Security" },
-                  { icon: Shield, title: "Privacy" },
-                  { icon: Settings, title: "Preferences" },
-                  { icon: Info, title: "Information" }
-                ].map(({ icon: Icon, title }, index) => (
-                  <motion.div
-                    key={title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ 
-                      opacity: 1,
-                      y: 0,
-                      transition: { delay: index * 0.1 }
-                    }}
-                    className="flex flex-col items-center"
-                  >
-                    <div className="p-2 rounded-lg bg-white/10">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <span className="text-xs text-gray-400 mt-1">{title}</span>
-                  </motion.div>
-                ))}
-              </div>
+        <div className="max-w-4xl mx-auto p-4">
+          <div className="bg-white text-black rounded-lg shadow-xl p-6">
+            <div className="flex flex-wrap gap-4 mb-4">
+              {[
+                { icon: Lock, title: "Security" },
+                { icon: Shield, title: "Privacy" },
+                { icon: Settings, title: "Preferences" },
+                { icon: Info, title: "Information" }
+              ].map(({ icon: Icon, title }, index) => (
+                <div key={title} className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-black/5">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <span className="text-sm">{title}</span>
+                </div>
+              ))}
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold">We Value Your Privacy</h3>
-              <p className="text-sm text-gray-300">
+            <div className="space-y-3">
+              <h3 className="text-lg font-bold">We Value Your Privacy</h3>
+              <p className="text-sm text-gray-600">
                 We use cookies to enhance your browsing experience and analyze site traffic. 
                 By clicking "Accept", you consent to our use of cookies as described in our{" "}
-                <Link to="/cookies" className="text-white underline hover:text-gray-200">
+                <Link to="/cookies" className="text-black underline hover:text-gray-800">
                   Cookie Policy
                 </Link>.
               </p>
             </div>
 
-            <div className="mt-6 flex justify-end">
+            <div className="mt-4 flex justify-end">
               <motion.button
                 onClick={handleAcceptAll}
-                className="px-6 py-2 rounded-lg bg-white text-black hover:bg-white/90 transition-colors"
+                className="px-6 py-2 bg-black text-white rounded-lg hover:bg-black/90 transition-colors"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

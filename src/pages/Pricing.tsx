@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Zap, Shield, Cloud, Star, ArrowRight } from "lucide-react";
+import { Shield, Zap, Cloud, Star, ArrowRight, Check } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
@@ -31,16 +31,16 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
     <motion.div
       className={`${
         plan.highlight 
-          ? 'bg-white/5 backdrop-blur-lg border border-white/10' 
-          : 'glass-panel'
-      } p-8 relative hover:translate-y-[-5px] transition-all duration-300`}
+          ? 'bg-white text-black' 
+          : 'bg-black/5 backdrop-blur-lg border border-white/10'
+      } p-8 relative rounded-2xl hover:translate-y-[-5px] transition-all duration-300`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
       {plan.highlight && (
         <motion.div 
-          className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-black px-4 py-1 rounded-full text-sm font-medium"
+          className="absolute -top-4 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-sm font-medium"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -50,11 +50,15 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
       )}
       
       <div className="flex items-center justify-center h-16 mb-6">
-        <plan.icon className={`w-8 h-8 ${plan.highlight ? 'text-white' : 'text-gray-400'}`} />
+        <plan.icon className={`w-8 h-8 ${plan.highlight ? 'text-black' : 'text-white'}`} />
       </div>
       
-      <h3 className="text-xl font-bold text-center mb-2">{plan.name}</h3>
-      <p className="text-gray-400 text-center mb-6 h-12">{plan.description}</p>
+      <h3 className={`text-xl font-bold text-center mb-2 ${plan.highlight ? 'text-black' : 'text-white'}`}>
+        {plan.name}
+      </h3>
+      <p className={`text-center mb-6 h-12 ${plan.highlight ? 'text-black/70' : 'text-white/70'}`}>
+        {plan.description}
+      </p>
       
       <div className="text-center mb-8 relative">
         {isAnnual && (
@@ -71,7 +75,7 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
           <span className="text-sm absolute top-0 left-[-12px]">$</span>
           {isAnnual ? annualPrice : monthlyPrice}
         </div>
-        <div className="text-sm text-gray-400">
+        <div className="text-sm text-white/70">
           per {isAnnual ? 'year' : 'month'}
         </div>
         {isAnnual && (
@@ -87,8 +91,8 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
         <motion.button 
           className={`w-full py-3 rounded-lg mb-8 transition-all flex items-center justify-center gap-2 relative ${
             plan.highlight
-              ? 'bg-white text-black hover:bg-opacity-90'
-              : 'bg-white/10 hover:bg-white/20'
+              ? 'bg-black text-white hover:bg-black/90'
+              : 'bg-white text-black hover:bg-white/90'
           }`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -104,7 +108,9 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
           <motion.div
             key={index}
             className={`flex items-start ${
-              feature.included ? 'text-white' : 'text-gray-500'
+              feature.included 
+                ? plan.highlight ? 'text-black' : 'text-white' 
+                : plan.highlight ? 'text-black/40' : 'text-white/40'
             }`}
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -113,7 +119,7 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
           >
             <div className={`flex-shrink-0 w-5 h-5 mr-3 mt-0.5 flex items-center justify-center ${
               feature.included 
-                ? plan.highlight ? 'text-black bg-white rounded-full' : 'text-white' 
+                ? plan.highlight ? 'text-white bg-black rounded-full' : 'text-black' 
                 : 'text-gray-500'
             }`}>
               {feature.included ? <Check className="w-3 h-3" /> : "-"}
@@ -211,7 +217,7 @@ const Pricing = () => {
             Choose the perfect plan for your needs with our straightforward pricing options.
           </p>
           
-          <div className="inline-flex items-center p-1 rounded-full backdrop-blur-md bg-white/5 border border-white/10 mb-16">
+          <div className="inline-flex items-center p-1 rounded-full backdrop-blur-md bg-white/5 border border-white/20 mb-16">
             <button
               onClick={() => setIsAnnual(false)}
               className={`px-6 py-2 rounded-full transition-all duration-300 ${
@@ -227,7 +233,7 @@ const Pricing = () => {
               }`}
             >
               Annual
-              <span className="ml-2 text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full">
+              <span className="ml-2 text-xs bg-black text-white px-2 py-0.5 rounded-full">
                 Save 20%
               </span>
             </button>
