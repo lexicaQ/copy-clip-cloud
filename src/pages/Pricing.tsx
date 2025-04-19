@@ -1,13 +1,15 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Zap, Cloud, Star } from "lucide-react";
+import { Shield, Zap, Cloud, Star, ArrowRight, Check, Award } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
 import PricingCard from "@/components/pricing/PricingCard";
 import ComparisonTable from "@/components/pricing/ComparisonTable";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import PricingFAQ from "@/components/pricing/PricingFAQ";
 
 interface PlanFeature {
   text: string;
@@ -79,6 +81,19 @@ const Pricing = () => {
     }
   ];
 
+  // Calculate the savings
+  const calculateSavings = () => {
+    const totalMonthly = plans.reduce((acc, plan) => {
+      return acc + (parseInt(plan.price) * 12);
+    }, 0);
+    
+    const totalAnnual = plans.reduce((acc, plan) => {
+      return acc + (parseInt(plan.price) * 10);
+    }, 0);
+    
+    return totalMonthly - totalAnnual;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <InteractiveBackground />
@@ -107,28 +122,43 @@ const Pricing = () => {
             Choose the perfect plan for your needs with our straightforward pricing options.
           </p>
           
-          <div className="flex items-center justify-center gap-4 mb-16">
+          <div className="flex items-center justify-center gap-4 mb-8">
             <span className={`transition-colors ${!isAnnual ? 'text-white' : 'text-gray-400'}`}>Monthly</span>
             <Switch
               checked={isAnnual}
               onCheckedChange={setIsAnnual}
               className="data-[state=checked]:bg-green-500"
             />
-            <span className={`transition-colors ${isAnnual ? 'text-white' : 'text-gray-400'}`}>
+            <span className={`transition-colors flex items-center ${isAnnual ? 'text-white' : 'text-gray-400'}`}>
               Annual
               <span className="ml-2 text-xs bg-green-500 text-white px-2 py-0.5 rounded-full">
                 Save 20%
               </span>
             </span>
           </div>
+          
+          {isAnnual && (
+            <motion.div 
+              className="flex items-center justify-center gap-2 text-sm text-gray-400"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Award className="w-4 h-4 text-green-500" />
+              <span>Save up to ${calculateSavings()} with annual billing</span>
+            </motion.div>
+          )}
         </motion.div>
 
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 relative"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, staggerChildren: 0.1 }}
         >
+          {/* Decorative elements */}
+          <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white/5 to-transparent rounded-3xl opacity-30 blur-xl"></div>
+          
           {plans.map((plan, index) => (
             <PricingCard
               key={index}
@@ -136,6 +166,58 @@ const Pricing = () => {
               isAnnual={isAnnual}
             />
           ))}
+        </motion.div>
+        
+        {/* Value proposition section */}
+        <motion.div 
+          className="my-24 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl font-bold mb-6">Why Choose CopyClipCloud?</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            {[
+              {
+                icon: Shield,
+                title: "Secure by Design",
+                description: "End-to-end encryption ensures your data remains private and protected at all times."
+              },
+              {
+                icon: Zap,
+                title: "Lightning Fast",
+                description: "Optimized performance means you'll never experience delays when copying or pasting."
+              },
+              {
+                icon: Check,
+                title: "Reliable Service",
+                description: "99.9% uptime guarantee with continuous updates and improvements."
+              }
+            ].map((item, idx) => (
+              <motion.div 
+                key={idx}
+                className="backdrop-blur-lg bg-white/5 border border-white/10 p-6 rounded-xl"
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 + (idx * 0.1) }}
+              >
+                <div className="w-12 h-12 mx-auto rounded-full bg-white/10 flex items-center justify-center mb-4">
+                  <item.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <p className="text-gray-400 text-sm">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+          
+          <Button 
+            className="mt-12 bg-white text-black hover:bg-white/90"
+            size="lg"
+          >
+            Get Started Now <ArrowRight className="ml-2 w-4 h-4" />
+          </Button>
         </motion.div>
 
         <motion.div
@@ -167,6 +249,16 @@ const Pricing = () => {
               </p>
             </div>
           </div>
+        </motion.div>
+        
+        {/* Add FAQ section */}
+        <motion.div
+          className="mt-24"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <PricingFAQ />
         </motion.div>
       </div>
       

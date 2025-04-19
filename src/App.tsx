@@ -28,6 +28,7 @@ import FAQ from "./pages/FAQ";
 import CookieBanner from "./components/cookie/CookieBanner";
 import AcceptableUse from "./pages/AcceptableUse";
 import DataProcessing from "./pages/DataProcessing";
+import AppBackground from "./components/layout/AppBackground";
 
 // Documentation sub-pages
 import GettingStarted from "./pages/docs/GettingStarted";
@@ -42,6 +43,8 @@ import CloudSync from "./pages/docs/CloudSync";
 import Templates from "./pages/docs/Templates";
 import SmartOrganization from "./pages/docs/SmartOrganization";
 import SearchFiltering from "./pages/docs/SearchFiltering";
+import CustomIntegrations from "./pages/docs/CustomIntegrations";
+import TroubleshootingGuide from "./pages/docs/TroubleshootingGuide";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +53,7 @@ const App = () => (
     <TooltipProvider>
       <Sonner />
       <BrowserRouter>
+        <AppBackground />
         <CookieBanner />
         <Routes>
           <Route path="/" element={<Index />} />
@@ -89,6 +93,8 @@ const App = () => (
           <Route path="/docs/templates" element={<Templates />} />
           <Route path="/docs/smart-organization" element={<SmartOrganization />} />
           <Route path="/docs/search-filtering" element={<SearchFiltering />} />
+          <Route path="/docs/custom-integrations" element={<CustomIntegrations />} />
+          <Route path="/docs/troubleshooting" element={<TroubleshootingGuide />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
