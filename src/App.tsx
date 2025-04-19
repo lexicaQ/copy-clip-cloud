@@ -1,4 +1,3 @@
-
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -28,38 +27,7 @@ import FAQ from "./pages/FAQ";
 import CookieBanner from "./components/cookie/CookieBanner";
 import AcceptableUse from "./pages/AcceptableUse";
 import DataProcessing from "./pages/DataProcessing";
-
-// Documentation sub-pages
-import GettingStarted from "./pages/docs/GettingStarted";
-import KeyboardShortcuts from "./pages/docs/KeyboardShortcuts";
-import AdvancedUsage from "./pages/docs/AdvancedUsage";
-import ApiDocumentation from "./pages/docs/ApiDocumentation";
-import Sdk from "./pages/docs/Sdk";
-import IntegrationGuides from "./pages/docs/IntegrationGuides";
-import AllArticles from "./pages/docs/AllArticles";
-import CoreFeatures from "./pages/docs/CoreFeatures";
-import CloudSync from "./pages/docs/CloudSync";
-import Templates from "./pages/docs/Templates";
-import SmartOrganization from "./pages/docs/SmartOrganization";
-import SearchFiltering from "./pages/docs/SearchFiltering";
-import SecurityDocs from "./pages/docs/SecurityDocs";
-import DeveloperCase from "./pages/use-cases/DeveloperCase";
-import DesignerCase from "./pages/use-cases/DesignerCase";
-import BusinessCase from "./pages/use-cases/BusinessCase";
-import ScienceCase from "./pages/use-cases/ScienceCase";
-import DeveloperPortal from "./pages/docs/DeveloperPortal";
-import ApiExplorer from "./pages/docs/ApiExplorer";
-
-// Feature pages
-import UniversalClipboard from "./pages/features/UniversalClipboard";
-import EndToEndEncryption from "./pages/features/EndToEndEncryption";
-import SmartOrganizationFeature from "./pages/features/SmartOrganization";
-import LightningFast from "./pages/features/LightningFast";
-import SmartSearch from "./pages/features/SmartSearch";
-import CodeSnippets from "./pages/features/CodeSnippets";
-import CustomRules from "./pages/features/CustomRules";
-import HistoryTimeline from "./pages/features/HistoryTimeline";
-import TeamCollaboration from "./pages/features/TeamCollaboration";
+import GettingStartedHelp from "./pages/help/GettingStartedHelp";
 
 const queryClient = new QueryClient();
 
@@ -94,7 +62,6 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
           
-          {/* Feature pages */}
           <Route path="/features/universal-clipboard" element={<UniversalClipboard />} />
           <Route path="/features/end-to-end-encryption" element={<EndToEndEncryption />} />
           <Route path="/features/smart-organization" element={<SmartOrganizationFeature />} />
@@ -105,7 +72,6 @@ const App = () => (
           <Route path="/features/history-timeline" element={<HistoryTimeline />} />
           <Route path="/features/team-collaboration" element={<TeamCollaboration />} />
           
-          {/* Documentation sub-pages */}
           <Route path="/docs/getting-started" element={<GettingStarted />} />
           <Route path="/docs/keyboard-shortcuts" element={<KeyboardShortcuts />} />
           <Route path="/docs/advanced-usage" element={<AdvancedUsage />} />
@@ -120,7 +86,6 @@ const App = () => (
           <Route path="/docs/search-filtering" element={<SearchFiltering />} />
           <Route path="/docs/security" element={<SecurityDocs />} />
           
-          {/* Use Case Routes */}
           <Route path="/use-cases/developer" element={<DeveloperCase />} />
           <Route path="/use-cases/designer" element={<DesignerCase />} />
           <Route path="/use-cases/business" element={<BusinessCase />} />
@@ -128,6 +93,8 @@ const App = () => (
           
           <Route path="/docs/developer-portal" element={<DeveloperPortal />} />
           <Route path="/docs/api-explorer" element={<ApiExplorer />} />
+          
+          <Route path="/help/getting-started" element={<GettingStartedHelp />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>

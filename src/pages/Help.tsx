@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
@@ -15,6 +14,7 @@ import {
   ArrowRight,
   ExternalLink
 } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 const helpCategories = [
   {
@@ -27,7 +27,8 @@ const helpCategories = [
       "Understanding the interface",
       "Basic clipboard operations"
     ],
-    linkText: "View Getting Started guides"
+    linkText: "View Getting Started guides",
+    link: "/help/getting-started"
   },
   {
     title: "Features & How-tos",
