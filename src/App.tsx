@@ -28,7 +28,6 @@ import FAQ from "./pages/FAQ";
 import CookieBanner from "./components/cookie/CookieBanner";
 import AcceptableUse from "./pages/AcceptableUse";
 import DataProcessing from "./pages/DataProcessing";
-import AppBackground from "./components/layout/AppBackground";
 
 // Documentation sub-pages
 import GettingStarted from "./pages/docs/GettingStarted";
@@ -43,22 +42,6 @@ import CloudSync from "./pages/docs/CloudSync";
 import Templates from "./pages/docs/Templates";
 import SmartOrganization from "./pages/docs/SmartOrganization";
 import SearchFiltering from "./pages/docs/SearchFiltering";
-import CustomIntegrations from "./pages/docs/CustomIntegrations";
-import TroubleshootingGuide from "./pages/docs/TroubleshootingGuide";
-
-// Feature detail pages
-import TimeSaving from "./pages/features/TimeSaving";
-import Sharing from "./pages/features/Sharing";
-import Security from "./pages/features/Security";
-import Organization from "./pages/features/Organization";
-import Productivity from "./pages/features/Productivity";
-import Focus from "./pages/features/Focus";
-import FeaturePrivacy from "./pages/features/FeaturePrivacy";
-import Sync from "./pages/features/Sync";
-import Collaboration from "./pages/features/Collaboration";
-import Search from "./pages/features/Search";
-import Reliability from "./pages/features/Reliability";
-import Design from "./pages/features/Design";
 
 const queryClient = new QueryClient();
 
@@ -67,7 +50,6 @@ const App = () => (
     <TooltipProvider>
       <Sonner />
       <BrowserRouter>
-        <AppBackground />
         <CookieBanner />
         <Routes>
           <Route path="/" element={<Index />} />
@@ -94,20 +76,6 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
           
-          {/* Feature detail pages */}
-          <Route path="/features/time-saving" element={<TimeSaving />} />
-          <Route path="/features/sharing" element={<Sharing />} />
-          <Route path="/features/security" element={<Security />} />
-          <Route path="/features/organization" element={<Organization />} />
-          <Route path="/features/productivity" element={<Productivity />} />
-          <Route path="/features/focus" element={<Focus />} />
-          <Route path="/features/privacy" element={<FeaturePrivacy />} />
-          <Route path="/features/sync" element={<Sync />} />
-          <Route path="/features/collaboration" element={<Collaboration />} />
-          <Route path="/features/search" element={<Search />} />
-          <Route path="/features/reliability" element={<Reliability />} />
-          <Route path="/features/design" element={<Design />} />
-          
           {/* Documentation sub-pages */}
           <Route path="/docs/getting-started" element={<GettingStarted />} />
           <Route path="/docs/keyboard-shortcuts" element={<KeyboardShortcuts />} />
@@ -121,8 +89,6 @@ const App = () => (
           <Route path="/docs/templates" element={<Templates />} />
           <Route path="/docs/smart-organization" element={<SmartOrganization />} />
           <Route path="/docs/search-filtering" element={<SearchFiltering />} />
-          <Route path="/docs/custom-integrations" element={<CustomIntegrations />} />
-          <Route path="/docs/troubleshooting" element={<TroubleshootingGuide />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
