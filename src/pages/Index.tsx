@@ -7,11 +7,10 @@ import AppTitle from "@/components/landing/AppTitle";
 import TestimonialCarousel from "@/components/landing/TestimonialCarousel";
 import AppStats from "@/components/landing/AppStats";
 import AppFAQ from "@/components/landing/AppFAQ";
-import HowItWorks from "@/components/landing/HowItWorks";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Shield, Sparkles, Zap } from "lucide-react";
-import HeroBackground from "@/components/landing/HeroBackground";
+import BackgroundEffects from "@/components/landing/BackgroundEffects";
 import EnhancedBackground from "@/components/landing/EnhancedBackground";
 import ValueProposition from "@/components/landing/ValueProposition";
 import AppWalkthrough from "@/components/landing/AppWalkthrough";
@@ -22,16 +21,16 @@ const Index = () => {
   return (
     <div className="relative min-h-screen">
       <Header />
-
+      
+      {/* Enhanced background effects */}
+      <BackgroundEffects />
+      
       <motion.div 
         className="max-w-7xl mx-auto px-4 pt-20 pb-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Ersetzen des alten Hintergrunds durch den verbesserten Hintergrund */}
-        <EnhancedBackground />
-        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -78,45 +77,85 @@ const Index = () => {
           </motion.div>
         </motion.div>
 
-        {/* Neue Value Proposition-Sektion */}
-        <div className="mt-24">
+        {/* Value Proposition with animation */}
+        <motion.div 
+          className="mt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
           <ValueProposition />
-        </div>
+        </motion.div>
 
-        {/* Features Grid */}
-        <div className="mt-12">
-          <AppFeatures />
-        </div>
-        
-        {/* Neue Feature Preview-Sektion */}
-        <div className="mt-12">
+        {/* Feature Preview */}
+        <motion.div 
+          className="mt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
           <FeaturePreview />
-        </div>
-        
-        {/* How It Works - App-Walkthrough ersetzt durch neue Komponente */}
-        <div className="mt-12">
+        </motion.div>
+
+        {/* Key Features Grid */}
+        <motion.div 
+          className="mt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <AppFeatures />
+        </motion.div>
+
+        {/* App Walkthrough */}
+        <motion.div 
+          className="mt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
           <AppWalkthrough />
-        </div>
-        
-        {/* Neue User Examples-Sektion */}
-        <div className="mt-12">
+        </motion.div>
+
+        {/* User Examples */}
+        <motion.div 
+          className="mt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
           <UserExamples />
-        </div>
-        
-        {/* Stats Dashboard */}
-        <div className="mt-24">
+        </motion.div>
+
+        {/* Statistics Dashboard */}
+        <motion.div 
+          className="mt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
           <AppStats />
-        </div>
-        
+        </motion.div>
+
         {/* Testimonials */}
-        <div className="mt-24">
+        <motion.div 
+          className="mt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
           <TestimonialCarousel />
-        </div>
-        
+        </motion.div>
+
         {/* FAQ Section */}
-        <div className="mt-24">
+        <motion.div 
+          className="mt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
           <AppFAQ />
-        </div>
+        </motion.div>
       </motion.div>
       
       <Footer />
