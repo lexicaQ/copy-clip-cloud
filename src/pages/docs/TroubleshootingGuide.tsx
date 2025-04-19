@@ -2,12 +2,17 @@
 import React from "react";
 import DocLayout from "./DocLayout";
 import { AlertTriangle, CheckCircle, Info } from "lucide-react";
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const TroubleshootingGuide = () => {
   return (
-    <DocLayout>
+    <DocLayout title="Troubleshooting Guide" icon={AlertTriangle} backLink="/docs" backText="Back to Documentation">
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Troubleshooting Guide</h1>
         <p className="text-gray-400">
           Solutions for common issues and questions about CopyClipCloud.
         </p>
@@ -74,7 +79,7 @@ const TroubleshootingGuide = () => {
                 If the application is using too much memory, try these settings:
               </p>
               <ul className="list-disc list-inside text-gray-400 space-y-2">
-                <li>Limit maximum clipboard history items in Settings > Performance</li>
+                <li>Limit maximum clipboard history items in Settings {'->'} Performance</li>
                 <li>Disable thumbnail generation for large images</li>
                 <li>Use text-only mode for very large text snippets</li>
                 <li>Enable automatic cleanup of old items</li>
@@ -87,7 +92,7 @@ const TroubleshootingGuide = () => {
                 To optimize battery life on mobile devices:
               </p>
               <ul className="list-disc list-inside text-gray-400 space-y-2">
-                <li>Reduce sync frequency in Settings > Sync</li>
+                <li>Reduce sync frequency in Settings {'->'} Sync</li>
                 <li>Enable battery-saving mode</li>
                 <li>Limit background processes</li>
                 <li>Use WiFi instead of cellular data when possible</li>
@@ -115,6 +120,44 @@ const TroubleshootingGuide = () => {
               </ul>
             </div>
           </div>
+          
+          <Accordion type="single" collapsible className="w-full border border-white/10 rounded-lg">
+            <AccordionItem value="item-1" className="border-b border-white/10">
+              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                  <span>Internet Connection Issues</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-4 text-gray-400">
+                <p className="mb-3">If you're experiencing connectivity problems:</p>
+                <ul className="list-disc list-inside space-y-2 mb-4">
+                  <li>Check your WiFi or cellular connection</li>
+                  <li>Try connecting to a different network</li>
+                  <li>Verify our service status at status.copyclipcloud.com</li>
+                  <li>Restart your router if problems persist</li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+            
+            <AccordionItem value="item-2" className="border-b border-white/10">
+              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                  <span>Permission Errors</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-4 text-gray-400">
+                <p className="mb-3">If you're seeing permission errors:</p>
+                <ul className="list-disc list-inside space-y-2 mb-4">
+                  <li>Check clipboard access permissions in your OS settings</li>
+                  <li>Restart the application after granting permissions</li>
+                  <li>On macOS, ensure accessibility permissions are enabled</li>
+                  <li>On Windows, try running the app as administrator</li>
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
           
           <div className="bg-black/20 border border-white/10 rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">Still Need Help?</h2>
