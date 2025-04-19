@@ -49,14 +49,14 @@ const AdvancedUsage = () => {
                     CopyClipCloud supports powerful regular expression (regex) search and filtering:
                   </p>
                   <ul className="list-disc pl-5 space-y-2 text-gray-300">
-                    <li>Enable regex search in Preferences > Search > Enable Regular Expressions</li>
+                    <li>Enable regex search in Preferences {"->"} Search {"->"} Enable Regular Expressions</li>
                     <li>Use standard regex syntax in the search field (e.g., <code className="bg-black/30 px-1 rounded">\d+</code> to find numbers)</li>
                     <li>Create smart filters with regex to automatically organize clipboard items</li>
                     <li>Use capture groups to extract specific information from clipboard text</li>
                   </ul>
                   <div className="mt-4 p-4 bg-black/30 rounded font-mono text-sm">
                     <p className="text-white mb-2">// Example: Smart filter for email addresses</p>
-                    <p className="text-white">[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}</p>
+                    <p className="text-white">[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{"{"}{2,}{"}"}</p>
                   </div>
                 </div>
               </div>
@@ -68,7 +68,7 @@ const AdvancedUsage = () => {
                     Create custom actions to transform or process clipboard content:
                   </p>
                   <ol className="list-decimal pl-5 space-y-2 text-gray-300">
-                    <li>Go to Preferences > Actions > Create New Action</li>
+                    <li>Go to Preferences {"->"} Actions {"->"} Create New Action</li>
                     <li>Name your action and choose a trigger (keyboard shortcut, automatic, or manual)</li>
                     <li>Define the transformation using JavaScript or predefined functions</li>
                     <li>Set conditions for when the action should be applied</li>
