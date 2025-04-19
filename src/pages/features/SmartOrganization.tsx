@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, ArrowRight, Check, Tags, Filter, Zap } from "lucide-react";
+import { ArrowLeft, Sparkles, ArrowRight, Check, Tags, Filter, Zap, Code } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
