@@ -27,6 +27,17 @@ import Help from "./pages/Help";
 import FAQ from "./pages/FAQ";
 import CookieBanner from "./components/cookie/CookieBanner";
 
+// Documentation sub-pages
+import GettingStarted from "./pages/docs/GettingStarted";
+import KeyboardShortcuts from "./pages/docs/KeyboardShortcuts";
+import AdvancedUsage from "./pages/docs/AdvancedUsage";
+import ApiDocumentation from "./pages/docs/ApiDocumentation";
+import Sdk from "./pages/docs/Sdk";
+import IntegrationGuides from "./pages/docs/IntegrationGuides";
+import AllArticles from "./pages/docs/AllArticles";
+import CoreFeatures from "./pages/docs/CoreFeatures";
+import CloudSync from "./pages/docs/CloudSync";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -57,6 +68,18 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
+          
+          {/* Documentation sub-pages */}
+          <Route path="/docs/getting-started" element={<GettingStarted />} />
+          <Route path="/docs/keyboard-shortcuts" element={<KeyboardShortcuts />} />
+          <Route path="/docs/advanced-usage" element={<AdvancedUsage />} />
+          <Route path="/docs/api-documentation" element={<ApiDocumentation />} />
+          <Route path="/docs/sdk" element={<Sdk />} />
+          <Route path="/docs/integration-guides" element={<IntegrationGuides />} />
+          <Route path="/docs/all-articles" element={<AllArticles />} />
+          <Route path="/docs/core-features" element={<CoreFeatures />} />
+          <Route path="/docs/cloud-sync" element={<CloudSync />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,12 +1,13 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { 
   BookOpen, 
   Search, 
-  FileText, 
+  FileText,
   Code,
   Settings,
   Key,
@@ -28,7 +29,8 @@ const docCategories = [
       "User Interface Overview",
       "Key Concepts",
       "Keyboard Shortcuts"
-    ]
+    ],
+    route: "/docs/getting-started"
   },
   { 
     title: "Core Features", 
@@ -39,7 +41,8 @@ const docCategories = [
       "Search & Filtering",
       "Templates & Snippets",
       "Cross-device Sync"
-    ]
+    ],
+    route: "/docs/core-features"
   },
   { 
     title: "Advanced Usage", 
@@ -50,7 +53,8 @@ const docCategories = [
       "Workflows & Automation",
       "API Documentation",
       "Browser Extensions"
-    ]
+    ],
+    route: "/docs/advanced-usage"
   },
   { 
     title: "Security & Privacy", 
@@ -61,7 +65,8 @@ const docCategories = [
       "Secure Sharing",
       "Data Backup",
       "Privacy Controls"
-    ]
+    ],
+    route: "/docs/cloud-sync"
   },
   { 
     title: "Configuration", 
@@ -72,7 +77,8 @@ const docCategories = [
       "Integration Setup",
       "Cloud Sync Configuration",
       "Device Management"
-    ]
+    ],
+    route: "/docs/core-features"
   },
   { 
     title: "Troubleshooting", 
@@ -83,17 +89,36 @@ const docCategories = [
       "Error Messages",
       "Diagnostics",
       "Contact Support"
-    ]
+    ],
+    route: "/docs/cloud-sync"
   }
 ];
 
 const popularArticles = [
-  "How to sync clipboard across devices",
-  "Setting up end-to-end encryption",
-  "Creating and using templates",
-  "Configuring smart categorization rules",
-  "Customizing keyboard shortcuts",
-  "Managing multiple clipboard histories"
+  {
+    title: "How to sync clipboard across devices",
+    route: "/docs/cloud-sync"
+  },
+  {
+    title: "Setting up end-to-end encryption",
+    route: "/docs/cloud-sync"
+  },
+  {
+    title: "Creating and using templates",
+    route: "/docs/core-features"
+  },
+  {
+    title: "Configuring smart categorization rules",
+    route: "/docs/core-features"
+  },
+  {
+    title: "Customizing keyboard shortcuts",
+    route: "/docs/keyboard-shortcuts"
+  },
+  {
+    title: "Managing multiple clipboard histories",
+    route: "/docs/advanced-usage"
+  }
 ];
 
 const DocCategoryCard = ({ category, index }) => (
@@ -114,35 +139,38 @@ const DocCategoryCard = ({ category, index }) => (
     <ul className="space-y-2 mb-4">
       {category.articles.map((article, idx) => (
         <li key={idx} className="text-gray-400 hover:text-white transition-colors">
-          <a href={`#${article.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center">
+          <Link to={category.route} className="flex items-center">
             <FileText className="w-4 h-4 mr-2" />
             <span>{article}</span>
-          </a>
+          </Link>
         </li>
       ))}
     </ul>
     
-    <a 
-      href={`#view-all-${category.title.toLowerCase().replace(/\s+/g, '-')}`}
+    <Link 
+      to={category.route}
       className="text-white hover:underline inline-flex items-center text-sm"
     >
       View All <ArrowRight className="w-3.5 h-3.5 ml-1" />
-    </a>
+    </Link>
   </motion.div>
 );
 
-const PopularArticle = ({ title, index }) => (
-  <motion.a
-    href={`#${title.toLowerCase().replace(/\s+/g, '-')}`}
-    className="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors"
+const PopularArticle = ({ title, route, index }) => (
+  <motion.div
     initial={{ opacity: 0, x: -10 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.3, delay: index * 0.05 }}
   >
-    <FileText className="w-5 h-5 mr-3 text-gray-400" />
-    <span>{title}</span>
-  </motion.a>
+    <Link
+      to={route}
+      className="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors"
+    >
+      <FileText className="w-5 h-5 mr-3 text-gray-400" />
+      <span>{title}</span>
+    </Link>
+  </motion.div>
 );
 
 const Documentation = () => {
@@ -255,12 +283,12 @@ const Documentation = () => {
               </div>
             </div>
             
-            <a 
-              href="#full-guide"
+            <Link 
+              to="/docs/getting-started"
               className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
             >
               View Full Guide
-            </a>
+            </Link>
           </motion.div>
           
           <motion.div
@@ -279,17 +307,17 @@ const Documentation = () => {
             
             <div className="divide-y divide-white/10">
               {popularArticles.map((article, index) => (
-                <PopularArticle key={index} title={article} index={index} />
+                <PopularArticle key={index} title={article.title} route={article.route} index={index} />
               ))}
             </div>
             
             <div className="mt-6 pt-4 border-t border-white/10">
-              <a 
-                href="#all-articles"
+              <Link 
+                to="/docs/all-articles"
                 className="text-white hover:underline inline-flex items-center text-sm"
               >
                 Browse All Articles <ArrowRight className="w-3.5 h-3.5 ml-1" />
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -313,37 +341,37 @@ const Documentation = () => {
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <a 
-              href="#api-docs"
+            <Link 
+              to="/docs/api-documentation"
               className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors flex items-center"
             >
               <ExternalLink className="w-5 h-5 mr-3" />
               <span>API Documentation</span>
-            </a>
+            </Link>
             
-            <a 
-              href="#sdk"
+            <Link 
+              to="/docs/sdk"
               className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors flex items-center"
             >
               <ExternalLink className="w-5 h-5 mr-3" />
               <span>SDK & Libraries</span>
-            </a>
+            </Link>
             
-            <a 
-              href="#integration"
+            <Link 
+              to="/docs/integration-guides"
               className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors flex items-center"
             >
               <ExternalLink className="w-5 h-5 mr-3" />
               <span>Integration Guides</span>
-            </a>
+            </Link>
           </div>
           
-          <a 
-            href="/partners"
+          <Link 
+            to="/partners"
             className="inline-flex items-center text-white hover:underline"
           >
             Learn about our Partner Program <ArrowRight className="w-4 h-4 ml-1" />
-          </a>
+          </Link>
         </motion.div>
 
         <motion.div
@@ -359,20 +387,20 @@ const Documentation = () => {
             Our support team is ready to assist you.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a 
-              href="/support" 
+            <Link 
+              to="/support" 
               className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
             >
               <MessageSquare className="w-4 h-4 mr-2" />
               Contact Support
-            </a>
-            <a 
-              href="/tutorials" 
+            </Link>
+            <Link 
+              to="/tutorials" 
               className="px-6 py-3 bg-white/10 rounded-full inline-flex items-center hover:bg-white/20 transition-all"
             >
               <BookOpen className="w-4 h-4 mr-2" />
               View Tutorials
-            </a>
+            </Link>
           </div>
         </motion.div>
       </main>
