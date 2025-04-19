@@ -1,8 +1,39 @@
 
 import React, { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, Check, Copy, Settings, Folder, Image, Link, Code, FileText, Clock, Pin, PinOff, X, Search, ChevronDown, Eye, EyeOff } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  ArrowRight, 
+  Check, 
+  Copy, 
+  Settings, 
+  Folder, 
+  Image, 
+  Link, 
+  Code, 
+  FileText, 
+  Clock, 
+  Pin, 
+  PinOff, 
+  X, 
+  Search, 
+  ChevronDown, 
+  Eye, 
+  EyeOff,
+  Download,
+  Share,
+  Edit,
+  Trash
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const FeaturePreview = () => {
   const [activeCategory, setActiveCategory] = useState("Code Snippets");
@@ -10,7 +41,9 @@ const FeaturePreview = () => {
   const [pinnedItems, setPinnedItems] = useState<string[]>([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedItem, setSelectedItem] = useState<{id: string, content: string, title: string, category: string} | null>(null);
+  const [selectedItem, setSelectedItem] = useState<{id: string, content: string, title: string, category: string, isImage?: boolean, isDocument?: boolean} | null>(null);
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
+  const [settingsDialogOpen, setSettingsDialogOpen] = useState(false);
   const { toast } = useToast();
 
   const categories = [
@@ -19,7 +52,10 @@ const FeaturePreview = () => {
     "Text Notes",
     "Images",
     "Links",
-    "Documents"
+    "Documents",
+    "Personal",
+    "Work",
+    "Archive"
   ];
 
   const snippets = {
@@ -27,27 +63,57 @@ const FeaturePreview = () => {
       { id: "react1", title: "React Component", content: "const Button = () => {\n  return <button>Click</button>\n}" },
       { id: "css1", title: "CSS Snippet", content: ".container {\n  display: flex;\n  justify-content: center;\n}" },
       { id: "api1", title: "API Endpoint", content: "GET /api/users/:id" },
-      { id: "sql1", title: "SQL Query", content: "SELECT * FROM users\nWHERE status = 'active'" }
+      { id: "sql1", title: "SQL Query", content: "SELECT * FROM users\nWHERE status = 'active'" },
+      { id: "js1", title: "JavaScript Function", content: "function calculateTotal(items) {\n  return items.reduce((sum, item) => sum + item.price, 0);\n}" },
+      { id: "ts1", title: "TypeScript Interface", content: "interface User {\n  id: string;\n  name: string;\n  email: string;\n  role: 'admin' | 'user';\n}" }
     ],
     "Text Notes": [
       { id: "note1", title: "Meeting Notes", content: "Discuss project timeline and milestones for Q2. Need to finalize resource allocation and deliverables by Friday." },
-      { id: "note2", title: "Ideas", content: "Add dark mode toggle to the dashboard. Implement new notification system. Redesign the user profile page." }
+      { id: "note2", title: "Ideas", content: "Add dark mode toggle to the dashboard. Implement new notification system. Redesign the user profile page." },
+      { id: "note3", title: "Shopping List", content: "Milk, Eggs, Bread, Coffee, Apples, Pasta, Tomato Sauce" },
+      { id: "note4", title: "Book Recommendations", content: "1. Atomic Habits by James Clear\n2. Deep Work by Cal Newport\n3. The Design of Everyday Things by Don Norman" }
     ],
     "Images": [
-      { id: "img1", title: "Logo Design", content: "logo-v2.png", isImage: true },
-      { id: "img2", title: "Header Banner", content: "header-banner.jpg", isImage: true }
+      { id: "img1", title: "Logo Design", content: "/placeholder.svg", isImage: true },
+      { id: "img2", title: "Header Banner", content: "/placeholder.svg", isImage: true },
+      { id: "img3", title: "Profile Photo", content: "/placeholder.svg", isImage: true },
+      { id: "img4", title: "Product Mockup", content: "/placeholder.svg", isImage: true },
+      { id: "img5", title: "Website Wireframe", content: "/placeholder.svg", isImage: true }
     ],
     "Links": [
       { id: "link1", title: "Documentation", content: "https://docs.example.com/api" },
-      { id: "link2", title: "GitHub Repo", content: "https://github.com/username/project" }
+      { id: "link2", title: "GitHub Repo", content: "https://github.com/username/project" },
+      { id: "link3", title: "Design Inspiration", content: "https://dribbble.com/shots/popular" },
+      { id: "link4", title: "Tutorial Video", content: "https://youtube.com/watch?v=example" },
+      { id: "link5", title: "Color Palette Tool", content: "https://coolors.co/generate" }
     ],
     "Documents": [
       { id: "doc1", title: "Project Proposal", content: "project-proposal.pdf", isDocument: true },
-      { id: "doc2", title: "User Research", content: "user-research.docx", isDocument: true }
+      { id: "doc2", title: "User Research", content: "user-research.docx", isDocument: true },
+      { id: "doc3", title: "Marketing Plan", content: "marketing-q3.pdf", isDocument: true },
+      { id: "doc4", title: "Financial Report", content: "finance-2024.xlsx", isDocument: true },
+      { id: "doc5", title: "Legal Contract", content: "service-agreement.pdf", isDocument: true }
     ],
     "Recent Items": [
       { id: "recent1", title: "API Key", content: "sk_test_12345abcdef" },
-      { id: "recent2", title: "Command", content: "docker-compose up -d" }
+      { id: "recent2", title: "Command", content: "docker-compose up -d" },
+      { id: "recent3", title: "Login Credentials", content: "admin / Temp123!" },
+      { id: "recent4", title: "Meeting Link", content: "https://meet.example.com/team-standup" }
+    ],
+    "Personal": [
+      { id: "personal1", title: "Vacation Ideas", content: "1. Japan - Cherry blossom season\n2. Italy - Rome, Florence, Venice\n3. New Zealand - Hiking and nature" },
+      { id: "personal2", title: "Gift Ideas", content: "Mom: Cooking class subscription\nDad: Vintage vinyl records\nSister: Art prints" },
+      { id: "personal3", title: "Home Renovation", content: "Kitchen remodel: $15,000-20,000\nBathroom update: $8,000-10,000\nNew furniture: $3,000" }
+    ],
+    "Work": [
+      { id: "work1", title: "Client Meeting Notes", content: "Acme Corp wants to redesign their website. Budget: $15,000. Timeline: 8 weeks." },
+      { id: "work2", title: "Project Deadlines", content: "Design mockups: May 15\nFrontend development: June 10\nBackend integration: June 25\nTesting: July 5" },
+      { id: "work3", title: "Team Goals Q2", content: "1. Launch mobile app version\n2. Reduce bug backlog by 50%\n3. Improve test coverage to 80%" }
+    ],
+    "Archive": [
+      { id: "archive1", title: "Old Notes", content: "Legacy system documentation from 2020 project." },
+      { id: "archive2", title: "Previous Logo", content: "/placeholder.svg", isImage: true },
+      { id: "archive3", title: "2023 Tax Documents", content: "tax-return-2023.pdf", isDocument: true }
     ]
   };
 
@@ -70,6 +136,9 @@ const FeaturePreview = () => {
       case "Links": return Link;
       case "Documents": return Folder;
       case "Recent Items": return Clock;
+      case "Personal": return User;
+      case "Work": return Briefcase;
+      case "Archive": return Archive;
       default: return FileText;
     }
   };
@@ -103,15 +172,30 @@ const FeaturePreview = () => {
     setSettingsOpen(!settingsOpen);
   };
 
+  const openPreviewDialog = (item: any) => {
+    setSelectedItem(item);
+    setPreviewDialogOpen(true);
+  };
+
+  const openSettingsDialog = (item: any) => {
+    setSelectedItem(item);
+    setSettingsDialogOpen(true);
+  };
+
   const renderItemPreview = (item: any) => {
     if (item.isImage) {
       return (
         <div className="bg-white/5 rounded-md p-2 h-full">
-          <div className="aspect-video bg-white/10 rounded flex items-center justify-center overflow-hidden">
-            <div className="relative w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20">
-              <Image className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 text-white/50" />
-              <div className="absolute bottom-2 left-2 text-[8px] text-white/60 font-medium">{item.content}</div>
-            </div>
+          <div className="aspect-video bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded flex items-center justify-center overflow-hidden">
+            <img 
+              src={item.content} 
+              alt={item.title} 
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "/placeholder.svg";
+              }}
+            />
           </div>
           <div className="mt-2 text-[10px] font-medium text-white/70">Preview of {item.title}</div>
         </div>
@@ -119,11 +203,25 @@ const FeaturePreview = () => {
     }
     
     if (item.isDocument) {
+      const getDocumentIcon = (filename: string) => {
+        const extension = filename.split('.').pop()?.toLowerCase();
+        switch(extension) {
+          case 'pdf': return <FileText className="w-12 h-12 text-red-400/50" />;
+          case 'docx': 
+          case 'doc': return <FileText className="w-12 h-12 text-blue-400/50" />;
+          case 'xlsx': 
+          case 'xls': return <FileText className="w-12 h-12 text-green-400/50" />;
+          case 'pptx': 
+          case 'ppt': return <FileText className="w-12 h-12 text-orange-400/50" />;
+          default: return <FileText className="w-12 h-12 text-white/30" />;
+        }
+      };
+      
       return (
         <div className="bg-white/5 rounded-md p-2 h-full">
           <div className="aspect-[3/4] bg-white/10 rounded flex flex-col items-center justify-center overflow-hidden">
-            <FileText className="w-12 h-12 text-white/30 mb-2" />
-            <div className="text-[10px] text-white/60 font-medium">{item.content}</div>
+            {getDocumentIcon(item.content)}
+            <div className="text-[10px] text-white/60 font-medium mt-2">{item.content}</div>
             <div className="w-3/4 h-1 bg-white/10 rounded-full mt-4"></div>
             <div className="w-2/3 h-1 bg-white/10 rounded-full mt-2"></div>
             <div className="w-4/5 h-1 bg-white/10 rounded-full mt-2"></div>
@@ -141,6 +239,163 @@ const FeaturePreview = () => {
       </div>
     );
   };
+
+  const renderDetailedPreview = (item: any) => {
+    if (item.isImage) {
+      return (
+        <div className="bg-white/5 rounded-md p-4 flex flex-col items-center justify-center">
+          <div className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-lg overflow-hidden max-w-full max-h-[400px]">
+            <img 
+              src={item.content} 
+              alt={item.title} 
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "/placeholder.svg";
+              }}
+            />
+          </div>
+          <div className="mt-4 text-sm font-medium text-white/70 w-full">
+            <div className="flex justify-between mb-2">
+              <span>Filename:</span>
+              <span className="text-white">{item.content.split('/').pop()}</span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span>Type:</span>
+              <span className="text-white">Image</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Added:</span>
+              <span className="text-white">Today</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    if (item.isDocument) {
+      const getDocumentIcon = (filename: string) => {
+        const extension = filename.split('.').pop()?.toLowerCase();
+        switch(extension) {
+          case 'pdf': return <FileText className="w-20 h-20 text-red-400/50" />;
+          case 'docx': 
+          case 'doc': return <FileText className="w-20 h-20 text-blue-400/50" />;
+          case 'xlsx': 
+          case 'xls': return <FileText className="w-20 h-20 text-green-400/50" />;
+          case 'pptx': 
+          case 'ppt': return <FileText className="w-20 h-20 text-orange-400/50" />;
+          default: return <FileText className="w-20 h-20 text-white/30" />;
+        }
+      };
+      
+      return (
+        <div className="bg-white/5 rounded-md p-4 flex flex-col items-center">
+          <div className="aspect-[3/4] w-48 bg-white/10 rounded-lg flex flex-col items-center justify-center overflow-hidden border border-white/10">
+            {getDocumentIcon(item.content)}
+            <div className="text-sm text-white/60 font-medium mt-3">{item.content}</div>
+            <div className="w-3/4 h-1 bg-white/10 rounded-full mt-6"></div>
+            <div className="w-2/3 h-1 bg-white/10 rounded-full mt-3"></div>
+            <div className="w-4/5 h-1 bg-white/10 rounded-full mt-3"></div>
+          </div>
+          <div className="mt-4 text-sm font-medium text-white/70 w-full">
+            <div className="flex justify-between mb-2">
+              <span>Filename:</span>
+              <span className="text-white">{item.content}</span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span>Type:</span>
+              <span className="text-white">{item.content.split('.').pop()?.toUpperCase()}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Added:</span>
+              <span className="text-white">Today</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="bg-white/5 rounded-md p-4 h-full">
+        <div className="max-h-[400px] overflow-auto rounded-md bg-black/30 p-4 font-mono text-white/90 whitespace-pre-wrap text-sm border border-white/10">
+          {item.content}
+        </div>
+        <div className="mt-4 text-sm font-medium text-white/70">
+          <div className="flex justify-between mb-2">
+            <span>Type:</span>
+            <span className="text-white">
+              {item.category === "Code Snippets" ? "Code" : 
+               item.category === "Links" ? "URL" : "Text"}
+            </span>
+          </div>
+          <div className="flex justify-between mb-2">
+            <span>Characters:</span>
+            <span className="text-white">{item.content.length}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Added:</span>
+            <span className="text-white">Today</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Import missing icons
+  const User = (props: any) => (
+    <svg 
+      {...props}
+      xmlns="http://www.w3.org/2000/svg" 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+
+  const Briefcase = (props: any) => (
+    <svg 
+      {...props}
+      xmlns="http://www.w3.org/2000/svg" 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+    </svg>
+  );
+
+  const Archive = (props: any) => (
+    <svg 
+      {...props}
+      xmlns="http://www.w3.org/2000/svg" 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <rect width="20" height="5" x="2" y="3" rx="1" />
+      <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+      <path d="M10 12h4" />
+    </svg>
+  );
 
   return (
     <motion.div 
@@ -377,90 +632,96 @@ const FeaturePreview = () => {
                   ) : null}
                   
                   {/* Interactive Categories Sidebar */}
-                  <div className="w-1/4 border-r border-white/10 p-3 space-y-2">
-                    <div className="flex items-center h-6 mb-3">
+                  <div className="w-1/5 border-r border-white/10 p-2 space-y-1.5">
+                    <div className="flex items-center h-6 mb-2">
                       <input
                         type="text"
                         placeholder="Search..."
-                        className="w-full h-full bg-white/5 rounded border border-white/10 text-[10px] text-white/70 px-2 py-1 focus:outline-none focus:border-white/20"
+                        className="w-full h-full bg-white/5 rounded border border-white/10 text-[8px] text-white/70 px-2 py-1 focus:outline-none focus:border-white/20"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                       />
-                      <Search className="w-3 h-3 text-white/50 -ml-5" />
+                      <Search className="w-2.5 h-2.5 text-white/50 -ml-4" />
                     </div>
                     
-                    <div className="mb-3">
-                      <div className="text-[10px] font-medium text-white/60 uppercase tracking-wider mb-1">Categories</div>
-                      {categories.map((category, i) => {
-                        const CategoryIcon = getCategoryIcon(category);
-                        return (
-                          <motion.div 
-                            key={i} 
-                            className={`h-7 rounded-md flex items-center px-2 text-[10px] cursor-pointer transition-all duration-300 ${activeCategory === category && !searchTerm ? 'bg-white/10 text-white' : 'text-white/50 hover:bg-white/5'}`}
-                            onClick={() => {
-                              setActiveCategory(category);
-                              setSearchTerm("");
-                            }}
-                            whileHover={{ x: 2 }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            <CategoryIcon className="w-3 h-3 mr-2 text-white/70" />
-                            {category}
-                          </motion.div>
-                        );
-                      })}
+                    <div className="mb-2">
+                      <div className="text-[8px] font-medium text-white/60 uppercase tracking-wider mb-1 pl-1">Categories</div>
+                      <div className="max-h-[300px] overflow-y-auto pr-1 space-y-0.5">
+                        {categories.map((category, i) => {
+                          const CategoryIcon = getCategoryIcon(category);
+                          return (
+                            <motion.div 
+                              key={i} 
+                              className={`h-6 rounded-md flex items-center px-2 text-[8px] cursor-pointer transition-all duration-300 ${activeCategory === category && !searchTerm ? 'bg-white/10 text-white' : 'text-white/50 hover:bg-white/5'}`}
+                              onClick={() => {
+                                setActiveCategory(category);
+                                setSearchTerm("");
+                              }}
+                              whileHover={{ x: 2 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <CategoryIcon className="w-2.5 h-2.5 mr-1.5 text-white/70" />
+                              {category}
+                            </motion.div>
+                          );
+                        })}
+                      </div>
                     </div>
                     
                     {pinnedItems.length > 0 && (
                       <div>
-                        <div className="text-[10px] font-medium text-white/60 uppercase tracking-wider mb-1">Pinned</div>
-                        {allItems.filter(item => pinnedItems.includes(item.id)).map((item, index) => {
-                          const ItemIcon = getCategoryIcon(item.category);
-                          return (
-                            <motion.div 
-                              key={index} 
-                              className="h-7 rounded-md flex items-center px-2 text-[10px] cursor-pointer transition-all duration-300 text-white/70 hover:bg-white/5"
-                              onClick={() => setSelectedItem(item)}
-                              whileHover={{ x: 2 }}
-                              whileTap={{ scale: 0.98 }}
-                            >
-                              <ItemIcon className="w-2.5 h-2.5 mr-2 text-white/70" />
-                              <span className="truncate flex-1">{item.title}</span>
-                              <Pin className="w-2.5 h-2.5 text-white/50" />
-                            </motion.div>
-                          );
-                        })}
+                        <div className="text-[8px] font-medium text-white/60 uppercase tracking-wider mb-1 pl-1">Pinned</div>
+                        <div className="max-h-[120px] overflow-y-auto pr-1 space-y-0.5">
+                          {allItems.filter(item => pinnedItems.includes(item.id)).map((item, index) => {
+                            const ItemIcon = getCategoryIcon(item.category);
+                            return (
+                              <motion.div 
+                                key={index} 
+                                className="h-6 rounded-md flex items-center px-2 text-[8px] cursor-pointer transition-all duration-300 text-white/70 hover:bg-white/5"
+                                onClick={() => setSelectedItem(item)}
+                                whileHover={{ x: 2 }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <ItemIcon className="w-2 h-2 mr-1.5 text-white/70" />
+                                <span className="truncate flex-1">{item.title}</span>
+                                <Pin className="w-2 h-2 text-white/50" />
+                              </motion.div>
+                            );
+                          })}
+                        </div>
                       </div>
                     )}
                   </div>
                   
                   {/* Interactive Main Content Area */}
-                  <div className="flex-1 p-3 flex flex-col">
-                    <div className="mb-3 flex justify-between items-center">
+                  <div className="flex-1 p-2 flex flex-col">
+                    <div className="mb-2 flex justify-between items-center">
                       <div className="text-xs text-white/70 font-medium">
                         {searchTerm ? 'Search Results' : activeCategory}
                       </div>
-                      <div className="text-xs text-white/50">
+                      <div className="text-[9px] text-white/50">
                         {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-3 overflow-y-auto flex-1">
+                    <div className="grid grid-cols-3 gap-2 overflow-y-auto flex-1">
                       {filteredItems.map((item, index) => (
                         <motion.div 
                           key={index}
-                          className="h-auto min-h-24 bg-white/5 rounded-md p-2 flex flex-col justify-between relative group cursor-pointer"
-                          whileHover={{ scale: 1.02, backgroundColor: "rgba(255, 255, 255, 0.08)" }}
-                          initial={{ opacity: 0, y: 10 }}
+                          className="h-auto min-h-20 bg-white/5 hover:bg-white/8 rounded-md p-1.5 flex flex-col justify-between relative group cursor-pointer border border-white/5 hover:border-white/10 transition-colors"
+                          whileHover={{ scale: 1.02 }}
+                          initial={{ opacity: 0, y: 5 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          onClick={() => setSelectedItem({...item, category: searchTerm ? item.category : activeCategory})}
+                          transition={{ delay: index * 0.05 }}
                         >
-                          <div className="text-xs text-white/70 mb-1 flex justify-between items-center">
-                            <span className="truncate mr-1">{item.title}</span>
-                            <div className="flex gap-1">
+                          <div 
+                            className="text-[9px] text-white/70 mb-1 flex justify-between items-center"
+                            onClick={() => openPreviewDialog(item)}
+                          >
+                            <span className="truncate mr-1 font-medium">{item.title}</span>
+                            <div className="flex gap-0.5">
                               <motion.button
-                                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-white/10"
+                                className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded-full hover:bg-white/10"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   togglePinItem(item.id);
@@ -469,13 +730,13 @@ const FeaturePreview = () => {
                                 whileTap={{ scale: 0.9 }}
                               >
                                 {pinnedItems.includes(item.id) ? (
-                                  <PinOff className="w-3 h-3 text-white/70" />
+                                  <PinOff className="w-2 h-2 text-white/70" />
                                 ) : (
-                                  <Pin className="w-3 h-3 text-white/70" />
+                                  <Pin className="w-2 h-2 text-white/70" />
                                 )}
                               </motion.button>
                               <motion.button
-                                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-white/10"
+                                className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded-full hover:bg-white/10"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleCopyItem(item.id, item.content);
@@ -484,34 +745,81 @@ const FeaturePreview = () => {
                                 whileTap={{ scale: 0.9 }}
                               >
                                 {copiedId === item.id ? (
-                                  <Check className="w-3 h-3 text-green-400" />
+                                  <Check className="w-2 h-2 text-green-400" />
                                 ) : (
-                                  <Copy className="w-3 h-3 text-white/70" />
+                                  <Copy className="w-2 h-2 text-white/70" />
                                 )}
+                              </motion.button>
+                              <motion.button
+                                className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded-full hover:bg-white/10"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openSettingsDialog(item);
+                                }}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                              >
+                                <Settings className="w-2 h-2 text-white/70" />
                               </motion.button>
                             </div>
                           </div>
                           
-                          <div className="text-[10px] font-mono text-white/50 overflow-hidden whitespace-pre-wrap max-h-20">
+                          <div 
+                            className="flex-1 min-h-12 flex items-center justify-center rounded-md overflow-hidden bg-white/5"
+                            onClick={() => openPreviewDialog(item)}
+                          >
                             {item.isImage ? (
-                              <div className="bg-gradient-to-br from-purple-500/20 to-blue-500/20 aspect-video rounded flex items-center justify-center">
-                                <Image className="w-6 h-6 text-white/30" />
+                              <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center aspect-video">
+                                <img 
+                                  src={item.content} 
+                                  alt={item.title}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.src = "/placeholder.svg";
+                                  }}
+                                />
                               </div>
                             ) : item.isDocument ? (
-                              <div className="flex items-center">
-                                <FileText className="w-5 h-5 text-white/30 mr-1" />
-                                <span>{item.content}</span>
+                              <div className="w-full h-full p-2 flex flex-col items-center justify-center">
+                                {(() => {
+                                  const extension = item.content.split('.').pop()?.toLowerCase();
+                                  switch(extension) {
+                                    case 'pdf': return <FileText className="w-6 h-6 text-red-400/50" />;
+                                    case 'docx': 
+                                    case 'doc': return <FileText className="w-6 h-6 text-blue-400/50" />;
+                                    case 'xlsx': 
+                                    case 'xls': return <FileText className="w-6 h-6 text-green-400/50" />;
+                                    case 'pptx': 
+                                    case 'ppt': return <FileText className="w-6 h-6 text-orange-400/50" />;
+                                    default: return <FileText className="w-6 h-6 text-white/30" />;
+                                  }
+                                })()}
+                                <span className="text-[8px] text-white/50 mt-1 truncate max-w-full">{item.content}</span>
+                              </div>
+                            ) : item.category === "Links" ? (
+                              <div className="w-full h-full p-2 flex flex-col items-center justify-center">
+                                <Link className="w-6 h-6 text-purple-400/50" />
+                                <span className="text-[8px] text-white/50 mt-1 truncate max-w-full">{item.content}</span>
                               </div>
                             ) : (
-                              item.content
+                              <div className="text-[8px] font-mono text-white/60 p-1.5 overflow-hidden max-h-full line-clamp-4">
+                                {item.content}
+                              </div>
                             )}
                           </div>
                           
-                          {pinnedItems.includes(item.id) && (
-                            <div className="absolute top-1 right-1 w-3 h-3 flex items-center justify-center">
-                              <Pin className="w-2.5 h-2.5 text-white/50" />
+                          <div className="mt-1 flex justify-between items-center">
+                            <div className="text-[7px] text-white/40">
+                              {new Date().toLocaleDateString()}
                             </div>
-                          )}
+                            <div className="flex gap-0.5">
+                              {pinnedItems.includes(item.id) && (
+                                <Pin className="w-2 h-2 text-white/40" />
+                              )}
+                              <div className="w-1.5 h-1.5 rounded-full bg-green-400/50"></div>
+                            </div>
+                          </div>
                         </motion.div>
                       ))}
                     </div>
@@ -564,6 +872,171 @@ const FeaturePreview = () => {
           />
         </motion.div>
       </div>
+
+      {/* Preview Dialog */}
+      <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
+        <DialogContent className="sm:max-w-[600px] bg-zinc-900/95 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white">{selectedItem?.title}</DialogTitle>
+            <DialogDescription className="text-white/60">
+              {selectedItem?.category}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-4">
+            {selectedItem && renderDetailedPreview(selectedItem)}
+          </div>
+          
+          <DialogFooter className="flex justify-between items-center">
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="bg-white/5 border-white/10 hover:bg-white/10 text-white"
+                onClick={() => handleCopyItem(selectedItem?.id || '', selectedItem?.content || '')}
+              >
+                {copiedId === selectedItem?.id ? 
+                  <Check className="w-4 h-4 mr-2" /> : 
+                  <Copy className="w-4 h-4 mr-2" />
+                }
+                Copy
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="bg-white/5 border-white/10 hover:bg-white/10 text-white"
+                onClick={() => togglePinItem(selectedItem?.id || '')}
+              >
+                {pinnedItems.includes(selectedItem?.id || '') ? 
+                  <PinOff className="w-4 h-4 mr-2" /> : 
+                  <Pin className="w-4 h-4 mr-2" />
+                }
+                {pinnedItems.includes(selectedItem?.id || '') ? 'Unpin' : 'Pin'}
+              </Button>
+            </div>
+            
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="bg-white/5 border-white/10 hover:bg-white/10 text-white"
+              onClick={() => {
+                setPreviewDialogOpen(false);
+                openSettingsDialog(selectedItem);
+              }}
+            >
+              <Settings className="w-4 h-4 mr-2" />
+              Settings
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Settings Dialog */}
+      <Dialog open={settingsDialogOpen} onOpenChange={setSettingsDialogOpen}>
+        <DialogContent className="sm:max-w-[500px] bg-zinc-900/95 border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white">Item Settings</DialogTitle>
+            <DialogDescription className="text-white/60">
+              Configure and manage this clipboard item
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-4 space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm text-white/70">Title</label>
+              <input 
+                type="text" 
+                value={selectedItem?.title} 
+                className="w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white/90 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
+                readOnly
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm text-white/70">Category</label>
+              <select className="w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white/90 text-sm focus:outline-none focus:ring-2 focus:ring-white/20">
+                {categories.map((category) => (
+                  <option key={category} value={category} selected={category === selectedItem?.category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm text-white/70">Tags</label>
+              <input 
+                type="text" 
+                placeholder="Add tags separated by commas" 
+                className="w-full bg-white/5 border border-white/10 rounded-md py-2 px-3 text-white/90 text-sm focus:outline-none focus:ring-2 focus:ring-white/20"
+              />
+            </div>
+            
+            <div className="space-y-1">
+              <h3 className="text-sm text-white/70">Options</h3>
+              
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-center gap-2 bg-white/5 rounded-md p-2">
+                  <input type="checkbox" id="auto-delete" className="h-4 w-4 accent-purple-500" />
+                  <label htmlFor="auto-delete" className="text-xs text-white/70">Auto-delete after 30 days</label>
+                </div>
+                
+                <div className="flex items-center gap-2 bg-white/5 rounded-md p-2">
+                  <input type="checkbox" id="read-only" className="h-4 w-4 accent-purple-500" />
+                  <label htmlFor="read-only" className="text-xs text-white/70">Set as read-only</label>
+                </div>
+                
+                <div className="flex items-center gap-2 bg-white/5 rounded-md p-2">
+                  <input type="checkbox" id="encrypt" className="h-4 w-4 accent-purple-500" checked />
+                  <label htmlFor="encrypt" className="text-xs text-white/70">Encrypt content</label>
+                </div>
+                
+                <div className="flex items-center gap-2 bg-white/5 rounded-md p-2">
+                  <input type="checkbox" id="sync" className="h-4 w-4 accent-purple-500" checked />
+                  <label htmlFor="sync" className="text-xs text-white/70">Sync across devices</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter className="flex justify-between items-center">
+            <Button 
+              variant="destructive" 
+              size="sm"
+              className="bg-red-500/20 hover:bg-red-500/30 text-white border-none"
+            >
+              <Trash className="w-4 h-4 mr-2" />
+              Delete Item
+            </Button>
+            
+            <div className="flex gap-2">
+              <Button 
+                variant="secondary" 
+                size="sm"
+                onClick={() => setSettingsDialogOpen(false)}
+              >
+                Cancel
+              </Button>
+              
+              <Button 
+                variant="default" 
+                size="sm"
+                onClick={() => {
+                  setSettingsDialogOpen(false);
+                  toast({
+                    title: "Settings updated",
+                    description: "Your changes have been saved",
+                    duration: 2000,
+                  });
+                }}
+              >
+                Save Changes
+              </Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };
