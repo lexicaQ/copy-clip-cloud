@@ -1,6 +1,7 @@
+
 import React from "react";
 import { motion } from "framer-motion";
-import { Clipboard, Sparkles, Shield, Cloud } from "lucide-react";
+import { Clipboard, Sparkles, Shield, Cloud, Apple } from "lucide-react";
 
 const AppLogo = () => {
   return (
