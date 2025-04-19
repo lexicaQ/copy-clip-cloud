@@ -20,13 +20,19 @@ const Features = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <InteractiveBackground />
+      {/* Simplified background with only white/black colors */}
+      <div className="fixed inset-0 bg-black z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1),transparent_50%)]"></div>
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+      </div>
+      
       <Header />
       
       <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto relative z-10">
         <FeatureHero />
 
-        {/* Metro-style Feature Showcase Section with improved layout */}
+        {/* Improved Feature Showcase Section with modern styling */}
         <div className="mb-40">
           {showcaseFeatures.map((feature, index) => (
             <motion.div
@@ -45,12 +51,12 @@ const Features = () => {
                 delay={index * 0.1}
               />
               
-              {/* Decorative elements for metro styling */}
+              {/* Improved minimalist connecting elements */}
               {index % 2 === 0 && (
-                <div className="absolute -right-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
+                <div className="absolute -right-4 top-1/2 w-24 h-px bg-white/10 transform -translate-y-1/2 hidden lg:block" />
               )}
               {index % 2 === 1 && (
-                <div className="absolute -left-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
+                <div className="absolute -left-4 top-1/2 w-24 h-px bg-white/10 transform -translate-y-1/2 hidden lg:block" />
               )}
               
               {/* Coming soon badge for selected features */}
@@ -67,10 +73,10 @@ const Features = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <span className="text-gradient">All Features</span>
+          <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">All Features</span>
         </motion.h2>
         
-        {/* Metro-style grid layout for feature cards */}
+        {/* Improved grid layout with better spacing and animations */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-40">
           {enhancedFeatureCards.map((feature, index) => {
             // Create varied card sizes for metro style
