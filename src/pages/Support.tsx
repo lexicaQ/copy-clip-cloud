@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
@@ -112,13 +111,20 @@ const Support = () => {
               link="/faq"
               linkText="Go to FAQs"
             />
-            <SupportOption 
-              title="Live Chat"
-              description="Chat in real-time with our support team for immediate assistance."
-              icon={Headphones}
-              link="#live-chat"
-              linkText="Start Chat"
-            />
+            
+            <div className="relative">
+              <SupportOption 
+                title="Live Chat"
+                description="Chat in real-time with our support team for immediate assistance."
+                icon={Headphones}
+                link="#live-chat"
+                linkText="Start Chat"
+              />
+              <div className="absolute top-6 right-6">
+                <ComingSoon />
+              </div>
+            </div>
+            
             <SupportOption 
               title="Documentation"
               description="Browse our comprehensive documentation for detailed instructions."
@@ -126,6 +132,7 @@ const Support = () => {
               link="/docs"
               linkText="View Documentation"
             />
+            
             <div className="relative">
               <SupportOption 
                 title="Video Tutorials"

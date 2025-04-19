@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Apple, Clipboard, Sparkles, Shield, Cloud, Zap, Lock, Clock } from "lucide-react";
@@ -27,60 +26,60 @@ const AppLogo = () => {
   };
 
   return (
-    <div className="space-y-6 relative">
-      <div className="relative mx-auto" style={{ width: "180px", height: "180px" }}>
+    <div className="space-y-6 relative -mt-8">
+      <div className="relative mx-auto" style={{ width: "160px", height: "160px" }}>
         {/* Improved dynamic halo with subtle glow - SMALLER CIRCLE */}
         <motion.div
           className="absolute rounded-full bg-gradient-to-r from-transparent via-white/3 to-transparent"
           animate={{
             boxShadow: [
-              "0 0 20px 10px rgba(255, 255, 255, 0.02)",
-              "0 0 30px 15px rgba(255, 255, 255, 0.05)",
-              "0 0 20px 10px rgba(255, 255, 255, 0.02)"
+              "0 0 15px 5px rgba(255, 255, 255, 0.02)",
+              "0 0 20px 8px rgba(255, 255, 255, 0.05)",
+              "0 0 15px 5px rgba(255, 255, 255, 0.02)"
             ],
-            scale: [1, 1.05, 1]
+            scale: [1, 1.03, 1]
           }}
           transition={{
-            duration: 6,
+            duration: 4,
             ease: "easeInOut",
             repeat: Infinity,
           }}
-          style={{ width: "120%", height: "120%", top: "-10%", left: "-10%" }}
+          style={{ width: "110%", height: "110%", top: "-5%", left: "-5%" }}
         />
         
-        {/* Enhanced orbital paths with better styling */}
-        {[0, 1, 2, 3].map((orbit) => (
+        {/* Enhanced orbital paths with better continuous animation */}
+        {[0, 1, 2, 3, 4].map((orbit) => (
           <motion.div
             key={orbit}
             className="absolute rounded-full border-dashed"
             style={{ 
-              width: `${120 + orbit * 15}%`, 
-              height: `${120 + orbit * 15}%`, 
-              top: `${-10 - orbit * 7.5}%`, 
-              left: `${-10 - orbit * 7.5}%`,
-              opacity: 0.15 - orbit * 0.03,
+              width: `${110 + orbit * 12}%`, 
+              height: `${110 + orbit * 12}%`, 
+              top: `${-5 - orbit * 6}%`, 
+              left: `${-5 - orbit * 6}%`,
+              opacity: 0.15 - orbit * 0.02,
               borderColor: "rgba(255, 255, 255, 0.1)",
               borderWidth: "1px",
             }}
             animate={{ rotate: 360 }}
             transition={{ 
-              duration: 30 + orbit * 10, 
+              duration: 25 + orbit * 8, 
               repeat: Infinity, 
               ease: "linear" 
             }}
           />
         ))}
 
-        {/* MORE IMPROVED ORBITING ELEMENTS */}
+        {/* IMPROVED ORBITING ELEMENTS with continuous animation */}
         {/* First orbit */}
         <motion.div
           className="absolute w-full h-full"
           animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          style={{ width: "170%", height: "170%", top: "-35%", left: "-35%" }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          style={{ width: "150%", height: "150%", top: "-25%", left: "-25%" }}
         >
           <motion.div 
-            className="absolute top-[30%] left-[80%] w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
+            className="absolute top-[30%] left-[75%] w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
             variants={orbitVariants}
             whileHover="hover"
             style={{ 
@@ -216,9 +215,9 @@ const AppLogo = () => {
           />
         ))}
 
-        {/* Improved main logo with enhanced styling - MOVED DOWN SLIGHTLY */}
+        {/* Enhanced main logo with smaller circle */}
         <motion.div 
-          className="w-28 h-28 mx-auto relative z-10 mt-5"
+          className="w-24 h-24 mx-auto relative z-10"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
@@ -249,7 +248,6 @@ const AppLogo = () => {
               border: "1px solid rgba(255,255,255,0.2)"
             }}
           >
-            {/* Improved dynamic glow effect */}
             <motion.div
               className="absolute inset-0"
               animate={{ 
@@ -267,7 +265,6 @@ const AppLogo = () => {
               }}
             />
             
-            {/* Icon with subtle animation */}
             <motion.div
               animate={{ 
                 scale: [1, 1.03, 1],
@@ -282,7 +279,6 @@ const AppLogo = () => {
               <Clipboard className="w-14 h-14 text-white" />
             </motion.div>
             
-            {/* Enhanced shine effect */}
             <motion.div 
               className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
               animate={{
@@ -304,14 +300,12 @@ const AppLogo = () => {
         </motion.div>
       </div>
 
-      {/* Badge Container - Updated to display badges side by side */}
       <motion.div
         className="flex flex-wrap justify-center items-center gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        {/* macOS Badge */}
         <motion.div 
           className="inline-flex items-center px-4 py-2 rounded-full space-x-2 backdrop-blur-lg"
           style={{
@@ -327,7 +321,6 @@ const AppLogo = () => {
           <span className="text-sm font-medium">Built for macOS 15+</span>
         </motion.div>
 
-        {/* Free Download Badge - Redesigned */}
         <motion.div
           className="inline-flex items-center px-4 py-2 rounded-full text-white text-sm font-medium backdrop-blur-md"
           style={{

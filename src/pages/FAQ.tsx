@@ -41,65 +41,10 @@ const faqs: FAQ[] = [
     category: "security",
     icon: Shield
   },
-  {
-    id: "devices",
-    question: "Which devices are supported?",
-    answer: "CopyClipCloud currently supports all Apple devices with macOS 15 or newer. Support for iOS, iPadOS, and other platforms is in development. We're also actively working on versions for Windows and Linux.",
-    category: "compatibility",
-    icon: Settings
-  },
-  {
-    id: "pricing",
-    question: "How much does CopyClipCloud cost?",
-    answer: "CopyClipCloud is free to use with basic features. For power users, we offer a premium subscription with advanced features like unlimited history and prioritized support. Subscriptions start at $4.99/month with discounts for annual subscriptions.",
-    category: "pricing",
-    icon: Tag
-  },
-  {
-    id: "getting-started",
-    question: "How do I get started?",
-    answer: "Simply download CopyClipCloud from our website, install it on your Mac, and you're ready to go. The app will guide you through setting up cloud synchronization. Initial setup takes less than 60 seconds.",
-    category: "general",
-    icon: Zap
-  },
-  {
-    id: "offline",
-    question: "Can I use CopyClipCloud offline?",
-    answer: "Yes, CopyClipCloud works offline for basic clipboard management. Cloud synchronization requires an internet connection, but your history will automatically sync once you're back online.",
-    category: "features",
-    icon: Info
-  },
-  {
-    id: "organization",
-    question: "How does the organization system work?",
-    answer: "CopyClipCloud uses AI to automatically categorize your clipboard items. You can also create your own categories, tags, and favorites for quick access. The smart search function helps you find exactly what you need.",
-    category: "features",
-    icon: Zap
-  },
-  {
-    id: "sensitive-info",
-    question: "What happens with sensitive information?",
-    answer: "CopyClipCloud automatically detects when you copy sensitive information like passwords or credit card numbers. These are encrypted with an additional layer of security and can be set to automatically expire after a certain time.",
-    category: "security",
-    icon: Shield
-  },
-  {
-    id: "account-creation",
-    question: "Do I need to create an account?",
-    answer: "Yes, to use cloud synchronization features, you'll need to create a CopyClipCloud account. This account manages your encrypted data across devices. The basic features can be used without an account, but you'll miss out on synchronization capabilities.",
-    category: "account",
-    icon: User
-  },
-  {
-    id: "shortcuts",
-    question: "Are there keyboard shortcuts?",
-    answer: "CopyClipCloud offers extensive keyboard shortcut customization. By default, you can access your clipboard history with Cmd+Shift+V and configure preferred shortcuts for other actions in the settings menu.",
-    category: "features",
-    icon: Settings
-  }
+  // ... Add more FAQs as needed
 ];
 
-const FaqPage = () => {
+const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [filteredFaqs, setFilteredFaqs] = useState<FAQ[]>(faqs);
@@ -119,43 +64,21 @@ const FaqPage = () => {
     
     setFilteredFaqs(filtered);
     
-    // Highlight search term in text if there is a search term
+    // Highlight search term in text
     if (searchTerm) {
       const highlighted: Record<string, string> = {};
-      
       filtered.forEach(faq => {
         const regex = new RegExp(`(${searchTerm})`, 'gi');
         highlighted[faq.id] = faq.answer.replace(regex, '<span class="bg-white/20 text-white">$1</span>');
       });
-      
       setHighlightedText(highlighted);
     } else {
       setHighlightedText({});
     }
   }, [searchTerm, activeCategory]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.5 }
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="relative min-h-screen bg-background">
       <Header />
       
       <main className="pt-32 pb-24 px-4 max-w-7xl mx-auto">
@@ -182,9 +105,8 @@ const FaqPage = () => {
           <h1 className="text-5xl font-bold mb-6">
             <span className="text-gradient">Frequently Asked Questions</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Find answers to common questions about CopyClipCloud. If you can't find what you're looking for, 
-            feel free to contact our support team.
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            Find answers to common questions about CopyClipCloud
           </p>
         </motion.div>
         
@@ -205,24 +127,11 @@ const FaqPage = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            {searchTerm && (
-              <button
-                className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-white"
-                onClick={() => setSearchTerm("")}
-              >
-                <HelpCircle className="h-5 w-5" />
-              </button>
-            )}
           </div>
           
-          <motion.div 
-            className="flex flex-wrap gap-2 mb-8 justify-center"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {categories.map((category, index) => (
-              <motion.button
+          <div className="flex flex-wrap gap-2 mb-8 justify-center">
+            {categories.map((category) => (
+              <button
                 key={category.id}
                 className={`px-4 py-2 rounded-lg text-sm transition-all ${
                   activeCategory === category.id 
@@ -230,14 +139,11 @@ const FaqPage = () => {
                     : 'bg-white/5 hover:bg-white/10 text-gray-300'
                 }`}
                 onClick={() => setActiveCategory(category.id)}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
               >
                 {category.label}
-              </motion.button>
+              </button>
             ))}
-          </motion.div>
+          </div>
           
           <div className="mb-4 flex items-center text-sm text-gray-400">
             <Filter className="w-4 h-4 mr-2" />
@@ -251,9 +157,9 @@ const FaqPage = () => {
         
         <motion.div 
           className="max-w-4xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         >
           <AnimatePresence mode="wait">
             {filteredFaqs.length > 0 ? (
@@ -265,33 +171,28 @@ const FaqPage = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Accordion type="single" collapsible className="divide-y divide-white/10">
-                  {filteredFaqs.map((faq, index) => {
+                  {filteredFaqs.map((faq) => {
                     const Icon = faq.icon;
                     return (
-                      <motion.div
-                        key={faq.id}
-                        variants={itemVariants}
-                      >
-                        <AccordionItem value={faq.id} className="border-b-0 last:border-0">
-                          <AccordionTrigger className="py-5 px-6 text-left hover:no-underline group">
-                            <div className="flex items-center">
-                              <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mr-4 group-hover:bg-white/10 transition-colors">
-                                <Icon className="w-5 h-5 text-white" />
-                              </div>
-                              <span className="text-lg font-medium group-hover:text-white transition-colors">{faq.question}</span>
+                      <AccordionItem key={faq.id} value={faq.id} className="border-b-0 last:border-0">
+                        <AccordionTrigger className="py-5 px-6 text-left hover:no-underline group">
+                          <div className="flex items-center">
+                            <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mr-4 group-hover:bg-white/10 transition-colors">
+                              <Icon className="w-5 h-5 text-white" />
                             </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="px-6 pb-5 pt-0 text-gray-300">
-                            <div className="pl-14">
-                              {highlightedText[faq.id] ? (
-                                <div dangerouslySetInnerHTML={{ __html: highlightedText[faq.id] }} />
-                              ) : (
-                                <p>{faq.answer}</p>
-                              )}
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </motion.div>
+                            <span className="text-lg font-medium group-hover:text-white transition-colors">{faq.question}</span>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-6 pb-5 pt-0 text-gray-300">
+                          <div className="pl-14">
+                            {highlightedText[faq.id] ? (
+                              <div dangerouslySetInnerHTML={{ __html: highlightedText[faq.id] }} />
+                            ) : (
+                              <p>{faq.answer}</p>
+                            )}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
                     );
                   })}
                 </Accordion>
@@ -304,36 +205,29 @@ const FaqPage = () => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
+                <CheckCircle className="w-16 h-16 mx-auto mb-6 text-white/30" />
+                <h3 className="text-2xl font-medium mb-3">No results found</h3>
+                <p className="text-gray-400 mb-6">
+                  Try adjusting your search or filter to find what you're looking for
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setSearchTerm("");
+                    setActiveCategory("all");
+                  }}
                 >
-                  <CheckCircle className="w-16 h-16 mx-auto mb-6 text-white/30" />
-                  <h3 className="text-2xl font-medium mb-3">No results found</h3>
-                  <p className="text-gray-400 mb-6">
-                    Try adjusting your search or filter to find what you're looking for
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => {
-                      setSearchTerm("");
-                      setActiveCategory("all");
-                    }}
-                  >
-                    Reset filters
-                  </Button>
-                </motion.div>
+                  Reset filters
+                </Button>
               </motion.div>
             )}
           </AnimatePresence>
         </motion.div>
         
         <motion.div
-          className="max-w-4xl mx-auto mt-12 text-center"
+          className="text-center mt-12"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
           <h2 className="text-2xl font-bold mb-4">Still need help?</h2>
@@ -354,4 +248,4 @@ const FaqPage = () => {
   );
 };
 
-export default FaqPage;
+export default FAQ;
