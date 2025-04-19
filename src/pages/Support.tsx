@@ -14,6 +14,8 @@ import {
   Users
 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ComingSoon } from "@/components/ui/coming-soon";
+import { Link } from "react-router-dom";
 
 const SupportOption = ({ title, description, icon: Icon, link, linkText }) => (
   <motion.div
@@ -121,16 +123,21 @@ const Support = () => {
               title="Documentation"
               description="Browse our comprehensive documentation for detailed instructions."
               icon={BookOpen}
-              link="/features"
+              link="/docs"
               linkText="View Documentation"
             />
-            <SupportOption 
-              title="Video Tutorials"
-              description="Watch our video guides to optimally use CopyClipCloud."
-              icon={Video}
-              link="/features"
-              linkText="Watch Videos"
-            />
+            <div className="relative">
+              <SupportOption 
+                title="Video Tutorials"
+                description="Watch our video guides to optimally use CopyClipCloud."
+                icon={Video}
+                link="/tutorials"
+                linkText="Watch Videos"
+              />
+              <div className="absolute top-6 right-6">
+                <ComingSoon />
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -243,12 +250,20 @@ const Support = () => {
           <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
             Your opinion matters to us. Let us know how we can improve CopyClipCloud.
           </p>
-          <a 
-            href="/contact" 
-            className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
-          >
-            Send Feedback
-          </a>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+            <a 
+              href="/contact" 
+              className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
+            >
+              Send Feedback
+            </a>
+            <Link 
+              to="/docs" 
+              className="px-6 py-3 bg-white/10 rounded-full inline-flex items-center hover:bg-white/15 transition-all border border-white/20"
+            >
+              Browse Documentation
+            </Link>
+          </div>
         </motion.div>
       </main>
 

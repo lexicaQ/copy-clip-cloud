@@ -21,9 +21,11 @@ import Careers from "./pages/Careers";
 import Press from "./pages/Press";
 import Partners from "./pages/Partners";
 import Documentation from "./pages/Documentation";
+import TutorialArticle from "./pages/TutorialArticle";
 import Status from "./pages/Status";
 import Blog from "./pages/Blog";
 import Help from "./pages/Help";
+import DocArticle from "./pages/DocArticle";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,7 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/support" element={<Support />} />
           <Route path="/tutorials" element={<Tutorials />} />
+          <Route path="/tutorials/:id" element={<TutorialArticle />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/roadmap" element={<Roadmap />} />
@@ -48,10 +51,10 @@ const App = () => (
           <Route path="/download" element={<Download />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/press" element={<Press />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/partners" element={<Partners />} />
           <Route path="/help" element={<Help />} />
           <Route path="/docs" element={<Documentation />} />
+          <Route path="/docs/:category/:slug" element={<DocArticle />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

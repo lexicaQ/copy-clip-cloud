@@ -1,11 +1,10 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SearchDocumentation from "@/components/docs/SearchDocumentation";
 import { 
   BookOpen, 
-  Search, 
   FileText, 
   Code,
   Settings,
@@ -17,6 +16,7 @@ import {
   HelpCircle,
   ExternalLink
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const docCategories = [
   { 
@@ -164,20 +164,11 @@ const Documentation = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-gradient">Knowledge Base</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
             Find comprehensive guides and documentation to help you get the most out of CopyClipCloud.
           </p>
           
-          <div className="mt-8 max-w-xl mx-auto">
-            <div className="relative">
-              <input 
-                type="text" 
-                placeholder="Search documentation..." 
-                className="w-full px-5 py-4 bg-white/10 rounded-full pl-12 focus:outline-none focus:ring-2 focus:ring-white/30"
-              />
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            </div>
-          </div>
+          <SearchDocumentation className="max-w-xl mx-auto" />
         </motion.div>
 
         <motion.div
