@@ -10,7 +10,7 @@ interface ComingSoonProps {
 export const ComingSoon = ({ className = "" }: ComingSoonProps) => {
   return (
     <motion.div 
-      className={`inline-flex items-center px-3 py-1.5 rounded-full bg-black/90 backdrop-blur-md border border-white/10 shadow-lg ${className}`}
+      className={`inline-flex items-center px-3 py-1.5 rounded-full bg-gray-800/95 backdrop-blur-md border border-white/10 shadow-lg ${className}`}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ 
@@ -20,7 +20,7 @@ export const ComingSoon = ({ className = "" }: ComingSoonProps) => {
       }}
       whileHover={{ scale: 1.05 }}
     >
-      <Timer className="w-3.5 h-3.5 mr-1.5" />
+      <Timer className="w-3.5 h-3.5 mr-1.5 text-indigo-300" />
       <span className="text-xs font-medium text-white">Coming Soon</span>
     </motion.div>
   );

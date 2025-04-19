@@ -16,7 +16,11 @@ import {
   MessageSquare,
   ArrowRight,
   HelpCircle,
-  ExternalLink
+  ExternalLink,
+  Tag,
+  Cloud,
+  Keyboard,
+  Folder
 } from "lucide-react";
 
 const docCategories = [
@@ -24,11 +28,11 @@ const docCategories = [
     title: "Getting Started", 
     icon: Zap,
     articles: [
-      "Installation Guide",
-      "Quick Start Tutorial",
-      "User Interface Overview",
-      "Key Concepts",
-      "Keyboard Shortcuts"
+      { name: "Installation Guide", link: "/docs/getting-started" },
+      { name: "Quick Start Tutorial", link: "/docs/getting-started" },
+      { name: "User Interface Overview", link: "/docs/getting-started" },
+      { name: "Key Concepts", link: "/docs/getting-started" },
+      { name: "Keyboard Shortcuts", link: "/docs/keyboard-shortcuts" }
     ],
     route: "/docs/getting-started"
   },
@@ -36,11 +40,11 @@ const docCategories = [
     title: "Core Features", 
     icon: Key,
     articles: [
-      "Clipboard History",
-      "Smart Organization",
-      "Search & Filtering",
-      "Templates & Snippets",
-      "Cross-device Sync"
+      { name: "Clipboard History", link: "/docs/core-features" },
+      { name: "Smart Organization", link: "/docs/smart-organization" },
+      { name: "Search & Filtering", link: "/docs/search-filtering" },
+      { name: "Templates & Snippets", link: "/docs/templates" },
+      { name: "Cross-device Sync", link: "/docs/cloud-sync" }
     ],
     route: "/docs/core-features"
   },
@@ -48,11 +52,11 @@ const docCategories = [
     title: "Advanced Usage", 
     icon: Code,
     articles: [
-      "Regular Expressions",
-      "Custom Actions",
-      "Workflows & Automation",
-      "API Documentation",
-      "Browser Extensions"
+      { name: "Regular Expressions", link: "/docs/advanced-usage" },
+      { name: "Custom Actions", link: "/docs/advanced-usage" },
+      { name: "Workflows & Automation", link: "/docs/advanced-usage" },
+      { name: "API Documentation", link: "/docs/api-documentation" },
+      { name: "Browser Extensions", link: "/docs/advanced-usage" }
     ],
     route: "/docs/advanced-usage"
   },
@@ -60,11 +64,11 @@ const docCategories = [
     title: "Security & Privacy", 
     icon: Shield,
     articles: [
-      "Encryption Features",
-      "Password Protection",
-      "Secure Sharing",
-      "Data Backup",
-      "Privacy Controls"
+      { name: "Encryption Features", link: "/docs/cloud-sync" },
+      { name: "Password Protection", link: "/docs/cloud-sync" },
+      { name: "Secure Sharing", link: "/docs/cloud-sync" },
+      { name: "Data Backup", link: "/docs/cloud-sync" },
+      { name: "Privacy Controls", link: "/docs/cloud-sync" }
     ],
     route: "/docs/cloud-sync"
   },
@@ -72,11 +76,11 @@ const docCategories = [
     title: "Configuration", 
     icon: Settings,
     articles: [
-      "Preferences & Settings",
-      "Customizing Appearance",
-      "Integration Setup",
-      "Cloud Sync Configuration",
-      "Device Management"
+      { name: "Preferences & Settings", link: "/docs/core-features" },
+      { name: "Customizing Appearance", link: "/docs/core-features" },
+      { name: "Integration Setup", link: "/docs/core-features" },
+      { name: "Cloud Sync Configuration", link: "/docs/cloud-sync" },
+      { name: "Device Management", link: "/docs/cloud-sync" }
     ],
     route: "/docs/core-features"
   },
@@ -84,11 +88,11 @@ const docCategories = [
     title: "Troubleshooting", 
     icon: HelpCircle,
     articles: [
-      "Common Issues",
-      "Performance Optimization",
-      "Error Messages",
-      "Diagnostics",
-      "Contact Support"
+      { name: "Common Issues", link: "/docs/cloud-sync" },
+      { name: "Performance Optimization", link: "/docs/cloud-sync" },
+      { name: "Error Messages", link: "/docs/cloud-sync" },
+      { name: "Diagnostics", link: "/docs/cloud-sync" },
+      { name: "Contact Support", link: "/support" }
     ],
     route: "/docs/cloud-sync"
   }
@@ -105,11 +109,11 @@ const popularArticles = [
   },
   {
     title: "Creating and using templates",
-    route: "/docs/core-features"
+    route: "/docs/templates"
   },
   {
     title: "Configuring smart categorization rules",
-    route: "/docs/core-features"
+    route: "/docs/smart-organization"
   },
   {
     title: "Customizing keyboard shortcuts",
@@ -130,8 +134,8 @@ const DocCategoryCard = ({ category, index }) => (
     transition={{ duration: 0.4, delay: index * 0.05 }}
   >
     <div className="flex items-center mb-4">
-      <div className="p-2 rounded-lg bg-white/10 mr-3">
-        <category.icon className="w-5 h-5" />
+      <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-indigo-600/20 border border-white/5 mr-3">
+        <category.icon className="w-5 h-5 text-indigo-300" />
       </div>
       <h3 className="text-xl font-medium">{category.title}</h3>
     </div>
@@ -139,9 +143,9 @@ const DocCategoryCard = ({ category, index }) => (
     <ul className="space-y-2 mb-4">
       {category.articles.map((article, idx) => (
         <li key={idx} className="text-gray-400 hover:text-white transition-colors">
-          <Link to={category.route} className="flex items-center">
+          <Link to={article.link} className="flex items-center">
             <FileText className="w-4 h-4 mr-2" />
-            <span>{article}</span>
+            <span>{article.name}</span>
           </Link>
         </li>
       ))}
@@ -231,8 +235,8 @@ const Documentation = () => {
             transition={{ duration: 0.4 }}
           >
             <div className="flex items-center mb-6">
-              <div className="p-2 rounded-lg bg-white/10 mr-3">
-                <Zap className="w-5 h-5" />
+              <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-indigo-600/20 border border-white/5 mr-3">
+                <Zap className="w-5 h-5 text-indigo-300" />
               </div>
               <h3 className="text-xl font-medium">Getting Started Guide</h3>
             </div>
@@ -243,7 +247,7 @@ const Documentation = () => {
             
             <div className="space-y-4 mb-6">
               <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mr-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-600/20 flex items-center justify-center mr-3">
                   <span className="font-bold">1</span>
                 </div>
                 <div>
@@ -253,7 +257,7 @@ const Documentation = () => {
               </div>
               
               <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mr-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-600/20 flex items-center justify-center mr-3">
                   <span className="font-bold">2</span>
                 </div>
                 <div>
@@ -263,7 +267,7 @@ const Documentation = () => {
               </div>
               
               <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mr-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-600/20 flex items-center justify-center mr-3">
                   <span className="font-bold">3</span>
                 </div>
                 <div>
@@ -273,7 +277,7 @@ const Documentation = () => {
               </div>
               
               <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mr-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-600/20 flex items-center justify-center mr-3">
                   <span className="font-bold">4</span>
                 </div>
                 <div>
@@ -299,8 +303,8 @@ const Documentation = () => {
             transition={{ duration: 0.4 }}
           >
             <div className="flex items-center mb-6">
-              <div className="p-2 rounded-lg bg-white/10 mr-3">
-                <FileText className="w-5 h-5" />
+              <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-indigo-600/20 border border-white/5 mr-3">
+                <FileText className="w-5 h-5 text-indigo-300" />
               </div>
               <h3 className="text-xl font-medium">Popular Articles</h3>
             </div>
@@ -330,8 +334,8 @@ const Documentation = () => {
           transition={{ duration: 0.4 }}
         >
           <div className="flex items-center mb-6">
-            <div className="p-2 rounded-lg bg-white/10 mr-3">
-              <Code className="w-5 h-5" />
+            <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-indigo-600/20 border border-white/5 mr-3">
+              <Code className="w-5 h-5 text-indigo-300" />
             </div>
             <h2 className="text-2xl font-bold">Developer Resources</h2>
           </div>

@@ -37,6 +37,9 @@ import IntegrationGuides from "./pages/docs/IntegrationGuides";
 import AllArticles from "./pages/docs/AllArticles";
 import CoreFeatures from "./pages/docs/CoreFeatures";
 import CloudSync from "./pages/docs/CloudSync";
+import Templates from "./pages/docs/Templates";
+import SmartOrganization from "./pages/docs/SmartOrganization";
+import SearchFiltering from "./pages/docs/SearchFiltering";
 
 const queryClient = new QueryClient();
 
@@ -79,6 +82,9 @@ const App = () => (
           <Route path="/docs/all-articles" element={<AllArticles />} />
           <Route path="/docs/core-features" element={<CoreFeatures />} />
           <Route path="/docs/cloud-sync" element={<CloudSync />} />
+          <Route path="/docs/templates" element={<Templates />} />
+          <Route path="/docs/smart-organization" element={<SmartOrganization />} />
+          <Route path="/docs/search-filtering" element={<SearchFiltering />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
