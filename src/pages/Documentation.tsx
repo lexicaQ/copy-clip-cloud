@@ -233,7 +233,7 @@ const Documentation = () => {
       <SharedBackground />
       <Header />
       
-      <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto">
+      <div className="pt-32 pb-24 px-4 max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -254,7 +254,7 @@ const Documentation = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="relative mb-6">
+          <div className="relative mb-6 max-w-2xl mx-auto">
             <input
               type="text"
               placeholder="Search documentation..."
@@ -267,7 +267,7 @@ const Documentation = () => {
             </div>
           </div>
           
-          <div className="flex flex-wrap gap-2 mb-10">
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
             {categories.map((category) => (
               <button
                 key={category.id}
@@ -285,7 +285,7 @@ const Documentation = () => {
           
           {selectedCategory === "all" && (
             <div className="mb-10">
-              <h2 className="text-2xl font-bold mb-6">Getting Started</h2>
+              <h2 className="text-2xl font-bold mb-6 text-center">Getting Started</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documentationLinks
                   .filter(link => link.category === "getting-started")
@@ -294,7 +294,7 @@ const Documentation = () => {
                   ))}
               </div>
               
-              <h2 className="text-2xl font-bold mb-6 mt-12">Core Features</h2>
+              <h2 className="text-2xl font-bold mb-6 mt-12 text-center">Core Features</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documentationLinks
                   .filter(link => link.category === "core-features")
@@ -303,7 +303,7 @@ const Documentation = () => {
                   ))}
               </div>
               
-              <h2 className="text-2xl font-bold mb-6 mt-12">Advanced Usage</h2>
+              <h2 className="text-2xl font-bold mb-6 mt-12 text-center">Advanced Usage</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documentationLinks
                   .filter(link => link.category === "advanced")
@@ -312,7 +312,7 @@ const Documentation = () => {
                   ))}
               </div>
               
-              <h2 className="text-2xl font-bold mb-6 mt-12">API & SDK</h2>
+              <h2 className="text-2xl font-bold mb-6 mt-12 text-center">API & SDK</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documentationLinks
                   .filter(link => link.category === "api")
@@ -321,7 +321,7 @@ const Documentation = () => {
                   ))}
               </div>
               
-              <h2 className="text-2xl font-bold mb-6 mt-12">Security</h2>
+              <h2 className="text-2xl font-bold mb-6 mt-12 text-center">Security</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documentationLinks
                   .filter(link => link.category === "security")

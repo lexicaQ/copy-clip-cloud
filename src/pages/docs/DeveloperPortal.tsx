@@ -14,9 +14,48 @@ import {
   X, 
   RefreshCw,
   Shield,
-  Clock 
+  Clock,
+  Trash2,
+  Pencil,
+  Eye,
+  Lock 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 // Types for API Keys
 interface ApiKey {
@@ -35,63 +74,27 @@ interface ApiKey {
   };
 }
 
-// Mock data for API Keys
-const mockApiKeys: ApiKey[] = [
-  {
-    id: "key_1a2b3c4d5e6f",
-    name: "Production API Key",
-    key: "cc_live_AbCdEfGhIjKlMnOpQrStUvWxYz1234567890",
-    created: "2023-08-15T10:30:00Z",
-    lastUsed: "2023-09-01T15:45:23Z",
-    status: "active",
-    environment: "production",
-    permissions: ["read", "write", "manage_templates"],
-    usage: {
-      total: 12845,
-      rate: 32,
-      limit: 100
-    }
-  },
-  {
-    id: "key_7g8h9i0j1k2l",
-    name: "Development Testing",
-    key: "cc_test_ZyXwVuTsRqPoNmLkJiHgFeDcBa0987654321",
-    created: "2023-07-22T08:15:30Z",
-    lastUsed: "2023-08-30T12:10:15Z",
-    status: "active",
-    environment: "development",
-    permissions: ["read", "write", "manage_templates", "admin"],
-    usage: {
-      total: 4562,
-      rate: 15,
-      limit: 100
-    }
-  },
-  {
-    id: "key_3m4n5o6p7q8r",
-    name: "Test Environment",
-    key: "cc_test_AbCdEfGhIjKlMnOpQrStUvWxYz0987654321",
-    created: "2023-09-05T14:20:10Z",
-    lastUsed: null,
-    status: "inactive",
-    environment: "test",
-    permissions: ["read", "write"],
-    usage: {
-      total: 0,
-      rate: 0,
-      limit: 50
-    }
-  }
-];
+// Initial empty array for API Keys
+const initialApiKeys: ApiKey[] = [];
 
 const DeveloperPortal = () => {
-  const [apiKeys, setApiKeys] = useState<ApiKey[]>(mockApiKeys);
+  const [apiKeys, setApiKeys] = useState<ApiKey[]>(initialApiKeys);
   const [showNewKeyModal, setShowNewKeyModal] = useState(false);
+  const [showRenameModal, setShowRenameModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showRegenerateConfirm, setShowRegenerateConfirm] = useState(false);
+  const [showRestrictModal, setShowRestrictModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedKeyId, setSelectedKeyId] = useState<string | null>(null);
+  
   const [newKeyName, setNewKeyName] = useState("");
   const [newKeyEnvironment, setNewKeyEnvironment] = useState<"production" | "development" | "test">("development");
   const [newKeyPermissions, setNewKeyPermissions] = useState<string[]>(["read", "write"]);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [newKeyCreated, setNewKeyCreated] = useState<ApiKey | null>(null);
+  const [renameValue, setRenameValue] = useState("");
+
+  const selectedKey = apiKeys.find(k => k.id === selectedKeyId) || null;
 
   // Function to handle copying API key
   const handleCopyKey = (key: string) => {
@@ -137,10 +140,12 @@ const DeveloperPortal = () => {
     ));
   };
 
-  // Function to revoke key
-  const regenerateKey = (id: string) => {
+  // Function to regenerate key
+  const handleRegenerateKey = () => {
+    if (!selectedKeyId) return;
+    
     setApiKeys(apiKeys.map(key => 
-      key.id === id ? 
+      key.id === selectedKeyId ? 
         { 
           ...key, 
           key: `cc_${key.environment === 'production' ? 'live' : 'test'}_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`,
@@ -149,7 +154,93 @@ const DeveloperPortal = () => {
         } 
         : key
     ));
+    
+    setShowRegenerateConfirm(false);
+    setSelectedKeyId(null);
   };
+
+  // Function to delete key
+  const handleDeleteKey = () => {
+    if (!selectedKeyId) return;
+    
+    setApiKeys(apiKeys.filter(key => key.id !== selectedKeyId));
+    setShowDeleteConfirm(false);
+    setSelectedKeyId(null);
+  };
+
+  // Function to rename key
+  const handleRenameKey = () => {
+    if (!selectedKeyId || !renameValue.trim()) return;
+    
+    setApiKeys(apiKeys.map(key => 
+      key.id === selectedKeyId ? 
+        { ...key, name: renameValue } 
+        : key
+    ));
+    
+    setShowRenameModal(false);
+    setSelectedKeyId(null);
+    setRenameValue("");
+  };
+
+  // Open dropdown menu handlers
+  const handleOpenMenu = (id: string, action: string) => {
+    setSelectedKeyId(id);
+    
+    switch (action) {
+      case 'details':
+        setShowDetailsModal(true);
+        break;
+      case 'rename':
+        const key = apiKeys.find(k => k.id === id);
+        if (key) setRenameValue(key.name);
+        setShowRenameModal(true);
+        break;
+      case 'restrict':
+        setShowRestrictModal(true);
+        break;
+      case 'delete':
+        setShowDeleteConfirm(true);
+        break;
+      case 'regenerate':
+        setShowRegenerateConfirm(true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "Never";
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric'
+    });
+  };
+
+  // Empty state component
+  const EmptyAPIKeysState = () => (
+    <div className="glass-panel p-8 text-center">
+      <div className="flex justify-center mb-4">
+        <div className="p-4 rounded-full bg-white/5">
+          <Key className="h-8 w-8 text-white/70" />
+        </div>
+      </div>
+      <h3 className="text-xl font-medium mb-2">No API Keys Created</h3>
+      <p className="text-white/70 mb-6 max-w-md mx-auto">
+        API keys allow your applications to authenticate with our services.
+        Create your first key to get started.
+      </p>
+      <Button 
+        onClick={() => setShowNewKeyModal(true)}
+        className="bg-white text-black hover:bg-gray-200 transition-colors"
+      >
+        <Plus className="w-4 h-4 mr-2" />
+        Create API Key
+      </Button>
+    </div>
+  );
 
   return (
     <DocLayout 
@@ -172,42 +263,45 @@ const DeveloperPortal = () => {
               className="bg-white text-black hover:bg-gray-200 transition-colors"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Create New Key
+              Create API Key
             </Button>
           </div>
 
-          {/* API Keys Table */}
-          <div className="glass-panel p-0 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="border-b border-white/10 bg-white/5">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Name</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Key</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Environment</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Created</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Status</th>
-                    <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Usage</th>
-                    <th className="px-6 py-4 text-right text-sm font-medium text-white/70">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/10">
+          {/* API Keys Table or Empty State */}
+          {apiKeys.length === 0 ? (
+            <EmptyAPIKeysState />
+          ) : (
+            <div className="glass-panel p-6 overflow-hidden">
+              <Table>
+                <TableHeader className="bg-white/5">
+                  <TableRow className="border-b border-white/10 hover:bg-transparent">
+                    <TableHead className="text-white/70">Name</TableHead>
+                    <TableHead className="text-white/70">Key</TableHead>
+                    <TableHead className="text-white/70">Environment</TableHead>
+                    <TableHead className="text-white/70">Created</TableHead>
+                    <TableHead className="text-white/70">Status</TableHead>
+                    <TableHead className="text-white/70">Usage</TableHead>
+                    <TableHead className="text-white/70 text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {apiKeys.map((apiKey) => (
-                    <tr key={apiKey.id} className="hover:bg-white/5 transition-colors">
-                      <td className="px-6 py-4 text-sm">
+                    <TableRow key={apiKey.id} className="border-b border-white/10 hover:bg-white/5">
+                      <TableCell>
                         <div className="font-medium">{apiKey.name}</div>
                         <div className="text-xs text-white/50 mt-1">
                           {apiKey.permissions.join(", ")}
                         </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm">
+                      </TableCell>
+                      <TableCell>
                         <div className="flex items-center">
-                          <div className="font-mono">
+                          <div className="font-mono text-white/80">
                             {apiKey.key.substring(0, 12)}...
                           </div>
                           <button 
                             onClick={() => handleCopyKey(apiKey.key)}
                             className="ml-2 p-1 text-white/50 hover:text-white transition-colors rounded-md hover:bg-white/10"
+                            aria-label="Copy API key"
                           >
                             {copiedKey === apiKey.key ? (
                               <Check className="w-4 h-4" />
@@ -216,8 +310,8 @@ const DeveloperPortal = () => {
                             )}
                           </button>
                         </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm">
+                      </TableCell>
+                      <TableCell>
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           apiKey.environment === 'production' 
                             ? 'bg-white/10 text-white' 
@@ -227,11 +321,11 @@ const DeveloperPortal = () => {
                         }`}>
                           {apiKey.environment}
                         </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-white/70">
-                        {new Date(apiKey.created).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 text-sm">
+                      </TableCell>
+                      <TableCell className="text-white/70">
+                        {formatDate(apiKey.created)}
+                      </TableCell>
+                      <TableCell>
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           apiKey.status === 'active' 
                             ? 'bg-white/10 text-white' 
@@ -239,10 +333,10 @@ const DeveloperPortal = () => {
                         }`}>
                           {apiKey.status}
                         </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm">
+                      </TableCell>
+                      <TableCell>
                         <div className="flex items-center">
-                          <div className="w-full bg-white/10 rounded-full h-2 mr-2 overflow-hidden">
+                          <div className="w-24 bg-white/10 rounded-full h-2 mr-2 overflow-hidden">
                             <div 
                               className="bg-white h-full rounded-full" 
                               style={{ 
@@ -257,107 +351,152 @@ const DeveloperPortal = () => {
                         <div className="text-xs text-white/50 mt-1">
                           Total: {apiKey.usage.total} requests
                         </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-right">
-                        <div className="flex items-center justify-end space-x-2">
-                          <button
-                            onClick={() => toggleKeyStatus(apiKey.id)}
-                            className="p-1.5 text-white/70 hover:text-white transition-colors rounded-md hover:bg-white/10"
-                            title={apiKey.status === 'active' ? 'Deactivate' : 'Activate'}
-                          >
-                            {apiKey.status === 'active' ? (
-                              <X className="w-4 h-4" />
-                            ) : (
-                              <Check className="w-4 h-4" />
-                            )}
-                          </button>
-                          <button
-                            onClick={() => regenerateKey(apiKey.id)}
-                            className="p-1.5 text-white/70 hover:text-white transition-colors rounded-md hover:bg-white/10"
-                            title="Regenerate"
-                          >
-                            <RefreshCw className="w-4 h-4" />
-                          </button>
-                          <button
-                            className="p-1.5 text-white/70 hover:text-white transition-colors rounded-md hover:bg-white/10"
-                            title="More options"
-                          >
-                            <MoreHorizontal className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-8 w-8 p-0 text-white/70 hover:text-white hover:bg-white/10"
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-black/90 backdrop-blur-lg border-white/10 text-white">
+                            <DropdownMenuLabel>Options</DropdownMenuLabel>
+                            <DropdownMenuSeparator className="bg-white/10" />
+                            <DropdownMenuItem 
+                              className="cursor-pointer hover:bg-white/10"
+                              onClick={() => handleOpenMenu(apiKey.id, 'details')}
+                            >
+                              <Eye className="w-4 h-4 mr-2" />
+                              View details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="cursor-pointer hover:bg-white/10"
+                              onClick={() => handleOpenMenu(apiKey.id, 'rename')}
+                            >
+                              <Pencil className="w-4 h-4 mr-2" />
+                              Rename key
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="cursor-pointer hover:bg-white/10"
+                              onClick={() => handleOpenMenu(apiKey.id, 'restrict')}
+                            >
+                              <Lock className="w-4 h-4 mr-2" />
+                              Restrict access
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="cursor-pointer hover:bg-white/10"
+                              onClick={() => toggleKeyStatus(apiKey.id)}
+                            >
+                              {apiKey.status === 'active' ? (
+                                <>
+                                  <X className="w-4 h-4 mr-2" />
+                                  Disable key
+                                </>
+                              ) : (
+                                <>
+                                  <Check className="w-4 h-4 mr-2" />
+                                  Enable key
+                                </>
+                              )}
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-white/10" />
+                            <DropdownMenuItem 
+                              className="cursor-pointer hover:bg-white/10 text-white/80"
+                              onClick={() => handleOpenMenu(apiKey.id, 'regenerate')}
+                            >
+                              <RefreshCw className="w-4 h-4 mr-2" />
+                              Regenerate key
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="cursor-pointer hover:bg-red-500/20 text-red-400"
+                              onClick={() => handleOpenMenu(apiKey.id, 'delete')}
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Delete key
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
-          </div>
+          )}
 
-          {/* Usage Statistics Section */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="glass-panel p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-white/60">Total API Requests</p>
-                  <h3 className="text-2xl font-semibold mt-1">17,407</h3>
+          {/* Usage Statistics Section - Only show if API keys exist */}
+          {apiKeys.length > 0 && (
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="glass-panel p-6">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm text-white/60">Total API Requests</p>
+                    <h3 className="text-2xl font-semibold mt-1">
+                      {apiKeys.reduce((sum, key) => sum + key.usage.total, 0).toLocaleString()}
+                    </h3>
+                  </div>
+                  <div className="p-2 bg-white/5 rounded-lg">
+                    <Clock className="w-5 h-5" />
+                  </div>
                 </div>
-                <div className="p-2 bg-white/5 rounded-lg">
-                  <Clock className="w-5 h-5" />
+                <div className="mt-4">
+                  <div className="w-full bg-white/10 rounded-full h-2 mb-1 overflow-hidden">
+                    <div className="bg-white h-full rounded-full" style={{ width: '65%' }} />
+                  </div>
+                  <div className="flex justify-between text-xs text-white/50">
+                    <span>Last 30 days</span>
+                    <span>+23% from previous</span>
+                  </div>
                 </div>
               </div>
-              <div className="mt-4">
-                <div className="w-full bg-white/10 rounded-full h-2 mb-1 overflow-hidden">
-                  <div className="bg-white h-full rounded-full" style={{ width: '65%' }} />
+              
+              <div className="glass-panel p-6">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm text-white/60">Average Response Time</p>
+                    <h3 className="text-2xl font-semibold mt-1">87ms</h3>
+                  </div>
+                  <div className="p-2 bg-white/5 rounded-lg">
+                    <RefreshCw className="w-5 h-5" />
+                  </div>
                 </div>
-                <div className="flex justify-between text-xs text-white/50">
-                  <span>Last 30 days</span>
-                  <span>+23% from previous</span>
+                <div className="mt-4">
+                  <div className="w-full bg-white/10 rounded-full h-2 mb-1 overflow-hidden">
+                    <div className="bg-white h-full rounded-full" style={{ width: '20%' }} />
+                  </div>
+                  <div className="flex justify-between text-xs text-white/50">
+                    <span>Last 30 days</span>
+                    <span>-12% from previous</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="glass-panel p-6">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm text-white/60">Success Rate</p>
+                    <h3 className="text-2xl font-semibold mt-1">99.7%</h3>
+                  </div>
+                  <div className="p-2 bg-white/5 rounded-lg">
+                    <Shield className="w-5 h-5" />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="w-full bg-white/10 rounded-full h-2 mb-1 overflow-hidden">
+                    <div className="bg-white h-full rounded-full" style={{ width: '99%' }} />
+                  </div>
+                  <div className="flex justify-between text-xs text-white/50">
+                    <span>Last 30 days</span>
+                    <span>+0.3% from previous</span>
+                  </div>
                 </div>
               </div>
             </div>
-            
-            <div className="glass-panel p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-white/60">Average Response Time</p>
-                  <h3 className="text-2xl font-semibold mt-1">87ms</h3>
-                </div>
-                <div className="p-2 bg-white/5 rounded-lg">
-                  <RefreshCw className="w-5 h-5" />
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="w-full bg-white/10 rounded-full h-2 mb-1 overflow-hidden">
-                  <div className="bg-white h-full rounded-full" style={{ width: '20%' }} />
-                </div>
-                <div className="flex justify-between text-xs text-white/50">
-                  <span>Last 30 days</span>
-                  <span>-12% from previous</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="glass-panel p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-white/60">Success Rate</p>
-                  <h3 className="text-2xl font-semibold mt-1">99.7%</h3>
-                </div>
-                <div className="p-2 bg-white/5 rounded-lg">
-                  <Shield className="w-5 h-5" />
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="w-full bg-white/10 rounded-full h-2 mb-1 overflow-hidden">
-                  <div className="bg-white h-full rounded-full" style={{ width: '99%' }} />
-                </div>
-                <div className="flex justify-between text-xs text-white/50">
-                  <span>Last 30 days</span>
-                  <span>+0.3% from previous</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </motion.section>
 
         {/* API Key Requirements Section */}
@@ -467,7 +606,7 @@ X-RateLimit-Reset: 1621784382`}
               <div>
                 <h3 className="text-lg font-medium mb-3">1. Create an API Key</h3>
                 <p className="text-white/70 mb-4">
-                  Click the "Create New Key" button above to generate your first API key.
+                  Click the "Create API Key" button above to generate your first API key.
                 </p>
               </div>
 
@@ -529,146 +668,372 @@ def fetch_clipboard_items():
       </div>
 
       {/* Modal for creating new API key */}
-      {showNewKeyModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.2 }}
-            className="glass-panel p-6 max-w-lg w-full"
-          >
-            <h2 className="text-xl font-bold mb-4">Create New API Key</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-white/70 mb-1">Key Name</label>
-                <input
-                  type="text"
-                  value={newKeyName}
-                  onChange={(e) => setNewKeyName(e.target.value)}
-                  placeholder="My API Key"
-                  className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-white/30"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-white/70 mb-1">Environment</label>
-                <select
-                  value={newKeyEnvironment}
-                  onChange={(e) => setNewKeyEnvironment(e.target.value as any)}
-                  className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-white/30"
-                >
-                  <option value="production">Production</option>
-                  <option value="development">Development</option>
-                  <option value="test">Test</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-white/70 mb-1">Permissions</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {["read", "write", "manage_templates", "admin"].map(permission => (
-                    <div key={permission} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id={permission}
-                        checked={newKeyPermissions.includes(permission)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setNewKeyPermissions([...newKeyPermissions, permission]);
-                          } else {
-                            setNewKeyPermissions(newKeyPermissions.filter(p => p !== permission));
-                          }
-                        }}
-                        className="h-4 w-4 border-white/30 focus:ring-white/30"
-                      />
-                      <label htmlFor={permission} className="ml-2 text-sm text-white/70">
-                        {permission.charAt(0).toUpperCase() + permission.slice(1).replace('_', ' ')}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </div>
+      <Dialog open={showNewKeyModal} onOpenChange={setShowNewKeyModal}>
+        <DialogContent className="bg-black/90 backdrop-blur-lg border-white/10 text-white max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Create New API Key</DialogTitle>
+            <DialogDescription className="text-white/70">
+              Create a new API key for your application to authenticate with our services.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1">Key Name</label>
+              <input
+                type="text"
+                value={newKeyName}
+                onChange={(e) => setNewKeyName(e.target.value)}
+                placeholder="My API Key"
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-white/30 text-white"
+              />
             </div>
             
-            <div className="flex justify-end space-x-3 mt-6">
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1">Environment</label>
+              <select
+                value={newKeyEnvironment}
+                onChange={(e) => setNewKeyEnvironment(e.target.value as any)}
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-white/30 text-white"
+              >
+                <option value="production">Production</option>
+                <option value="development">Development</option>
+                <option value="test">Test</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1">Permissions</label>
+              <div className="grid grid-cols-2 gap-2">
+                {["read", "write", "manage_templates", "admin"].map(permission => (
+                  <div key={permission} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={permission}
+                      checked={newKeyPermissions.includes(permission)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setNewKeyPermissions([...newKeyPermissions, permission]);
+                        } else {
+                          setNewKeyPermissions(newKeyPermissions.filter(p => p !== permission));
+                        }
+                      }}
+                      className="h-4 w-4 border-white/30 bg-white/5 rounded focus:ring-white/30"
+                    />
+                    <label htmlFor={permission} className="text-sm text-white/70">
+                      {permission.charAt(0).toUpperCase() + permission.slice(1).replace('_', ' ')}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <DialogClose asChild>
               <Button 
-                onClick={() => setShowNewKeyModal(false)}
                 variant="outline"
                 className="border-white/30 text-white/70 hover:bg-white/5"
               >
                 Cancel
               </Button>
-              <Button 
-                onClick={handleCreateKey}
-                className="bg-white text-black hover:bg-gray-200 transition-colors"
-                disabled={!newKeyName.trim()}
-              >
-                Create Key
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      )}
+            </DialogClose>
+            <Button 
+              onClick={handleCreateKey}
+              className="bg-white text-black hover:bg-gray-200 transition-colors"
+              disabled={!newKeyName.trim()}
+            >
+              Create Key
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal for displaying newly created API key */}
-      {newKeyCreated && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/80">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.2 }}
-            className="glass-panel p-6 max-w-lg w-full"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold">New API Key Created</h2>
-              <Button 
-                onClick={() => setNewKeyCreated(null)}
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 text-white/70 hover:text-white hover:bg-white/10"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            
-            <div className="bg-black/30 p-4 rounded-md mb-4">
-              <div className="mb-2 text-sm text-white/70">
-                Your API key has been created. Make sure to copy it now, you won't be able to see it again!
+      <Dialog open={newKeyCreated !== null} onOpenChange={() => setNewKeyCreated(null)}>
+        <DialogContent className="bg-black/90 backdrop-blur-lg border-white/10 text-white max-w-lg">
+          <DialogHeader>
+            <DialogTitle>New API Key Created</DialogTitle>
+            <DialogDescription className="text-white/70">
+              Make sure to copy it now, you won't be able to see it again!
+            </DialogDescription>
+          </DialogHeader>
+          
+          {newKeyCreated && (
+            <>
+              <div className="bg-black/30 p-4 rounded-md my-4">
+                <div className="font-mono text-sm bg-white/5 p-3 rounded-md flex items-center justify-between">
+                  <span className="truncate text-white/90">{newKeyCreated.key}</span>
+                  <button 
+                    onClick={() => handleCopyKey(newKeyCreated.key)}
+                    className="ml-2 p-1 text-white/70 hover:text-white transition-colors flex-shrink-0"
+                  >
+                    {copiedKey === newKeyCreated.key ? (
+                      <Check className="w-4 h-4" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
               </div>
-              <div className="font-mono text-sm bg-white/5 p-3 rounded-md flex items-center justify-between">
-                <span className="truncate">{newKeyCreated.key}</span>
-                <button 
-                  onClick={() => handleCopyKey(newKeyCreated.key)}
-                  className="ml-2 p-1 text-white/70 hover:text-white transition-colors flex-shrink-0"
-                >
-                  {copiedKey === newKeyCreated.key ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
+              
+              <div className="flex items-center text-sm bg-white/5 p-3 rounded-lg mb-6">
+                <AlertTriangle className="w-4 h-4 mr-2 text-white/70 flex-shrink-0" />
+                <span className="text-white/70">
+                  Store this API key securely! For security reasons, we won't show it again. If you lose it, you'll need to generate a new one.
+                </span>
+              </div>
+            </>
+          )}
+          
+          <DialogFooter>
+            <Button 
+              onClick={() => setNewKeyCreated(null)}
+              className="bg-white text-black hover:bg-gray-200 transition-colors"
+            >
+              I've Copied My Key
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal for renaming API key */}
+      <Dialog open={showRenameModal} onOpenChange={setShowRenameModal}>
+        <DialogContent className="bg-black/90 backdrop-blur-lg border-white/10 text-white max-w-md">
+          <DialogHeader>
+            <DialogTitle>Rename API Key</DialogTitle>
+          </DialogHeader>
+          
+          <div className="py-4">
+            <label className="block text-sm font-medium text-white/70 mb-1">New Name</label>
+            <input
+              type="text"
+              value={renameValue}
+              onChange={(e) => setRenameValue(e.target.value)}
+              placeholder="My API Key"
+              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-white/30 text-white"
+            />
+          </div>
+          
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button 
+                variant="outline"
+                className="border-white/30 text-white/70 hover:bg-white/5"
+              >
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button 
+              onClick={handleRenameKey}
+              className="bg-white text-black hover:bg-gray-200 transition-colors"
+              disabled={!renameValue.trim()}
+            >
+              Rename
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal for restricting API key access */}
+      <Dialog open={showRestrictModal} onOpenChange={setShowRestrictModal}>
+        <DialogContent className="bg-black/90 backdrop-blur-lg border-white/10 text-white max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Restrict API Key Access</DialogTitle>
+            <DialogDescription className="text-white/70">
+              Limit where and how this API key can be used.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1">IP Whitelist (Optional)</label>
+              <input
+                type="text"
+                placeholder="192.168.1.1, 10.0.0.1"
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-white/30 text-white"
+              />
+              <p className="text-xs text-white/50 mt-1">Comma-separated list of IP addresses</p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1">Rate Limit (requests/minute)</label>
+              <input
+                type="number"
+                placeholder="100"
+                min="1"
+                max="1000"
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md focus:outline-none focus:ring-1 focus:ring-white/30 text-white"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1">Allowed Actions</label>
+              <div className="space-y-2">
+                {["read", "write", "delete", "admin"].map(action => (
+                  <div key={action} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={`restrict_${action}`}
+                      defaultChecked={true}
+                      className="h-4 w-4 border-white/30 bg-white/5 rounded focus:ring-white/30"
+                    />
+                    <label htmlFor={`restrict_${action}`} className="text-sm text-white/70">
+                      {action.charAt(0).toUpperCase() + action.slice(1)}
+                    </label>
+                  </div>
+                ))}
               </div>
             </div>
-            
-            <div className="flex items-center text-sm bg-white/5 p-3 rounded-lg mb-6">
-              <AlertTriangle className="w-4 h-4 mr-2 text-white/70 flex-shrink-0" />
-              <span className="text-white/70">
-                Store this API key securely! For security reasons, we won't show it again. If you lose it, you'll need to generate a new one.
-              </span>
-            </div>
-            
-            <div className="flex justify-end">
+          </div>
+          
+          <DialogFooter>
+            <DialogClose asChild>
               <Button 
-                onClick={() => setNewKeyCreated(null)}
-                className="bg-white text-black hover:bg-gray-200 transition-colors"
+                variant="outline"
+                className="border-white/30 text-white/70 hover:bg-white/5"
               >
-                I've Copied My Key
+                Cancel
               </Button>
+            </DialogClose>
+            <Button 
+              onClick={() => setShowRestrictModal(false)}
+              className="bg-white text-black hover:bg-gray-200 transition-colors"
+            >
+              Save Restrictions
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal for viewing API key details */}
+      <Dialog open={showDetailsModal} onOpenChange={setShowDetailsModal}>
+        <DialogContent className="bg-black/90 backdrop-blur-lg border-white/10 text-white max-w-lg">
+          <DialogHeader>
+            <DialogTitle>API Key Details</DialogTitle>
+          </DialogHeader>
+          
+          {selectedKey && (
+            <div className="py-4 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-sm font-medium text-white/50 mb-1">Name</h4>
+                  <p className="text-white">{selectedKey.name}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-white/50 mb-1">Environment</h4>
+                  <p className="text-white capitalize">{selectedKey.environment}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-white/50 mb-1">Created</h4>
+                  <p className="text-white">{formatDate(selectedKey.created)}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-white/50 mb-1">Last Used</h4>
+                  <p className="text-white">{formatDate(selectedKey.lastUsed)}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-white/50 mb-1">Status</h4>
+                  <p className="text-white capitalize">{selectedKey.status}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-white/50 mb-1">Rate Limit</h4>
+                  <p className="text-white">{selectedKey.usage.limit} req/min</p>
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-medium text-white/50 mb-1">Permissions</h4>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {selectedKey.permissions.map(permission => (
+                    <span 
+                      key={permission} 
+                      className="px-2 py-1 bg-white/10 rounded-md text-xs text-white/90"
+                    >
+                      {permission.charAt(0).toUpperCase() + permission.slice(1).replace('_', ' ')}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-medium text-white/50 mb-1">Usage Statistics</h4>
+                <div className="mt-2 p-3 bg-white/5 rounded-md">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-white/70">Total Requests</span>
+                    <span className="text-sm text-white">{selectedKey.usage.total.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-white/70">Current Rate</span>
+                    <span className="text-sm text-white">{selectedKey.usage.rate}/{selectedKey.usage.limit} req/min</span>
+                  </div>
+                  <div className="w-full bg-white/10 rounded-full h-2 mt-2 overflow-hidden">
+                    <div 
+                      className="bg-white h-full rounded-full" 
+                      style={{ 
+                        width: `${Math.min(100, (selectedKey.usage.rate / selectedKey.usage.limit) * 100)}%` 
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-          </motion.div>
-        </div>
-      )}
+          )}
+          
+          <DialogFooter>
+            <Button 
+              onClick={() => setShowDetailsModal(false)}
+              className="bg-white text-black hover:bg-gray-200 transition-colors"
+            >
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirmation for deleting API key */}
+      <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <AlertDialogContent className="bg-black/90 backdrop-blur-lg border-white/10 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete API Key</AlertDialogTitle>
+            <AlertDialogDescription className="text-white/70">
+              This action cannot be undone. This will permanently delete the API key
+              and all applications using it will lose access.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-white/30 text-white/70 hover:bg-white/5">Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteKey}
+              className="bg-red-500 text-white hover:bg-red-600 transition-colors"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Confirmation for regenerating API key */}
+      <AlertDialog open={showRegenerateConfirm} onOpenChange={setShowRegenerateConfirm}>
+        <AlertDialogContent className="bg-black/90 backdrop-blur-lg border-white/10 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Regenerate API Key</AlertDialogTitle>
+            <AlertDialogDescription className="text-white/70">
+              This will create a new key and invalidate the existing one. All applications
+              using the current key will need to be updated.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-white/30 text-white/70 hover:bg-white/5">Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleRegenerateKey}
+              className="bg-white text-black hover:bg-gray-200 transition-colors"
+            >
+              Regenerate
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </DocLayout>
   );
 };
