@@ -12,6 +12,18 @@ import NotFound from "./pages/NotFound";
 import Privacy from "./pages/Privacy";
 import Support from "./pages/Support";
 import Tutorials from "./pages/Tutorials";
+import Terms from "./pages/Terms";
+import Cookies from "./pages/Cookies";
+import Roadmap from "./pages/Roadmap";
+import Updates from "./pages/Updates";
+import Download from "./pages/Download";
+import Careers from "./pages/Careers";
+import Press from "./pages/Press";
+import Partners from "./pages/Partners";
+import Documentation from "./pages/Documentation";
+import Status from "./pages/Status";
+import Blog from "./pages/Blog";
+import Help from "./pages/Help";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +41,19 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/support" element={<Support />} />
           <Route path="/tutorials" element={<Tutorials />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/cookies" element={<Cookies />} />
+          <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/updates" element={<Updates />} />
+          <Route path="/download" element={<Download />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/press" element={<Press />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/partners" element={<Partners />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/docs" element={<Documentation />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/status" element={<Status />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
