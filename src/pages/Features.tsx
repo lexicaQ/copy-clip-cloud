@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
@@ -23,11 +22,13 @@ const Features = () => {
       <InteractiveBackground />
       <Header />
       
-      <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto relative z-10">
-        <FeatureHero />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="pt-32 pb-16">
+          <FeatureHero />
+        </div>
 
-        {/* Metro-style Feature Showcase Section with improved layout */}
-        <div className="mb-40">
+        {/* Showcase Features Section with improved spacing */}
+        <div className="space-y-32 mb-32">
           {showcaseFeatures.map((feature, index) => (
             <motion.div
               key={index}
@@ -35,7 +36,7 @@ const Features = () => {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.7 }}
               viewport={{ once: true, margin: "-100px" }}
-              className={`relative ${index !== 0 ? 'mt-40' : ''}`}
+              className="relative"
             >
               <FeatureShowcase
                 title={feature.title}
@@ -45,45 +46,38 @@ const Features = () => {
                 delay={index * 0.1}
               />
               
-              {/* Decorative elements for metro styling */}
-              {index % 2 === 0 && (
-                <div className="absolute -right-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
-              )}
-              {index % 2 === 1 && (
-                <div className="absolute -left-4 top-1/2 w-24 h-1 bg-white/10 transform -translate-y-1/2 hidden lg:block" />
-              )}
+              {/* Decorative elements */}
+              <div className="absolute inset-0 pointer-events-none">
+                {index % 2 === 0 ? (
+                  <div className="absolute -right-4 top-1/2 w-24 h-px bg-white/10 transform -translate-y-1/2 hidden lg:block" />
+                ) : (
+                  <div className="absolute -left-4 top-1/2 w-24 h-px bg-white/10 transform -translate-y-1/2 hidden lg:block" />
+                )}
+              </div>
               
-              {/* Coming soon badge for selected features */}
+              {/* Coming soon badge */}
               {index % 2 === 1 && (
-                <ComingSoon className="absolute top-0 right-0 lg:right-auto lg:-left-16 transform -translate-y-1/2" />
+                <ComingSoon className="absolute -top-4 right-0 lg:right-auto lg:-left-16" />
               )}
             </motion.div>
           ))}
         </div>
 
-        <motion.h2 
-          className="text-3xl font-bold text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <span className="text-gradient">All Features</span>
-        </motion.h2>
-        
-        {/* Metro-style grid layout for feature cards */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-40">
-          {enhancedFeatureCards.map((feature, index) => {
-            // Create varied card sizes for metro style
-            const isWide = index % 3 === 0;
-            const isTall = index % 4 === 0;
-            
-            return (
+        {/* Feature Cards Section */}
+        <div className="py-16">
+          <motion.h2 
+            className="text-3xl font-bold text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="text-gradient">All Features</span>
+          </motion.h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featureCards.map((feature, index) => (
               <motion.div
                 key={index}
-                className={`
-                  ${isWide ? 'md:col-span-6' : 'md:col-span-4'} 
-                  ${isTall ? 'row-span-2' : 'row-span-1'}
-                `}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
@@ -94,14 +88,16 @@ const Features = () => {
                   description={feature.description}
                   icon={feature.icon}
                   color={feature.color}
-                  comingSoon={feature.comingSoon}
+                  comingSoon={index % 3 === 2}
                 />
               </motion.div>
-            );
-          })}
+            ))}
+          </div>
         </div>
 
-        <FeatureCallToAction />
+        <div className="py-16">
+          <FeatureCallToAction />
+        </div>
       </div>
       
       <Footer />
