@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Info, Shield, CheckCheck, FileText, Lock, Cookie, ArrowRight } from "lucide-react";
+import { Check, Info, Shield, CheckCheck, FileText, Lock, Cookie } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 const CookieBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
@@ -54,280 +55,190 @@ const CookieBanner = () => {
       id: "essential",
       title: "Essential Cookies",
       description: "Required for the website to function properly. These cannot be disabled.",
-      required: true
+      required: true,
+      icon: Shield
     },
     {
       id: "analytics",
       title: "Analytics Cookies",
-      description: "Help us understand how visitors interact with our website to improve the user experience."
+      description: "Help us understand how visitors interact with our website.",
+      icon: Info
     },
     {
       id: "marketing",
       title: "Marketing Cookies",
-      description: "Enable personalized advertisements and marketing communications."
+      description: "Enable personalized advertisements and marketing.",
+      icon: Cookie
     },
     {
       id: "functional",
       title: "Functional Cookies",
-      description: "Enhance website functionality and personalization."
+      description: "Enhance website functionality and personalization.",
+      icon: CheckCheck
     }
   ];
 
   if (!showBanner) return null;
 
   return (
-    <Dialog open={showBanner} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-[650px] p-0 overflow-hidden border border-white/20 bg-black/90 backdrop-blur-xl">
-        <div className="bg-gradient-to-b from-white/10 to-transparent p-6 pb-4">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-xl">
-              <Cookie className="h-5 w-5" />
-              Privacy Preferences Center
-            </DialogTitle>
-          </DialogHeader>
+    <motion.div
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-black/90 backdrop-blur-xl border-t border-white/10"
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="flex items-start space-x-4 flex-1">
+            <div className="p-2 rounded-lg bg-white/10">
+              <Cookie className="h-6 w-6" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-lg font-medium">Cookie Preferences</h3>
+              <p className="text-sm text-gray-400 max-w-2xl">
+                We use cookies to enhance your browsing experience and analyze our traffic. Please select your preferences below.
+                <button 
+                  onClick={() => setActiveTab("details")}
+                  className="text-white underline decoration-white/30 hover:decoration-white ml-1"
+                >
+                  Learn more
+                </button>
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+            <Button
+              variant="outline"
+              onClick={handleSavePreferences}
+              className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white w-full sm:w-auto"
+            >
+              Save Preferences
+            </Button>
+            <Button
+              onClick={handleAcceptAll}
+              className="bg-white text-black hover:bg-white/90 w-full sm:w-auto"
+            >
+              Accept All
+            </Button>
+          </div>
         </div>
 
-        <Tabs defaultValue="privacy" className="w-full" value={activeTab} onValueChange={setActiveTab}>
-          <div className="px-6">
-            <TabsList className="grid w-full grid-cols-3 rounded-lg bg-white/5 p-1">
-              <TabsTrigger value="privacy" className="rounded-md">Privacy Settings</TabsTrigger>
-              <TabsTrigger value="details" className="rounded-md">Cookie Details</TabsTrigger>
-              <TabsTrigger value="policy" className="rounded-md">Our Policy</TabsTrigger>
+        <div className="mt-6">
+          <Tabs defaultValue="privacy" value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="bg-white/5 border border-white/10">
+              <TabsTrigger value="privacy">Privacy Settings</TabsTrigger>
+              <TabsTrigger value="details">Cookie Details</TabsTrigger>
+              <TabsTrigger value="policy">Our Policy</TabsTrigger>
             </TabsList>
-          </div>
 
-          <div className="px-6 py-4 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-            <TabsContent value="privacy" className="space-y-4 mt-2">
-              <div className="flex items-center space-x-2 text-white/90">
-                <Lock className="h-4 w-4" />
-                <p className="text-sm">We value your privacy and offer you control over how your data is used.</p>
-              </div>
-              <p className="text-sm text-white/70">
-                We use cookies to enhance your browsing experience, provide personalized content, and analyze our website traffic. 
-                Please select your cookie preferences below.
-              </p>
-
-              <div className="space-y-3 mt-4">
-                {cookieTypes.map((type) => (
-                  <div 
-                    key={type.id} 
-                    className="flex items-center justify-between p-4 rounded-lg transition-colors"
-                    style={{
-                      background: cookiePreferences[type.id as keyof typeof cookiePreferences] 
-                        ? 'linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.05))' 
-                        : 'rgba(255,255,255,0.05)'
-                    }}
-                  >
-                    <div className="space-y-1">
-                      <div className="font-medium text-white flex items-center">
-                        {type.id === "essential" && <Shield className="h-4 w-4 mr-2 text-emerald-400" />}
-                        {type.id === "analytics" && <Info className="h-4 w-4 mr-2 text-blue-400" />}
-                        {type.id === "marketing" && <Cookie className="h-4 w-4 mr-2 text-amber-400" />}
-                        {type.id === "functional" && <CheckCheck className="h-4 w-4 mr-2 text-violet-400" />}
-                        {type.title}
-                      </div>
-                      <div className="text-sm text-white/60">{type.description}</div>
-                    </div>
-                    <div className="ml-4">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
+            <TabsContent value="privacy" className="mt-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {cookieTypes.map((type) => {
+                  const Icon = type.icon;
+                  return (
+                    <div
+                      key={type.id}
+                      className={`p-4 rounded-lg transition-all ${
+                        cookiePreferences[type.id as keyof typeof cookiePreferences]
+                          ? "bg-white/10"
+                          : "bg-white/5"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center space-x-2">
+                          <Icon className="h-4 w-4" />
+                          <span className="font-medium">{type.title}</span>
+                        </div>
+                        <Switch
                           checked={cookiePreferences[type.id as keyof typeof cookiePreferences]}
-                          onChange={(e) => {
+                          onCheckedChange={(checked) => {
                             if (!type.required) {
-                              setCookiePreferences(prev => ({
+                              setCookiePreferences((prev) => ({
                                 ...prev,
-                                [type.id]: e.target.checked
+                                [type.id]: checked,
                               }));
                             }
                           }}
                           disabled={type.required}
-                          className="sr-only peer"
                         />
-                        <div className={`w-11 h-6 rounded-full peer ${type.required ? 'bg-emerald-600/80' : 'bg-gray-700'} peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600`}></div>
-                      </label>
+                      </div>
+                      <p className="text-sm text-gray-400 ml-6">{type.description}</p>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </TabsContent>
 
-            <TabsContent value="details" className="space-y-4 mt-2">
+            <TabsContent value="details" className="mt-4">
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <h3 className="font-medium flex items-center gap-2 text-white">
+                <div className="bg-white/5 p-4 rounded-lg">
+                  <h4 className="font-medium mb-2 flex items-center gap-2">
                     <Cookie className="h-4 w-4" />
-                    Types of Cookies We Use
-                  </h3>
-                  <div className="space-y-3 mt-2">
-                    <div className="bg-white/5 p-3 rounded-lg">
-                      <p className="text-sm font-medium text-white mb-1">Session Cookies</p>
-                      <p className="text-xs text-white/60">
-                        These temporary cookies expire when you close your browser. They enable websites to recognize you as you navigate between pages.
-                      </p>
-                    </div>
-                    <div className="bg-white/5 p-3 rounded-lg">
-                      <p className="text-sm font-medium text-white mb-1">Persistent Cookies</p>
-                      <p className="text-xs text-white/60">
-                        These remain on your device until they expire or you delete them. They enable websites to remember your preferences for your next visit.
-                      </p>
-                    </div>
-                    <div className="bg-white/5 p-3 rounded-lg">
-                      <p className="text-sm font-medium text-white mb-1">First-Party Cookies</p>
-                      <p className="text-xs text-white/60">
-                        Set directly by our website to enable core functionality and remember your preferences.
-                      </p>
-                    </div>
-                    <div className="bg-white/5 p-3 rounded-lg">
-                      <p className="text-sm font-medium text-white mb-1">Third-Party Cookies</p>
-                      <p className="text-xs text-white/60">
-                        Set by other domains (like analytics or advertising partners) to enable features such as traffic analysis and personalized advertising.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-medium flex items-center gap-2 text-white">
-                    <Info className="h-4 w-4" />
-                    How to Manage Cookies
-                  </h3>
-                  <p className="text-sm text-white/60">
-                    In addition to the controls provided here, you can modify cookie settings in your browser. Most browsers allow you to block or delete cookies. Visit your browser's help section to learn more.
+                    What are Cookies?
+                  </h4>
+                  <p className="text-sm text-gray-400">
+                    Cookies are small text files stored on your device that help us provide and improve our services.
+                    They're used for technical functionality, analytics, and personalization.
                   </p>
                 </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-medium flex items-center gap-2 text-white">
-                    <Shield className="h-4 w-4" />
-                    Cookie Duration
-                  </h3>
-                  <p className="text-sm text-white/60">
-                    Essential cookies typically last for your current session or up to 24 hours. Functional cookies may remain for up to 1 year to remember your preferences. Analytics cookies generally expire after 2 years. Marketing cookies vary based on the specific provider but may last up to 2 years.
+                
+                <div className="bg-white/5 p-4 rounded-lg">
+                  <h4 className="font-medium mb-2 flex items-center gap-2">
+                    <Lock className="h-4 w-4" />
+                    How We Protect Your Privacy
+                  </h4>
+                  <p className="text-sm text-gray-400">
+                    We take data protection seriously and ensure all cookies are securely processed.
+                    Learn more in our {" "}
+                    <Link to="/privacy" className="text-white underline decoration-white/30 hover:decoration-white">
+                      Privacy Policy
+                    </Link>
+                    .
                   </p>
                 </div>
               </div>
             </TabsContent>
 
-            <TabsContent value="policy" className="space-y-4 mt-2">
-              <p className="text-sm text-white/70">
-                Our Cookie Policy explains in detail how we use cookies, what data we collect, and how we ensure your privacy. This policy is part of our wider commitment to transparency and data protection.
-              </p>
-              
-              <div className="space-y-4 mt-4">
-                <div className="bg-white/5 p-4 rounded-lg transition-all hover:bg-white/10">
+            <TabsContent value="policy" className="mt-4">
+              <div className="space-y-4">
+                <p className="text-sm text-gray-400">
+                  Our Cookie Policy explains in detail how we use cookies and similar technologies.
+                  Read our full policies:
+                </p>
+                
+                <div className="grid gap-4 sm:grid-cols-2">
                   <Link
                     to="/cookies"
-                    className="text-sm text-white hover:underline block"
-                    onClick={() => {
-                      localStorage.setItem("viewed-policy", "true");
-                      setShowBanner(false);
-                    }}
+                    className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
                   >
-                    <h4 className="font-medium flex items-center mb-1">
-                      <Cookie className="h-4 w-4 mr-2" />
+                    <h4 className="font-medium flex items-center gap-2 mb-1">
+                      <Cookie className="h-4 w-4" />
                       Cookie Policy
                     </h4>
-                    <p className="text-xs text-white/60 ml-6">
-                      Comprehensive details about how we use cookies on our website.
+                    <p className="text-sm text-gray-400">
+                      Detailed information about our use of cookies
                     </p>
                   </Link>
-                </div>
-                
-                <div className="bg-white/5 p-4 rounded-lg transition-all hover:bg-white/10">
+                  
                   <Link
                     to="/privacy"
-                    className="text-sm text-white hover:underline block"
-                    onClick={() => {
-                      localStorage.setItem("viewed-policy", "true");
-                      setShowBanner(false);
-                    }}
+                    className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
                   >
-                    <h4 className="font-medium flex items-center mb-1">
-                      <Shield className="h-4 w-4 mr-2" />
+                    <h4 className="font-medium flex items-center gap-2 mb-1">
+                      <Shield className="h-4 w-4" />
                       Privacy Policy
                     </h4>
-                    <p className="text-xs text-white/60 ml-6">
-                      How we collect, use, and protect your personal information.
-                    </p>
-                  </Link>
-                </div>
-                
-                <div className="bg-white/5 p-4 rounded-lg transition-all hover:bg-white/10">
-                  <Link
-                    to="/terms"
-                    className="text-sm text-white hover:underline block"
-                    onClick={() => {
-                      localStorage.setItem("viewed-policy", "true");
-                      setShowBanner(false);
-                    }}
-                  >
-                    <h4 className="font-medium flex items-center mb-1">
-                      <FileText className="h-4 w-4 mr-2" />
-                      Terms of Service
-                    </h4>
-                    <p className="text-xs text-white/60 ml-6">
-                      The terms that govern your use of our website and services.
-                    </p>
-                  </Link>
-                </div>
-                
-                <div className="bg-white/5 p-4 rounded-lg transition-all hover:bg-white/10">
-                  <Link
-                    to="/acceptable-use"
-                    className="text-sm text-white hover:underline block"
-                    onClick={() => {
-                      localStorage.setItem("viewed-policy", "true");
-                      setShowBanner(false);
-                    }}
-                  >
-                    <h4 className="font-medium flex items-center mb-1">
-                      <CheckCheck className="h-4 w-4 mr-2" />
-                      Acceptable Use Policy
-                    </h4>
-                    <p className="text-xs text-white/60 ml-6">
-                      Guidelines for appropriate use of our services.
+                    <p className="text-sm text-gray-400">
+                      How we protect and process your data
                     </p>
                   </Link>
                 </div>
               </div>
             </TabsContent>
-          </div>
-
-          <div className="bg-white/5 p-4 border-t border-white/10 flex flex-col sm:flex-row justify-end gap-3">
-            {activeTab === "privacy" && (
-              <>
-                <Button
-                  variant="outline"
-                  onClick={handleSavePreferences}
-                  className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white sm:order-1"
-                >
-                  Save Preferences
-                </Button>
-                <Button
-                  onClick={handleAcceptAll}
-                  className="bg-blue-600 hover:bg-blue-700 text-white sm:order-2"
-                >
-                  Accept All
-                </Button>
-              </>
-            )}
-            
-            {activeTab !== "privacy" && (
-              <div className="flex justify-end w-full">
-                <Button
-                  variant="outline"
-                  onClick={() => setActiveTab("privacy")}
-                  className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white"
-                >
-                  Back to Settings
-                </Button>
-              </div>
-            )}
-          </div>
-        </Tabs>
-      </DialogContent>
-    </Dialog>
+          </Tabs>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
