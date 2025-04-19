@@ -1,4 +1,3 @@
-
 import { Cloud, Shield, Zap, Search, Sparkles, Code, Settings, Clock, Users } from "lucide-react";
 
 export const featureCards = [
@@ -21,14 +20,14 @@ export const featureCards = [
     description: "Experience instant clipboard operations with our optimized performance engine, even with large files.",
     icon: Zap,
     color: "from-yellow-500/10 to-yellow-600/5",
-    comingSoon: true
+    link: "/features/lightning-fast"
   },
   {
     title: "Smart Search",
     description: "Find any copied item instantly with our AI-powered search that understands context and content.",
     icon: Search,
     color: "from-purple-500/10 to-purple-600/5",
-    comingSoon: true
+    link: "/features/smart-search"
   },
   {
     title: "AI Organization",
