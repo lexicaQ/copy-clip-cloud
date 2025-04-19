@@ -44,20 +44,20 @@ const SupportOption = ({ title, description, icon: Icon, link, linkText }) => (
 const Support = () => {
   const popularQuestions = [
     {
-      question: "Wie synchronisiere ich CopyClipCloud über mehrere Geräte?",
-      answer: "Um CopyClipCloud über mehrere Geräte zu synchronisieren, installieren Sie die App auf allen Geräten und melden Sie sich mit demselben Konto an. Aktivieren Sie die Cloud-Synchronisierung in den Einstellungen jedes Geräts. Ihre Clipboard-Daten werden automatisch über alle Geräte hinweg synchronisiert."
+      question: "How do I synchronize CopyClipCloud across multiple devices?",
+      answer: "To synchronize CopyClipCloud across multiple devices, install the app on all devices and sign in with the same account. Enable cloud synchronization in the settings of each device. Your clipboard data will automatically be synchronized across all devices."
     },
     {
-      question: "Ist CopyClipCloud mit älteren macOS-Versionen kompatibel?",
-      answer: "CopyClipCloud ist optimiert für macOS 15 und höher. Auf älteren Versionen können einige Funktionen eingeschränkt sein oder nicht richtig funktionieren. Wir empfehlen ein Upgrade auf mindestens macOS 15, um alle Funktionen vollständig nutzen zu können."
+      question: "Is CopyClipCloud compatible with older macOS versions?",
+      answer: "CopyClipCloud is optimized for macOS 15 and higher. On older versions, some features may be limited or not function properly. We recommend upgrading to at least macOS 15 to fully utilize all features."
     },
     {
-      question: "Wie kann ich ein Backup meiner Clipboard-Daten erstellen?",
-      answer: "CopyClipCloud bietet eine integrierte Backup-Funktion. Gehen Sie zu Einstellungen > Backup & Export und wählen Sie 'Backup erstellen'. Sie können wählen, ob Sie das Backup lokal speichern oder in die Cloud hochladen möchten. Backups können jederzeit über die gleiche Menüoption wiederhergestellt werden."
+      question: "How can I create a backup of my clipboard data?",
+      answer: "CopyClipCloud offers an integrated backup feature. Go to Settings > Backup & Export and select 'Create Backup'. You can choose to save the backup locally or upload it to the cloud. Backups can be restored at any time through the same menu option."
     },
     {
-      question: "Warum werden manche Bilder nicht richtig gespeichert?",
-      answer: "Bei bestimmten Bildformaten oder sehr großen Bildern kann es zu Kompatibilitätsproblemen kommen. CopyClipCloud unterstützt die gängigsten Bildformate (PNG, JPEG, GIF, WEBP) mit einer maximalen Größe von 50MB. Wenn Probleme auftreten, versuchen Sie, das Bild in ein anderes Format zu konvertieren oder seine Größe zu reduzieren."
+      question: "Why aren't some images being saved correctly?",
+      answer: "With certain image formats or very large images, compatibility issues may occur. CopyClipCloud supports the most common image formats (PNG, JPEG, GIF, WEBP) with a maximum size of 50MB. If problems arise, try converting the image to another format or reducing its size."
     }
   ];
   
@@ -73,11 +73,11 @@ const Support = () => {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">Wir sind für Sie da</span>
+            <span className="text-gradient">We're Here for You</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Finden Sie Antworten, erhalten Sie Hilfe und teilen Sie Ihr Feedback mit uns.
-            Unser Supportteam steht Ihnen zur Verfügung.
+            Find answers, get help, and share your feedback with us.
+            Our support team is at your service.
           </p>
         </motion.div>
 
@@ -87,49 +87,49 @@ const Support = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-2xl font-bold mb-8 text-center">Wie können wir helfen?</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center">How Can We Help?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <SupportOption 
-              title="Kontakt aufnehmen"
-              description="Haben Sie ein spezifisches Problem? Kontaktieren Sie unser Support-Team direkt."
+              title="Get in Touch"
+              description="Have a specific problem? Contact our support team directly."
               icon={MessageSquare}
               link="/contact"
-              linkText="Nachricht senden"
+              linkText="Send Message"
             />
             <SupportOption 
               title="Email Support"
-              description="Senden Sie uns eine detaillierte Beschreibung Ihres Anliegens per E-Mail."
+              description="Send us a detailed description of your concern via email."
               icon={Mail}
               link="mailto:support@copyclipcloud.com"
-              linkText="E-Mail senden"
+              linkText="Send Email"
             />
             <SupportOption 
-              title="FAQ durchsuchen"
-              description="Finden Sie schnelle Antworten auf häufig gestellte Fragen in unserer Wissensdatenbank."
+              title="Browse FAQs"
+              description="Find quick answers to frequently asked questions in our knowledge base."
               icon={FileQuestion}
               link="/features#faq"
-              linkText="Zu den FAQs"
+              linkText="Go to FAQs"
             />
             <SupportOption 
-              title="Live-Chat"
-              description="Chatten Sie in Echtzeit mit unserem Support-Team für sofortige Hilfe."
+              title="Live Chat"
+              description="Chat in real-time with our support team for immediate assistance."
               icon={Headphones}
               link="#live-chat"
-              linkText="Chat starten"
+              linkText="Start Chat"
             />
             <SupportOption 
-              title="Dokumentation"
-              description="Durchsuchen Sie unsere ausführliche Dokumentation für detaillierte Anleitungen."
+              title="Documentation"
+              description="Browse our comprehensive documentation for detailed instructions."
               icon={BookOpen}
               link="/features"
-              linkText="Dokumentation ansehen"
+              linkText="View Documentation"
             />
             <SupportOption 
-              title="Video-Tutorials"
-              description="Sehen Sie sich unsere Video-Anleitungen an, um CopyClipCloud optimal zu nutzen."
+              title="Video Tutorials"
+              description="Watch our video guides to optimally use CopyClipCloud."
               icon={Video}
               link="/features"
-              linkText="Videos ansehen"
+              linkText="Watch Videos"
             />
           </div>
         </motion.div>
@@ -141,7 +141,7 @@ const Support = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="text-2xl font-bold mb-8 text-center">Häufige Fragen</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
           <div className="glass-panel">
             <Accordion type="single" collapsible className="divide-y divide-white/10">
               {popularQuestions.map((faq, index) => (
@@ -175,24 +175,24 @@ const Support = () => {
           >
             <div className="flex items-center mb-4">
               <Clock className="w-6 h-6 mr-3" />
-              <h3 className="text-xl font-medium">Support-Zeiten</h3>
+              <h3 className="text-xl font-medium">Support Hours</h3>
             </div>
             <ul className="space-y-3 text-gray-300">
               <li className="flex justify-between">
-                <span>Montag - Freitag:</span>
-                <span>9:00 - 18:00 Uhr</span>
+                <span>Monday - Friday:</span>
+                <span>9:00 AM - 6:00 PM</span>
               </li>
               <li className="flex justify-between">
-                <span>Samstag:</span>
-                <span>10:00 - 15:00 Uhr</span>
+                <span>Saturday:</span>
+                <span>10:00 AM - 3:00 PM</span>
               </li>
               <li className="flex justify-between">
-                <span>Sonntag:</span>
-                <span>Geschlossen</span>
+                <span>Sunday:</span>
+                <span>Closed</span>
               </li>
             </ul>
             <p className="mt-4 text-sm text-gray-400">
-              Alle Zeiten sind in MEZ/MESZ angegeben.
+              All times are in CET/CEST.
             </p>
           </motion.div>
 
@@ -207,8 +207,7 @@ const Support = () => {
               <h3 className="text-xl font-medium">Community</h3>
             </div>
             <p className="mb-4 text-gray-300">
-              Treten Sie unserer Community bei, um Tipps zu teilen, Fragen zu stellen und 
-              mit anderen Nutzern in Kontakt zu treten.
+              Join our community to share tips, ask questions, and connect with other users.
             </p>
             <div className="flex flex-wrap gap-3">
               <a 
@@ -240,15 +239,15 @@ const Support = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Feedback geben</h2>
+          <h2 className="text-2xl font-bold mb-4">Give Feedback</h2>
           <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
-            Ihre Meinung ist uns wichtig. Teilen Sie uns mit, wie wir CopyClipCloud verbessern können.
+            Your opinion matters to us. Let us know how we can improve CopyClipCloud.
           </p>
           <a 
             href="/contact" 
             className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
           >
-            Feedback senden
+            Send Feedback
           </a>
         </motion.div>
       </main>

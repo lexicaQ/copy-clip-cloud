@@ -38,10 +38,10 @@ const Privacy = () => {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">Ihre Privatsphäre ist uns wichtig</span>
+            <span className="text-gradient">Your Privacy Matters to Us</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Wir haben CopyClipCloud von Grund auf mit strikten Datenschutzprinzipien entwickelt. Erfahren Sie, wie wir Ihre Daten schützen.
+            We built CopyClipCloud from the ground up with strict privacy principles. Learn how we protect your data.
           </p>
         </motion.div>
 
@@ -51,26 +51,26 @@ const Privacy = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-2xl font-bold mb-8 text-center">Datenschutz-Grundsätze</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center">Privacy Principles</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <PrivacyFeature
-              title="Ende-zu-Ende Verschlüsselung"
-              description="Alle Ihre Daten werden vor der Übertragung direkt auf Ihrem Gerät verschlüsselt. Niemand kann darauf zugreifen, nicht einmal wir."
+              title="End-to-End Encryption"
+              description="All your data is encrypted directly on your device before transmission. No one can access it, not even us."
               icon={Lock}
             />
             <PrivacyFeature
-              title="Keine Datensammlung"
-              description="Wir sammeln keine persönlichen Daten, die nicht für die Funktionalität der App erforderlich sind. Keine versteckten Tracker."
+              title="No Data Collection"
+              description="We don't collect any personal data that isn't necessary for app functionality. No hidden trackers."
               icon={Eye}
             />
             <PrivacyFeature
-              title="Lokale Verarbeitung"
-              description="Ihre Daten werden primär auf Ihrem Gerät verarbeitet. Cloud-Synchronisierung ist optional und immer verschlüsselt."
+              title="Local Processing"
+              description="Your data is primarily processed on your device. Cloud synchronization is optional and always encrypted."
               icon={Database}
             />
             <PrivacyFeature
-              title="Transparenz"
-              description="Unser Datenschutz ist transparent und in klarer Sprache verfasst. Wir erklären genau, was mit Ihren Daten geschieht."
+              title="Transparency"
+              description="Our privacy policy is transparent and written in clear language. We explain exactly what happens with your data."
               icon={FileCheck}
             />
           </div>
@@ -83,25 +83,25 @@ const Privacy = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Datenschutzerklärung</h2>
+          <h2 className="text-2xl font-bold mb-4">Privacy Policy</h2>
           <div className="space-y-6 text-gray-300">
             <p>
-              <strong>Effektiv ab:</strong> 1. April 2023
+              <strong>Effective Date:</strong> April 1, 2023
             </p>
             <p>
-              Bei CopyClipCloud respektieren wir Ihre Privatsphäre und verstehen die Wichtigkeit des Schutzes der Daten, die Sie uns anvertrauen. Diese Datenschutzerklärung beschreibt, wie wir Ihre Daten sammeln, nutzen und offenlegen.
+              At CopyClipCloud, we respect your privacy and understand the importance of protecting the data you entrust to us. This Privacy Policy describes how we collect, use, and disclose your data.
             </p>
             <p>
-              <strong>Welche Daten wir sammeln:</strong> Wir sammeln nur die Daten, die für die Funktionsweise unserer App notwendig sind. Dazu gehören Kontoinformationen (E-Mail, Name) für die Kontoverwaltung und Ihre verschlüsselten Clip-Daten, wenn Sie die Cloud-Synchronisierung aktivieren.
+              <strong>What data we collect:</strong> We only collect data necessary for the functioning of our app. This includes account information (email, name) for account management and your encrypted clip data when you enable cloud synchronization.
             </p>
             <p>
-              <strong>Wie wir Ihre Daten nutzen:</strong> Wir verwenden Ihre Daten ausschließlich für die Bereitstellung, Wartung und Verbesserung unserer Services. Ihre Clip-Daten werden nur für die Synchronisierung zwischen Ihren eigenen Geräten verwendet.
+              <strong>How we use your data:</strong> We use your data exclusively for providing, maintaining, and improving our services. Your clip data is only used for synchronization between your own devices.
             </p>
             <p>
-              <strong>Datensicherheit:</strong> Wir setzen modernste Sicherheitsmaßnahmen ein, um Ihre Daten zu schützen. Alle sensiblen Daten werden mit Ende-zu-Ende-Verschlüsselung gesichert.
+              <strong>Data security:</strong> We employ state-of-the-art security measures to protect your data. All sensitive data is secured with end-to-end encryption.
             </p>
             <p>
-              <strong>Ihre Rechte:</strong> Sie haben das Recht, auf Ihre Daten zuzugreifen, sie zu korrigieren oder zu löschen. Sie können Ihr Konto jederzeit schließen und alle Ihre Daten werden von unseren Servern entfernt.
+              <strong>Your rights:</strong> You have the right to access, correct, or delete your data. You can close your account at any time, and all your data will be removed from our servers.
             </p>
           </div>
         </motion.div>
@@ -115,19 +115,19 @@ const Privacy = () => {
         >
           <div className="inline-flex items-center justify-center p-2 rounded-full bg-white/10 mb-4">
             <Shield className="w-6 h-6 mr-2" />
-            <span>Sicherheit durch Design</span>
+            <span>Security by Design</span>
           </div>
-          <h2 className="text-2xl font-bold mb-4">Fragen zum Datenschutz?</h2>
+          <h2 className="text-2xl font-bold mb-4">Questions About Privacy?</h2>
           <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
-            Wenn Sie Fragen zu unserem Umgang mit Ihren Daten haben, kontaktieren Sie uns jederzeit.
-            Wir sind transparent und offen für Ihre Anliegen.
+            If you have questions about how we handle your data, contact us anytime.
+            We are transparent and open to your concerns.
           </p>
           <a 
             href="/contact" 
             className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
           >
             <Key className="w-4 h-4 mr-2" />
-            Kontakt aufnehmen
+            Contact Us
           </a>
         </motion.div>
       </main>
