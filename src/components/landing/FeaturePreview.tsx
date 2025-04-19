@@ -129,15 +129,15 @@ const FeaturePreview = () => {
                       <div className="h-24 bg-white/5 rounded-md p-2 flex flex-col justify-between">
                         <div className="text-xs text-white/70">React Component</div>
                         <div className="text-[10px] font-mono text-white/50 overflow-hidden">
-                          const Button = () => {
-                            return <button>Click</button>
-                          }
+                          const Button = () =&gt; {"{"}
+                            return &lt;button&gt;Click&lt;/button&gt;
+                          {"}"}
                         </div>
                       </div>
                       <div className="h-24 bg-white/5 rounded-md p-2 flex flex-col justify-between">
                         <div className="text-xs text-white/70">CSS Snippet</div>
                         <div className="text-[10px] font-mono text-white/50 overflow-hidden">
-                          .container { display: flex; }
+                          .container {"{"} display: flex; {"}"}
                         </div>
                       </div>
                       <div className="h-24 bg-white/5 rounded-md p-2 flex flex-col justify-between">
@@ -162,7 +162,7 @@ const FeaturePreview = () => {
             <motion.div 
               className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
               animate={{ 
-                x: ['-100%', '100%'],
+                x: ['-100%', '100%']
               }}
               transition={{ 
                 duration: 1.5,
@@ -178,7 +178,7 @@ const FeaturePreview = () => {
             className="absolute -bottom-6 -right-6 w-24 h-24 rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl -z-10"
             animate={{ 
               rotate: 10,
-              scale: [1, 1.05, 1],
+              scale: [1, 1.05, 1]
             }}
             transition={{ 
               duration: 5,
@@ -191,7 +191,7 @@ const FeaturePreview = () => {
             className="absolute -top-4 -left-4 w-16 h-16 rounded-lg border border-white/10 bg-white/5 backdrop-blur-xl -z-10"
             animate={{ 
               rotate: -5,
-              scale: [1, 1.03, 1],
+              scale: [1, 1.03, 1]
             }}
             transition={{ 
               duration: 4,
