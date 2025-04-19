@@ -11,6 +11,7 @@ import HowItWorks from "@/components/landing/HowItWorks";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Shield, Sparkles, Zap } from "lucide-react";
+import HeroBackground from "@/components/landing/HeroBackground";
 
 const Index = () => {
   return (
@@ -23,6 +24,8 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
+        <HeroBackground />
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,30 +70,30 @@ const Index = () => {
               </motion.div>
             ))}
           </motion.div>
-
-          {/* Features Grid */}
-          <AppFeatures />
-          
-          {/* How It Works */}
-          <div className="mt-24">
-            <HowItWorks />
-          </div>
-          
-          {/* Stats Dashboard */}
-          <div className="mt-24">
-            <AppStats />
-          </div>
-          
-          {/* Testimonials */}
-          <div className="mt-24">
-            <TestimonialCarousel />
-          </div>
-          
-          {/* FAQ Section */}
-          <div className="mt-24">
-            <AppFAQ />
-          </div>
         </motion.div>
+
+        {/* Features Grid */}
+        <AppFeatures />
+        
+        {/* How It Works */}
+        <div className="mt-24">
+          <HowItWorks />
+        </div>
+        
+        {/* Stats Dashboard */}
+        <div className="mt-24">
+          <AppStats />
+        </div>
+        
+        {/* Testimonials */}
+        <div className="mt-24">
+          <TestimonialCarousel />
+        </div>
+        
+        {/* FAQ Section */}
+        <div className="mt-24">
+          <AppFAQ />
+        </div>
       </motion.div>
       
       <Footer />
@@ -99,3 +102,4 @@ const Index = () => {
 };
 
 export default Index;
+
