@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, Loader } from "lucide-react";
@@ -78,19 +77,15 @@ const Header = () => {
             <NavLink to="/support" icon={MessageSquare} onClick={() => handleNavigation("/support")}>Support</NavLink>
           </nav>
           
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center space-x-4">
             <motion.button 
               onClick={handleDownload}
-              className="flex items-center space-x-2 px-5 py-2.5 rounded-full relative overflow-hidden group"
-              style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-                border: "1px solid rgba(255, 255, 255, 0.2)"
-              }}
+              className="flex items-center space-x-2 px-5 py-2.5 rounded-full relative overflow-hidden group bg-gradient-to-r from-white/10 to-white/5 border border-white/20 hover:bg-white/10 transition-all duration-300"
               whileHover={{ 
-                scale: 1.05,
-                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)"
+                scale: 1.02,
+                boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)"
               }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.98 }}
             >
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0"
@@ -103,7 +98,6 @@ const Header = () => {
                   repeatDelay: 2
                 }}
               />
-              
               <Download className="w-4 h-4 text-white relative z-10" />
               <span className="font-medium text-white relative z-10">Download</span>
             </motion.button>

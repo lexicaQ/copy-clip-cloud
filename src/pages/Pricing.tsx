@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Shield, Zap, Cloud, Star, Check, Info, CreditCard, Lock, BadgeDollarSign } from "lucide-react";
@@ -22,7 +21,7 @@ const Pricing = () => {
   const plans = [
     {
       name: "Basic",
-      price: isAnnual ? "0" : "0",
+      price: "0",
       description: "Essential features for personal use",
       icon: Cloud,
       features: [
@@ -38,7 +37,7 @@ const Pricing = () => {
     },
     {
       name: "Pro",
-      price: isAnnual ? "49.99" : "4.99",
+      price: "49.99",
       description: "Advanced features for power users",
       icon: Zap,
       highlight: true,
@@ -55,7 +54,7 @@ const Pricing = () => {
     },
     {
       name: "Enterprise",
-      price: isAnnual ? "99.99" : "9.99",
+      price: "99.99",
       description: "Complete solution for teams",
       icon: Shield,
       features: [

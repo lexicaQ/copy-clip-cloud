@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
@@ -31,8 +30,9 @@ const PricingPlanCard = ({
   isAnnual,
   icon: Icon,
 }: PricingPlanCardProps) => {
-  const monthlyPrice = parseFloat(price);
+  const monthlyPrice = Number(price);
   const isBasicPlan = name === "Basic";
+  const formattedPrice = isAnnual ? monthlyPrice.toString() : (monthlyPrice / 12).toFixed(2);
   
   return (
     <motion.div
@@ -111,14 +111,17 @@ const PricingPlanCard = ({
           )}
           <div className="text-4xl font-bold mb-2 relative inline-flex">
             <span className="text-sm absolute top-0 left-[-12px] text-white/70">$</span>
-            <span className="text-white">{monthlyPrice}</span>
+            <span className="text-white">{formattedPrice}</span>
           </div>
           <div className="text-sm text-white/70">
             per {isAnnual ? 'year' : 'month'}
           </div>
-          {isAnnual && monthlyPrice > 0 && (
+          {monthlyPrice > 0 && (
             <div className="text-sm mt-2 text-white/70">
-              ${(monthlyPrice / 12).toFixed(2)} / month, billed annually
+              {isAnnual 
+                ? `$${(monthlyPrice / 12).toFixed(2)} / month, billed annually`
+                : `$${(monthlyPrice * 12).toFixed(2)} / year, billed monthly`
+              }
             </div>
           )}
         </div>
