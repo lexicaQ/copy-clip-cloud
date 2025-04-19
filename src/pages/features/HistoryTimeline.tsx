@@ -182,7 +182,7 @@ const HistoryTimeline = () => {
                         </div>
                         <span className="text-xs text-gray-500">9:23 AM</span>
                       </div>
-                      <p className="text-sm text-gray-300 line-clamp-2 font-mono">const getUser = async (id) =&gt; {"{"} try {"{"} const response = await api.get(`/users/${"{"}{id}{"}"}`); return response.data; {"}"} catch (err) {"{"} console.error(err); {"}"} {"}"};</p>
+                      <p className="text-sm text-gray-300 line-clamp-2 font-mono">const getUser = async (id) =&gt; {"{"} try {"{"} const response = await api.get(`/users/${"{"}userId{"}"}`); return response.data; {"}"} catch (err) {"{"} console.error(err); {"}"} {"}"};</p>
                     </div>
                   </div>
                 </div>
