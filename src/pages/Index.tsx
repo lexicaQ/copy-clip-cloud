@@ -63,7 +63,7 @@ const Index = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 + (i * 0.1) }}
-                whileHover={{ y: -5, boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.3)" }}
+                whileHover={{ y: -5 }}
               >
                 <div className="p-2 rounded-lg bg-white/10">
                   <feature.icon className="w-5 h-5" />
@@ -77,7 +77,7 @@ const Index = () => {
           </motion.div>
         </motion.div>
 
-        {/* Value Proposition with animation */}
+        {/* Value Proposition */}
         <motion.div 
           className="mt-32"
           initial={{ opacity: 0 }}
@@ -99,7 +99,7 @@ const Index = () => {
 
         {/* Key Features Grid */}
         <motion.div 
-          className="mt-32"
+          className="mt-32 mb-48" // Increased bottom margin
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -107,9 +107,9 @@ const Index = () => {
           <AppFeatures />
         </motion.div>
 
-        {/* App Walkthrough */}
+        {/* App Walkthrough with improved typography */}
         <motion.div 
-          className="mt-32"
+          className="mt-32 mb-48" // Increased spacing
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -119,7 +119,7 @@ const Index = () => {
 
         {/* User Examples */}
         <motion.div 
-          className="mt-32"
+          className="mt-32 mb-48" // Increased spacing
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -127,9 +127,9 @@ const Index = () => {
           <UserExamples />
         </motion.div>
 
-        {/* Statistics Dashboard */}
+        {/* Statistics Dashboard with improved contrast */}
         <motion.div 
-          className="mt-32"
+          className="mt-32 mb-48" // Increased spacing
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -137,9 +137,9 @@ const Index = () => {
           <AppStats />
         </motion.div>
 
-        {/* Testimonials */}
+        {/* Testimonials with better readability */}
         <motion.div 
-          className="mt-32"
+          className="mt-32 mb-48" // Increased spacing
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -147,7 +147,7 @@ const Index = () => {
           <TestimonialCarousel />
         </motion.div>
 
-        {/* FAQ Section */}
+        {/* FAQ Section with improved typography */}
         <motion.div 
           className="mt-32"
           initial={{ opacity: 0 }}
