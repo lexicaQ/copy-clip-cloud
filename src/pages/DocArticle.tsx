@@ -241,7 +241,7 @@ const docData = {
             <strong>Lost encryption password:</strong> If you lose your encryption password, you won't be able to recover your encrypted data. Consider using a password manager.
           </p>
           <p>
-            <strong>Sync issues with encryption enabled:</strong> If you're experiencing sync problems with encryption enabled, try refreshing your encryption keys in Settings > Security > Advanced.
+            <strong>Sync issues with encryption enabled:</strong> If you're experiencing sync problems with encryption enabled, try refreshing your encryption keys in Settings {">"} Security {">"} Advanced.
           </p>
           <p>
             <strong>Two-factor authentication problems:</strong> If you can't access your 2FA device, use one of your backup codes or contact support.
