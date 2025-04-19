@@ -2,10 +2,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import AppFeatures from "@/components/landing/AppFeatures";
-import AppLogo from "@/components/landing/AppLogo";
 import DownloadButton from "@/components/landing/DownloadButton";
 import AppTitle from "@/components/landing/AppTitle";
-import InteractiveBackground from "@/components/landing/InteractiveBackground";
 import TestimonialCarousel from "@/components/landing/TestimonialCarousel";
 import AppStats from "@/components/landing/AppStats";
 import AppFAQ from "@/components/landing/AppFAQ";
@@ -16,15 +14,11 @@ import { Shield, Sparkles, Zap } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Background effects */}
-      <InteractiveBackground />
-
-      {/* Header */}
+    <div className="relative min-h-screen">
       <Header />
 
       <motion.div 
-        className="max-w-7xl mx-auto px-4 pt-32 pb-24"
+        className="max-w-7xl mx-auto px-4 pt-20 pb-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -35,13 +29,10 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           className="w-full max-w-4xl mx-auto text-center relative z-10"
         >
-          {/* Logo and Badge */}
-          <AppLogo />
-
           {/* Title and Description */}
           <AppTitle />
 
-          {/* Download Button - moved here */}
+          {/* Download Button */}
           <div className="mt-12">
             <DownloadButton />
           </div>
@@ -102,7 +93,6 @@ const Index = () => {
         </motion.div>
       </motion.div>
       
-      {/* Footer */}
       <Footer />
     </div>
   );
