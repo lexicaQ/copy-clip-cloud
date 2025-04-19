@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Info, Shield, CheckCheck, FileText, Lock, Cookie } from "lucide-react";
@@ -77,6 +76,18 @@ const CookieBanner = () => {
       icon: CheckCheck
     }
   ];
+
+  const PolicyLink = ({ to, children }: { to: string; children: React.ReactNode }) => (
+    <Link
+      to={to}
+      className="text-white underline decoration-white/30 hover:decoration-white"
+      onClick={(e) => e.stopPropagation()}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {children}
+    </Link>
+  );
 
   if (!showBanner) return null;
 
@@ -178,7 +189,8 @@ const CookieBanner = () => {
                   </h4>
                   <p className="text-sm text-gray-400">
                     Cookies are small text files stored on your device that help us provide and improve our services.
-                    They're used for technical functionality, analytics, and personalization.
+                    They're used for technical functionality, analytics, and personalization. Learn more in our{' '}
+                    <PolicyLink to="/cookies">Cookie Policy</PolicyLink>.
                   </p>
                 </div>
                 
@@ -189,11 +201,8 @@ const CookieBanner = () => {
                   </h4>
                   <p className="text-sm text-gray-400">
                     We take data protection seriously and ensure all cookies are securely processed.
-                    Learn more in our {" "}
-                    <Link to="/privacy" className="text-white underline decoration-white/30 hover:decoration-white">
-                      Privacy Policy
-                    </Link>
-                    .
+                    Read more in our <PolicyLink to="/privacy">Privacy Policy</PolicyLink> and{' '}
+                    <PolicyLink to="/terms">Terms of Service</PolicyLink>.
                   </p>
                 </div>
               </div>
@@ -202,13 +211,15 @@ const CookieBanner = () => {
             <TabsContent value="policy" className="mt-4">
               <div className="space-y-4">
                 <p className="text-sm text-gray-400">
-                  Our Cookie Policy explains in detail how we use cookies and similar technologies.
-                  Read our full policies:
+                  Learn more about how we handle your data in our detailed policies:
                 </p>
                 
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-4 sm:grid-cols-3">
                   <Link
                     to="/cookies"
+                    onClick={(e) => e.stopPropagation()}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
                   >
                     <h4 className="font-medium flex items-center gap-2 mb-1">
@@ -216,12 +227,15 @@ const CookieBanner = () => {
                       Cookie Policy
                     </h4>
                     <p className="text-sm text-gray-400">
-                      Detailed information about our use of cookies
+                      How we use cookies and similar technologies
                     </p>
                   </Link>
                   
                   <Link
                     to="/privacy"
+                    onClick={(e) => e.stopPropagation()}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
                   >
                     <h4 className="font-medium flex items-center gap-2 mb-1">
@@ -230,6 +244,22 @@ const CookieBanner = () => {
                     </h4>
                     <p className="text-sm text-gray-400">
                       How we protect and process your data
+                    </p>
+                  </Link>
+
+                  <Link
+                    to="/terms"
+                    onClick={(e) => e.stopPropagation()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+                  >
+                    <h4 className="font-medium flex items-center gap-2 mb-1">
+                      <FileText className="h-4 w-4" />
+                      Terms of Service
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      Our terms and conditions
                     </p>
                   </Link>
                 </div>
