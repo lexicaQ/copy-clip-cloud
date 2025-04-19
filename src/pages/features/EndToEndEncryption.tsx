@@ -91,15 +91,18 @@ const EndToEndEncryption = () => {
             <h2 className="text-2xl font-bold mb-6 text-gradient">Security Visualization</h2>
             
             <div className="flex items-center justify-center h-64 relative">
-              {/* Background security elements */}
-              <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+              {/* Background security elements - improved positioning and containment */}
+              <div className="absolute inset-0 flex items-center justify-center">
                 {[...Array(3)].map((_, index) => (
                   <motion.div
                     key={index}
                     className="absolute rounded-full border border-green-500/20"
                     style={{ 
-                      width: `${(index + 1) * 25}%`, 
-                      height: `${(index + 1) * 25}%` 
+                      width: `${(index + 1) * 20}%`, 
+                      height: `${(index + 1) * 20}%`,
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)'
                     }}
                     animate={{ 
                       rotate: [0, 360],
@@ -117,14 +120,14 @@ const EndToEndEncryption = () => {
                   />
                 ))}
                 
-                {/* Binary code effect */}
+                {/* Binary code effect with improved positioning */}
                 {[...Array(20)].map((_, index) => (
                   <motion.div
                     key={`binary-${index}`}
                     className="absolute text-[10px] font-mono text-green-500/30"
                     initial={{ 
-                      x: Math.random() * 300 - 150, 
-                      y: Math.random() * 300 - 150,
+                      x: Math.random() * 200 - 100, 
+                      y: Math.random() * 200 - 100,
                       opacity: 0
                     }}
                     animate={{ 
@@ -142,7 +145,7 @@ const EndToEndEncryption = () => {
                 ))}
               </div>
               
-              {/* Center shield with animation */}
+              {/* Center shield with animation - improved centering */}
               <motion.div
                 className="relative z-10 bg-white/5 w-24 h-24 rounded-full flex items-center justify-center"
                 animate={{ 
@@ -168,32 +171,40 @@ const EndToEndEncryption = () => {
                 <Shield className="w-12 h-12 text-green-400" />
               </motion.div>
               
-              {/* Animated encryption elements */}
-              {[...Array(4)].map((_, index) => (
-                <motion.div
-                  key={`lock-${index}`}
-                  className="absolute"
-                  style={{ 
-                    left: `${50 + Math.cos(index * Math.PI / 2) * 30}%`,
-                    top: `${50 + Math.sin(index * Math.PI / 2) * 30}%`,
-                  }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ 
-                    opacity: [0, 1, 0],
-                    scale: [0, 1, 0]
-                  }}
-                  transition={{ 
-                    duration: 4,
-                    repeat: Infinity,
-                    delay: index * 1,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <div className="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center">
-                    <Lock className="w-5 h-5 text-green-400/70" />
-                  </div>
-                </motion.div>
-              ))}
+              {/* Animated encryption elements with improved positioning */}
+              {[...Array(4)].map((_, index) => {
+                // Calculate positions in a circle around center
+                const angle = (index * Math.PI / 2) + (Math.PI / 4); // Offset by 45 degrees
+                const xPos = Math.cos(angle) * 80; // Radius of 80px
+                const yPos = Math.sin(angle) * 80;
+                
+                return (
+                  <motion.div
+                    key={`lock-${index}`}
+                    className="absolute"
+                    style={{ 
+                      left: `calc(50% + ${xPos}px)`,
+                      top: `calc(50% + ${yPos}px)`,
+                      transform: 'translate(-50%, -50%)'
+                    }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ 
+                      opacity: [0, 1, 0],
+                      scale: [0, 1, 0]
+                    }}
+                    transition={{ 
+                      duration: 4,
+                      repeat: Infinity,
+                      delay: index * 1,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    <div className="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center">
+                      <Lock className="w-5 h-5 text-green-400/70" />
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
             
             <div className="mt-6 text-center text-sm text-white/70">
