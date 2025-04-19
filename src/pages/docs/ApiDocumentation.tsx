@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import DocLayout from "./DocLayout";
 import DocCodeBlock from "@/components/docs/DocCodeBlock";
-import { ArrowLeft, FileCode, Code, ExternalLink, ChevronDown, ChevronUp, CopyCheck } from "lucide-react";
+import { ArrowLeft, FileCode, Code, ExternalLink, ChevronDown, ChevronUp, CopyCheck, Key } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Types for language tabs
