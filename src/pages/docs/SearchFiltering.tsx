@@ -156,7 +156,7 @@ const SearchFiltering = () => {
                   <code className="bg-black/30 px-1.5 py-0.5 rounded">before:date</code> / <code className="bg-black/30 px-1.5 py-0.5 rounded">after:date</code> - Date filters
                 </li>
                 <li className="text-gray-300">
-                  <code className="bg-black/30 px-1.5 py-0.5 rounded">size:>1mb</code> - Filter by content size
+                  <code className="bg-black/30 px-1.5 py-0.5 rounded">size:&gt;1mb</code> - Filter by content size
                 </li>
               </ul>
             </div>
