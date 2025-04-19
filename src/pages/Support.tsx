@@ -19,6 +19,7 @@ import {
   AccordionItem, 
   AccordionTrigger 
 } from "@/components/ui/accordion";
+import { ComingSoon } from "@/components/ui/coming-soon";
 
 const SupportOption = ({ title, description, icon: Icon, link, linkText, comingSoon = false }) => (
   <motion.div
@@ -29,20 +30,8 @@ const SupportOption = ({ title, description, icon: Icon, link, linkText, comingS
     transition={{ duration: 0.4 }}
   >
     {comingSoon && (
-      <div className="absolute -top-2 -left-2 px-3 py-1 bg-white/10 backdrop-blur-lg rounded-lg text-xs font-medium z-10 border border-white/20 shadow-lg">
-        <motion.span 
-          animate={{ 
-            scale: [1, 1.05, 1],
-            opacity: [0.8, 1, 0.8]
-          }}
-          transition={{ 
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
-          Coming Soon
-        </motion.span>
+      <div className="absolute -top-2 -left-2 z-10">
+        <ComingSoon />
       </div>
     )}
     <div className="flex items-start space-x-4">
