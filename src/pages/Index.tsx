@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import AppFeatures from "@/components/landing/AppFeatures";
@@ -14,6 +15,7 @@ import ValueProposition from "@/components/landing/ValueProposition";
 import AppWalkthrough from "@/components/landing/AppWalkthrough";
 import UserExamples from "@/components/landing/UserExamples";
 import FeaturePreview from "@/components/landing/FeaturePreview";
+import SelectedBySection from "@/components/landing/SelectedBySection";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
@@ -115,6 +117,11 @@ const Index = () => {
         {/* Value Proposition with increased spacing */}
         <motion.div className="mt-40">
           <ValueProposition />
+        </motion.div>
+
+        {/* New Section: Selected By Brands */}
+        <motion.div className="mt-40">
+          <SelectedBySection />
         </motion.div>
 
         {/* New Section: Key Benefits */}
