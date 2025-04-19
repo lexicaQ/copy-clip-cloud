@@ -1,3 +1,4 @@
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -30,21 +31,9 @@ import DataProcessing from "./pages/DataProcessing";
 import GettingStartedHelp from "./pages/help/GettingStartedHelp";
 
 // Feature pages that exist in the project
-import LightningFast from "./pages/features/LightningFast";
-import SmartSearch from "./pages/features/SmartSearch";
-import SmartOrganization from "./pages/features/SmartOrganizationFeature"; 
-import CodeSnippets from "./pages/features/CodeSnippets";
-import CustomRules from "./pages/features/CustomRules";
-import HistoryTimeline from "./pages/features/HistoryTimeline";
-import EndToEndEncryption from "./pages/features/EndToEndEncryption";
 import CopyClipCloud from "./pages/features/CopyClipCloud";
-
-// Docs pages that exist in the project
-import AdvancedUsage from "./pages/docs/AdvancedUsage";
-import GettingStarted from "./pages/docs/GettingStarted";
-
-// Use case page
-import DeveloperCase from "./pages/use-cases/DeveloperCase";
+import SmartOrganization from "./pages/features/SmartOrganization";
+import SmartOrganizationFeature from "./pages/features/SmartOrganizationFeature";
 
 const queryClient = new QueryClient();
 
@@ -81,20 +70,9 @@ const App = () => (
           
           {/* Feature pages */}
           <Route path="/features/copy-clip-cloud" element={<CopyClipCloud />} />
-          <Route path="/features/lightning-fast" element={<LightningFast />} />
-          <Route path="/features/smart-search" element={<SmartSearch />} />
+          <Route path="/features/universal-clipboard" element={<CopyClipCloud />} />
           <Route path="/features/smart-organization" element={<SmartOrganization />} />
-          <Route path="/features/code-snippets" element={<CodeSnippets />} />
-          <Route path="/features/custom-rules" element={<CustomRules />} />
-          <Route path="/features/history-timeline" element={<HistoryTimeline />} />
-          <Route path="/features/end-to-end-encryption" element={<EndToEndEncryption />} />
-          
-          {/* Documentation pages */}
-          <Route path="/docs/getting-started" element={<GettingStarted />} />
-          <Route path="/docs/advanced-usage" element={<AdvancedUsage />} />
-          
-          {/* Use cases */}
-          <Route path="/use-cases/developer" element={<DeveloperCase />} />
+          <Route path="/features/smart-organization-feature" element={<SmartOrganizationFeature />} />
           
           {/* Help pages */}
           <Route path="/help/getting-started" element={<GettingStartedHelp />} />

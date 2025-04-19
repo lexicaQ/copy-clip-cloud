@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Clipboard, ArrowRight, Check, Cloud, DeviceLaptop, DevicePhone } from "lucide-react";
+import { ArrowLeft, Clipboard, ArrowRight, Check, Cloud, Laptop, Smartphone } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
@@ -83,7 +83,7 @@ const CopyClipCloud = () => {
                 }}
               >
                 <div className="glass-panel p-4">
-                  <DeviceLaptop className="w-16 h-16 text-white/80" />
+                  <Laptop className="w-16 h-16 text-white/80" />
                 </div>
               </motion.div>
 
@@ -137,7 +137,7 @@ const CopyClipCloud = () => {
                 }}
               >
                 <div className="glass-panel p-4">
-                  <DevicePhone className="w-16 h-16 text-white/80" />
+                  <Smartphone className="w-16 h-16 text-white/80" />
                 </div>
               </motion.div>
             </div>

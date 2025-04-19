@@ -8,14 +8,13 @@ import AppStats from "@/components/landing/AppStats";
 import AppFAQ from "@/components/landing/AppFAQ";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Shield, Sparkles, Zap, Check, Code, Users } from "lucide-react";
+import { Shield, Sparkles, Zap, Check, Code, Users, ArrowRight } from "lucide-react";
 import SharedBackground from "@/components/layout/SharedBackground";
 import ValueProposition from "@/components/landing/ValueProposition";
 import AppWalkthrough from "@/components/landing/AppWalkthrough";
 import UserExamples from "@/components/landing/UserExamples";
 import FeaturePreview from "@/components/landing/FeaturePreview";
-import Button from "@/components/ui/Button";
-import ArrowRight from "@/components/ui/ArrowRight";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
