@@ -32,12 +32,12 @@ const SupportOption = ({ title, description, icon: Icon, link, linkText }) => (
       <div>
         <h3 className="font-medium text-lg mb-2">{title}</h3>
         <p className="text-gray-400 text-sm mb-4">{description}</p>
-        <a 
-          href={link} 
+        <Link 
+          to={link} 
           className="text-sm inline-flex items-center font-medium text-white hover:underline"
         >
           {linkText} <span className="ml-1">→</span>
-        </a>
+        </Link>
       </div>
     </div>
   </motion.div>
@@ -109,7 +109,7 @@ const Support = () => {
               title="Browse FAQs"
               description="Find quick answers to frequently asked questions in our knowledge base."
               icon={FileQuestion}
-              link="/features#faq"
+              link="/faq"
               linkText="Go to FAQs"
             />
             <SupportOption 
@@ -164,6 +164,16 @@ const Support = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+            
+            <div className="p-6 border-t border-white/10 text-center">
+              <Link 
+                to="/faq"
+                className="px-6 py-3 bg-white text-black rounded-lg hover:bg-opacity-90 transition-all inline-flex items-center"
+              >
+                <FileQuestion className="w-4 h-4 mr-2" />
+                View All FAQs
+              </Link>
+            </div>
           </div>
         </motion.div>
 

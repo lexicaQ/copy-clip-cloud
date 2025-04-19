@@ -24,7 +24,7 @@ const Index = () => {
       <Header />
 
       <motion.div 
-        className="max-w-7xl mx-auto px-4 pt-32 pb-24"
+        className="max-w-7xl mx-auto px-4 pt-28 pb-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -42,7 +42,7 @@ const Index = () => {
           <AppTitle />
 
           {/* Download Button - moved here */}
-          <div className="mt-12">
+          <div className="mt-10">
             <DownloadButton />
           </div>
 

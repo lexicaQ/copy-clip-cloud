@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Info, HelpCircle, ShieldCheck, Settings, Tag, Zap, Search, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const faqs = [
   {
@@ -129,66 +130,25 @@ const AppFAQ = () => {
         >
           Hier finden Sie Antworten auf die häufigsten Fragen zu CopyClipCloud
         </motion.p>
-      </motion.div>
-      
-      {/* Search and filters */}
-      <div className="max-w-3xl mx-auto mb-10">
-        <motion.div 
-          className="mb-6 relative"
+        
+        <motion.div
+          className="mt-6"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
         >
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
-          </div>
-          <input
-            type="text"
-            className="pl-10 pr-4 py-3 w-full rounded-xl glass-panel bg-white/5 border border-white/10 focus:border-white/30 focus:ring-0 focus:outline-none transition-colors"
-            placeholder="Suchen Sie nach Fragen oder Stichworten..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {searchTerm && (
-            <button
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
-              onClick={() => setSearchTerm("")}
-            >
-              <HelpCircle className="h-5 w-5" />
-            </button>
-          )}
+          <Link 
+            to="/faq"
+            className="px-6 py-3 rounded-lg bg-white text-black hover:bg-opacity-90 transition-all inline-flex items-center"
+          >
+            <HelpCircle className="w-4 h-4 mr-2" />
+            Alle FAQs ansehen
+          </Link>
         </motion.div>
-        
-        <motion.div 
-          className="flex flex-wrap gap-2 mb-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
-        >
-          {categories.map((category, index) => (
-            <motion.button
-              key={category.id}
-              className={`px-4 py-2 rounded-lg text-sm transition-all ${
-                activeCategory === category.id 
-                  ? 'bg-white text-black font-medium' 
-                  : 'bg-white/5 hover:bg-white/10 text-gray-300'
-              }`}
-              onClick={() => setActiveCategory(category.id)}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 + (index * 0.05) }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {category.label}
-            </motion.button>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* FAQ accordion */}
+      </motion.div>
+      
+      {/* Abbreviated FAQ section showing just a few entries */}
       <motion.div 
         className="max-w-3xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
@@ -196,55 +156,40 @@ const AppFAQ = () => {
         transition={{ delay: 0.7 }}
         viewport={{ once: true }}
       >
-        {filteredFaqs.length > 0 ? (
-          <motion.div className="glass-panel rounded-xl divide-y divide-white/10 overflow-hidden">
-            <Accordion type="single" collapsible className="divide-y divide-white/10">
-              {filteredFaqs.map((faq, index) => {
-                const Icon = faq.icon;
-                return (
-                  <AccordionItem 
-                    key={index} 
-                    value={`item-${index}`} 
-                    className="border-b-0 last:border-0 overflow-hidden"
-                  >
-                    <AccordionTrigger className="py-5 px-6 text-left hover:no-underline group">
-                      <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mr-4 group-hover:bg-white/10 transition-colors">
-                          <Icon className="w-5 h-5 text-white" />
-                        </div>
-                        <span className="text-lg font-medium group-hover:text-white transition-colors">{faq.question}</span>
+        <motion.div className="glass-panel rounded-xl divide-y divide-white/10 overflow-hidden">
+          <Accordion type="single" collapsible className="divide-y divide-white/10">
+            {filteredFaqs.slice(0, 3).map((faq, index) => {
+              const Icon = faq.icon;
+              return (
+                <AccordionItem 
+                  key={index} 
+                  value={`item-${index}`} 
+                  className="border-b-0 last:border-0 overflow-hidden"
+                >
+                  <AccordionTrigger className="py-5 px-6 text-left hover:no-underline group">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mr-4 group-hover:bg-white/10 transition-colors">
+                        <Icon className="w-5 h-5 text-white" />
                       </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-5 pt-0 text-gray-400">
-                      <div className="pl-14">
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          {faq.answer}
-                        </motion.div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                );
-              })}
-            </Accordion>
-          </motion.div>
-        ) : (
-          <motion.div 
-            className="glass-panel p-8 text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <CheckCircle className="w-12 h-12 mx-auto mb-4 text-white/30" />
-            <p className="text-lg font-medium mb-2">Keine Ergebnisse gefunden</p>
-            <p className="text-gray-400">
-              Versuchen Sie es mit einem anderen Suchbegriff oder Filter
-            </p>
-          </motion.div>
-        )}
+                      <span className="text-lg font-medium group-hover:text-white transition-colors">{faq.question}</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-5 pt-0 text-gray-400">
+                    <div className="pl-14">
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {faq.answer}
+                      </motion.div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </motion.div>
       </motion.div>
       
       {/* Contact section */}
@@ -259,13 +204,20 @@ const AppFAQ = () => {
         <p className="text-gray-400 mb-6">
           Unser Support-Team steht Ihnen gerne zur Verfügung
         </p>
-        <a 
-          href="/contact" 
+        <Link 
+          to="/faq" 
+          className="px-6 py-3 glass-panel hover:bg-white/10 rounded-lg inline-flex items-center transition-colors mr-4"
+        >
+          <HelpCircle className="w-5 h-5 mr-2" />
+          Alle FAQs ansehen
+        </Link>
+        <Link 
+          to="/contact" 
           className="px-6 py-3 glass-panel hover:bg-white/10 rounded-lg inline-flex items-center transition-colors"
         >
           <HelpCircle className="w-5 h-5 mr-2" />
           Kontakt aufnehmen
-        </a>
+        </Link>
       </motion.div>
     </motion.div>
   );
