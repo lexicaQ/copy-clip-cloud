@@ -1,3 +1,4 @@
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -28,6 +29,22 @@ import CookieBanner from "./components/cookie/CookieBanner";
 import AcceptableUse from "./pages/AcceptableUse";
 import DataProcessing from "./pages/DataProcessing";
 import GettingStartedHelp from "./pages/help/GettingStartedHelp";
+
+// Feature pages that exist in the project
+import LightningFast from "./pages/features/LightningFast";
+import SmartSearch from "./pages/features/SmartSearch";
+import SmartOrganization from "./pages/features/SmartOrganizationFeature"; 
+import CodeSnippets from "./pages/features/CodeSnippets";
+import CustomRules from "./pages/features/CustomRules";
+import HistoryTimeline from "./pages/features/HistoryTimeline";
+import EndToEndEncryption from "./pages/features/EndToEndEncryption";
+
+// Docs pages that exist in the project
+import AdvancedUsage from "./pages/docs/AdvancedUsage";
+import GettingStarted from "./pages/docs/GettingStarted";
+
+// Use case page
+import DeveloperCase from "./pages/use-cases/DeveloperCase";
 
 const queryClient = new QueryClient();
 
@@ -62,38 +79,23 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
           
-          <Route path="/features/universal-clipboard" element={<UniversalClipboard />} />
-          <Route path="/features/end-to-end-encryption" element={<EndToEndEncryption />} />
-          <Route path="/features/smart-organization" element={<SmartOrganizationFeature />} />
+          {/* Feature pages */}
           <Route path="/features/lightning-fast" element={<LightningFast />} />
           <Route path="/features/smart-search" element={<SmartSearch />} />
+          <Route path="/features/smart-organization" element={<SmartOrganization />} />
           <Route path="/features/code-snippets" element={<CodeSnippets />} />
           <Route path="/features/custom-rules" element={<CustomRules />} />
           <Route path="/features/history-timeline" element={<HistoryTimeline />} />
-          <Route path="/features/team-collaboration" element={<TeamCollaboration />} />
+          <Route path="/features/end-to-end-encryption" element={<EndToEndEncryption />} />
           
+          {/* Documentation pages */}
           <Route path="/docs/getting-started" element={<GettingStarted />} />
-          <Route path="/docs/keyboard-shortcuts" element={<KeyboardShortcuts />} />
           <Route path="/docs/advanced-usage" element={<AdvancedUsage />} />
-          <Route path="/docs/api-documentation" element={<ApiDocumentation />} />
-          <Route path="/docs/sdk" element={<Sdk />} />
-          <Route path="/docs/integration-guides" element={<IntegrationGuides />} />
-          <Route path="/docs/all-articles" element={<AllArticles />} />
-          <Route path="/docs/core-features" element={<CoreFeatures />} />
-          <Route path="/docs/cloud-sync" element={<CloudSync />} />
-          <Route path="/docs/templates" element={<Templates />} />
-          <Route path="/docs/smart-organization" element={<SmartOrganization />} />
-          <Route path="/docs/search-filtering" element={<SearchFiltering />} />
-          <Route path="/docs/security" element={<SecurityDocs />} />
           
+          {/* Use cases */}
           <Route path="/use-cases/developer" element={<DeveloperCase />} />
-          <Route path="/use-cases/designer" element={<DesignerCase />} />
-          <Route path="/use-cases/business" element={<BusinessCase />} />
-          <Route path="/use-cases/science" element={<ScienceCase />} />
           
-          <Route path="/docs/developer-portal" element={<DeveloperPortal />} />
-          <Route path="/docs/api-explorer" element={<ApiExplorer />} />
-          
+          {/* Help pages */}
           <Route path="/help/getting-started" element={<GettingStartedHelp />} />
           
           <Route path="*" element={<NotFound />} />
