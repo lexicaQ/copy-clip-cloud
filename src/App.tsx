@@ -1,3 +1,4 @@
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -49,6 +50,11 @@ import ScienceCase from "./pages/use-cases/ScienceCase";
 import DeveloperPortal from "./pages/docs/DeveloperPortal";
 import ApiExplorer from "./pages/docs/ApiExplorer";
 
+// Feature pages
+import UniversalClipboard from "./pages/features/UniversalClipboard";
+import EndToEndEncryption from "./pages/features/EndToEndEncryption";
+import SmartOrganizationFeature from "./pages/features/SmartOrganization";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -81,6 +87,11 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
+          
+          {/* Feature pages */}
+          <Route path="/features/universal-clipboard" element={<UniversalClipboard />} />
+          <Route path="/features/end-to-end-encryption" element={<EndToEndEncryption />} />
+          <Route path="/features/smart-organization" element={<SmartOrganizationFeature />} />
           
           {/* Documentation sub-pages */}
           <Route path="/docs/getting-started" element={<GettingStarted />} />

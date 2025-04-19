@@ -1,15 +1,17 @@
+
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
-import InteractiveBackground from "@/components/landing/InteractiveBackground";
 import FeatureCard from "@/components/features/FeatureCard";
 import FeatureShowcase from "@/components/features/FeatureShowcase";
 import FeatureHero from "@/components/features/FeatureHero";
 import FeatureCallToAction from "@/components/features/FeatureCallToAction";
 import { featureCards, showcaseFeatures } from "@/components/features/FeaturesData";
 import { ComingSoon } from "@/components/ui/coming-soon";
+import { ArrowRight } from "lucide-react";
 
 const Features = () => {
   return (
@@ -22,7 +24,7 @@ const Features = () => {
           <FeatureHero />
         </div>
 
-        {/* Showcase Features Section with improved spacing */}
+        {/* Showcase Features Section with improved spacing and links to feature pages */}
         <div className="space-y-32 mb-32">
           {showcaseFeatures.map((feature, index) => (
             <motion.div
@@ -33,13 +35,29 @@ const Features = () => {
               viewport={{ once: true, margin: "-100px" }}
               className="relative"
             >
-              <FeatureShowcase
-                title={feature.title}
-                description={feature.description}
-                icon={feature.icon}
-                isReversed={feature.isReversed}
-                delay={index * 0.1}
-              />
+              <Link 
+                to={feature.link || "#"} 
+                className="block group"
+              >
+                <FeatureShowcase
+                  title={feature.title}
+                  description={feature.description}
+                  icon={feature.icon}
+                  isReversed={feature.isReversed}
+                  delay={index * 0.1}
+                />
+                
+                {/* "Learn more" text with arrow for clear linkability */}
+                <div className={`mt-6 flex items-center justify-${feature.isReversed ? 'end' : 'start'}`}>
+                  <motion.div 
+                    className="inline-flex items-center text-sm font-medium text-white/70 group-hover:text-white transition-colors"
+                    whileHover={{ x: 5 }}
+                  >
+                    Learn more about {feature.title}
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </motion.div>
+                </div>
+              </Link>
               
               {/* Decorative elements */}
               <div className="absolute inset-0 pointer-events-none">
@@ -58,7 +76,7 @@ const Features = () => {
           ))}
         </div>
 
-        {/* Feature Cards Section */}
+        {/* Feature Cards Section with links to individual feature pages */}
         <div className="py-16">
           <motion.h2 
             className="text-3xl font-bold text-center mb-16"
@@ -78,13 +96,18 @@ const Features = () => {
                 transition={{ delay: index * 0.05 }}
                 viewport={{ once: true, margin: "-50px" }}
               >
-                <FeatureCard
-                  title={feature.title}
-                  description={feature.description}
-                  icon={feature.icon}
-                  color={feature.color}
-                  comingSoon={index % 3 === 2}
-                />
+                <Link 
+                  to={feature.link || "#"} 
+                  className={`block ${feature.comingSoon ? 'pointer-events-none' : ''}`}
+                >
+                  <FeatureCard
+                    title={feature.title}
+                    description={feature.description}
+                    icon={feature.icon}
+                    color={feature.color}
+                    comingSoon={feature.comingSoon || index % 3 === 2}
+                  />
+                </Link>
               </motion.div>
             ))}
           </div>

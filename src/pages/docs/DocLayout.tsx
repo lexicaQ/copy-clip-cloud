@@ -36,7 +36,15 @@ const DocLayout: React.FC<DocLayoutProps> = ({
       <Header />
       
       <div className="flex flex-col lg:flex-row pt-24 pb-24">
-        <DocSidebar />
+        {/* Fixed sidebar for better navigation - always visible on documentation pages */}
+        <div className="fixed left-0 top-24 h-[calc(100vh-96px)] w-64 hidden lg:block overflow-auto z-10">
+          <DocSidebar />
+        </div>
+        
+        {/* Mobile sidebar (visible on smaller screens) */}
+        <div className="lg:hidden mb-6">
+          <DocSidebar />
+        </div>
         
         <main className="flex-1 px-4 lg:px-8 max-w-4xl mx-auto lg:ml-64 w-full">
           <motion.div
@@ -47,9 +55,9 @@ const DocLayout: React.FC<DocLayoutProps> = ({
           >
             <Link 
               to={backLink} 
-              className="inline-flex items-center text-sm text-white/70 hover:text-white mb-6"
+              className="inline-flex items-center text-sm text-white/70 hover:text-white mb-6 group"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
               {backText}
             </Link>
             
