@@ -6,17 +6,17 @@ import { ArrowRight, Clipboard, MoveRight } from "lucide-react";
 const ValueProposition = () => {
   return (
     <motion.div 
-      className="mt-32 relative"
+      className="mt-40 relative"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ delay: 0.2 }}
     >
       <div className="absolute inset-0 -z-10">
-        <div className="h-full w-full bg-gradient-to-br from-white/5 to-transparent rounded-3xl opacity-30 blur-2xl"></div>
+        <div className="h-full w-full bg-black/50 rounded-3xl opacity-30 blur-xl"></div>
       </div>
       
-      <div className="flex flex-col md:flex-row items-center gap-12 p-6">
+      <div className="flex flex-col md:flex-row items-center gap-16 p-6">
         <motion.div 
           className="flex-1 md:order-1 order-2"
           initial={{ opacity: 0, x: -20 }}
@@ -25,7 +25,7 @@ const ValueProposition = () => {
           transition={{ delay: 0.3 }}
         >
           <motion.h2 
-            className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gradient"
+            className="text-4xl md:text-5xl font-bold mb-8 leading-tight text-white"
             initial={{ opacity: 0, y: -10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -35,7 +35,7 @@ const ValueProposition = () => {
           </motion.h2>
           
           <motion.p 
-            className="text-gray-300 text-lg mb-8"
+            className="text-gray-300 text-lg mb-10"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -68,7 +68,7 @@ const ValueProposition = () => {
           </motion.div>
           
           <motion.button 
-            className="mt-8 flex items-center gap-2 text-gray-300 group"
+            className="mt-10 flex items-center gap-2 text-gray-300 group"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.7 }}
@@ -87,19 +87,15 @@ const ValueProposition = () => {
           transition={{ delay: 0.3 }}
         >
           <div className="relative aspect-square max-w-md mx-auto">
-            {/* Animated clipboard illustration */}
-            <motion.div 
-              className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl border border-white/10 backdrop-blur-md p-8 flex items-center justify-center"
-              animate={{
-                boxShadow: ["0 0 20px rgba(255, 255, 255, 0.1)", "0 0 40px rgba(255, 255, 255, 0.2)", "0 0 20px rgba(255, 255, 255, 0.1)"]
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            {/* Static clipboard illustration instead of animated */}
+            <div 
+              className="absolute inset-0 bg-black/40 rounded-2xl border border-white/10 backdrop-blur-md p-8 flex items-center justify-center"
             >
-              <Clipboard className="w-24 h-24 text-white/70" />
+              <Clipboard className="w-24 h-24 text-white/60" />
               
-              {/* Animated elements representing clipboard items */}
+              {/* Static clipboard items instead of animated ones */}
               {[...Array(5)].map((_, idx) => (
-                <motion.div
+                <div
                   key={idx}
                   className="absolute h-6 rounded-md bg-white/10 border border-white/10"
                   style={{
@@ -107,37 +103,13 @@ const ValueProposition = () => {
                     top: `${30 + idx * 14}%`,
                     left: '10%'
                   }}
-                  animate={{
-                    opacity: [0.5, 0.8, 0.5],
-                    width: [`${80 - idx * 5}%`, `${85 - idx * 5}%`, `${80 - idx * 5}%`]
-                  }}
-                  transition={{
-                    duration: 3,
-                    delay: idx * 0.5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
                 />
               ))}
-              
-              {/* Animated glowing effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-2xl"
-                animate={{ 
-                  x: ['-100%', '100%'],
-                }}
-                transition={{ 
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  repeatDelay: 1
-                }}
-              />
-            </motion.div>
+            </div>
             
             {/* Background elements */}
-            <div className="absolute -z-10 inset-0 translate-x-6 translate-y-6 bg-white/5 rounded-2xl blur-md" />
-            <div className="absolute -z-20 inset-0 translate-x-12 translate-y-12 bg-white/3 rounded-2xl blur-lg" />
+            <div className="absolute -z-10 inset-0 translate-x-6 translate-y-6 bg-black/40 rounded-2xl blur-md" />
+            <div className="absolute -z-20 inset-0 translate-x-12 translate-y-12 bg-black/30 rounded-2xl blur-lg" />
           </div>
         </motion.div>
       </div>

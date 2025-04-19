@@ -14,6 +14,7 @@ import { Shield, Sparkles, Zap, Cloud, Users, ArrowRight, Award, CheckCircle } f
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
 import UseCaseShowcase from "@/components/landing/UseCaseShowcase";
 import ValueProposition from "@/components/landing/ValueProposition";
+import BenefitsSection from "@/components/landing/BenefitsSection";
 import ComparisonTable from "@/components/pricing/ComparisonTable";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -76,13 +77,16 @@ const Index = () => {
           </motion.div>
         </motion.div>
 
-        {/* NEW: Value Proposition Section */}
+        {/* Value Proposition Section */}
         <ValueProposition />
 
         {/* Features Grid */}
         <AppFeatures />
         
-        {/* NEW: Use Case Showcase */}
+        {/* NEW: Benefits Section - Added between Features and Use Cases */}
+        <BenefitsSection />
+        
+        {/* Use Case Showcase */}
         <UseCaseShowcase />
 
         {/* How It Works */}
@@ -95,7 +99,7 @@ const Index = () => {
           <AppStats />
         </div>
         
-        {/* NEW: Why Choose Us Section */}
+        {/* Why Choose Us Section */}
         <motion.div
           className="mt-24 relative"
           initial={{ opacity: 0 }}
@@ -103,12 +107,12 @@ const Index = () => {
           viewport={{ once: true }}
         >
           <div className="absolute inset-0 -z-10">
-            <div className="w-full h-full bg-white/5 rounded-3xl blur-xl opacity-30"></div>
+            <div className="w-full h-full bg-black/40 rounded-3xl blur-xl opacity-30"></div>
           </div>
           
           <div className="text-center mb-12">
             <motion.h2 
-              className="text-3xl font-bold mb-4 text-gradient"
+              className="text-3xl font-bold mb-4 text-white"
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -131,48 +135,61 @@ const Index = () => {
               {
                 icon: Shield,
                 title: "Privacy First",
-                description: "Your data is encrypted and never shared with third parties. We take your privacy seriously."
+                description: "Your data is encrypted and never shared with third parties. We take your privacy seriously.",
+                link: "/features/privacy"
               },
               {
                 icon: Cloud,
                 title: "Seamless Sync",
-                description: "Work across all your devices with real-time synchronization of your clipboard data."
+                description: "Work across all your devices with real-time synchronization of your clipboard data.",
+                link: "/features/sync"
               },
               {
                 icon: Users,
                 title: "Team Collaboration",
-                description: "Share clipboard items with your team and collaborate on projects effortlessly."
+                description: "Share clipboard items with your team and collaborate on projects effortlessly.",
+                link: "/features/collaboration"
               },
               {
                 icon: Zap,
                 title: "Instant Access",
-                description: "Retrieve any clipboard item instantly with powerful search and filtering."
+                description: "Retrieve any clipboard item instantly with powerful search and filtering.",
+                link: "/features/search"
               },
               {
                 icon: CheckCircle,
                 title: "Reliable & Stable",
-                description: "Built with reliability in mind, ensuring your clipboard is always available when you need it."
+                description: "Built with reliability in mind, ensuring your clipboard is always available when you need it.",
+                link: "/features/reliability"
               },
               {
                 icon: Award,
                 title: "Award-Winning Design",
-                description: "Intuitive interface that has won multiple design awards for its usability."
+                description: "Intuitive interface that has won multiple design awards for its usability.",
+                link: "/features/design"
               }
             ].map((item, idx) => (
               <motion.div 
                 key={idx}
-                className="glass-panel p-6 relative overflow-hidden"
+                className="backdrop-blur-xl bg-black/30 border border-white/10 p-6 relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 * idx }}
                 whileHover={{ y: -5, backgroundColor: "rgba(255, 255, 255, 0.07)" }}
               >
-                <div className="mb-4 p-3 rounded-xl bg-white/5 w-fit">
+                <div className="mb-4 p-3 rounded-xl bg-black/40 w-fit">
                   <item.icon className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
                 <p className="text-gray-400 text-sm">{item.description}</p>
+                
+                <Link 
+                  to={item.link} 
+                  className="mt-4 flex items-center text-sm text-white/70 hover:text-white group"
+                >
+                  Learn more <ArrowRight className="w-3 h-3 ml-1.5 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -186,7 +203,7 @@ const Index = () => {
           </div>
         </motion.div>
         
-        {/* NEW: Quick Feature Comparison */}
+        {/* Quick Feature Comparison */}
         <motion.div 
           className="mt-24"
           initial={{ opacity: 0 }}
@@ -195,7 +212,7 @@ const Index = () => {
         >
           <div className="text-center mb-12">
             <motion.h2 
-              className="text-3xl font-bold mb-4 text-gradient"
+              className="text-3xl font-bold mb-4 text-white"
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

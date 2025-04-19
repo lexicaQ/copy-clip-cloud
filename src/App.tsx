@@ -46,6 +46,20 @@ import SearchFiltering from "./pages/docs/SearchFiltering";
 import CustomIntegrations from "./pages/docs/CustomIntegrations";
 import TroubleshootingGuide from "./pages/docs/TroubleshootingGuide";
 
+// Feature detail pages
+import TimeSaving from "./pages/features/TimeSaving";
+import Sharing from "./pages/features/Sharing";
+import Security from "./pages/features/Security";
+import Organization from "./pages/features/Organization";
+import Productivity from "./pages/features/Productivity";
+import Focus from "./pages/features/Focus";
+import FeaturePrivacy from "./pages/features/FeaturePrivacy";
+import Sync from "./pages/features/Sync";
+import Collaboration from "./pages/features/Collaboration";
+import Search from "./pages/features/Search";
+import Reliability from "./pages/features/Reliability";
+import Design from "./pages/features/Design";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -79,6 +93,20 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
+          
+          {/* Feature detail pages */}
+          <Route path="/features/time-saving" element={<TimeSaving />} />
+          <Route path="/features/sharing" element={<Sharing />} />
+          <Route path="/features/security" element={<Security />} />
+          <Route path="/features/organization" element={<Organization />} />
+          <Route path="/features/productivity" element={<Productivity />} />
+          <Route path="/features/focus" element={<Focus />} />
+          <Route path="/features/privacy" element={<FeaturePrivacy />} />
+          <Route path="/features/sync" element={<Sync />} />
+          <Route path="/features/collaboration" element={<Collaboration />} />
+          <Route path="/features/search" element={<Search />} />
+          <Route path="/features/reliability" element={<Reliability />} />
+          <Route path="/features/design" element={<Design />} />
           
           {/* Documentation sub-pages */}
           <Route path="/docs/getting-started" element={<GettingStarted />} />
