@@ -1,9 +1,9 @@
-
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { MessageSquare, FileText, Search, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const faqCategories = [
   {

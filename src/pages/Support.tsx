@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
@@ -13,6 +14,12 @@ import {
   Users
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { 
+  Accordion, 
+  AccordionContent, 
+  AccordionItem, 
+  AccordionTrigger 
+} from "@/components/ui/accordion";
 
 const SupportOption = ({ title, description, icon: Icon, link, linkText, comingSoon = false }) => (
   <motion.div
