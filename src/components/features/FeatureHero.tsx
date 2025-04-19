@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
@@ -78,7 +79,7 @@ const FeatureHero = () => {
       </motion.div>
       
       <motion.div 
-        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-10 w-full max-w-xl h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+        className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-10 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.8, duration: 0.5 }}
