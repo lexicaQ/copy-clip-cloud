@@ -26,6 +26,8 @@ import Blog from "./pages/Blog";
 import Help from "./pages/Help";
 import FAQ from "./pages/FAQ";
 import CookieBanner from "./components/cookie/CookieBanner";
+import AcceptableUse from "./pages/AcceptableUse";
+import DataProcessing from "./pages/DataProcessing";
 
 // Documentation sub-pages
 import GettingStarted from "./pages/docs/GettingStarted";
@@ -60,6 +62,8 @@ const App = () => (
           <Route path="/tutorials" element={<Tutorials />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
+          <Route path="/acceptable-use" element={<AcceptableUse />} />
+          <Route path="/data-processing" element={<DataProcessing />} />
           <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/updates" element={<Updates />} />
           <Route path="/download" element={<Download />} />

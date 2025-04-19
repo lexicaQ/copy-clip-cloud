@@ -1,7 +1,8 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Clipboard, Github, Twitter, Instagram, Facebook, Mail, ArrowRight, Heart, ExternalLink, MapPin, Phone } from "lucide-react";
+import { Clipboard, Github, Twitter, Instagram, Facebook, Mail, ArrowRight, Heart, MapPin, Phone } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -89,19 +90,21 @@ const Footer = () => {
             © {currentYear} CopyClipCloud. All rights reserved.
           </div>
           <div className="flex flex-wrap justify-center space-x-6 mb-4 md:mb-0 order-1 md:order-2">
-            <Link to="/terms" className="text-gray-400 hover:text-white text-sm flex items-center">
-              <span>Terms</span>
-              <ExternalLink className="w-3 h-3 ml-1" />
+            <Link to="/terms" className="text-gray-400 hover:text-white text-sm">
+              Terms
             </Link>
-            <Link to="/privacy" className="text-gray-400 hover:text-white text-sm flex items-center">
-              <span>Privacy</span>
-              <ExternalLink className="w-3 h-3 ml-1" />
+            <Link to="/privacy" className="text-gray-400 hover:text-white text-sm">
+              Privacy
             </Link>
-            <Link to="/cookies" className="text-gray-400 hover:text-white text-sm flex items-center">
-              <span>Cookies</span>
-              <ExternalLink className="w-3 h-3 ml-1" />
+            <Link to="/cookies" className="text-gray-400 hover:text-white text-sm">
+              Cookies
             </Link>
-            
+            <Link to="/acceptable-use" className="text-gray-400 hover:text-white text-sm">
+              Acceptable Use
+            </Link>
+            <Link to="/data-processing" className="text-gray-400 hover:text-white text-sm">
+              Data Processing
+            </Link>
           </div>
         </div>
       </div>
