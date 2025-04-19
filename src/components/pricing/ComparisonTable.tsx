@@ -27,14 +27,28 @@ interface Feature {
 const features: Feature[] = [
   {
     name: "Clipboard History",
-    description: "Access and manage your clipboard history",
+    description: "Store and access your clipboard history",
+    basic: true,
+    pro: true,
+    enterprise: true,
+  },
+  {
+    name: "Maximum History Size",
+    description: "Amount of clipboard items you can store",
+    basic: true,
+    pro: true,
+    enterprise: true,
+  },
+  {
+    name: "History Retention",
+    description: "How long we keep your clipboard history",
     basic: true,
     pro: true,
     enterprise: true,
   },
   {
     name: "Device Sync",
-    description: "Sync across multiple devices",
+    description: "Sync your clipboard across multiple devices",
     basic: false,
     pro: true,
     enterprise: true,
@@ -54,8 +68,8 @@ const features: Feature[] = [
     enterprise: true,
   },
   {
-    name: "History Retention",
-    description: "Extended history retention period",
+    name: "Data Encryption",
+    description: "Secure your clipboard content",
     basic: true,
     pro: true,
     enterprise: true,
@@ -81,49 +95,101 @@ const features: Feature[] = [
     pro: false,
     enterprise: true,
   },
+  {
+    name: "Advanced Analytics",
+    description: "Detailed usage statistics and insights",
+    basic: false,
+    pro: true,
+    enterprise: true,
+  },
+  {
+    name: "Dedicated Account Manager",
+    description: "Personal support contact for your account",
+    basic: false,
+    pro: false,
+    enterprise: true,
+  },
 ];
 
 const ComparisonTable = () => {
   return (
-    <div className="rounded-xl border bg-black/5 backdrop-blur-xl">
-      <Table>
-        <TableHeader className="bg-white/5">
-          <TableRow>
-            <TableHead className="w-[300px]">Features</TableHead>
-            <TableHead className="text-center">Basic</TableHead>
-            <TableHead className="text-center">Pro</TableHead>
-            <TableHead className="text-center">Enterprise</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {features.map((feature, index) => (
-            <TableRow key={index}>
-              <TableCell className="font-medium">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger className="flex items-center gap-2">
-                      {feature.name}
-                      <Info className="h-4 w-4 text-gray-400" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{feature.description}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </TableCell>
-              <TableCell className="text-center">
-                {feature.basic && <Check className="mx-auto h-4 w-4 text-green-500" />}
-              </TableCell>
-              <TableCell className="text-center">
-                {feature.pro && <Check className="mx-auto h-4 w-4 text-green-500" />}
-              </TableCell>
-              <TableCell className="text-center">
-                {feature.enterprise && <Check className="mx-auto h-4 w-4 text-green-500" />}
-              </TableCell>
+    <div className="rounded-xl overflow-hidden border border-white/10 bg-black/5 backdrop-blur-xl">
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader className="bg-white/5">
+            <TableRow className="hover:bg-white/5">
+              <TableHead className="w-[300px] text-white">Features</TableHead>
+              <TableHead className="text-center text-white">Basic</TableHead>
+              <TableHead className="text-center text-white">Pro</TableHead>
+              <TableHead className="text-center text-white">Enterprise</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {features.map((feature, index) => (
+              <TableRow key={index} className="hover:bg-white/5 border-white/10">
+                <TableCell className="font-medium text-white">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-2 cursor-help">
+                        {feature.name}
+                        <Info className="h-4 w-4 text-gray-400" />
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-black text-white border border-white/10">
+                        <p>{feature.description}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
+                <TableCell className="text-center">
+                  {feature.basic ? (
+                    feature.name === "Maximum History Size" ? (
+                      <span className="text-white">100 items</span>
+                    ) : feature.name === "History Retention" ? (
+                      <span className="text-white">7 days</span>
+                    ) : feature.name === "Data Encryption" ? (
+                      <span className="text-white">Standard</span>
+                    ) : (
+                      <Check className="mx-auto h-4 w-4 text-white" />
+                    )
+                  ) : (
+                    <span className="text-gray-600">-</span>
+                  )}
+                </TableCell>
+                <TableCell className="text-center">
+                  {feature.pro ? (
+                    feature.name === "Maximum History Size" ? (
+                      <span className="text-white">Unlimited</span>
+                    ) : feature.name === "History Retention" ? (
+                      <span className="text-white">30 days</span>
+                    ) : feature.name === "Data Encryption" ? (
+                      <span className="text-white">Advanced</span>
+                    ) : (
+                      <Check className="mx-auto h-4 w-4 text-white" />
+                    )
+                  ) : (
+                    <span className="text-gray-600">-</span>
+                  )}
+                </TableCell>
+                <TableCell className="text-center">
+                  {feature.enterprise ? (
+                    feature.name === "Maximum History Size" ? (
+                      <span className="text-white">Unlimited</span>
+                    ) : feature.name === "History Retention" ? (
+                      <span className="text-white">Unlimited</span>
+                    ) : feature.name === "Data Encryption" ? (
+                      <span className="text-white">Military-grade</span>
+                    ) : (
+                      <Check className="mx-auto h-4 w-4 text-white" />
+                    )
+                  ) : (
+                    <span className="text-gray-600">-</span>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };

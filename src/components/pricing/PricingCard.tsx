@@ -30,8 +30,7 @@ const PricingCard = ({
   isAnnual,
   icon: Icon,
 }: PricingCardProps) => {
-  const monthlyPrice = parseInt(price);
-  const annualPrice = Math.floor(monthlyPrice * 10);
+  const monthlyPrice = parseFloat(price);
   const isBasicPlan = name === "Basic";
   
   return (
@@ -69,9 +68,9 @@ const PricingCard = ({
       </p>
       
       <div className="text-center mb-8 relative">
-        {isAnnual && (
+        {isAnnual && monthlyPrice > 0 && (
           <motion.div 
-            className="absolute -right-2 -top-2 bg-green-500 px-2 py-1 rounded-full text-xs text-white font-medium"
+            className="absolute -right-2 -top-2 bg-black/80 px-2 py-1 rounded-full text-xs text-white font-medium border border-white/20"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -81,14 +80,14 @@ const PricingCard = ({
         )}
         <div className="text-4xl font-bold mb-2 relative inline-flex">
           <span className="text-sm absolute top-0 left-[-12px]">$</span>
-          {isAnnual ? annualPrice : monthlyPrice}
+          {monthlyPrice}
         </div>
-        <div className="text-sm text-white/70">
+        <div className={`text-sm ${highlight ? 'text-black/70' : 'text-white/70'}`}>
           per {isAnnual ? 'year' : 'month'}
         </div>
         {isAnnual && monthlyPrice > 0 && (
-          <div className="text-sm text-emerald-500 mt-2">
-            Save ${monthlyPrice * 2} annually
+          <div className={`text-sm mt-2 ${highlight ? 'text-black/70' : 'text-white/70'}`}>
+            ${(monthlyPrice / 12).toFixed(2)} / month, billed annually
           </div>
         )}
       </div>

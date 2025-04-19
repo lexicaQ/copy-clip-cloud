@@ -1,13 +1,19 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Zap, Cloud, Star } from "lucide-react";
+import { Shield, Zap, Cloud, Star, Check, Info } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import InteractiveBackground from "@/components/landing/InteractiveBackground";
+import SharedBackground from "@/components/layout/SharedBackground";
 import PricingCard from "@/components/pricing/PricingCard";
 import ComparisonTable from "@/components/pricing/ComparisonTable";
 import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface PlanFeature {
   text: string;
@@ -30,7 +36,7 @@ const Pricing = () => {
   const plans: PricingPlan[] = [
     {
       name: "Basic",
-      price: "0",
+      price: isAnnual ? "0" : "0",
       description: "Essential features for personal use",
       icon: Cloud,
       features: [
@@ -46,7 +52,7 @@ const Pricing = () => {
     },
     {
       name: "Pro",
-      price: "4.99",
+      price: isAnnual ? "49.99" : "4.99",
       description: "Advanced features for power users",
       icon: Zap,
       highlight: true,
@@ -63,7 +69,7 @@ const Pricing = () => {
     },
     {
       name: "Enterprise",
-      price: "9.99",
+      price: isAnnual ? "99.99" : "9.99",
       description: "Complete solution for teams",
       icon: Shield,
       features: [
@@ -81,7 +87,7 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <InteractiveBackground />
+      <SharedBackground />
       <Header />
       
       <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto relative z-10">
@@ -92,16 +98,16 @@ const Pricing = () => {
           transition={{ duration: 0.5 }}
         >
           <motion.div 
-            className="w-20 h-20 mx-auto rounded-full bg-white/5 backdrop-blur-lg flex items-center justify-center mb-6"
+            className="w-20 h-20 mx-auto rounded-full border border-white/20 bg-white/5 backdrop-blur-lg flex items-center justify-center mb-6"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <Star className="w-10 h-10" />
+            <Star className="w-10 h-10 text-white" />
           </motion.div>
           
-          <h1 className="text-5xl font-bold mb-6">
-            <span className="text-gradient">Simple, Transparent Pricing</span>
+          <h1 className="text-5xl font-bold mb-6 text-white">
+            Simple, Transparent Pricing
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-12">
             Choose the perfect plan for your needs with our straightforward pricing options.
@@ -112,11 +118,11 @@ const Pricing = () => {
             <Switch
               checked={isAnnual}
               onCheckedChange={setIsAnnual}
-              className="data-[state=checked]:bg-green-500"
+              className="data-[state=checked]:bg-white"
             />
             <span className={`transition-colors ${isAnnual ? 'text-white' : 'text-gray-400'}`}>
               Annual
-              <span className="ml-2 text-xs bg-green-500 text-white px-2 py-0.5 rounded-full">
+              <span className="ml-2 text-xs bg-white text-black px-2 py-0.5 rounded-full">
                 Save 20%
               </span>
             </span>
@@ -133,6 +139,7 @@ const Pricing = () => {
             <PricingCard
               key={index}
               {...plan}
+              price={isAnnual ? (parseFloat(plan.price) * 10).toString() : plan.price}
               isAnnual={isAnnual}
             />
           ))}
@@ -144,7 +151,12 @@ const Pricing = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl font-bold text-center mb-12">Compare Plans</h2>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-white mb-4">Compare Plans</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Find the perfect plan for your needs. Compare features and benefits to make an informed decision.
+            </p>
+          </div>
           <ComparisonTable />
         </motion.div>
 
@@ -157,10 +169,10 @@ const Pricing = () => {
         >
           <div className="backdrop-blur-lg bg-white/5 border border-white/10 p-6 rounded-xl flex items-start gap-4">
             <div className="p-3 rounded-full bg-white/10">
-              <Shield className="w-6 h-6 text-gray-300" />
+              <Shield className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="font-medium text-xl mb-2">Money-back Guarantee</h3>
+              <h3 className="font-medium text-xl mb-2 text-white">Money-back Guarantee</h3>
               <p className="text-gray-400">
                 Try CopyClipCloud risk-free. If you're not satisfied within the first 30 days, 
                 we'll refund your payment. No questions asked.
@@ -168,10 +180,57 @@ const Pricing = () => {
             </div>
           </div>
         </motion.div>
+        
+        <motion.div 
+          className="mt-24 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+          <div className="max-w-3xl mx-auto mt-10 grid gap-6">
+            <FaqItem 
+              question="Can I switch plans at any time?"
+              answer="Yes, you can upgrade or downgrade your plan at any time. Changes to your subscription will be applied immediately, and we'll prorate any charges or credits."
+            />
+            <FaqItem 
+              question="Is my data secure?"
+              answer="Absolutely. We use military-grade encryption to protect your data. Your clipboard contents are encrypted both during transmission and at rest on our servers."
+            />
+            <FaqItem 
+              question="How does the annual billing work?"
+              answer="With annual billing, you pay for a full year upfront and receive a 20% discount compared to monthly billing. Your subscription will automatically renew each year unless canceled."
+            />
+            <FaqItem 
+              question="Can I cancel my subscription?"
+              answer="Yes, you can cancel your subscription at any time from your account settings. If you cancel, you'll still have access to your paid features until the end of your current billing period."
+            />
+          </div>
+        </motion.div>
       </div>
       
       <Footer />
     </div>
+  );
+};
+
+interface FaqItemProps {
+  question: string;
+  answer: string;
+}
+
+const FaqItem = ({ question, answer }: FaqItemProps) => {
+  return (
+    <motion.div 
+      className="backdrop-blur-lg bg-white/5 border border-white/10 p-6 rounded-xl text-left"
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.1 }}
+    >
+      <h3 className="font-medium text-lg mb-2 text-white">{question}</h3>
+      <p className="text-gray-400">{answer}</p>
+    </motion.div>
   );
 };
 
