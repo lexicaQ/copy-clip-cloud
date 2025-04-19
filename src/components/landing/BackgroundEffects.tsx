@@ -82,6 +82,12 @@ const BackgroundEffects = () => {
 
       draw() {
         if (!ctx) return;
+        
+        // Add safety check to prevent IndexSizeError
+        if (this.size <= 0) {
+          this.size = 0.1; // Ensure a minimum size
+        }
+        
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
@@ -94,10 +100,13 @@ const BackgroundEffects = () => {
           this.x += Math.sin(Date.now() * 0.001 * this.speed) * 0.3;
           this.y += Math.cos(Date.now() * 0.001 * this.speed) * 0.3;
           
-          // Size pulsing effect
+          // Size pulsing effect with safety checks
           this.size += this.pulseDirection * this.pulseSpeed;
           if (this.size > this.density / 10 + 1) this.pulseDirection = -1;
-          if (this.size < this.density / 10 - 0.5) this.pulseDirection = 1;
+          if (this.size < 0.1) {
+            this.size = 0.1;
+            this.pulseDirection = 1;
+          }
           
           // Gradually return to original position
           const dx = this.baseX - this.x;
@@ -113,22 +122,26 @@ const BackgroundEffects = () => {
           const dx = mouse.x - this.x;
           const dy = mouse.y - this.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          const forceDirectionX = dx / distance;
-          const forceDirectionY = dy / distance;
           
-          // Distance past which we won't apply any force
-          const maxDistance = mouse.radius;
-          const force = (maxDistance - distance) / maxDistance;
-          
-          if (distance < maxDistance) {
-            this.x -= forceDirectionX * force * this.density * 0.05;
-            this.y -= forceDirectionY * force * this.density * 0.05;
-          } else {
-            // Return to original position with slight drift
-            const dx = this.baseX - this.x;
-            const dy = this.baseY - this.y;
-            this.x += dx * 0.02;
-            this.y += dy * 0.02;
+          // Prevent division by zero
+          if (distance > 0) {
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
+            
+            // Distance past which we won't apply any force
+            const maxDistance = mouse.radius;
+            const force = (maxDistance - distance) / maxDistance;
+            
+            if (distance < maxDistance) {
+              this.x -= forceDirectionX * force * this.density * 0.05;
+              this.y -= forceDirectionY * force * this.density * 0.05;
+            } else {
+              // Return to original position with slight drift
+              const dx = this.baseX - this.x;
+              const dy = this.baseY - this.y;
+              this.x += dx * 0.02;
+              this.y += dy * 0.02;
+            }
           }
         }
         this.draw();
