@@ -1,7 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Apple, Clipboard, Sparkles, Shield, Cloud } from "lucide-react";
+import { Apple, Clipboard, Sparkles, Shield, Cloud, Lightbulb, Zap, Star, Search } from "lucide-react";
 
 const AppLogo = () => {
   // Animation for the floating particles
@@ -29,110 +29,86 @@ const AppLogo = () => {
   return (
     <div className="space-y-6 relative">
       <div className="relative mx-auto" style={{ width: "180px", height: "180px" }}>
-        {/* Improved dynamic halo with subtle glow */}
+        {/* Improved dynamic halo with subtle glow - SMALLER CIRCLE */}
         <motion.div
           className="absolute rounded-full bg-gradient-to-r from-transparent via-white/3 to-transparent"
           animate={{
             boxShadow: [
-              "0 0 40px 20px rgba(255, 255, 255, 0.02)",
-              "0 0 60px 30px rgba(255, 255, 255, 0.05)",
-              "0 0 40px 20px rgba(255, 255, 255, 0.02)"
+              "0 0 20px 10px rgba(255, 255, 255, 0.02)",
+              "0 0 30px 15px rgba(255, 255, 255, 0.05)",
+              "0 0 20px 10px rgba(255, 255, 255, 0.02)"
             ],
-            scale: [1, 1.1, 1]
+            scale: [1, 1.05, 1]
           }}
           transition={{
             duration: 6,
             ease: "easeInOut",
             repeat: Infinity,
           }}
-          style={{ width: "160%", height: "160%", top: "-30%", left: "-30%" }}
+          style={{ width: "120%", height: "120%", top: "-10%", left: "-10%" }}
         />
         
         {/* Enhanced orbital paths with better styling */}
-        {[0, 1, 2].map((orbit) => (
+        {[0, 1, 2, 3, 4].map((orbit) => (
           <motion.div
             key={orbit}
             className="absolute rounded-full border-dashed"
             style={{ 
-              width: `${140 + orbit * 15}%`, 
-              height: `${140 + orbit * 15}%`, 
-              top: `${-20 - orbit * 7.5}%`, 
-              left: `${-20 - orbit * 7.5}%`,
-              opacity: 0.15 - orbit * 0.04,
+              width: `${120 + orbit * 10}%`, 
+              height: `${120 + orbit * 10}%`, 
+              top: `${-10 - orbit * 5}%`, 
+              left: `${-10 - orbit * 5}%`,
+              opacity: 0.15 - orbit * 0.03,
               borderColor: "rgba(255, 255, 255, 0.1)",
               borderWidth: "1px",
             }}
             animate={{ rotate: 360 }}
             transition={{ 
-              duration: 30 + orbit * 10, 
+              duration: 30 + orbit * 8, 
               repeat: Infinity, 
               ease: "linear" 
             }}
           />
         ))}
 
-        {/* Improved orbiting elements with wider orbits */}
-        <motion.div
-          className="absolute w-full h-full"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          style={{ width: "180%", height: "180%", top: "-40%", left: "-40%" }}
-        >
-          <motion.div 
-            className="absolute top-[30%] left-[80%] w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
-            variants={orbitVariants}
-            whileHover="hover"
-            style={{ 
-              background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-              border: "1px solid rgba(255,255,255,0.2)"
-            }}
+        {/* More orbiting elements with improved positioning */}
+        {[
+          { Icon: Sparkles, orbitDuration: 30, initialRotate: 0, size: 3.5, orbitSize: 180 },
+          { Icon: Shield, orbitDuration: 25, initialRotate: 120, size: 3, orbitSize: 170 },
+          { Icon: Cloud, orbitDuration: 35, initialRotate: 240, size: 3, orbitSize: 190 },
+          { Icon: Lightbulb, orbitDuration: 28, initialRotate: 60, size: 3.5, orbitSize: 175 },
+          { Icon: Zap, orbitDuration: 32, initialRotate: 180, size: 3, orbitSize: 185 },
+          { Icon: Star, orbitDuration: 27, initialRotate: 300, size: 3, orbitSize: 165 },
+          { Icon: Search, orbitDuration: 33, initialRotate: 90, size: 3.5, orbitSize: 195 }
+        ].map((item, index) => (
+          <motion.div
+            key={index}
+            className="absolute w-full h-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: item.orbitDuration, repeat: Infinity, ease: "linear" }}
+            initial={{ rotate: item.initialRotate }}
+            style={{ width: `${item.orbitSize}%`, height: `${item.orbitSize}%`, top: `${-(item.orbitSize-100)/2}%`, left: `${-(item.orbitSize-100)/2}%` }}
           >
-            <Sparkles className="w-3.5 h-3.5 text-white" />
+            <motion.div 
+              className="absolute rounded-full flex items-center justify-center shadow-lg"
+              variants={orbitVariants}
+              whileHover="hover"
+              style={{ 
+                background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
+                border: "1px solid rgba(255,255,255,0.2)",
+                width: `${item.size * 2}px`,
+                height: `${item.size * 2}px`,
+                top: `${Math.sin(item.initialRotate * Math.PI / 180) * 50 + 50}%`,
+                left: `${Math.cos(item.initialRotate * Math.PI / 180) * 50 + 50}%`
+              }}
+            >
+              <item.Icon className={`w-${item.size} h-${item.size} text-white`} />
+            </motion.div>
           </motion.div>
-        </motion.div>
-
-        <motion.div
-          className="absolute w-full h-full"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          initial={{ rotate: 120 }}
-          style={{ width: "170%", height: "170%", top: "-35%", left: "-35%" }}
-        >
-          <motion.div 
-            className="absolute bottom-[30%] left-[75%] w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
-            variants={orbitVariants}
-            whileHover="hover"
-            style={{ 
-              background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-              border: "1px solid rgba(255,255,255,0.2)"
-            }}
-          >
-            <Shield className="w-3 h-3 text-white" />
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          className="absolute w-full h-full"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
-          initial={{ rotate: 240 }}
-          style={{ width: "190%", height: "190%", top: "-45%", left: "-45%" }}
-        >
-          <motion.div 
-            className="absolute top-[50%] left-[25%] w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
-            variants={orbitVariants}
-            whileHover="hover"
-            style={{ 
-              background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
-              border: "1px solid rgba(255,255,255,0.2)"
-            }}
-          >
-            <Cloud className="w-3 h-3 text-white" />
-          </motion.div>
-        </motion.div>
+        ))}
         
         {/* Enhanced floating particles with better positioning */}
-        {[1, 2, 3, 4, 5].map((i) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
           <motion.div
             key={i}
             className="absolute rounded-full"
@@ -150,13 +126,32 @@ const AppLogo = () => {
           />
         ))}
 
-        {/* Improved main logo with enhanced styling */}
+        {/* Improved main logo with enhanced styling - MOVED DOWN SLIGHTLY */}
         <motion.div 
-          className="w-28 h-28 mx-auto relative z-10"
+          className="w-28 h-28 mx-auto relative z-10 mt-8"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
         >
+          {/* Elegant circle around logo */}
+          <motion.div
+            className="absolute inset-0 rounded-full border border-white/20"
+            animate={{ 
+              borderColor: ["rgba(255, 255, 255, 0.1)", "rgba(255, 255, 255, 0.3)", "rgba(255, 255, 255, 0.1)"]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            style={{
+              width: "calc(100% + 16px)",
+              height: "calc(100% + 16px)",
+              top: "-8px",
+              left: "-8px"
+            }}
+          />
+          
           <div 
             className="w-full h-full rounded-2xl flex items-center justify-center relative overflow-hidden shadow-2xl"
             style={{ 

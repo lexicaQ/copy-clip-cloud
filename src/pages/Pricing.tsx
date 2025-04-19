@@ -1,10 +1,12 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Zap, Shield, Cloud, Star, ArrowRight } from "lucide-react";
+import { Check, Zap, Shield, Cloud, Star, ArrowRight, Download } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
+import { ComingSoon } from "@/components/ui/coming-soon";
+import DownloadButton from "@/components/landing/DownloadButton";
 
 interface PlanFeature {
   text: string;
@@ -19,23 +21,37 @@ interface PricingPlan {
   features: PlanFeature[];
   highlight?: boolean;
   icon: React.ElementType;
+  isFree?: boolean;
 }
 
+// Improved card with more elegant animations
 const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean }) => {
   const monthlyPrice = parseInt(plan.price);
   const annualPrice = Math.floor(monthlyPrice * 10);
+  const [hovered, setHovered] = useState(false);
   
   return (
     <motion.div
       className={`${
         plan.highlight 
-          ? 'bg-white/5 backdrop-blur-lg border border-white/10' 
-          : 'glass-panel'
-      } p-8 relative hover:translate-y-[-5px] transition-all duration-300`}
+          ? 'bg-white/5 backdrop-blur-lg border border-white/20' 
+          : 'glass-panel border border-white/10'
+      } p-8 relative hover:translate-y-[-5px] transition-all duration-300 overflow-hidden rounded-xl`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
     >
+      {/* Subtle background glow effect */}
+      <motion.div 
+        className="absolute inset-0 bg-white/5 rounded-xl z-0"
+        animate={{ 
+          opacity: hovered ? 0.2 : 0 
+        }}
+        transition={{ duration: 0.3 }}
+      />
+      
       {plan.highlight && (
         <motion.div 
           className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white text-black px-4 py-1 rounded-full text-sm font-medium"
@@ -47,11 +63,23 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
         </motion.div>
       )}
       
-      <div className="flex items-center justify-center h-16 mb-6">
-        <plan.icon className={`w-8 h-8 ${plan.highlight ? 'text-white' : 'text-gray-400'}`} />
+      <div className="flex items-center justify-center h-16 mb-6 relative">
+        <motion.div 
+          className="absolute inset-0 rounded-full bg-white/5 blur-xl opacity-50"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <plan.icon className={`w-10 h-10 ${plan.highlight ? 'text-white' : 'text-gray-300'} relative z-10`} />
       </div>
       
-      <h3 className="text-xl font-bold text-center mb-2">{plan.name}</h3>
+      <h3 className="text-2xl font-bold text-center mb-2">{plan.name}</h3>
       <p className="text-gray-400 text-center mb-6 h-12">{plan.description}</p>
       
       <div className="text-center mb-8 relative">
@@ -65,32 +93,43 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
             Save 20%
           </motion.div>
         )}
-        <div className="text-4xl font-bold mb-2 relative inline-flex">
-          <span className="text-sm absolute top-0 left-[-12px]">$</span>
+        <div className="text-5xl font-bold mb-2 relative inline-flex">
+          <span className="text-sm absolute top-2 left-[-12px]">$</span>
           {isAnnual ? annualPrice : monthlyPrice}
         </div>
         <div className="text-sm text-gray-400">
           per {isAnnual ? 'year' : 'month'}
         </div>
         {isAnnual && (
-          <div className="text-sm text-emerald-500 mt-2">
+          <div className="text-sm text-white/70 mt-2">
             Save ${monthlyPrice * 2} annually
           </div>
         )}
       </div>
       
-      <motion.button 
-        className={`w-full py-3 rounded-lg mb-8 transition-all flex items-center justify-center gap-2 ${
-          plan.highlight
-            ? 'bg-white text-black hover:bg-opacity-90'
-            : 'bg-white/10 hover:bg-white/20'
-        }`}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-      >
-        Get Started
-        <ArrowRight className="w-4 h-4" />
-      </motion.button>
+      <div className="relative mb-8">
+        {plan.isFree ? (
+          <DownloadButton variant="compact" />
+        ) : (
+          <motion.button 
+            className={`w-full py-3 rounded-lg transition-all flex items-center justify-center gap-2 ${
+              plan.highlight
+                ? 'bg-white text-black hover:bg-opacity-90'
+                : 'bg-white/10 hover:bg-white/20'
+            }`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Get Started
+            <ArrowRight className="w-4 h-4" />
+          </motion.button>
+        )}
+        
+        {/* Add Coming Soon sticker to paid plans */}
+        {!plan.isFree && (
+          <ComingSoon variant="sticker" position="top-left" />
+        )}
+      </div>
       
       <div className="space-y-4">
         {plan.features.map((feature, index) => (
@@ -117,6 +156,23 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
           </motion.div>
         ))}
       </div>
+      
+      {/* Add subtle border animation on hover */}
+      <motion.div 
+        className="absolute inset-0 rounded-xl pointer-events-none"
+        animate={{
+          boxShadow: hovered ? [
+            "0 0 0 1px rgba(255, 255, 255, 0.1)",
+            "0 0 0 2px rgba(255, 255, 255, 0.2)",
+            "0 0 0 1px rgba(255, 255, 255, 0.1)"
+          ] : "0 0 0 1px rgba(255, 255, 255, 0.1)"
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: hovered ? Infinity : 0,
+          ease: "easeInOut"
+        }}
+      />
     </motion.div>
   );
 };
@@ -130,6 +186,7 @@ const Pricing = () => {
       price: "0",
       description: "Essential features for personal use",
       icon: Cloud,
+      isFree: true,
       features: [
         { text: "Basic clipboard history", included: true },
         { text: "Single device sync", included: true },
@@ -189,11 +246,26 @@ const Pricing = () => {
           transition={{ duration: 0.5 }}
         >
           <motion.div 
-            className="w-20 h-20 mx-auto rounded-full bg-white/5 backdrop-blur-lg flex items-center justify-center mb-6"
+            className="w-20 h-20 mx-auto rounded-full bg-white/5 backdrop-blur-lg flex items-center justify-center mb-6 relative"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
+            <motion.div 
+              className="absolute inset-0 rounded-full"
+              animate={{
+                boxShadow: [
+                  "0 0 0 0 rgba(255, 255, 255, 0.3)",
+                  "0 0 0 10px rgba(255, 255, 255, 0)",
+                  "0 0 0 0 rgba(255, 255, 255, 0)"
+                ]
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeOut"
+              }}
+            />
             <Star className="w-10 h-10" />
           </motion.div>
           
@@ -220,7 +292,7 @@ const Pricing = () => {
               }`}
             >
               Annual
-              <span className="ml-2 text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full">
+              <span className="ml-2 text-xs bg-white/30 text-white px-2 py-0.5 rounded-full">
                 Save 20%
               </span>
             </button>
