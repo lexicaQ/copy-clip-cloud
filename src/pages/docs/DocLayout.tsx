@@ -42,9 +42,9 @@ const DocLayout: React.FC<DocLayoutProps> = ({
           
           <div className="flex items-center mb-6">
             <div className="p-2 rounded-lg bg-white/10 mr-3">
-              <Icon className="w-5 h-5" />
+              <Icon className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-3xl font-bold">{title}</h1>
+            <h1 className="text-3xl font-bold text-white">{title}</h1>
           </div>
           
           {children}

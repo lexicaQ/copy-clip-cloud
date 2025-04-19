@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import DocLayout from "./docs/DocLayout";
 import SharedBackground from "@/components/layout/SharedBackground";
 
 const Documentation = () => {
@@ -48,7 +47,6 @@ const Documentation = () => {
     link.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Render directly without DocLayout component
   return (
     <div className="min-h-screen bg-background">
       <SharedBackground />
@@ -61,7 +59,7 @@ const Documentation = () => {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient">Documentation</span>
+            <span className="text-white">Documentation</span>
           </h1>
           <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
             Explore our comprehensive guides and resources to get the most out of CopyClipCloud.
@@ -78,7 +76,7 @@ const Documentation = () => {
             <input
               type="text"
               placeholder="Search documentation..."
-              className="w-full px-6 py-3 rounded-full bg-white/5 border border-white/10 focus:border-primary/50 focus:outline-none backdrop-blur-sm transition-colors text-white placeholder-gray-400"
+              className="w-full px-6 py-3 rounded-full bg-white/5 border border-white/10 focus:border-white/50 focus:outline-none backdrop-blur-sm transition-colors text-white placeholder-gray-400"
               onChange={handleSearchChange}
             />
             <div className="absolute inset-y-0 right-0 pr-6 flex items-center pointer-events-none">
@@ -102,9 +100,9 @@ const Documentation = () => {
             >
               <Link to={link.href} className="flex items-center space-x-3">
                 <div className="p-3 rounded-xl bg-white/10">
-                  <link.icon className="w-5 h-5" />
+                  <link.icon className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-lg font-medium">{link.title}</h3>
+                <h3 className="text-lg font-medium text-white">{link.title}</h3>
               </Link>
             </motion.div>
           ))}
