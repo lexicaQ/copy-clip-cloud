@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
@@ -54,8 +53,10 @@ const SupportOption = ({ title, description, icon: Icon, link, linkText, comingS
         <h3 className="font-medium text-lg mb-2">{title}</h3>
         <p className="text-gray-400 text-sm mb-4">{description}</p>
         <Link 
-          to={link} 
-          className="text-sm inline-flex items-center font-medium text-white hover:underline"
+          to={link === "/documentation" ? "/docs" : link} 
+          className={`text-sm inline-flex items-center font-medium text-white hover:underline ${
+            comingSoon ? 'pointer-events-none opacity-70' : ''
+          }`}
         >
           {linkText} <span className="ml-1">→</span>
         </Link>
