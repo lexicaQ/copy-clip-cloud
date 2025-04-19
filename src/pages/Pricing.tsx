@@ -1,10 +1,11 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Zap, Shield, Cloud, Star, ArrowRight } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
+import { ComingSoon } from "@/components/ui/coming-soon";
+import DownloadButton from "@/components/landing/DownloadButton";
 
 interface PlanFeature {
   text: string;
@@ -24,6 +25,7 @@ interface PricingPlan {
 const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean }) => {
   const monthlyPrice = parseInt(plan.price);
   const annualPrice = Math.floor(monthlyPrice * 10);
+  const isBasicPlan = plan.name === "Basic";
   
   return (
     <motion.div
@@ -79,18 +81,23 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
         )}
       </div>
       
-      <motion.button 
-        className={`w-full py-3 rounded-lg mb-8 transition-all flex items-center justify-center gap-2 ${
-          plan.highlight
-            ? 'bg-white text-black hover:bg-opacity-90'
-            : 'bg-white/10 hover:bg-white/20'
-        }`}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-      >
-        Get Started
-        <ArrowRight className="w-4 h-4" />
-      </motion.button>
+      {isBasicPlan ? (
+        <DownloadButton variant="compact" />
+      ) : (
+        <motion.button 
+          className={`w-full py-3 rounded-lg mb-8 transition-all flex items-center justify-center gap-2 relative ${
+            plan.highlight
+              ? 'bg-white text-black hover:bg-opacity-90'
+              : 'bg-white/10 hover:bg-white/20'
+          }`}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <ComingSoon className="absolute -top-3 -left-3" />
+          Get Started
+          <ArrowRight className="w-4 h-4" />
+        </motion.button>
+      )}
       
       <div className="space-y-4">
         {plan.features.map((feature, index) => (
