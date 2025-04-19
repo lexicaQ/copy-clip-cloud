@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cookie, Info, Shield, CheckCheck, Lock } from "lucide-react";
+import { Cookie, Info, Shield, CheckCheck, FileText, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -263,7 +263,7 @@ const CookieBanner = () => {
                     }}
                   >
                     <h4 className="font-medium flex items-center mb-1">
-                      <FileCheck className="h-4 w-4 mr-2" />
+                      <FileText className="h-4 w-4 mr-2" />
                       Terms of Service
                     </h4>
                     <p className="text-xs text-white/60 ml-6">
