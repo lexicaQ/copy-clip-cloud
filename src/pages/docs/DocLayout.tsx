@@ -41,8 +41,8 @@ const DocLayout = ({
           </Link>
           
           <div className="flex items-center mb-6">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-indigo-600/20 border border-white/5 mr-3">
-              <Icon className="w-5 h-5 text-indigo-300" />
+            <div className="p-2 rounded-lg bg-white/10 mr-3">
+              <Icon className="w-5 h-5" />
             </div>
             <h1 className="text-3xl font-bold">{title}</h1>
           </div>

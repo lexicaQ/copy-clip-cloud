@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import AppFeatures from "@/components/landing/AppFeatures";
@@ -53,9 +52,9 @@ const Index = () => {
             transition={{ delay: 0.6 }}
           >
             {[
-              { icon: Sparkles, title: "KI gestützt", desc: "Intelligente Organisation" },
-              { icon: Shield, title: "Verschlüsselt", desc: "Ende-zu-Ende Sicherheit" },
-              { icon: Zap, title: "Blitzschnell", desc: "Optimierte Leistung" }
+              { icon: Sparkles, title: "AI Powered", desc: "Intelligent Organization" },
+              { icon: Shield, title: "Encrypted", desc: "End-to-End Security" },
+              { icon: Zap, title: "Lightning Fast", desc: "Optimized Performance" }
             ].map((feature, i) => (
               <motion.div 
                 key={i}

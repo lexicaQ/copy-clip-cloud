@@ -1,4 +1,3 @@
-
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -42,6 +41,7 @@ import CloudSync from "./pages/docs/CloudSync";
 import Templates from "./pages/docs/Templates";
 import SmartOrganization from "./pages/docs/SmartOrganization";
 import SearchFiltering from "./pages/docs/SearchFiltering";
+import SecurityDocs from "./pages/docs/SecurityDocs";
 
 const queryClient = new QueryClient();
 
@@ -89,8 +89,7 @@ const App = () => (
           <Route path="/docs/templates" element={<Templates />} />
           <Route path="/docs/smart-organization" element={<SmartOrganization />} />
           <Route path="/docs/search-filtering" element={<SearchFiltering />} />
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/docs/security" element={<SecurityDocs />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -61,16 +60,16 @@ const docCategories = [
     route: "/docs/advanced-usage"
   },
   { 
-    title: "Security & Privacy", 
+    title: "Security", 
     icon: Shield,
     articles: [
-      { name: "Encryption Features", link: "/docs/cloud-sync" },
-      { name: "Password Protection", link: "/docs/cloud-sync" },
-      { name: "Secure Sharing", link: "/docs/cloud-sync" },
+      { name: "Encryption Features", link: "/docs/security" },
+      { name: "Password Protection", link: "/docs/security" },
+      { name: "Secure Sharing", link: "/docs/security" },
       { name: "Data Backup", link: "/docs/cloud-sync" },
       { name: "Privacy Controls", link: "/docs/cloud-sync" }
     ],
-    route: "/docs/cloud-sync"
+    route: "/docs/security"
   },
   { 
     title: "Configuration", 
