@@ -21,18 +21,9 @@ import Careers from "./pages/Careers";
 import Press from "./pages/Press";
 import Partners from "./pages/Partners";
 import Documentation from "./pages/Documentation";
-import DocArticle from "./pages/DocArticle";
 import Status from "./pages/Status";
 import Blog from "./pages/Blog";
 import Help from "./pages/Help";
-import FAQ from "./pages/FAQ";
-
-// Documentation Subpages
-import InstallationGuide from "./pages/docs/InstallationGuide";
-import KeyboardShortcuts from "./pages/docs/KeyboardShortcuts";
-import FullGuide from "./pages/docs/FullGuide";
-import ApiDocumentation from "./pages/docs/ApiDocumentation";
-import BrowseAllArticles from "./pages/docs/BrowseAllArticles";
 
 const queryClient = new QueryClient();
 
@@ -49,7 +40,6 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/support" element={<Support />} />
-          <Route path="/faq" element={<FAQ />} />
           <Route path="/tutorials" element={<Tutorials />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
@@ -58,20 +48,13 @@ const App = () => (
           <Route path="/download" element={<Download />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/press" element={<Press />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/partners" element={<Partners />} />
           <Route path="/help" element={<Help />} />
           <Route path="/docs" element={<Documentation />} />
-          <Route path="/docs/:category/:slug" element={<DocArticle />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
-          
-          {/* Documentation Subpages */}
-          <Route path="/docs/installation-guide" element={<InstallationGuide />} />
-          <Route path="/docs/keyboard-shortcuts" element={<KeyboardShortcuts />} />
-          <Route path="/docs/full-guide" element={<FullGuide />} />
-          <Route path="/docs/api-documentation" element={<ApiDocumentation />} />
-          <Route path="/docs/browse-all-articles" element={<BrowseAllArticles />} />
-          
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -3,9 +3,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import SearchDocumentation from "@/components/docs/SearchDocumentation";
 import { 
   BookOpen, 
+  Search, 
   FileText, 
   Code,
   Settings,
@@ -17,84 +17,83 @@ import {
   HelpCircle,
   ExternalLink
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const docCategories = [
   { 
     title: "Getting Started", 
     icon: Zap,
     articles: [
-      {title: "Installation Guide", link: "/docs/installation-guide"},
-      {title: "Quick Start Tutorial", link: "/docs/quick-start-tutorial"},
-      {title: "User Interface Overview", link: "/docs/user-interface-overview"},
-      {title: "Key Concepts", link: "/docs/key-concepts"},
-      {title: "Keyboard Shortcuts", link: "/docs/keyboard-shortcuts"}
+      "Installation Guide",
+      "Quick Start Tutorial",
+      "User Interface Overview",
+      "Key Concepts",
+      "Keyboard Shortcuts"
     ]
   },
   { 
     title: "Core Features", 
     icon: Key,
     articles: [
-      {title: "Clipboard History", link: "/docs/clipboard-history"},
-      {title: "Smart Organization", link: "/docs/smart-organization"},
-      {title: "Search & Filtering", link: "/docs/search-filtering"},
-      {title: "Templates & Snippets", link: "/docs/templates-snippets"},
-      {title: "Cross-device Sync", link: "/docs/cross-device-sync"}
+      "Clipboard History",
+      "Smart Organization",
+      "Search & Filtering",
+      "Templates & Snippets",
+      "Cross-device Sync"
     ]
   },
   { 
     title: "Advanced Usage", 
     icon: Code,
     articles: [
-      {title: "Regular Expressions", link: "/docs/regular-expressions"},
-      {title: "Custom Actions", link: "/docs/custom-actions"},
-      {title: "Workflows & Automation", link: "/docs/workflows-automation"},
-      {title: "API Documentation", link: "/docs/api-documentation"},
-      {title: "Browser Extensions", link: "/docs/browser-extensions"}
+      "Regular Expressions",
+      "Custom Actions",
+      "Workflows & Automation",
+      "API Documentation",
+      "Browser Extensions"
     ]
   },
   { 
     title: "Security & Privacy", 
     icon: Shield,
     articles: [
-      {title: "Encryption Features", link: "/docs/encryption-features"},
-      {title: "Password Protection", link: "/docs/password-protection"},
-      {title: "Secure Sharing", link: "/docs/secure-sharing"},
-      {title: "Data Backup", link: "/docs/data-backup"},
-      {title: "Privacy Controls", link: "/docs/privacy-controls"}
+      "Encryption Features",
+      "Password Protection",
+      "Secure Sharing",
+      "Data Backup",
+      "Privacy Controls"
     ]
   },
   { 
     title: "Configuration", 
     icon: Settings,
     articles: [
-      {title: "Preferences & Settings", link: "/docs/preferences-settings"},
-      {title: "Customizing Appearance", link: "/docs/customizing-appearance"},
-      {title: "Integration Setup", link: "/docs/integration-setup"},
-      {title: "Cloud Sync Configuration", link: "/docs/cloud-sync-configuration"},
-      {title: "Device Management", link: "/docs/device-management"}
+      "Preferences & Settings",
+      "Customizing Appearance",
+      "Integration Setup",
+      "Cloud Sync Configuration",
+      "Device Management"
     ]
   },
   { 
     title: "Troubleshooting", 
     icon: HelpCircle,
     articles: [
-      {title: "Common Issues", link: "/docs/common-issues"},
-      {title: "Performance Optimization", link: "/docs/performance-optimization"},
-      {title: "Error Messages", link: "/docs/error-messages"},
-      {title: "Diagnostics", link: "/docs/diagnostics"},
-      {title: "Contact Support", link: "/support"}
+      "Common Issues",
+      "Performance Optimization",
+      "Error Messages",
+      "Diagnostics",
+      "Contact Support"
     ]
   }
 ];
 
 const popularArticles = [
-  {title: "How to sync clipboard across devices", link: "/docs/cross-device-sync"},
-  {title: "Setting up end-to-end encryption", link: "/docs/encryption-features"},
-  {title: "Creating and using templates", link: "/docs/templates-snippets"},
-  {title: "Configuring smart categorization rules", link: "/docs/smart-organization"},
-  {title: "Customizing keyboard shortcuts", link: "/docs/keyboard-shortcuts"},
-  {title: "Managing multiple clipboard histories", link: "/docs/clipboard-history"}
+  "How to sync clipboard across devices",
+  "Setting up end-to-end encryption",
+  "Creating and using templates",
+  "Configuring smart categorization rules",
+  "Customizing keyboard shortcuts",
+  "Managing multiple clipboard histories"
 ];
 
 const DocCategoryCard = ({ category, index }) => (
@@ -115,25 +114,26 @@ const DocCategoryCard = ({ category, index }) => (
     <ul className="space-y-2 mb-4">
       {category.articles.map((article, idx) => (
         <li key={idx} className="text-gray-400 hover:text-white transition-colors">
-          <Link to={article.link} className="flex items-center">
+          <a href={`#${article.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center">
             <FileText className="w-4 h-4 mr-2" />
-            <span>{article.title}</span>
-          </Link>
+            <span>{article}</span>
+          </a>
         </li>
       ))}
     </ul>
     
-    <Link 
-      to={`/docs/${category.title.toLowerCase().replace(/\s+/g, '-')}`}
+    <a 
+      href={`#view-all-${category.title.toLowerCase().replace(/\s+/g, '-')}`}
       className="text-white hover:underline inline-flex items-center text-sm"
     >
       View All <ArrowRight className="w-3.5 h-3.5 ml-1" />
-    </Link>
+    </a>
   </motion.div>
 );
 
-const PopularArticle = ({ title, link, index }) => (
-  <motion.div
+const PopularArticle = ({ title, index }) => (
+  <motion.a
+    href={`#${title.toLowerCase().replace(/\s+/g, '-')}`}
     className="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors"
     initial={{ opacity: 0, x: -10 }}
     whileInView={{ opacity: 1, x: 0 }}
@@ -141,8 +141,8 @@ const PopularArticle = ({ title, link, index }) => (
     transition={{ duration: 0.3, delay: index * 0.05 }}
   >
     <FileText className="w-5 h-5 mr-3 text-gray-400" />
-    <Link to={link}>{title}</Link>
-  </motion.div>
+    <span>{title}</span>
+  </motion.a>
 );
 
 const Documentation = () => {
@@ -164,11 +164,20 @@ const Documentation = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="text-gradient">Knowledge Base</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
             Find comprehensive guides and documentation to help you get the most out of CopyClipCloud.
           </p>
           
-          <SearchDocumentation className="max-w-xl mx-auto" />
+          <div className="mt-8 max-w-xl mx-auto">
+            <div className="relative">
+              <input 
+                type="text" 
+                placeholder="Search documentation..." 
+                className="w-full px-5 py-4 bg-white/10 rounded-full pl-12 focus:outline-none focus:ring-2 focus:ring-white/30"
+              />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            </div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -246,12 +255,12 @@ const Documentation = () => {
               </div>
             </div>
             
-            <Link 
-              to="/docs/full-guide"
+            <a 
+              href="#full-guide"
               className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
             >
               View Full Guide
-            </Link>
+            </a>
           </motion.div>
           
           <motion.div
@@ -270,17 +279,17 @@ const Documentation = () => {
             
             <div className="divide-y divide-white/10">
               {popularArticles.map((article, index) => (
-                <PopularArticle key={index} title={article.title} link={article.link} index={index} />
+                <PopularArticle key={index} title={article} index={index} />
               ))}
             </div>
             
             <div className="mt-6 pt-4 border-t border-white/10">
-              <Link 
-                to="/docs/browse-all-articles"
+              <a 
+                href="#all-articles"
                 className="text-white hover:underline inline-flex items-center text-sm"
               >
                 Browse All Articles <ArrowRight className="w-3.5 h-3.5 ml-1" />
-              </Link>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -304,37 +313,37 @@ const Documentation = () => {
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <Link 
-              to="/docs/api-documentation"
+            <a 
+              href="#api-docs"
               className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors flex items-center"
             >
               <ExternalLink className="w-5 h-5 mr-3" />
               <span>API Documentation</span>
-            </Link>
+            </a>
             
-            <Link 
-              to="/docs/sdk-libraries"
+            <a 
+              href="#sdk"
               className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors flex items-center"
             >
               <ExternalLink className="w-5 h-5 mr-3" />
               <span>SDK & Libraries</span>
-            </Link>
+            </a>
             
-            <Link 
-              to="/docs/integration-guides"
+            <a 
+              href="#integration"
               className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors flex items-center"
             >
               <ExternalLink className="w-5 h-5 mr-3" />
               <span>Integration Guides</span>
-            </Link>
+            </a>
           </div>
           
-          <Link 
-            to="/partners"
+          <a 
+            href="/partners"
             className="inline-flex items-center text-white hover:underline"
           >
             Learn about our Partner Program <ArrowRight className="w-4 h-4 ml-1" />
-          </Link>
+          </a>
         </motion.div>
 
         <motion.div
@@ -350,20 +359,20 @@ const Documentation = () => {
             Our support team is ready to assist you.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link 
-              to="/support" 
+            <a 
+              href="/support" 
               className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
             >
               <MessageSquare className="w-4 h-4 mr-2" />
               Contact Support
-            </Link>
-            <Link 
-              to="/tutorials" 
+            </a>
+            <a 
+              href="/tutorials" 
               className="px-6 py-3 bg-white/10 rounded-full inline-flex items-center hover:bg-white/20 transition-all"
             >
               <BookOpen className="w-4 h-4 mr-2" />
               View Tutorials
-            </Link>
+            </a>
           </div>
         </motion.div>
       </main>

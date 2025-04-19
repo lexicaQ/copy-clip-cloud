@@ -1,12 +1,10 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Zap, Shield, Cloud, Star, ArrowRight, Download } from "lucide-react";
+import { Check, Zap, Shield, Cloud, Star, ArrowRight } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
-import { ComingSoon } from "@/components/ui/coming-soon";
-import { Link } from "react-router-dom";
 
 interface PlanFeature {
   text: string;
@@ -21,7 +19,6 @@ interface PricingPlan {
   features: PlanFeature[];
   highlight?: boolean;
   icon: React.ElementType;
-  comingSoon?: boolean;
 }
 
 const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean }) => {
@@ -82,41 +79,18 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
         )}
       </div>
       
-      <motion.div className="relative">
-        {plan.comingSoon && (
-          <div className="absolute -top-2 -left-2 z-10">
-            <ComingSoon />
-          </div>
-        )}
-        
-        {plan.name === "Basic" ? (
-          <motion.button 
-            className={`w-full py-3 rounded-lg mb-8 transition-all flex items-center justify-center gap-2 ${
-              plan.highlight
-                ? 'bg-white text-black hover:bg-opacity-90'
-                : 'bg-white/10 hover:bg-white/20'
-            }`}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Download className="w-4 h-4" />
-            Download
-          </motion.button>
-        ) : (
-          <motion.button 
-            className={`w-full py-3 rounded-lg mb-8 transition-all flex items-center justify-center gap-2 ${
-              plan.highlight
-                ? 'bg-white text-black hover:bg-opacity-90'
-                : 'bg-white/10 hover:bg-white/20'
-            }`}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Get Started
-            <ArrowRight className="w-4 h-4" />
-          </motion.button>
-        )}
-      </motion.div>
+      <motion.button 
+        className={`w-full py-3 rounded-lg mb-8 transition-all flex items-center justify-center gap-2 ${
+          plan.highlight
+            ? 'bg-white text-black hover:bg-opacity-90'
+            : 'bg-white/10 hover:bg-white/20'
+        }`}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        Get Started
+        <ArrowRight className="w-4 h-4" />
+      </motion.button>
       
       <div className="space-y-4">
         {plan.features.map((feature, index) => (
@@ -173,7 +147,6 @@ const Pricing = () => {
       description: "Advanced features for power users",
       icon: Zap,
       highlight: true,
-      comingSoon: true,
       features: [
         { text: "Unlimited clipboard history", included: true, highlight: true },
         { text: "Multi-device sync", included: true, highlight: true },
@@ -190,7 +163,6 @@ const Pricing = () => {
       price: "9.99",
       description: "Complete solution for teams",
       icon: Shield,
-      comingSoon: true,
       features: [
         { text: "Everything in Pro, plus:", included: true },
         { text: "Team management", included: true, highlight: true },
