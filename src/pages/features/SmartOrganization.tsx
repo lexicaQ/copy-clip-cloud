@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -15,10 +14,14 @@ const SmartOrganization = () => {
       <Header />
       
       <main className="container mx-auto px-4 pt-32 pb-16">
-        {/* Back button */}
+        {/* Back button with improved styling */}
         <div className="mb-12">
-          <Button variant="ghost" asChild>
-            <Link to="/features" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+          <Button 
+            variant="ghost" 
+            asChild
+            className="hover:bg-white/5 transition-colors"
+          >
+            <Link to="/features" className="inline-flex items-center gap-2 text-gray-400 hover:text-white">
               <ArrowLeft className="w-4 h-4" />
               Back to Features
             </Link>
@@ -170,7 +173,7 @@ const SmartOrganization = () => {
           </div>
         </motion.div>
 
-        {/* Call to Action */}
+        {/* Call to Action mit verbessertem Button-Style */}
         <motion.div 
           className="text-center py-20"
           initial={{ opacity: 0 }}
@@ -181,9 +184,12 @@ const SmartOrganization = () => {
           <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
             Let AI handle the organization so you can focus on what matters most - your work and creativity.
           </p>
-          <Button className="inline-flex items-center gap-2" size="lg">
+          <Button 
+            size="lg"
+            className="bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-xl border border-white/10"
+          >
             Try It Now
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </motion.div>
       </main>

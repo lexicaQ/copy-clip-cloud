@@ -1,4 +1,3 @@
-
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -38,6 +37,7 @@ import CodeSnippets from "./pages/features/CodeSnippets";
 import CustomRules from "./pages/features/CustomRules";
 import HistoryTimeline from "./pages/features/HistoryTimeline";
 import EndToEndEncryption from "./pages/features/EndToEndEncryption";
+import CopyClipCloud from "./pages/features/CopyClipCloud";
 
 // Docs pages that exist in the project
 import AdvancedUsage from "./pages/docs/AdvancedUsage";
@@ -80,6 +80,7 @@ const App = () => (
           <Route path="/status" element={<Status />} />
           
           {/* Feature pages */}
+          <Route path="/features/copy-clip-cloud" element={<CopyClipCloud />} />
           <Route path="/features/lightning-fast" element={<LightningFast />} />
           <Route path="/features/smart-search" element={<SmartSearch />} />
           <Route path="/features/smart-organization" element={<SmartOrganization />} />

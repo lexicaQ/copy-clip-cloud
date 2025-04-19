@@ -14,6 +14,8 @@ import ValueProposition from "@/components/landing/ValueProposition";
 import AppWalkthrough from "@/components/landing/AppWalkthrough";
 import UserExamples from "@/components/landing/UserExamples";
 import FeaturePreview from "@/components/landing/FeaturePreview";
+import Button from "@/components/ui/Button";
+import ArrowRight from "@/components/ui/ArrowRight";
 
 const Index = () => {
   return (
@@ -38,7 +40,7 @@ const Index = () => {
           {/* Title and Description */}
           <AppTitle />
 
-          {/* Download Button */}
+          {/* Download Button mit verbessertem Style */}
           <div className="mt-12">
             <DownloadButton />
           </div>
@@ -101,6 +103,12 @@ const Index = () => {
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-gray-400 mb-4">{feature.desc}</p>
               <p className="text-sm text-gray-500">{feature.highlight}</p>
+              <Button 
+                className="mt-4 bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-xl border border-white/10"
+              >
+                Learn More
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
             </motion.div>
           ))}
         </motion.div>
