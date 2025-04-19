@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Shield, Zap, Cloud, Star, ArrowRight, Check } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import InteractiveBackground from "@/components/landing/InteractiveBackground";
 import { ComingSoon } from "@/components/ui/coming-soon";
 import DownloadButton from "@/components/landing/DownloadButton";
 
@@ -32,8 +32,8 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
       className={`${
         plan.highlight 
           ? 'bg-white text-black' 
-          : 'bg-black/80 backdrop-blur-lg border border-white/10 text-white'
-      } p-8 relative rounded-xl hover:translate-y-[-5px] transition-all duration-300`}
+          : 'bg-black/5 backdrop-blur-lg border border-white/10'
+      } p-8 relative rounded-2xl hover:translate-y-[-5px] transition-all duration-300`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -63,7 +63,7 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
       <div className="text-center mb-8 relative">
         {isAnnual && (
           <motion.div 
-            className={`absolute -right-2 -top-2 ${plan.highlight ? 'bg-black/10' : 'bg-white/10'} px-2 py-1 rounded-full text-xs`}
+            className="absolute -right-2 -top-2 bg-white/10 px-2 py-1 rounded-full text-xs"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -75,7 +75,7 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
           <span className="text-sm absolute top-0 left-[-12px]">$</span>
           {isAnnual ? annualPrice : monthlyPrice}
         </div>
-        <div className={`text-sm ${plan.highlight ? 'text-black/70' : 'text-white/70'}`}>
+        <div className="text-sm text-white/70">
           per {isAnnual ? 'year' : 'month'}
         </div>
         {isAnnual && (
@@ -119,7 +119,7 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
           >
             <div className={`flex-shrink-0 w-5 h-5 mr-3 mt-0.5 flex items-center justify-center ${
               feature.included 
-                ? plan.highlight ? 'text-white bg-black rounded-full' : 'text-white bg-white/10 rounded-full' 
+                ? plan.highlight ? 'text-white bg-black rounded-full' : 'text-black' 
                 : 'text-gray-500'
             }`}>
               {feature.included ? <Check className="w-3 h-3" /> : "-"}
@@ -129,120 +129,6 @@ const PricingCard = ({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
             </span>
           </motion.div>
         ))}
-      </div>
-    </motion.div>
-  );
-};
-
-const AdditionalFeaturesSection = () => {
-  return (
-    <motion.div
-      className="mb-16"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-    >
-      <h2 className="text-2xl font-bold mb-8 text-center">Additional Features</h2>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          {
-            title: "Team Collaboration",
-            description: "Share clipboard items with your team members securely",
-            icon: Shield,
-            comingSoon: true
-          },
-          {
-            title: "Advanced Analytics",
-            description: "Gain insights into your clipboard usage patterns",
-            icon: Zap,
-            comingSoon: true
-          },
-          {
-            title: "Custom Templates",
-            description: "Create and manage templates for frequently used content",
-            icon: Cloud,
-            comingSoon: false
-          },
-        ].map((feature, index) => (
-          <motion.div
-            key={index}
-            className="glass-panel p-6 flex flex-col items-center text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <div className="p-3 bg-white/10 rounded-full mb-4">
-              <feature.icon className="w-6 h-6" />
-            </div>
-            
-            <h3 className="text-lg font-medium mb-2 relative">
-              {feature.title}
-              {feature.comingSoon && <ComingSoon className="absolute -top-3 -right-3" />}
-            </h3>
-            
-            <p className="text-gray-400 text-sm mb-4">{feature.description}</p>
-            
-            <motion.button
-              className="mt-auto inline-flex items-center text-sm text-white/80 hover:text-white"
-              whileHover={{ x: 5 }}
-            >
-              Learn more <ArrowRight className="w-4 h-4 ml-1" />
-            </motion.button>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
-  );
-};
-
-const EnterpriseSection = () => {
-  return (
-    <motion.div
-      className="glass-panel p-8 mb-16"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-    >
-      <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-        <div>
-          <h2 className="text-2xl font-bold mb-3">Need a custom solution?</h2>
-          <p className="text-gray-400 mb-6 max-w-xl">
-            Contact our sales team to discuss enterprise-grade solutions tailored to your organization's specific needs.
-          </p>
-          
-          <ul className="space-y-2 mb-6">
-            {[
-              "Dedicated support and onboarding",
-              "Custom integration with your existing tools",
-              "Advanced security features and compliance",
-              "Volume licensing and flexible payment options"
-            ].map((item, index) => (
-              <motion.li
-                key={index}
-                className="flex items-center"
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 + (index * 0.1) }}
-              >
-                <Check className="w-4 h-4 mr-2 text-emerald-500" />
-                <span>{item}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </div>
-        
-        <motion.div
-          className="flex-shrink-0"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <button className="bg-white text-black py-3 px-6 rounded-lg font-medium hover:bg-white/90 transition-colors">
-            Contact Sales
-          </button>
-        </motion.div>
       </div>
     </motion.div>
   );
@@ -305,31 +191,7 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(8)].map((_, i) => (
-          <motion.div 
-            key={i}
-            className="absolute rounded-full bg-white/5 backdrop-blur-xl"
-            style={{
-              width: Math.random() * 400 + 200,
-              height: Math.random() * 400 + 200,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              x: [0, Math.random() * 50 - 25],
-              y: [0, Math.random() * 50 - 25],
-            }}
-            transition={{
-              duration: Math.random() * 20 + 15,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
-      
+      <InteractiveBackground />
       <Header />
       
       <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto relative z-10">
@@ -392,10 +254,6 @@ const Pricing = () => {
             />
           ))}
         </motion.div>
-
-        <AdditionalFeaturesSection />
-        
-        <EnterpriseSection />
 
         <motion.div 
           className="max-w-3xl mx-auto"

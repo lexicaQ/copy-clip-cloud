@@ -1,190 +1,177 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import DocLayout from "@/components/docs/DocLayout";
-import { Keyboard, Monitor, Smartphone, Laptop, Zap, Search, Info, Clipboard } from "lucide-react";
-
-interface ShortcutProps {
-  keys: string[];
-  description: string;
-  platform?: "mac" | "windows" | "universal";
-}
-
-const ShortcutCard = ({ keys, description, platform = "universal" }: ShortcutProps) => {
-  return (
-    <motion.div 
-      className="glass-panel p-4 hover:bg-white/5 transition-colors"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -3 }}
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex flex-wrap items-center gap-1">
-          {keys.map((key, index) => (
-            <React.Fragment key={index}>
-              <kbd className="px-2 py-1 bg-white/10 rounded text-sm border border-white/5 font-mono">
-                {key}
-              </kbd>
-              {index < keys.length - 1 && <span className="text-white/40">+</span>}
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="flex-shrink-0 ml-2">
-          {platform === "mac" && <Monitor className="w-4 h-4 text-gray-400" />}
-          {platform === "windows" && <Laptop className="w-4 h-4 text-gray-400" />}
-          {platform === "universal" && <Zap className="w-4 h-4 text-gray-400" />}
-        </div>
-      </div>
-      <p className="text-sm text-gray-400 mt-3">{description}</p>
-    </motion.div>
-  );
-};
-
-const ShortcutCategory = ({ title, shortcuts, icon: Icon = Keyboard }) => {
-  return (
-    <motion.section 
-      className="mb-10"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-lg bg-white/10">
-          <Icon className="w-5 h-5" />
-        </div>
-        <h2 className="text-xl font-bold">{title}</h2>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {shortcuts.map((shortcut, index) => (
-          <ShortcutCard
-            key={index}
-            keys={shortcut.keys}
-            description={shortcut.description}
-            platform={shortcut.platform}
-          />
-        ))}
-      </div>
-    </motion.section>
-  );
-};
+import { Link } from "react-router-dom";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { ArrowLeft, Keyboard, Command } from "lucide-react";
 
 const KeyboardShortcuts = () => {
-  const generalShortcuts = [
-    { keys: ["⌘", "Shift", "V"], description: "Open clipboard history panel", platform: "mac" },
-    { keys: ["Ctrl", "Shift", "V"], description: "Open clipboard history panel", platform: "windows" },
-    { keys: ["⌘", "⌥", "C"], description: "Clear clipboard history", platform: "mac" },
-    { keys: ["Ctrl", "Alt", "C"], description: "Clear clipboard history", platform: "windows" },
-    { keys: ["⌘", ","], description: "Open preferences", platform: "mac" },
-    { keys: ["Ctrl", ","], description: "Open preferences", platform: "windows" },
-    { keys: ["⌘", "Q"], description: "Quit application", platform: "mac" },
-    { keys: ["Alt", "F4"], description: "Exit application", platform: "windows" },
+  const shortcuts = [
+    {
+      key: "⌘⇧V",
+      description: "Open clipboard history"
+    },
+    {
+      key: "⌘⇧F",
+      description: "Search clipboard history"
+    },
+    {
+      key: "⌘⇧P",
+      description: "Pin/unpin selected item"
+    },
+    {
+      key: "⌘⇧D",
+      description: "Delete selected item"
+    },
+    {
+      key: "⌘⇧C",
+      description: "Clear clipboard history"
+    },
+    {
+      key: "⌘⇧T",
+      description: "Create template from selection"
+    },
+    {
+      key: "⌘↑",
+      description: "Navigate to previous item"
+    },
+    {
+      key: "⌘↓",
+      description: "Navigate to next item"
+    },
+    {
+      key: "⌘1-9",
+      description: "Quick select items 1-9"
+    },
+    {
+      key: "⌘⇧1-9",
+      description: "Assign item to quick slot 1-9"
+    },
+    {
+      key: "⌘,",
+      description: "Open preferences"
+    },
+    {
+      key: "⌘⌥C",
+      description: "Copy as plain text"
+    },
+    {
+      key: "⌘⌥V",
+      description: "Paste as plain text"
+    },
+    {
+      key: "⌘⇧M",
+      description: "Toggle merge mode"
+    },
+    {
+      key: "⌘⇧S",
+      description: "Sync clipboard now"
+    },
   ];
-  
-  const clipboardShortcuts = [
-    { keys: ["⌘", "C"], description: "Copy selected item to clipboard", platform: "universal" },
-    { keys: ["⌘", "X"], description: "Cut selected item to clipboard", platform: "universal" },
-    { keys: ["⌘", "V"], description: "Paste most recent clipboard item", platform: "universal" },
-    { keys: ["⌘", "⌥", "V"], description: "Paste as plain text", platform: "mac" },
-    { keys: ["Ctrl", "Alt", "V"], description: "Paste as plain text", platform: "windows" },
-    { keys: ["⌘", "Shift", "C"], description: "Copy current item with formatting preserved", platform: "mac" },
-    { keys: ["Ctrl", "Shift", "C"], description: "Copy current item with formatting preserved", platform: "windows" },
-    { keys: ["⌘", "⌥", "Shift", "V"], description: "Paste without formatting", platform: "mac" },
-    { keys: ["Ctrl", "Alt", "Shift", "V"], description: "Paste without formatting", platform: "windows" },
-  ];
-  
-  const navigationShortcuts = [
-    { keys: ["↑"], description: "Navigate to previous clipboard item", platform: "universal" },
-    { keys: ["↓"], description: "Navigate to next clipboard item", platform: "universal" },
-    { keys: ["Tab"], description: "Navigate between sections", platform: "universal" },
-    { keys: ["Shift", "Tab"], description: "Navigate backwards between sections", platform: "universal" },
-    { keys: ["Enter"], description: "Select and paste the highlighted clipboard item", platform: "universal" },
-    { keys: ["Esc"], description: "Close clipboard panel", platform: "universal" },
-  ];
-  
-  const searchShortcuts = [
-    { keys: ["⌘", "F"], description: "Focus on search field", platform: "mac" },
-    { keys: ["Ctrl", "F"], description: "Focus on search field", platform: "windows" },
-    { keys: ["⌘", "G"], description: "Find next match", platform: "mac" },
-    { keys: ["Ctrl", "G"], description: "Find next match", platform: "windows" },
-    { keys: ["⌘", "Shift", "G"], description: "Find previous match", platform: "mac" },
-    { keys: ["Ctrl", "Shift", "G"], description: "Find previous match", platform: "windows" },
-  ];
-  
+
   return (
-    <DocLayout 
-      title="Keyboard Shortcuts" 
-      description="Master CopyClipCloud with these keyboard shortcuts for efficient clipboard management"
-      icon={Keyboard}
-    >
-      <div className="space-y-8">
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      <main className="pt-32 pb-24 px-4 max-w-4xl mx-auto">
         <motion.div
-          className="bg-white/5 border border-white/10 rounded-lg p-4 mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8"
         >
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-blue-400 mt-0.5" />
-            <div>
-              <h3 className="font-medium text-white mb-2">Platform-specific shortcuts</h3>
-              <p className="text-sm text-gray-300">
-                Shortcuts are displayed for both macOS and Windows. Look for the 
-                <Monitor className="w-4 h-4 text-gray-400 inline-block mx-1" /> (macOS) or 
-                <Laptop className="w-4 h-4 text-gray-400 inline-block mx-1" /> (Windows) 
-                icon to identify platform-specific shortcuts. Shortcuts marked with 
-                <Zap className="w-4 h-4 text-gray-400 inline-block mx-1" /> 
-                work on all platforms.
+          <Link 
+            to="/docs" 
+            className="inline-flex items-center text-sm text-white/70 hover:text-white mb-6"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Documentation
+          </Link>
+          
+          <div className="flex items-center mb-6">
+            <div className="p-2 rounded-lg bg-white/10 mr-3">
+              <Keyboard className="w-5 h-5" />
+            </div>
+            <h1 className="text-3xl font-bold">Keyboard Shortcuts</h1>
+          </div>
+          
+          <div className="glass-panel p-8 mb-8">
+            <h2 className="text-2xl font-semibold mb-6">Mastering CopyClipCloud Shortcuts</h2>
+            
+            <p className="text-gray-300 mb-6">
+              CopyClipCloud offers a comprehensive set of keyboard shortcuts to help you work more efficiently. 
+              Memorizing these shortcuts will significantly boost your productivity and reduce the time spent managing your clipboard.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {shortcuts.map((shortcut, index) => (
+                <div key={index} className="glass-panel bg-white/5 p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Command className="w-4 h-4 mr-2 text-gray-400" />
+                      <span className="text-gray-300">{shortcut.description}</span>
+                    </div>
+                    <div className="bg-white/10 px-3 py-1 rounded font-mono text-sm">
+                      {shortcut.key}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <h3 className="text-xl font-medium mb-4">Custom Shortcuts</h3>
+            <p className="text-gray-300 mb-6">
+              You can customize any of these keyboard shortcuts to better fit your workflow:
+            </p>
+            
+            <ol className="list-decimal pl-5 space-y-2 text-gray-300 mb-6">
+              <li>Open CopyClipCloud Preferences (⌘,)</li>
+              <li>Navigate to the Shortcuts tab</li>
+              <li>Find the shortcut you want to change</li>
+              <li>Click on the current shortcut and press your desired key combination</li>
+              <li>Click Apply to save your changes</li>
+            </ol>
+            
+            <div className="bg-white/5 p-6 rounded-lg border border-white/10">
+              <h4 className="flex items-center text-lg font-medium mb-3">
+                <Command className="w-5 h-5 mr-2" />
+                Pro Tip
+              </h4>
+              <p className="text-gray-300">
+                For maximum efficiency, try to create a logical pattern in your custom shortcuts. 
+                For example, you might use ⌘⇧ plus the first letter of the action (e.g., ⌘⇧P for Pin).
+                This makes shortcuts easier to remember and faster to execute.
               </p>
             </div>
           </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link to="/docs/getting-started" className="glass-panel p-6 hover:bg-white/5 transition-colors">
+              <div className="flex items-center mb-3">
+                <Command className="w-5 h-5 mr-2" />
+                <h3 className="text-lg font-medium">Getting Started</h3>
+              </div>
+              <p className="text-gray-400 text-sm">
+                Return to the getting started guide
+              </p>
+            </Link>
+            
+            <Link to="/docs/advanced-usage" className="glass-panel p-6 hover:bg-white/5 transition-colors">
+              <div className="flex items-center mb-3">
+                <Command className="w-5 h-5 mr-2" />
+                <h3 className="text-lg font-medium">Advanced Usage</h3>
+              </div>
+              <p className="text-gray-400 text-sm">
+                Learn advanced techniques and workflows
+              </p>
+            </Link>
+          </div>
         </motion.div>
-        
-        <ShortcutCategory 
-          title="General Application Shortcuts" 
-          shortcuts={generalShortcuts} 
-          icon={Monitor}
-        />
-        
-        <ShortcutCategory 
-          title="Clipboard Operations" 
-          shortcuts={clipboardShortcuts} 
-          icon={Clipboard}
-        />
-        
-        <ShortcutCategory 
-          title="Navigation Shortcuts" 
-          shortcuts={navigationShortcuts} 
-          icon={Smartphone}
-        />
-        
-        <ShortcutCategory 
-          title="Search Shortcuts" 
-          shortcuts={searchShortcuts} 
-          icon={Search}
-        />
-        
-        <motion.div 
-          className="bg-white/5 border border-white/10 rounded-lg p-5 mt-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <h3 className="font-medium mb-4 flex items-center gap-2">
-            <Zap className="w-5 h-5" />
-            Customize Your Shortcuts
-          </h3>
-          <p className="text-gray-300 mb-4">
-            You can customize keyboard shortcuts to match your workflow preferences. Navigate to Settings > Keyboard Shortcuts to personalize your experience.
-          </p>
-          <motion.button
-            className="px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Open Shortcut Settings
-          </motion.button>
-        </motion.div>
-      </div>
-    </DocLayout>
+      </main>
+      
+      <Footer />
+    </div>
   );
 };
 

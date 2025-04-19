@@ -1,301 +1,143 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import DocLayout from "@/components/docs/DocLayout";
-import { Zap, Download, Settings, Layers, Search, FileText, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { ArrowLeft, FileText, Book, BookOpen } from "lucide-react";
 
 const GettingStarted = () => {
   return (
-    <DocLayout 
-      title="Getting Started" 
-      description="Learn how to install and set up CopyClipCloud on your device"
-      icon={Zap}
-    >
-      <div className="space-y-12">
-        <motion.section
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      <main className="pt-32 pb-24 px-4 max-w-4xl mx-auto">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          className="mb-8"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-white">
-              <span>1</span>
+          <Link 
+            to="/docs" 
+            className="inline-flex items-center text-sm text-white/70 hover:text-white mb-6"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Documentation
+          </Link>
+          
+          <div className="flex items-center mb-6">
+            <div className="p-2 rounded-lg bg-white/10 mr-3">
+              <BookOpen className="w-5 h-5" />
             </div>
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Download className="w-5 h-5" /> Installation
-            </h2>
+            <h1 className="text-3xl font-bold">Getting Started Guide</h1>
           </div>
           
-          <div className="ml-11">
+          <div className="glass-panel p-8 mb-8">
+            <h2 className="text-2xl font-semibold mb-6">Welcome to CopyClipCloud</h2>
+            
             <p className="text-gray-300 mb-6">
-              Installing CopyClipCloud is a simple process that only takes a few minutes. Follow these steps to get started:
+              This comprehensive guide will help you get started with CopyClipCloud, a powerful clipboard manager designed to enhance your productivity and streamline your workflow. Follow these steps to set up and start using CopyClipCloud effectively.
             </p>
             
-            <div className="space-y-4 mb-6">
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">1. Download the installer</h3>
-                <p className="text-sm text-gray-400 mb-3">
-                  Visit our download page and select the version compatible with your operating system.
-                </p>
-                <motion.button
-                  className="px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-white/90 transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Download for macOS
-                </motion.button>
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl font-medium mb-3">1. Installation</h3>
+                <div className="glass-panel bg-white/5 p-6">
+                  <p className="text-gray-300 mb-4">
+                    To install CopyClipCloud on your Mac, follow these simple steps:
+                  </p>
+                  <ol className="list-decimal pl-5 space-y-2 text-gray-300">
+                    <li>Visit the <Link to="/download" className="text-white hover:underline">download page</Link> or click the Download button on our homepage.</li>
+                    <li>Once the download is complete, locate the .dmg file in your Downloads folder.</li>
+                    <li>Double-click the .dmg file to open it.</li>
+                    <li>Drag the CopyClipCloud icon to your Applications folder.</li>
+                    <li>Launch CopyClipCloud from your Applications folder or Launchpad.</li>
+                    <li>When prompted, grant the necessary permissions for CopyClipCloud to access your clipboard.</li>
+                  </ol>
+                </div>
               </div>
               
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">2. Run the installer</h3>
-                <p className="text-sm text-gray-400">
-                  Open the downloaded file and follow the on-screen instructions to complete the installation process.
-                </p>
+              <div>
+                <h3 className="text-xl font-medium mb-3">2. Initial Setup</h3>
+                <div className="glass-panel bg-white/5 p-6">
+                  <p className="text-gray-300 mb-4">
+                    After installing CopyClipCloud, you'll need to configure some basic settings:
+                  </p>
+                  <ol className="list-decimal pl-5 space-y-2 text-gray-300">
+                    <li>Launch CopyClipCloud and navigate to the Preferences (⌘,).</li>
+                    <li>Set your preferred keyboard shortcut for accessing the clipboard history (default is ⌘⇧V).</li>
+                    <li>Choose how many clipboard items you want to store (default is 100).</li>
+                    <li>Set up cloud synchronization by signing in with your CopyClipCloud account or creating a new one.</li>
+                    <li>Configure content filters to automatically exclude sensitive information if needed.</li>
+                  </ol>
+                </div>
               </div>
               
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">3. Launch CopyClipCloud</h3>
-                <p className="text-sm text-gray-400">
-                  After installation is complete, launch the application from your Applications folder or Start menu.
-                </p>
+              <div>
+                <h3 className="text-xl font-medium mb-3">3. Basic Usage</h3>
+                <div className="glass-panel bg-white/5 p-6">
+                  <p className="text-gray-300 mb-4">
+                    Here's how to use the basic functions of CopyClipCloud:
+                  </p>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-300">
+                    <li><strong>Copy:</strong> Use the standard copy command (⌘C) in any application. CopyClipCloud automatically saves everything you copy.</li>
+                    <li><strong>Access History:</strong> Press your configured shortcut (default ⌘⇧V) to access your clipboard history.</li>
+                    <li><strong>Paste:</strong> Select an item from your clipboard history and press Enter to paste it, or click on the item.</li>
+                    <li><strong>Search:</strong> Use the search field to quickly find specific clipboard items.</li>
+                    <li><strong>Pin Important Items:</strong> Click the pin icon next to any clipboard item to keep it at the top of your history.</li>
+                    <li><strong>Delete Items:</strong> Hover over an item and click the trash icon to remove it from your history.</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-xl font-medium mb-3">4. Advanced Features</h3>
+                <div className="glass-panel bg-white/5 p-6">
+                  <p className="text-gray-300 mb-4">
+                    Explore these advanced features to get the most out of CopyClipCloud:
+                  </p>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-300">
+                    <li><strong>Templates:</strong> Create and use templates for frequently used text snippets.</li>
+                    <li><strong>Smart Folders:</strong> Organize your clipboard items into custom categories.</li>
+                    <li><strong>Cross-Device Sync:</strong> Access your clipboard history on all your devices.</li>
+                    <li><strong>Text Transformation:</strong> Convert text formats (case, formatting, etc.) on the fly.</li>
+                    <li><strong>Keyboard Navigation:</strong> Use arrow keys and shortcuts to navigate your clipboard history.</li>
+                  </ul>
+                  <p className="mt-4 text-gray-300">
+                    For more advanced features, check our <Link to="/docs/advanced-usage" className="text-white hover:underline">Advanced Usage</Link> guide.
+                  </p>
+                </div>
               </div>
             </div>
-            
-            <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-              <h4 className="flex items-center text-sm font-medium mb-2">
-                <FileText className="w-4 h-4 mr-2" /> System Requirements
-              </h4>
-              <ul className="text-xs text-gray-400 space-y-1 ml-6 list-disc">
-                <li>macOS 15 or later</li>
-                <li>Minimum 4GB RAM</li>
-                <li>100MB free disk space</li>
-                <li>Internet connection for cloud features</li>
-              </ul>
-            </div>
-          </div>
-        </motion.section>
-        
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-white">
-              <span>2</span>
-            </div>
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Settings className="w-5 h-5" /> Initial Setup
-            </h2>
           </div>
           
-          <div className="ml-11">
-            <p className="text-gray-300 mb-6">
-              After installing CopyClipCloud, you'll need to configure a few settings to customize your experience.
-            </p>
-            
-            <div className="space-y-4 mb-6">
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">1. Create an account</h3>
-                <p className="text-sm text-gray-400">
-                  Sign up for a CopyClipCloud account to enable cloud synchronization and access your clipboard from any device.
-                </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link to="/docs/keyboard-shortcuts" className="glass-panel p-6 hover:bg-white/5 transition-colors">
+              <div className="flex items-center mb-3">
+                <FileText className="w-5 h-5 mr-2" />
+                <h3 className="text-lg font-medium">Keyboard Shortcuts</h3>
               </div>
-              
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">2. Configure preferences</h3>
-                <p className="text-sm text-gray-400">
-                  Open the settings panel to customize clipboard history retention, encryption options, and keyboard shortcuts.
-                </p>
-              </div>
-              
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">3. Enable cloud sync</h3>
-                <p className="text-sm text-gray-400">
-                  Turn on cloud synchronization to automatically back up and sync your clipboard across all your devices.
-                </p>
-              </div>
-            </div>
-            
-            <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-              <h4 className="flex items-center text-sm font-medium mb-2">
-                <FileText className="w-4 h-4 mr-2" /> Quick Tip
-              </h4>
-              <p className="text-xs text-gray-400">
-                For the best experience, we recommend setting CopyClipCloud to launch automatically at startup to ensure continuous clipboard monitoring and access.
+              <p className="text-gray-400 text-sm">
+                Learn all the keyboard shortcuts to boost your productivity
               </p>
-            </div>
-          </div>
-        </motion.section>
-        
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-white">
-              <span>3</span>
-            </div>
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Layers className="w-5 h-5" /> Basic Usage
-            </h2>
-          </div>
-          
-          <div className="ml-11">
-            <p className="text-gray-300 mb-6">
-              Learn the essential commands and features to start using CopyClipCloud effectively.
-            </p>
+            </Link>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">Accessing clipboard history</h3>
-                <p className="text-sm text-gray-400">
-                  Press <kbd className="px-2 py-1 bg-white/10 rounded">⌘+Shift+V</kbd> to open the clipboard history panel, then select an item to paste it.
-                </p>
+            <Link to="/docs/cloud-sync" className="glass-panel p-6 hover:bg-white/5 transition-colors">
+              <div className="flex items-center mb-3">
+                <FileText className="w-5 h-5 mr-2" />
+                <h3 className="text-lg font-medium">Cloud Synchronization</h3>
               </div>
-              
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">Pinning important items</h3>
-                <p className="text-sm text-gray-400">
-                  Hover over any clipboard item and click the pin icon to keep it at the top of your history for easy access.
-                </p>
-              </div>
-              
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">Organizing with categories</h3>
-                <p className="text-sm text-gray-400">
-                  Right-click on any clipboard item to assign it to a category or create a new organizational category.
-                </p>
-              </div>
-              
-              <div className="glass-panel p-4">
-                <h3 className="font-medium mb-2">Quick search</h3>
-                <p className="text-sm text-gray-400">
-                  Use the search bar in the clipboard panel or press <kbd className="px-2 py-1 bg-white/10 rounded">⌘+F</kbd> to quickly find specific clipboard items.
-                </p>
-              </div>
-            </div>
-            
-            <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-              <h4 className="flex items-center text-sm font-medium mb-2">
-                <Search className="w-4 h-4 mr-2" /> Pro Tip
-              </h4>
-              <p className="text-xs text-gray-400">
-                You can use advanced search operators like "text:", "date:", and "type:" to filter your clipboard history more precisely.
+              <p className="text-gray-400 text-sm">
+                Set up and configure cloud synchronization across your devices
               </p>
-            </div>
+            </Link>
           </div>
-        </motion.section>
-        
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-white">
-              <span>4</span>
-            </div>
-            <h2 className="text-2xl font-bold flex items-center gap-2">
-              <Search className="w-5 h-5" /> Next Steps
-            </h2>
-          </div>
-          
-          <div className="ml-11">
-            <p className="text-gray-300 mb-6">
-              Now that you've set up CopyClipCloud and learned the basics, explore these resources to get the most out of the application:
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <motion.a
-                href="/docs/keyboard-shortcuts"
-                className="glass-panel p-4 hover:bg-white/5 transition-colors"
-                whileHover={{ y: -5 }}
-              >
-                <h3 className="font-medium mb-2 flex items-center justify-between">
-                  Keyboard Shortcuts
-                  <ArrowRight className="w-4 h-4" />
-                </h3>
-                <p className="text-sm text-gray-400">
-                  Learn all keyboard shortcuts to boost productivity
-                </p>
-              </motion.a>
-              
-              <motion.a
-                href="/docs/core-features"
-                className="glass-panel p-4 hover:bg-white/5 transition-colors"
-                whileHover={{ y: -5 }}
-              >
-                <h3 className="font-medium mb-2 flex items-center justify-between">
-                  Core Features
-                  <ArrowRight className="w-4 h-4" />
-                </h3>
-                <p className="text-sm text-gray-400">
-                  Explore the full range of CopyClipCloud features
-                </p>
-              </motion.a>
-              
-              <motion.a
-                href="/docs/cloud-sync"
-                className="glass-panel p-4 hover:bg-white/5 transition-colors"
-                whileHover={{ y: -5 }}
-              >
-                <h3 className="font-medium mb-2 flex items-center justify-between">
-                  Cloud Sync
-                  <ArrowRight className="w-4 h-4" />
-                </h3>
-                <p className="text-sm text-gray-400">
-                  Set up synchronization across multiple devices
-                </p>
-              </motion.a>
-              
-              <motion.a
-                href="/docs/advanced-usage"
-                className="glass-panel p-4 hover:bg-white/5 transition-colors"
-                whileHover={{ y: -5 }}
-              >
-                <h3 className="font-medium mb-2 flex items-center justify-between">
-                  Advanced Usage
-                  <ArrowRight className="w-4 h-4" />
-                </h3>
-                <p className="text-sm text-gray-400">
-                  Take your clipboard management to the next level
-                </p>
-              </motion.a>
-              
-              <motion.a
-                href="/tutorials"
-                className="glass-panel p-4 hover:bg-white/5 transition-colors"
-                whileHover={{ y: -5 }}
-              >
-                <h3 className="font-medium mb-2 flex items-center justify-between">
-                  Video Tutorials
-                  <ArrowRight className="w-4 h-4" />
-                </h3>
-                <p className="text-sm text-gray-400">
-                  Watch guides and tutorials for visual learning
-                </p>
-              </motion.a>
-              
-              <motion.a
-                href="/support"
-                className="glass-panel p-4 hover:bg-white/5 transition-colors"
-                whileHover={{ y: -5 }}
-              >
-                <h3 className="font-medium mb-2 flex items-center justify-between">
-                  Help & Support
-                  <ArrowRight className="w-4 h-4" />
-                </h3>
-                <p className="text-sm text-gray-400">
-                  Contact our support team if you need assistance
-                </p>
-              </motion.a>
-            </div>
-          </div>
-        </motion.section>
-      </div>
-    </DocLayout>
+        </motion.div>
+      </main>
+      
+      <Footer />
+    </div>
   );
 };
 
