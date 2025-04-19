@@ -14,13 +14,13 @@ interface DocLayoutProps {
   children: ReactNode;
 }
 
-const DocLayout = ({ 
+const DocLayout: React.FC<DocLayoutProps> = ({ 
   title, 
   icon: Icon, 
   backLink = "/docs", 
   backText = "Back to Documentation", 
   children 
-}: DocLayoutProps) => {
+}) => {
   return (
     <div className="min-h-screen bg-background">
       <Header />

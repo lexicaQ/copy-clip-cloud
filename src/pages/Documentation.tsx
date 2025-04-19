@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -12,7 +13,8 @@ import {
   Cloud, 
   LayoutTemplate, 
   BrainCircuit, 
-  Filter
+  Filter,
+  Book
 } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -46,8 +48,9 @@ const Documentation = () => {
     link.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Render directly without DocLayout component
   return (
-    <DocLayout>
+    <div className="min-h-screen bg-background">
       <SharedBackground />
       <Header />
       <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto">
@@ -108,7 +111,7 @@ const Documentation = () => {
         </motion.div>
       </div>
       <Footer />
-    </DocLayout>
+    </div>
   );
 };
 
