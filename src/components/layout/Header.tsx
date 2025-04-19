@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, Loader } from "lucide-react";
@@ -55,16 +56,13 @@ const Header = () => {
               style={{
                 background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
               }}
-              whileHover={{ 
-                scale: 1.05,
-              }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Clipboard className="w-5 h-5 text-white" />
             </motion.div>
             <motion.span 
               className="font-bold text-white text-lg tracking-tight"
-              whileHover={{ letterSpacing: "0.02em" }}
               transition={{ duration: 0.3 }}
             >
               CopyClipCloud
@@ -219,18 +217,21 @@ const NavLink = ({ children, to, icon: Icon, onClick }: { children: React.ReactN
       <Icon className="w-4 h-4 mr-1 group-hover:rotate-3 transition-transform duration-300" />
       <span className="relative">
         {children}
-        <motion.span 
-          className="absolute inset-x-0 -bottom-1 h-px bg-white origin-left"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: isActive ? 1 : 0 }}
-          whileHover={{ scaleX: 1 }}
-          transition={{ duration: 0.3 }}
-        />
+        {!isActive && (
+          <motion.span 
+            className="absolute inset-x-0 -bottom-1 h-px bg-white/40 origin-left"
+            initial={{ scaleX: 0 }}
+            whileHover={{ scaleX: 1 }}
+            transition={{ duration: 0.3 }}
+          />
+        )}
       </span>
       {isActive && (
         <motion.div 
           layoutId="navbar-indicator"
-          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-white/60 rounded-full"
+          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-white rounded-full"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}

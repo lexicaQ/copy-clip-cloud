@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
@@ -6,23 +5,40 @@ import Footer from "@/components/layout/Footer";
 import { 
   MessageSquare, 
   Mail, 
-  FileQuestion, 
+  FileText, 
   Headphones, 
   BookOpen, 
   Video,
   Clock,
   Users
 } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Link } from "react-router-dom";
 
-const SupportOption = ({ title, description, icon: Icon, link, linkText }) => (
+const SupportOption = ({ title, description, icon: Icon, link, linkText, comingSoon = false }) => (
   <motion.div
-    className="glass-panel p-6 hover:bg-white/5 transition-all duration-300"
+    className="glass-panel p-6 hover:bg-white/5 transition-all duration-300 relative"
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.4 }}
   >
+    {comingSoon && (
+      <div className="absolute -top-2 -left-2 px-3 py-1 bg-white/10 backdrop-blur-lg rounded-lg text-xs font-medium z-10 border border-white/20 shadow-lg">
+        <motion.span 
+          animate={{ 
+            scale: [1, 1.05, 1],
+            opacity: [0.8, 1, 0.8]
+          }}
+          transition={{ 
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          Coming Soon
+        </motion.span>
+      </div>
+    )}
     <div className="flex items-start space-x-4">
       <div className="p-3 rounded-xl bg-white/10 flex items-center justify-center">
         <Icon className="w-6 h-6" />
@@ -30,12 +46,12 @@ const SupportOption = ({ title, description, icon: Icon, link, linkText }) => (
       <div>
         <h3 className="font-medium text-lg mb-2">{title}</h3>
         <p className="text-gray-400 text-sm mb-4">{description}</p>
-        <a 
-          href={link} 
+        <Link 
+          to={link} 
           className="text-sm inline-flex items-center font-medium text-white hover:underline"
         >
           {linkText} <span className="ml-1">→</span>
-        </a>
+        </Link>
       </div>
     </div>
   </motion.div>
@@ -106,8 +122,8 @@ const Support = () => {
             <SupportOption 
               title="Browse FAQs"
               description="Find quick answers to frequently asked questions in our knowledge base."
-              icon={FileQuestion}
-              link="/features#faq"
+              icon={FileText}
+              link="/faq"
               linkText="Go to FAQs"
             />
             <SupportOption 
@@ -116,20 +132,22 @@ const Support = () => {
               icon={Headphones}
               link="#live-chat"
               linkText="Start Chat"
+              comingSoon={true}
             />
             <SupportOption 
               title="Documentation"
               description="Browse our comprehensive documentation for detailed instructions."
               icon={BookOpen}
-              link="/features"
+              link="/documentation"
               linkText="View Documentation"
             />
             <SupportOption 
               title="Video Tutorials"
               description="Watch our video guides to optimally use CopyClipCloud."
               icon={Video}
-              link="/features"
+              link="/tutorials"
               linkText="Watch Videos"
+              comingSoon={true}
             />
           </div>
         </motion.div>

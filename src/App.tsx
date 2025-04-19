@@ -24,6 +24,8 @@ import Documentation from "./pages/Documentation";
 import Status from "./pages/Status";
 import Blog from "./pages/Blog";
 import Help from "./pages/Help";
+import FAQ from "./pages/FAQ";
+import CookieBanner from "./components/cookie/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,7 @@ const App = () => (
     <TooltipProvider>
       <Sonner />
       <BrowserRouter>
+        <CookieBanner />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/features" element={<Features />} />
@@ -48,10 +51,10 @@ const App = () => (
           <Route path="/download" element={<Download />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/press" element={<Press />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/partners" element={<Partners />} />
           <Route path="/help" element={<Help />} />
           <Route path="/docs" element={<Documentation />} />
+          <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

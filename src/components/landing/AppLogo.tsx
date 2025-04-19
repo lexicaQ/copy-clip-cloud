@@ -1,20 +1,20 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Clipboard, Sparkles, Shield, Cloud, Apple } from "lucide-react";
+import { Clipboard, Sparkles, Shield, Cloud, Apple, Code, Zap, Lock, Server } from "lucide-react";
 
 const AppLogo = () => {
   return (
-    <div className="space-y-6 relative mt-20">
+    <div className="space-y-6 relative mt-16">
       <div className="relative mx-auto" style={{ width: "180px", height: "180px" }}>
-        {/* Improved background circle */}
+        {/* Smaller background circle */}
         <motion.div
           className="absolute rounded-full bg-black/30 backdrop-blur-lg"
           style={{ 
-            width: "140%", 
-            height: "140%", 
-            top: "-20%", 
-            left: "-20%" 
+            width: "120%", 
+            height: "120%", 
+            top: "-10%", 
+            left: "-10%" 
           }}
           animate={{
             scale: [1, 1.05, 1],
@@ -33,10 +33,10 @@ const AppLogo = () => {
             key={orbit}
             className="absolute rounded-full border border-white/10"
             style={{ 
-              width: `${140 + orbit * 20}%`, 
-              height: `${140 + orbit * 20}%`, 
-              top: `${-20 - orbit * 10}%`, 
-              left: `${-20 - orbit * 10}%`,
+              width: `${120 + orbit * 20}%`, 
+              height: `${120 + orbit * 20}%`, 
+              top: `${-10 - orbit * 10}%`, 
+              left: `${-10 - orbit * 10}%`,
             }}
             animate={{ rotate: 360 }}
             transition={{ 
@@ -47,15 +47,15 @@ const AppLogo = () => {
           />
         ))}
 
-        {/* Orbiting elements with continuous motion */}
+        {/* More orbiting elements with continuous motion */}
         <motion.div
           className="absolute w-full h-full"
           animate={{ rotate: 360 }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          style={{ width: "180%", height: "180%", top: "-40%", left: "-40%" }}
+          style={{ width: "150%", height: "150%", top: "-25%", left: "-25%" }}
         >
           <motion.div 
-            className="absolute top-[40%] left-[75%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
+            className="absolute top-[40%] right-[20%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
             style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))" }}
             whileHover={{ scale: 1.2 }}
           >
@@ -67,10 +67,10 @@ const AppLogo = () => {
           className="absolute w-full h-full"
           animate={{ rotate: -360 }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          style={{ width: "160%", height: "160%", top: "-30%", left: "-30%" }}
+          style={{ width: "140%", height: "140%", top: "-20%", left: "-20%" }}
         >
           <motion.div 
-            className="absolute bottom-[40%] right-[75%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
+            className="absolute bottom-[35%] left-[20%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
             style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))" }}
             whileHover={{ scale: 1.2 }}
           >
@@ -82,14 +82,75 @@ const AppLogo = () => {
           className="absolute w-full h-full"
           animate={{ rotate: 360 }}
           transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          style={{ width: "200%", height: "200%", top: "-50%", left: "-50%" }}
+          style={{ width: "160%", height: "160%", top: "-30%", left: "-30%" }}
         >
           <motion.div 
-            className="absolute top-[50%] left-[25%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
+            className="absolute top-[25%] left-[25%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
             style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))" }}
             whileHover={{ scale: 1.2 }}
           >
             <Cloud className="w-4 h-4 text-white" />
+          </motion.div>
+        </motion.div>
+
+        {/* Additional orbiting elements */}
+        <motion.div
+          className="absolute w-full h-full"
+          animate={{ rotate: -330 }}
+          transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+          style={{ width: "145%", height: "145%", top: "-22.5%", left: "-22.5%" }}
+        >
+          <motion.div 
+            className="absolute top-[60%] right-[25%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
+            style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))" }}
+            whileHover={{ scale: 1.2 }}
+          >
+            <Code className="w-4 h-4 text-white" />
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="absolute w-full h-full"
+          animate={{ rotate: 390 }}
+          transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
+          style={{ width: "155%", height: "155%", top: "-27.5%", left: "-27.5%" }}
+        >
+          <motion.div 
+            className="absolute bottom-[65%] right-[40%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
+            style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))" }}
+            whileHover={{ scale: 1.2 }}
+          >
+            <Zap className="w-4 h-4 text-white" />
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="absolute w-full h-full"
+          animate={{ rotate: -270 }}
+          transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+          style={{ width: "135%", height: "135%", top: "-17.5%", left: "-17.5%" }}
+        >
+          <motion.div 
+            className="absolute bottom-[30%] right-[60%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
+            style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))" }}
+            whileHover={{ scale: 1.2 }}
+          >
+            <Lock className="w-4 h-4 text-white" />
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="absolute w-full h-full"
+          animate={{ rotate: 300 }}
+          transition={{ duration: 33, repeat: Infinity, ease: "linear" }}
+          style={{ width: "165%", height: "165%", top: "-32.5%", left: "-32.5%" }}
+        >
+          <motion.div 
+            className="absolute top-[70%] left-[60%] w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md"
+            style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))" }}
+            whileHover={{ scale: 1.2 }}
+          >
+            <Server className="w-4 h-4 text-white" />
           </motion.div>
         </motion.div>
 
