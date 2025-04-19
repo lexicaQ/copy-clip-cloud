@@ -1,11 +1,10 @@
-
 import React from "react";
 import DocLayout from "./DocLayout";
 import { Code, FileCode, ArrowRight } from "lucide-react";
 
 const CustomIntegrations = () => {
   return (
-    <DocLayout>
+    <DocLayout title="Custom Integrations" icon={Code} backLink="/docs" backText="Back to Documentation">
       <div className="space-y-6">
         <h1 className="text-3xl font-bold">Custom Integrations</h1>
         <p className="text-gray-400">
