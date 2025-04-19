@@ -56,7 +56,7 @@ const AdvancedUsage = () => {
                   </ul>
                   <div className="mt-4 p-4 bg-black/30 rounded font-mono text-sm">
                     <p className="text-white mb-2">// Example: Smart filter for email addresses</p>
-                    <p className="text-white">[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{"{"}{2,}{"}"}</p>
+                    <p className="text-white">[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]&#123;2,&#125;</p>
                   </div>
                 </div>
               </div>
