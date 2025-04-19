@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
@@ -6,13 +5,14 @@ import Footer from "@/components/layout/Footer";
 import { 
   MessageSquare, 
   Mail, 
-  FileQuestion, 
+  FileText, 
   Headphones, 
   BookOpen, 
   Video,
   Clock,
   Users
 } from "lucide-react";
+import { ComingSoon } from "@/components/ui/coming-soon";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const SupportOption = ({ title, description, icon: Icon, link, linkText }) => (
@@ -106,7 +106,7 @@ const Support = () => {
             <SupportOption 
               title="Browse FAQs"
               description="Find quick answers to frequently asked questions in our knowledge base."
-              icon={FileQuestion}
+              icon={FileText}
               link="/features#faq"
               linkText="Go to FAQs"
             />
@@ -128,8 +128,13 @@ const Support = () => {
               title="Video Tutorials"
               description="Watch our video guides to optimally use CopyClipCloud."
               icon={Video}
-              link="/features"
-              linkText="Watch Videos"
+              link="/tutorials"
+              linkText={
+                <div className="flex items-center">
+                  <span className="mr-2">Watch Videos</span>
+                  <ComingSoon />
+                </div>
+              }
             />
           </div>
         </motion.div>
@@ -239,16 +244,19 @@ const Support = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="text-2xl font-bold mb-4">Give Feedback</h2>
+          <h2 className="text-2xl font-bold mb-4">Need More Information?</h2>
           <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
-            Your opinion matters to us. Let us know how we can improve CopyClipCloud.
+            Check our detailed documentation for in-depth guides and tutorials.
           </p>
-          <a 
-            href="/contact" 
-            className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
-          >
-            Send Feedback
-          </a>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a 
+              href="/docs" 
+              className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
+            >
+              <BookOpen className="w-4 h-4 mr-2" />
+              Browse Documentation
+            </a>
+          </div>
         </motion.div>
       </main>
 
