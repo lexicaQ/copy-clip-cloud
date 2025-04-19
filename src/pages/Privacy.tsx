@@ -38,10 +38,10 @@ const Privacy = () => {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">Ihre Privatsphäre ist uns wichtig</span>
+            <span className="text-gradient">Your Privacy Matters</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Wir haben CopyClipCloud von Grund auf mit strikten Datenschutzprinzipien entwickelt. Erfahren Sie, wie wir Ihre Daten schützen.
+            We've built CopyClipCloud from the ground up with strict privacy principles. Learn how we protect your data.
           </p>
         </motion.div>
 

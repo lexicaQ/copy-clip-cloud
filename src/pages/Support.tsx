@@ -73,11 +73,11 @@ const Support = () => {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">Wir sind für Sie da</span>
+            <span className="text-gradient">We're Here to Help</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Finden Sie Antworten, erhalten Sie Hilfe und teilen Sie Ihr Feedback mit uns.
-            Unser Supportteam steht Ihnen zur Verfügung.
+            Find answers, get support, and share your feedback with us.
+            Our support team is here for you.
           </p>
         </motion.div>
 

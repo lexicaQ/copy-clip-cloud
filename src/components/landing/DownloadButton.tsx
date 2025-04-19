@@ -76,7 +76,7 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
         <motion.button
           onClick={handleButtonClick}
           disabled={downloading}
-          className={`relative overflow-hidden rounded-xl ${
+          className={`relative overflow-hidden rounded-xl animate-float ${
             downloading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'
           }`}
           aria-label="Download App"
@@ -85,8 +85,13 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
         >
-          {/* Modern black/white gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/80 rounded-xl z-0" />
+          {/* Modern glass morphism gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-purple-500/20 to-blue-500/20 rounded-xl z-0" />
+          <div className="absolute inset-0 backdrop-blur-xl bg-black/50 rounded-xl z-0" />
+          
+          {/* Animated gradient border */}
+          <div className="absolute inset-0 rounded-xl z-0 bg-gradient-to-r from-purple-500/50 via-blue-500/50 to-purple-500/50 animate-gradient" />
+          <div className="absolute inset-[1px] rounded-xl z-0 bg-black/90" />
           
           {/* Dynamic border */}
           <motion.div 
