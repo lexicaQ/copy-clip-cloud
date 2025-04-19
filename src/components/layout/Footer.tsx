@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Clipboard, Github, Twitter, Instagram, Facebook, Mail, ArrowRight, Heart, ExternalLink, MapPin, Phone } from "lucide-react";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="border-t border-white/10 pt-20 pb-10 relative overflow-hidden">
@@ -106,6 +107,7 @@ const Footer = () => {
       </div>
     </footer>;
 };
+
 const SocialLink = ({
   icon: Icon,
   href,
@@ -114,23 +116,40 @@ const SocialLink = ({
   icon: React.ElementType;
   href: string;
   label: string;
-}) => <motion.a href={href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/5 hover:border-white/20" whileHover={{
-  scale: 1.1
-}} whileTap={{
-  scale: 0.95
-}} aria-label={label}>
-    <Icon className="w-5 h-5" />
-  </motion.a>;
+}) => (
+  <motion.a 
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all duration-300 relative overflow-hidden group border border-white/5 hover:border-white/20"
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.95 }}
+    aria-label={label}
+  >
+    <Icon className="w-5 h-5 relative z-10" />
+    <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out" />
+  </motion.a>
+);
+
 const FooterLink = ({
   children,
   to
 }: {
   children: React.ReactNode;
   to: string;
-}) => <li>
-    <Link to={to} className="text-gray-400 hover:text-white transition-colors text-sm flex items-center group">
-      <span className="group-hover:translate-x-1 transition-transform duration-300">{children}</span>
-      <ArrowRight className="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+}) => (
+  <li>
+    <Link 
+      to={to} 
+      className="text-gray-400 transition-all duration-300 group flex items-center hover:text-white relative"
+    >
+      <span className="relative">
+        {children}
+        <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-gradient-to-r from-white/60 to-transparent group-hover:w-full transition-all duration-300 ease-out" />
+      </span>
+      <ArrowRight className="w-3 h-3 ml-1 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
     </Link>
-  </li>;
+  </li>
+);
+
 export default Footer;

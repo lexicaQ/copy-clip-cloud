@@ -37,13 +37,18 @@ const Index = () => {
         >
           {/* Logo and Badge */}
           <AppLogo />
-          
+
           {/* Title and Description */}
           <AppTitle />
 
+          {/* Download Button - moved here */}
+          <div className="mt-12">
+            <DownloadButton />
+          </div>
+
           {/* Top Feature Highlights */}
           <motion.div 
-            className="mt-12 flex flex-wrap justify-center gap-4"
+            className="mt-16 flex flex-wrap justify-center gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
@@ -71,11 +76,6 @@ const Index = () => {
               </motion.div>
             ))}
           </motion.div>
-
-          {/* Download Button - added more spacing */}
-          <div className="mt-12">
-            <DownloadButton />
-          </div>
 
           {/* Features Grid */}
           <AppFeatures />
