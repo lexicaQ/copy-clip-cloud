@@ -1,3 +1,4 @@
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -20,12 +21,18 @@ import Careers from "./pages/Careers";
 import Press from "./pages/Press";
 import Partners from "./pages/Partners";
 import Documentation from "./pages/Documentation";
-import TutorialArticle from "./pages/TutorialArticle";
+import DocArticle from "./pages/DocArticle";
 import Status from "./pages/Status";
 import Blog from "./pages/Blog";
 import Help from "./pages/Help";
-import DocArticle from "./pages/DocArticle";
 import FAQ from "./pages/FAQ";
+
+// Documentation Subpages
+import InstallationGuide from "./pages/docs/InstallationGuide";
+import KeyboardShortcuts from "./pages/docs/KeyboardShortcuts";
+import FullGuide from "./pages/docs/FullGuide";
+import ApiDocumentation from "./pages/docs/ApiDocumentation";
+import BrowseAllArticles from "./pages/docs/BrowseAllArticles";
 
 const queryClient = new QueryClient();
 
@@ -44,7 +51,6 @@ const App = () => (
           <Route path="/support" element={<Support />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/tutorials" element={<Tutorials />} />
-          <Route path="/tutorials/:id" element={<TutorialArticle />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/roadmap" element={<Roadmap />} />
@@ -58,6 +64,14 @@ const App = () => (
           <Route path="/docs/:category/:slug" element={<DocArticle />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
+          
+          {/* Documentation Subpages */}
+          <Route path="/docs/installation-guide" element={<InstallationGuide />} />
+          <Route path="/docs/keyboard-shortcuts" element={<KeyboardShortcuts />} />
+          <Route path="/docs/full-guide" element={<FullGuide />} />
+          <Route path="/docs/api-documentation" element={<ApiDocumentation />} />
+          <Route path="/docs/browse-all-articles" element={<BrowseAllArticles />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
