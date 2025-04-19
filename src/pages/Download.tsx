@@ -5,17 +5,24 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import DownloadButton from "@/components/landing/DownloadButton";
 import { 
-  Download, 
+  Download as DownloadIcon, 
   Apple, 
   FileCheck, 
   Lock, 
   Cpu, 
   HardDrive,
   ShieldCheck,
-  Server
+  Server,
+  ArrowRight
 } from "lucide-react";
 
-const SystemRequirement = ({ icon: Icon, title, description }) => (
+interface SystemRequirementProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
+
+const SystemRequirement = ({ icon: Icon, title, description }: SystemRequirementProps) => (
   <div className="flex items-start">
     <div className="p-2 rounded-lg bg-white/10 mr-3 mt-1">
       <Icon className="w-5 h-5" />
@@ -27,7 +34,16 @@ const SystemRequirement = ({ icon: Icon, title, description }) => (
   </div>
 );
 
-const DownloadOption = ({ title, description, icon: Icon, primary = false, coming = false, beta = false }) => (
+interface DownloadOptionProps {
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  primary?: boolean;
+  coming?: boolean;
+  beta?: boolean;
+}
+
+const DownloadOption = ({ title, description, icon: Icon, primary = false, coming = false, beta = false }: DownloadOptionProps) => (
   <motion.div
     className={`glass-panel p-6 ${primary ? 'border-2 border-white/30' : ''} ${coming ? 'opacity-70' : ''}`}
     initial={{ opacity: 0, y: 20 }}
@@ -73,7 +89,7 @@ const DownloadOption = ({ title, description, icon: Icon, primary = false, comin
         href="#beta-download"
         className="w-full px-6 py-3 bg-blue-500/20 text-white rounded-full flex items-center justify-center hover:bg-blue-500/30 transition-all"
       >
-        <Download className="w-4 h-4 mr-2" />
+        <DownloadIcon className="w-4 h-4 mr-2" />
         <span>Download Beta</span>
       </a>
     ) : primary ? (
@@ -88,14 +104,14 @@ const DownloadOption = ({ title, description, icon: Icon, primary = false, comin
         href="#download-stable"
         className="w-full px-6 py-3 bg-white/10 text-white rounded-full flex items-center justify-center hover:bg-white/20 transition-all"
       >
-        <Download className="w-4 h-4 mr-2" />
+        <DownloadIcon className="w-4 h-4 mr-2" />
         <span>Download</span>
       </a>
     )}
   </motion.div>
 );
 
-const Download = () => {
+const DownloadPage = () => {
   return (
     <div className="relative min-h-screen">
       <Header />
@@ -143,7 +159,7 @@ const Download = () => {
             <DownloadOption 
               title="Windows"
               description="Coming soon to Windows with cross-platform syncing capabilities."
-              icon={Download}
+              icon={DownloadIcon}
               coming={true}
             />
             <DownloadOption 
@@ -155,7 +171,7 @@ const Download = () => {
             <DownloadOption 
               title="Beta Channel"
               description="Get early access to new features and help us improve with your feedback."
-              icon={Download}
+              icon={DownloadIcon}
               beta={true}
             />
           </div>
@@ -304,4 +320,4 @@ const Download = () => {
   );
 };
 
-export default Download;
+export default DownloadPage;
