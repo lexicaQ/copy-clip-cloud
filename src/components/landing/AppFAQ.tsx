@@ -1,8 +1,8 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Info, HelpCircle, ShieldCheck, Settings, Tag, Zap, Search, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const faqs = [
   {
@@ -57,25 +57,24 @@ const faqs = [
 
 const AppFAQ = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState("alle");
+  const [activeCategory, setActiveCategory] = useState("all");
   
   const categories = [
-    { id: "alle", label: "Alle" },
-    { id: "allgemein", label: "Allgemein" },
-    { id: "sicherheit", label: "Sicherheit" },
-    { id: "funktionen", label: "Funktionen" },
-    { id: "kompatibilität", label: "Kompatibilität" },
-    { id: "preise", label: "Preise" },
-    { id: "nutzung", label: "Nutzung" }
+    { id: "all", label: "All" },
+    { id: "general", label: "General" },
+    { id: "security", label: "Security" },
+    { id: "features", label: "Features" },
+    { id: "compatibility", label: "Compatibility" },
+    { id: "pricing", label: "Pricing" },
+    { id: "usage", label: "Usage" }
   ];
   
-  // Filter FAQs based on search term and category
   const filteredFaqs = faqs.filter(faq => {
     const matchesSearch = searchTerm === "" || 
       faq.question.toLowerCase().includes(searchTerm.toLowerCase()) || 
       faq.answer.toLowerCase().includes(searchTerm.toLowerCase());
       
-    const matchesCategory = activeCategory === "alle" || faq.category === activeCategory;
+    const matchesCategory = activeCategory === "all" || faq.category === activeCategory;
     
     return matchesSearch && matchesCategory;
   });
@@ -92,7 +91,6 @@ const AppFAQ = () => {
         <div className="w-[800px] h-[500px] rounded-full bg-indigo-500/5 blur-[150px] opacity-30"></div>
       </div>
       
-      {/* Header */}
       <motion.div 
         className="text-center mb-12"
         initial={{ opacity: 0 }}
@@ -107,7 +105,7 @@ const AppFAQ = () => {
           transition={{ delay: 0.2 }}
         >
           <HelpCircle className="w-4 h-4 mr-2" />
-          Häufig gestellte Fragen
+          Frequently Asked Questions
         </motion.div>
         
         <motion.h2 
@@ -117,7 +115,7 @@ const AppFAQ = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          <span className="text-gradient">Haben Sie Fragen?</span>
+          <span className="text-gradient">Have Questions?</span>
         </motion.h2>
         
         <motion.p 
@@ -127,11 +125,10 @@ const AppFAQ = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          Hier finden Sie Antworten auf die häufigsten Fragen zu CopyClipCloud
+          Find answers to common questions about CopyClipCloud
         </motion.p>
       </motion.div>
       
-      {/* Search and filters */}
       <div className="max-w-3xl mx-auto mb-10">
         <motion.div 
           className="mb-6 relative"
@@ -146,7 +143,7 @@ const AppFAQ = () => {
           <input
             type="text"
             className="pl-10 pr-4 py-3 w-full rounded-xl glass-panel bg-white/5 border border-white/10 focus:border-white/30 focus:ring-0 focus:outline-none transition-colors"
-            placeholder="Suchen Sie nach Fragen oder Stichworten..."
+            placeholder="Search for questions or keywords..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -188,7 +185,6 @@ const AppFAQ = () => {
         </motion.div>
       </div>
 
-      {/* FAQ accordion */}
       <motion.div 
         className="max-w-3xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
@@ -239,15 +235,14 @@ const AppFAQ = () => {
             transition={{ duration: 0.3 }}
           >
             <CheckCircle className="w-12 h-12 mx-auto mb-4 text-white/30" />
-            <p className="text-lg font-medium mb-2">Keine Ergebnisse gefunden</p>
+            <p className="text-lg font-medium mb-2">No results found</p>
             <p className="text-gray-400">
-              Versuchen Sie es mit einem anderen Suchbegriff oder Filter
+              Try searching with a different term or filter
             </p>
           </motion.div>
         )}
       </motion.div>
       
-      {/* Contact section */}
       <motion.div
         className="text-center mt-14"
         initial={{ opacity: 0, y: 20 }}
@@ -255,17 +250,17 @@ const AppFAQ = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
       >
-        <h3 className="text-xl font-medium mb-2">Keine Antwort gefunden?</h3>
+        <h3 className="text-xl font-medium mb-2">Couldn't find your answer?</h3>
         <p className="text-gray-400 mb-6">
-          Unser Support-Team steht Ihnen gerne zur Verfügung
+          Our support team is here to help
         </p>
-        <a 
-          href="/contact" 
+        <Link 
+          to="/contact" 
           className="px-6 py-3 glass-panel hover:bg-white/10 rounded-lg inline-flex items-center transition-colors"
         >
           <HelpCircle className="w-5 h-5 mr-2" />
-          Kontakt aufnehmen
-        </a>
+          Contact Support
+        </Link>
       </motion.div>
     </motion.div>
   );
