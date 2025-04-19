@@ -12,6 +12,11 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Shield, Sparkles, Zap } from "lucide-react";
 import HeroBackground from "@/components/landing/HeroBackground";
+import EnhancedBackground from "@/components/landing/EnhancedBackground";
+import ValueProposition from "@/components/landing/ValueProposition";
+import AppWalkthrough from "@/components/landing/AppWalkthrough";
+import UserExamples from "@/components/landing/UserExamples";
+import FeaturePreview from "@/components/landing/FeaturePreview";
 
 const Index = () => {
   return (
@@ -24,36 +29,8 @@ const Index = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <HeroBackground />
-        
-        {/* Background effects similar to the support page */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90" />
-          <motion.div
-            className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px]"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <motion.div
-            className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px]"
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.4, 0.2, 0.4],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-        </div>
+        {/* Ersetzen des alten Hintergrunds durch den verbesserten Hintergrund */}
+        <EnhancedBackground />
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -77,9 +54,9 @@ const Index = () => {
             transition={{ delay: 0.6 }}
           >
             {[
-              { icon: Sparkles, title: "AI Powered", desc: "Smart organization" },
-              { icon: Shield, title: "Encrypted", desc: "End-to-end security" },
-              { icon: Zap, title: "Lightning Fast", desc: "Optimized performance" }
+              { icon: Sparkles, title: "KI gestützt", desc: "Intelligente Organisation" },
+              { icon: Shield, title: "Verschlüsselt", desc: "Ende-zu-Ende Sicherheit" },
+              { icon: Zap, title: "Blitzschnell", desc: "Optimierte Leistung" }
             ].map((feature, i) => (
               <motion.div 
                 key={i}
@@ -101,12 +78,29 @@ const Index = () => {
           </motion.div>
         </motion.div>
 
-        {/* Features Grid */}
-        <AppFeatures />
-        
-        {/* How It Works */}
+        {/* Neue Value Proposition-Sektion */}
         <div className="mt-24">
-          <HowItWorks />
+          <ValueProposition />
+        </div>
+
+        {/* Features Grid */}
+        <div className="mt-12">
+          <AppFeatures />
+        </div>
+        
+        {/* Neue Feature Preview-Sektion */}
+        <div className="mt-12">
+          <FeaturePreview />
+        </div>
+        
+        {/* How It Works - App-Walkthrough ersetzt durch neue Komponente */}
+        <div className="mt-12">
+          <AppWalkthrough />
+        </div>
+        
+        {/* Neue User Examples-Sektion */}
+        <div className="mt-12">
+          <UserExamples />
         </div>
         
         {/* Stats Dashboard */}

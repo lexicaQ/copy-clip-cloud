@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -348,4 +347,94 @@
     transform: translateX(100%);
     opacity: 0;
   }
+}
+
+@layer utilities {
+  /* Hellere, weichere Farbverläufe */
+  .text-gradient-soft {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(200, 200, 200, 0.9));
+  }
+  
+  /* Weichere Glaspanels für die neuen Komponenten */
+  .glass-panel-soft {
+    @apply backdrop-blur-xl border border-white/10 rounded-xl shadow-lg transition-all duration-300;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  }
+  
+  /* Verbesserte Hintergründe mit helleren Akzenten */
+  .bg-gradient-soft {
+    background: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  }
+  
+  /* Weich beleuchtete Container */
+  .soft-glow {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.07);
+  }
+  
+  /* Verbesserte Hover-Effekte mit weißen Akzenten */
+  .hover-lift {
+    transition: all 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -5px rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Soft-Edge Divider */
+  .soft-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+  }
+  
+  /* Weich verschwommene Kreise für Hintergrundelemente */
+  .blur-circle {
+    @apply absolute rounded-full opacity-10;
+    filter: blur(80px);
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+  }
+}
+
+/* Verbesserte Animationen für weichere Übergänge */
+@keyframes soft-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-15px) translateX(5px);
+  }
+}
+
+@keyframes soft-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes soft-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Weitere Animationen */
+.soft-float {
+  animation: soft-float 6s ease-in-out infinite;
+}
+
+.soft-pulse {
+  animation: soft-pulse 3s ease-in-out infinite;
+}
+
+.soft-glow-anim {
+  animation: soft-glow 4s ease-in-out infinite;
 }
