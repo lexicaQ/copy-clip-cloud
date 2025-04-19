@@ -8,9 +8,8 @@ import AppStats from "@/components/landing/AppStats";
 import AppFAQ from "@/components/landing/AppFAQ";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Shield, Sparkles, Zap } from "lucide-react";
-import BackgroundEffects from "@/components/landing/BackgroundEffects";
-import EnhancedBackground from "@/components/landing/EnhancedBackground";
+import { Shield, Sparkles, Zap, Check, Code, Users } from "lucide-react";
+import SharedBackground from "@/components/layout/SharedBackground";
 import ValueProposition from "@/components/landing/ValueProposition";
 import AppWalkthrough from "@/components/landing/AppWalkthrough";
 import UserExamples from "@/components/landing/UserExamples";
@@ -21,8 +20,8 @@ const Index = () => {
     <div className="relative min-h-screen">
       <Header />
       
-      {/* Enhanced background effects */}
-      <BackgroundEffects />
+      {/* Use shared background component */}
+      <SharedBackground />
       
       <motion.div 
         className="max-w-7xl mx-auto px-4 pt-20 pb-24"
@@ -76,14 +75,82 @@ const Index = () => {
           </motion.div>
         </motion.div>
 
-        {/* Value Proposition */}
+        {/* Enhanced Feature Highlights */}
         <motion.div 
-          className="mt-32"
+          className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          {[
+            { icon: Sparkles, title: "AI Powered", desc: "Intelligent Organization", highlight: "Neural processing for smart content management" },
+            { icon: Shield, title: "Encrypted", desc: "End-to-End Security", highlight: "Military-grade encryption protocols" },
+            { icon: Zap, title: "Lightning Fast", desc: "Optimized Performance", highlight: "Instant sync across all devices" }
+          ].map((feature, i) => (
+            <motion.div 
+              key={i}
+              className="glass-panel p-8 backdrop-blur-md flex flex-col items-center text-center"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 + (i * 0.1) }}
+              whileHover={{ y: -5 }}
+            >
+              <div className="p-4 rounded-2xl bg-white/10 mb-6">
+                <feature.icon className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <p className="text-gray-400 mb-4">{feature.desc}</p>
+              <p className="text-sm text-gray-500">{feature.highlight}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Value Proposition with increased spacing */}
+        <motion.div className="mt-40">
+          <ValueProposition />
+        </motion.div>
+
+        {/* New Section: Key Benefits */}
+        <motion.div 
+          className="mt-40"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          <ValueProposition />
+          <h2 className="text-3xl font-bold text-center mb-16 text-gradient">Why Choose Our Solution</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {[
+              {
+                icon: Code,
+                title: "Developer Friendly",
+                description: "Built with modern technologies and extensive API support for seamless integration."
+              },
+              {
+                icon: Users,
+                title: "Team Collaboration",
+                description: "Real-time synchronization and sharing features for effective team coordination."
+              }
+            ].map((benefit, i) => (
+              <motion.div
+                key={i}
+                className="glass-panel p-8"
+                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+              >
+                <div className="flex items-start gap-6">
+                  <div className="p-3 rounded-lg bg-white/10">
+                    <benefit.icon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
+                    <p className="text-gray-400 leading-relaxed">{benefit.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
 
         {/* Feature Preview */}
@@ -98,7 +165,7 @@ const Index = () => {
 
         {/* Key Features Grid */}
         <motion.div 
-          className="mt-32 mb-48" // Increased bottom margin
+          className="mt-40" 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -106,9 +173,9 @@ const Index = () => {
           <AppFeatures />
         </motion.div>
 
-        {/* App Walkthrough with improved typography */}
+        {/* App Walkthrough with increased spacing */}
         <motion.div 
-          className="mt-32 mb-48" // Increased spacing
+          className="mt-40"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -118,7 +185,7 @@ const Index = () => {
 
         {/* User Examples */}
         <motion.div 
-          className="mt-32 mb-48" // Increased spacing
+          className="mt-40" 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -128,7 +195,7 @@ const Index = () => {
 
         {/* Statistics Dashboard with improved contrast */}
         <motion.div 
-          className="mt-32 mb-48" // Increased spacing
+          className="mt-40" 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -138,7 +205,7 @@ const Index = () => {
 
         {/* Testimonials with better readability */}
         <motion.div 
-          className="mt-32 mb-48" // Increased spacing
+          className="mt-40" 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -148,7 +215,7 @@ const Index = () => {
 
         {/* FAQ Section with improved typography */}
         <motion.div 
-          className="mt-32"
+          className="mt-40"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}

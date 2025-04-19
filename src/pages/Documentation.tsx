@@ -1,8 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import SharedBackground from "@/components/layout/SharedBackground";
 import { 
   BookOpen, 
   Search, 
@@ -178,7 +176,8 @@ const PopularArticle = ({ title, route, index }) => (
 
 const Documentation = () => {
   return (
-    <div className="relative min-h-screen">
+    <div className="min-h-screen bg-background">
+      <SharedBackground />
       <Header />
 
       <main className="pt-32 pb-24 px-4 max-w-7xl mx-auto">

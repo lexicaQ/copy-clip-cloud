@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SharedBackground from "@/components/layout/SharedBackground";
 import InteractiveBackground from "@/components/landing/InteractiveBackground";
 import FeatureCard from "@/components/features/FeatureCard";
 import FeatureShowcase from "@/components/features/FeatureShowcase";
@@ -11,15 +12,9 @@ import { featureCards, showcaseFeatures } from "@/components/features/FeaturesDa
 import { ComingSoon } from "@/components/ui/coming-soon";
 
 const Features = () => {
-  // Set some features as "coming soon" for demonstration
-  const enhancedFeatureCards = featureCards.map((feature, index) => ({
-    ...feature,
-    comingSoon: index % 3 === 2 // Every third feature will be marked as coming soon
-  }));
-
   return (
     <div className="min-h-screen bg-background">
-      <InteractiveBackground />
+      <SharedBackground />
       <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
