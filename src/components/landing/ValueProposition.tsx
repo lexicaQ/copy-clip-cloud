@@ -7,18 +7,18 @@ const ValueProposition = () => {
   const benefits = [
     {
       icon: Shield,
-      title: "Sicher & Privat",
-      description: "End-to-End-Verschlüsselung für maximale Sicherheit deiner Daten"
+      title: "Secure & Private",
+      description: "End-to-end encryption for maximum data security"
     },
     {
       icon: Sparkles,
-      title: "KI-gestützte Organisation",
-      description: "Intelligente Kategorisierung und Sortierung deiner Inhalte"
+      title: "AI-powered Organization",
+      description: "Intelligent categorization and sorting of your content"
     },
     {
       icon: Zap,
-      title: "Blitzschnelle Synchronisation",
-      description: "Sofortige Verfügbarkeit auf allen deinen Geräten"
+      title: "Lightning-fast Sync",
+      description: "Instant availability across all your devices"
     }
   ];
 
@@ -51,9 +51,9 @@ const ValueProposition = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              Revolutioniere <br/>
-              <span className="text-gradient">deine Produktivität</span> <br/>
-              mit intelligenter Clipboard-Verwaltung
+              Revolutionize <br/>
+              <span className="text-gradient">Your Productivity</span> <br/>
+              With Intelligent Clipboard Management
             </motion.h2>
             
             <motion.p 
@@ -63,7 +63,7 @@ const ValueProposition = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
             >
-              CopyClipCloud verbessert deinen Workflow durch nahtlose Gerätesynchronisation und intelligente Inhaltsorganisation. Spare Zeit und arbeite effizienter.
+              CopyClipCloud enhances your workflow through seamless device synchronization and intelligent content organization. Save time and work more efficiently.
             </motion.p>
             
             <motion.div 
@@ -74,10 +74,10 @@ const ValueProposition = () => {
               transition={{ delay: 0.4 }}
             >
               {[
-                "Reduziere Zeit beim Wechseln zwischen Geräten",
-                "Behalte wichtige Inhalte immer griffbereit",
-                "Organisiere Clipboard-Inhalte automatisch",
-                "Finde schnell, was du brauchst"
+                "Reduce time switching between devices",
+                "Keep important content always at your fingertips",
+                "Organize clipboard contents automatically",
+                "Find what you need quickly"
               ].map((item, index) => (
                 <motion.div 
                   key={index} 
