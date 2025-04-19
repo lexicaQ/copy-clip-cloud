@@ -1,3 +1,4 @@
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -55,6 +56,10 @@ import EndToEndEncryption from "./pages/features/EndToEndEncryption";
 import SmartOrganizationFeature from "./pages/features/SmartOrganization";
 import LightningFast from "./pages/features/LightningFast";
 import SmartSearch from "./pages/features/SmartSearch";
+import CodeSnippets from "./pages/features/CodeSnippets";
+import CustomRules from "./pages/features/CustomRules";
+import HistoryTimeline from "./pages/features/HistoryTimeline";
+import TeamCollaboration from "./pages/features/TeamCollaboration";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +100,10 @@ const App = () => (
           <Route path="/features/smart-organization" element={<SmartOrganizationFeature />} />
           <Route path="/features/lightning-fast" element={<LightningFast />} />
           <Route path="/features/smart-search" element={<SmartSearch />} />
+          <Route path="/features/code-snippets" element={<CodeSnippets />} />
+          <Route path="/features/custom-rules" element={<CustomRules />} />
+          <Route path="/features/history-timeline" element={<HistoryTimeline />} />
+          <Route path="/features/team-collaboration" element={<TeamCollaboration />} />
           
           {/* Documentation sub-pages */}
           <Route path="/docs/getting-started" element={<GettingStarted />} />

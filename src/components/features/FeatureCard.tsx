@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Timer, Ban } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface FeatureCardProps {
   title: string;
@@ -10,6 +11,7 @@ interface FeatureCardProps {
   delay?: number;
   color?: string;
   comingSoon?: boolean;
+  link?: string;
 }
 
 const FeatureCard = ({ 
@@ -18,22 +20,16 @@ const FeatureCard = ({
   icon: Icon, 
   delay = 0, 
   color = "from-white/10 to-white/5",
-  comingSoon = false
+  comingSoon = false,
+  link
 }: FeatureCardProps) => {
   const cardVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0, transition: { duration: 0.5, delay } }
   };
 
-  return (
-    <motion.div
-      className="backdrop-blur-xl bg-white/[0.03] border border-white/10 p-8 rounded-xl h-full relative overflow-hidden group hover:border-white/20 transition-all duration-300"
-      variants={cardVariants}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true }}
-      whileHover={{ y: -5 }}
-    >
+  const cardContent = (
+    <>
       <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
       
       {/* Metro-style corner decoration */}
@@ -85,6 +81,22 @@ const FeatureCard = ({
           ease: "easeInOut"
         }}
       />
+    </>
+  );
+
+  return (
+    <motion.div
+      className="backdrop-blur-xl bg-white/[0.03] border border-white/10 p-8 rounded-xl h-full relative overflow-hidden group hover:border-white/20 transition-all duration-300"
+      variants={cardVariants}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+      whileHover={{ y: -5 }}
+    >
+      {link ? (
+        <Link to={link} className="absolute inset-0 z-10" aria-label={`Learn more about ${title}`} />
+      ) : null}
+      {cardContent}
     </motion.div>
   );
 };

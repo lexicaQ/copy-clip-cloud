@@ -1,3 +1,4 @@
+
 import { Cloud, Shield, Zap, Search, Sparkles, Code, Settings, Clock, Users } from "lucide-react";
 
 export const featureCards = [
@@ -41,28 +42,32 @@ export const featureCards = [
     description: "Special handling for code with syntax highlighting and automatic language detection.",
     icon: Code,
     color: "from-red-500/10 to-red-600/5",
-    comingSoon: true
+    comingSoon: true,
+    link: "/features/code-snippets"
   },
   {
     title: "Custom Rules",
     description: "Create powerful automation rules to handle specific types of clipboard content.",
     icon: Settings,
     color: "from-indigo-500/10 to-indigo-600/5",
-    comingSoon: true
+    comingSoon: true,
+    link: "/features/custom-rules"
   },
   {
     title: "History Timeline",
     description: "Access your complete clipboard history with our intuitive timeline interface.",
     icon: Clock,
     color: "from-orange-500/10 to-orange-600/5",
-    comingSoon: true
+    comingSoon: true,
+    link: "/features/history-timeline"
   },
   {
     title: "Team Collaboration",
     description: "Share clipboard items with team members securely with fine-grained access controls.",
     icon: Users,
     color: "from-teal-500/10 to-teal-600/5",
-    comingSoon: true
+    comingSoon: true,
+    link: "/features/team-collaboration"
   }
 ];
 
