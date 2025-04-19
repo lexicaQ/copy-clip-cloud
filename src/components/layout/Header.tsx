@@ -1,17 +1,17 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, Loader } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFileDownload } from "@/hooks/useFileDownload";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { handleDownload } = useFileDownload();
   
-  // Enhanced scroll detection with smoother transition trigger
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -21,10 +21,20 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
+    setIsLoading(false);
   }, [location.pathname]);
+
+  const handleNavigation = (path: string) => {
+    setIsLoading(true);
+    setIsMenuOpen(false);
+    navigate(path);
+    
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  };
 
   return (
     <>
@@ -39,7 +49,6 @@ const Header = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo with enhanced hover animation */}
           <Link to="/" className="flex items-center space-x-3 group">
             <motion.div 
               className="w-10 h-10 rounded-full flex items-center justify-center border border-white/20 overflow-hidden group-hover:border-white/40 transition-all duration-300"
@@ -62,54 +71,15 @@ const Header = () => {
             </motion.span>
           </Link>
           
-          {/* Desktop navigation with modern hover effects */}
           <nav className="hidden md:flex items-center space-x-10">
-            <NavLink to="/" icon={Home}>Home</NavLink>
-            <NavLink to="/features" icon={FileText}>Features</NavLink>
-            <NavLink to="/pricing" icon={FileText}>Pricing</NavLink>
-            <NavLink to="/about" icon={Clipboard}>About</NavLink>
-            <NavLink to="/contact" icon={MessageSquare}>Contact</NavLink>
-            
-            {/* Enhanced dropdown with improved styling and black background */}
-            <div className="relative group">
-              <motion.button 
-                className="flex items-center text-gray-300 hover:text-white transition-colors"
-                whileHover={{ y: -2 }}
-                transition={{ duration: 0.2 }}
-              >
-                Support
-                <motion.span 
-                  className="ml-1.5 inline-block"
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 0 }}
-                  whileHover={{ rotate: 180 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                >
-                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </motion.span>
-              </motion.button>
-              
-              <div className="absolute right-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
-                <motion.div 
-                  className="py-3 rounded-xl shadow-2xl overflow-hidden"
-                  style={{
-                    background: "rgba(0, 0, 0, 0.95)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)"
-                  }}
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <DropdownLink to="/support" icon={MessageSquare}>Support Center</DropdownLink>
-                  <DropdownLink to="/privacy" icon={Shield}>Privacy</DropdownLink>
-                </motion.div>
-              </div>
-            </div>
+            <NavLink to="/" icon={Home} onClick={() => handleNavigation("/")}>Home</NavLink>
+            <NavLink to="/features" icon={FileText} onClick={() => handleNavigation("/features")}>Features</NavLink>
+            <NavLink to="/pricing" icon={FileText} onClick={() => handleNavigation("/pricing")}>Pricing</NavLink>
+            <NavLink to="/about" icon={Clipboard} onClick={() => handleNavigation("/about")}>About</NavLink>
+            <NavLink to="/contact" icon={MessageSquare} onClick={() => handleNavigation("/contact")}>Contact</NavLink>
+            <NavLink to="/support" icon={MessageSquare} onClick={() => handleNavigation("/support")}>Support</NavLink>
           </nav>
           
-          {/* Enhanced download button */}
           <div className="hidden md:flex items-center">
             <motion.button 
               onClick={handleDownload}
@@ -124,7 +94,6 @@ const Header = () => {
               }}
               whileTap={{ scale: 0.95 }}
             >
-              {/* Animated background effect */}
               <motion.div 
                 className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0"
                 animate={{
@@ -142,7 +111,6 @@ const Header = () => {
             </motion.button>
           </div>
           
-          {/* Mobile menu button with animation */}
           <motion.button 
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white backdrop-blur-md"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -176,7 +144,24 @@ const Header = () => {
         </div>
       </motion.header>
       
-      {/* Enhanced mobile menu with animations */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            >
+              <Loader className="w-8 h-8 text-white" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
@@ -188,11 +173,12 @@ const Header = () => {
           >
             <div className="p-6 pt-8">
               <div className="space-y-2">
-                <MobileNavLink to="/" icon={Home}>Home</MobileNavLink>
-                <MobileNavLink to="/features" icon={FileText}>Features</MobileNavLink>
-                <MobileNavLink to="/pricing" icon={FileText}>Pricing</MobileNavLink>
-                <MobileNavLink to="/about" icon={Clipboard}>About</MobileNavLink>
-                <MobileNavLink to="/contact" icon={MessageSquare}>Contact</MobileNavLink>
+                <MobileNavLink to="/" icon={Home} onClick={() => handleNavigation("/")}>Home</MobileNavLink>
+                <MobileNavLink to="/features" icon={FileText} onClick={() => handleNavigation("/features")}>Features</MobileNavLink>
+                <MobileNavLink to="/pricing" icon={FileText} onClick={() => handleNavigation("/pricing")}>Pricing</MobileNavLink>
+                <MobileNavLink to="/about" icon={Clipboard} onClick={() => handleNavigation("/about")}>About</MobileNavLink>
+                <MobileNavLink to="/contact" icon={MessageSquare} onClick={() => handleNavigation("/contact")}>Contact</MobileNavLink>
+                <MobileNavLink to="/support" icon={MessageSquare} onClick={() => handleNavigation("/support")}>Support</MobileNavLink>
                 
                 <div className="pt-4 mt-4 border-t border-white/10">
                   <p className="text-gray-400 mb-3 text-sm font-medium pl-2">Support</p>
@@ -221,14 +207,13 @@ const Header = () => {
   );
 };
 
-// Enhanced NavLink component with smoother animations
-const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: string; icon: React.ElementType }) => {
+const NavLink = ({ children, to, icon: Icon, onClick }: { children: React.ReactNode; to: string; icon: React.ElementType; onClick?: () => void }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
   
   return (
-    <Link 
-      to={to} 
+    <button 
+      onClick={onClick}
       className="relative group flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
     >
       <Icon className="w-4 h-4 mr-1 group-hover:rotate-3 transition-transform duration-300" />
@@ -249,25 +234,11 @@ const NavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: 
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
-    </Link>
+    </button>
   );
 };
 
-// Enhanced DropdownLink component
-const DropdownLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: string; icon: React.ElementType }) => (
-  <Link 
-    to={to} 
-    className="flex items-center px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all"
-  >
-    <Icon className="w-4 h-4 mr-2" />
-    <motion.span whileHover={{ x: 2 }} transition={{ duration: 0.2 }}>
-      {children}
-    </motion.span>
-  </Link>
-);
-
-// Enhanced MobileNavLink component with better animations
-const MobileNavLink = ({ children, to, icon: Icon }: { children: React.ReactNode; to: string; icon: React.ElementType }) => {
+const MobileNavLink = ({ children, to, icon: Icon, onClick }: { children: React.ReactNode; to: string; icon: React.ElementType; onClick?: () => void }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
   
@@ -277,9 +248,9 @@ const MobileNavLink = ({ children, to, icon: Icon }: { children: React.ReactNode
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <Link 
-        to={to} 
-        className={`flex items-center space-x-3 text-base p-2 rounded-xl transition-all ${
+      <button 
+        onClick={onClick}
+        className={`flex items-center space-x-3 text-base p-2 rounded-xl transition-all w-full ${
           isActive 
             ? 'bg-white/10 text-white' 
             : 'text-gray-300 hover:bg-white/5 hover:text-white'
@@ -295,7 +266,7 @@ const MobileNavLink = ({ children, to, icon: Icon }: { children: React.ReactNode
           <Icon className="w-5 h-5" />
         </motion.div>
         <span>{children}</span>
-      </Link>
+      </button>
     </motion.div>
   );
 };
