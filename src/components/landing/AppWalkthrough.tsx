@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Laptop, Smartphone, ArrowRight } from "lucide-react";
@@ -6,26 +5,26 @@ import { Laptop, Smartphone, ArrowRight } from "lucide-react";
 const AppWalkthrough = () => {
   const steps = [
     {
-      title: "Installieren",
-      description: "Installiere CopyClipCloud auf all deinen Apple-Geräten",
+      title: "Install",
+      description: "Install CopyClipCloud on all your Apple devices",
       icon: Laptop,
       color: "bg-white/10",
     },
     {
-      title: "Kopieren",
-      description: "Kopiere Inhalte auf einem beliebigen Gerät",
+      title: "Copy",
+      description: "Copy content on any device",
       icon: Smartphone,
       color: "bg-white/10",
     },
     {
-      title: "Synchronisieren",
-      description: "Die Inhalte werden automatisch auf allen Geräten synchronisiert",
+      title: "Sync",
+      description: "Content automatically syncs across all devices",
       icon: ArrowRight,
       color: "bg-white/10",
     },
     {
-      title: "Einfügen",
-      description: "Füge die Inhalte auf jedem deiner Geräte ein",
+      title: "Paste",
+      description: "Paste content on any of your devices",
       icon: Laptop,
       color: "bg-white/10",
     },
@@ -51,7 +50,7 @@ const AppWalkthrough = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
-          So einfach funktioniert's
+          How it Works
         </motion.h2>
         <motion.p 
           className="text-gray-400 max-w-2xl mx-auto"
@@ -60,7 +59,7 @@ const AppWalkthrough = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          In nur wenigen Schritten zu einer nahtlosen Clipboard-Erfahrung
+          Just a few steps to a seamless clipboard experience
         </motion.p>
       </div>
 
@@ -108,7 +107,7 @@ const AppWalkthrough = () => {
           className="btn-modern inline-flex items-center gap-2"
           whileHover={{ y: -2, boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }}
         >
-          Jetzt starten <ArrowRight className="w-4 h-4" />
+          Get Started <ArrowRight className="w-4 h-4" />
         </motion.button>
       </motion.div>
     </motion.div>

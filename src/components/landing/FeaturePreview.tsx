@@ -31,7 +31,7 @@ const FeaturePreview = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            KI-gestützte Organisation
+            AI-Powered Organization
           </motion.h2>
           
           <motion.p 
@@ -41,7 +41,7 @@ const FeaturePreview = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            CopyClipCloud verwendet künstliche Intelligenz, um deine Clipboard-Inhalte automatisch zu kategorisieren und zu organisieren. Texte, Bilder, Links und Code-Snippets werden intelligent gruppiert und sind leicht auffindbar.
+            CopyClipCloud uses artificial intelligence to automatically categorize and organize your clipboard contents. Texts, images, links, and code snippets are intelligently grouped and easily searchable.
           </motion.p>
           
           <motion.div 
@@ -52,10 +52,10 @@ const FeaturePreview = () => {
             transition={{ delay: 0.4 }}
           >
             {[
-              "Automatische Erkennung von Inhaltstypen",
-              "Kontextbezogene Gruppierung zusammengehöriger Elemente",
-              "Intelligente Tagging-Vorschläge",
-              "Personalisierte Organisation nach deinem Nutzungsverhalten"
+              "Automatic content type detection",
+              "Context-aware grouping of related items",
+              "Intelligent tagging suggestions",
+              "Personalized organization based on usage patterns"
             ].map((item, index) => (
               <motion.div 
                 key={index} 
@@ -79,7 +79,7 @@ const FeaturePreview = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.7 }}
           >
-            Funktion entdecken <ArrowRight className="w-4 h-4" />
+            Explore Feature <ArrowRight className="w-4 h-4" />
           </motion.button>
         </motion.div>
         
@@ -91,7 +91,7 @@ const FeaturePreview = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="aspect-video rounded-xl overflow-hidden backdrop-blur-lg bg-white/[0.03] border border-white/10 shadow-xl relative">
-            {/* Stilisierte UI-Vorschau */}
+            {/* Enhanced UI Preview */}
             <div className="absolute inset-0 p-6">
               <div className="w-full h-full rounded-lg border border-white/10 overflow-hidden flex flex-col">
                 {/* UI Header */}
@@ -104,24 +104,54 @@ const FeaturePreview = () => {
                   <div className="flex-1 text-xs text-white/50 text-center">CopyClipCloud</div>
                 </div>
                 
-                {/* UI Content */}
+                {/* Enhanced Content Preview */}
                 <div className="flex-1 flex">
-                  {/* Sidebar */}
+                  {/* Smart Categories Sidebar */}
                   <div className="w-1/4 border-r border-white/10 p-3 space-y-2">
-                    {[...Array(6)].map((_, i) => (
-                      <div key={i} className="h-6 bg-white/5 rounded-md"></div>
+                    {[
+                      "Recent Items",
+                      "Code Snippets",
+                      "Text Notes",
+                      "Images",
+                      "Links",
+                      "Documents"
+                    ].map((category, i) => (
+                      <div key={i} className={`h-6 rounded-md flex items-center px-2 text-xs ${i === 1 ? 'bg-white/10 text-white' : 'text-white/50'}`}>
+                        {category}
+                      </div>
                     ))}
                   </div>
                   
-                  {/* Main content */}
+                  {/* Main Content Area */}
                   <div className="flex-1 p-3">
+                    {/* Code Snippets Preview */}
                     <div className="grid grid-cols-2 gap-3">
-                      {[...Array(6)].map((_, i) => (
-                        <div key={i} className="h-20 bg-white/5 rounded-md p-2 flex flex-col justify-between">
-                          <div className="h-2 w-2/3 bg-white/10 rounded-sm"></div>
-                          <div className="h-10 bg-white/10 rounded-sm"></div>
+                      <div className="h-24 bg-white/5 rounded-md p-2 flex flex-col justify-between">
+                        <div className="text-xs text-white/70">React Component</div>
+                        <div className="text-[10px] font-mono text-white/50 overflow-hidden">
+                          const Button = () => {
+                            return <button>Click</button>
+                          }
                         </div>
-                      ))}
+                      </div>
+                      <div className="h-24 bg-white/5 rounded-md p-2 flex flex-col justify-between">
+                        <div className="text-xs text-white/70">CSS Snippet</div>
+                        <div className="text-[10px] font-mono text-white/50 overflow-hidden">
+                          .container { display: flex; }
+                        </div>
+                      </div>
+                      <div className="h-24 bg-white/5 rounded-md p-2 flex flex-col justify-between">
+                        <div className="text-xs text-white/70">API Endpoint</div>
+                        <div className="text-[10px] font-mono text-white/50 overflow-hidden">
+                          GET /api/users/:id
+                        </div>
+                      </div>
+                      <div className="h-24 bg-white/5 rounded-md p-2 flex flex-col justify-between">
+                        <div className="text-xs text-white/70">SQL Query</div>
+                        <div className="text-[10px] font-mono text-white/50 overflow-hidden">
+                          SELECT * FROM users
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -141,22 +171,6 @@ const FeaturePreview = () => {
                 repeatDelay: 0.5
               }}
             />
-            
-            {/* UI Elements */}
-            <div className="absolute top-5 right-5 flex gap-2">
-              {[...Array(3)].map((_, i) => (
-                <motion.div 
-                  key={i} 
-                  className="w-2 h-2 bg-white/50 rounded-full"
-                  animate={{ opacity: [0.3, 0.8, 0.3] }}
-                  transition={{ 
-                    duration: 1.5, 
-                    repeat: Infinity,
-                    delay: i * 0.5
-                  }}
-                />
-              ))}
-            </div>
           </div>
           
           {/* Decorative elements */}
