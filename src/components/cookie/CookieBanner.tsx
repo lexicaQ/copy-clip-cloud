@@ -1,15 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Shield, 
-  Cookie, 
-  Settings, 
-  Info, 
-  X,
-  Check, 
-  Link,
-  ExternalLink 
-} from "lucide-react";
+import { Shield, Cookie, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { 
@@ -17,7 +9,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -26,7 +17,6 @@ import { Switch } from "@/components/ui/switch";
 const CookieBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
-  const [activeTab, setActiveTab] = useState("preferences");
   const navigate = useNavigate();
   
   const [cookiePreferences, setCookiePreferences] = useState({
@@ -34,9 +24,7 @@ const CookieBanner = () => {
     analytics: false,
     marketing: false,
     functional: false,
-    personalization: false,
-    security: false,
-    social: false
+    security: false
   });
 
   useEffect(() => {
@@ -59,37 +47,19 @@ const CookieBanner = () => {
       id: "security",
       title: "Security Cookies",
       description: "Enhance site security and prevent fraud",
-      icon: Shield
+      icon: Lock
     },
     {
       id: "functional",
       title: "Functional Cookies",
       description: "Remember your preferences and settings",
-      icon: Settings
+      icon: Cookie
     },
     {
       id: "analytics",
       title: "Analytics Cookies",
       description: "Help us understand how you use our site",
-      icon: Info
-    },
-    {
-      id: "personalization",
-      title: "Personalization",
-      description: "Customize content based on your interests",
-      icon: Cookie
-    },
-    {
-      id: "marketing",
-      title: "Marketing",
-      description: "Help us deliver relevant advertisements",
-      icon: Cookie
-    },
-    {
-      id: "social",
-      title: "Social Media",
-      description: "Enable social sharing and interactions",
-      icon: Link
+      icon: Shield
     }
   ];
 
@@ -99,9 +69,7 @@ const CookieBanner = () => {
       analytics: true,
       marketing: true,
       functional: true,
-      personalization: true,
-      security: true,
-      social: true
+      security: true
     };
     
     setCookiePreferences(allPreferences);
@@ -144,7 +112,7 @@ const CookieBanner = () => {
                   <Cookie className="w-4 h-4" />
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-base font-medium mb-2">Cookie Preferences</h2>
+                  <h2 className="text-base font-medium mb-2">Cookie Settings</h2>
                   <p className="text-sm text-gray-300 mb-3">
                     We use cookies to enhance your experience. View our{" "}
                     <button onClick={handlePrivacyClick} className="text-white underline hover:text-white/80">
@@ -181,9 +149,6 @@ const CookieBanner = () => {
               <Cookie className="w-5 h-5" />
               Cookie Settings
             </DialogTitle>
-            <DialogDescription className="text-gray-300">
-              Manage your cookie preferences below
-            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 my-4">
@@ -192,8 +157,11 @@ const CookieBanner = () => {
               const isEnabled = cookiePreferences[type.id as keyof typeof cookiePreferences];
               
               return (
-                <div
+                <motion.div
                   key={type.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
                   className={`p-3 rounded-lg transition-all ${
                     isEnabled ? "bg-white/10" : "bg-white/5"
                   }`}
@@ -224,7 +192,7 @@ const CookieBanner = () => {
                       className={`${type.required ? "opacity-60" : ""}`}
                     />
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -239,11 +207,9 @@ const CookieBanner = () => {
             </Button>
             <div className="flex gap-2">
               <Button
-                variant="outline"
                 onClick={handleSavePreferences}
-                className="bg-transparent border-white/20 hover:bg-white/10"
+                className="bg-white text-black hover:bg-white/90"
               >
-                <Check className="w-4 h-4 mr-2" />
                 Save Preferences
               </Button>
               <Button
