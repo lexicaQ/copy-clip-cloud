@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { CheckCheck } from "lucide-react";
@@ -40,7 +39,9 @@ const LightningFastFeature = () => {
                 >
                   <motion.div
                     className="h-full bg-white"
-                    animate={{ x: ["-100%", "100%"] }}
+                    animate={{
+                      x: ["-100%", "100%"]
+                    }}
                     transition={{ 
                       duration: 1.5, 
                       repeat: Infinity,
@@ -55,7 +56,9 @@ const LightningFastFeature = () => {
                 >
                   <motion.div
                     className="h-full bg-white"
-                    animate={{ x: ["-100%", "100%"] }}
+                    animate={{
+                      x: ["-100%", "100%"]
+                    }}
                     transition={{ 
                       duration: 1.5, 
                       repeat: Infinity,
@@ -71,7 +74,9 @@ const LightningFastFeature = () => {
                 >
                   <motion.div
                     className="h-full bg-white"
-                    animate={{ x: ["-100%", "100%"] }}
+                    animate={{
+                      x: ["-100%", "100%"]
+                    }}
                     transition={{ 
                       duration: 1.5, 
                       repeat: Infinity,
