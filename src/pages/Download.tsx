@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import DownloadButton from "@/components/landing/DownloadButton";
+import { useFileDownload } from "@/hooks/useFileDownload";
 import { 
   Download, 
   Apple, 
@@ -42,77 +43,92 @@ interface DownloadOptionProps {
   beta?: boolean;
 }
 
-const DownloadOption = ({ title, description, icon: Icon, primary = false, coming = false, beta = false }: DownloadOptionProps) => (
-  <motion.div
-    className={`glass-panel p-6 ${primary ? 'border-2 border-white/30' : ''} ${coming ? 'opacity-70' : ''}`}
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.4 }}
-  >
-    <div className="flex items-center mb-4">
-      <div className={`p-2 rounded-lg ${primary ? 'bg-white/20' : 'bg-white/10'} mr-3`}>
-        <Icon className="w-6 h-6" />
+const DownloadOption = ({ title, description, icon: Icon, primary = false, coming = false, beta = false }: DownloadOptionProps) => {
+  const { handleDownload, downloading } = useFileDownload();
+  
+  return (
+    <motion.div
+      className={`glass-panel p-6 ${primary ? 'border-2 border-white/30' : ''} ${coming ? 'opacity-70' : ''}`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className="flex items-center mb-4">
+        <div className={`p-2 rounded-lg ${primary ? 'bg-white/20' : 'bg-white/10'} mr-3`}>
+          <Icon className="w-6 h-6" />
+        </div>
+        <div>
+          <h3 className="text-xl font-medium">{title}</h3>
+          {primary && !coming && !beta && (
+            <span className="text-xs bg-white/20 rounded-full px-2 py-0.5 ml-2">
+              Recommended
+            </span>
+          )}
+          {beta && (
+            <span className="text-xs bg-blue-500/30 text-blue-300 rounded-full px-2 py-0.5 ml-2">
+              Beta
+            </span>
+          )}
+          {coming && (
+            <span className="text-xs bg-purple-500/30 text-purple-300 rounded-full px-2 py-0.5 ml-2">
+              Coming Soon
+            </span>
+          )}
+        </div>
       </div>
-      <div>
-        <h3 className="text-xl font-medium">{title}</h3>
-        {primary && !coming && !beta && (
-          <span className="text-xs bg-white/20 rounded-full px-2 py-0.5 ml-2">
-            Recommended
-          </span>
-        )}
-        {beta && (
-          <span className="text-xs bg-blue-500/30 text-blue-300 rounded-full px-2 py-0.5 ml-2">
-            Beta
-          </span>
-        )}
-        {coming && (
-          <span className="text-xs bg-purple-500/30 text-purple-300 rounded-full px-2 py-0.5 ml-2">
-            Coming Soon
-          </span>
-        )}
-      </div>
-    </div>
-    
-    <p className="text-gray-400 text-sm mb-6">{description}</p>
-    
-    {coming ? (
-      <button 
-        disabled
-        className="w-full px-6 py-3 bg-white/5 border border-white/10 text-gray-300 rounded-full flex items-center justify-center cursor-not-allowed backdrop-blur-sm"
-      >
-        <span>Coming Soon</span>
-      </button>
-    ) : beta ? (
-      <motion.a 
-        href="#beta-download"
-        className="w-full px-6 py-3 bg-blue-500/10 border border-blue-400/20 text-white rounded-full flex items-center justify-center hover:bg-blue-500/20 transition-all"
-        whileHover={{ scale: 1.02, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }}
-        whileTap={{ scale: 0.98 }}
-      >
-        <Download className="w-4 h-4 mr-2" />
-        <span>Download Beta</span>
-      </motion.a>
-    ) : primary ? (
-      <div className="flex flex-col space-y-4">
-        <DownloadButton />
-        <p className="text-xs text-center text-gray-500">
+      
+      <p className="text-gray-400 text-sm mb-6">{description}</p>
+      
+      {coming ? (
+        <button 
+          disabled
+          className="w-full px-6 py-3 bg-white/5 border border-white/10 text-gray-300 rounded-full flex items-center justify-center cursor-not-allowed backdrop-blur-sm"
+        >
+          <span>Coming Soon</span>
+        </button>
+      ) : beta ? (
+        <motion.button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="w-full px-6 py-3 bg-blue-500/10 border border-blue-400/20 text-white rounded-full flex items-center justify-center hover:bg-blue-500/20 transition-all"
+          whileHover={{ scale: 1.02, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Download className="w-4 h-4 mr-2" />
+          <span>Download Beta</span>
+        </motion.button>
+      ) : primary ? (
+        <motion.button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="w-full px-6 py-3 bg-white/10 border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-white/15 transition-all backdrop-blur-sm"
+          whileHover={{ scale: 1.02, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Download className="w-4 h-4 mr-2" />
+          <span>{downloading ? 'Downloading...' : 'Download'}</span>
+        </motion.button>
+      ) : (
+        <motion.button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="w-full px-6 py-3 bg-white/10 border border-white/15 text-white rounded-full flex items-center justify-center hover:bg-white/15 transition-all backdrop-blur-sm"
+          whileHover={{ scale: 1.02, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <Download className="w-4 h-4 mr-2" />
+          <span>Download</span>
+        </motion.button>
+      )}
+
+      {primary && !coming && !beta && (
+        <p className="text-xs text-center text-gray-500 mt-4">
           Version 3.5.0 • Released April 15, 2023
         </p>
-      </div>
-    ) : (
-      <motion.a 
-        href="#download-stable"
-        className="w-full px-6 py-3 bg-white/10 border border-white/15 text-white rounded-full flex items-center justify-center hover:bg-white/15 transition-all backdrop-blur-sm"
-        whileHover={{ scale: 1.02, boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)" }}
-        whileTap={{ scale: 0.98 }}
-      >
-        <Download className="w-4 h-4 mr-2" />
-        <span>Download</span>
-      </motion.a>
-    )}
-  </motion.div>
-);
+      )}
+    </motion.div>
+  );
+};
 
 const DownloadPage = () => {
   return (

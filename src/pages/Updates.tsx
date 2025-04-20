@@ -1,8 +1,10 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import { useFileDownload } from "@/hooks/useFileDownload";
 import { 
   Calendar, 
   Clock, 
@@ -12,8 +14,10 @@ import {
   Bug,
   Rocket,
   HelpCircle,
-  Wrench
+  Wrench,
+  FileText
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const updatesList = [
   {
@@ -95,6 +99,8 @@ const ChangelogItem = ({ change }) => {
 };
 
 const UpdateCard = ({ update, index }) => {
+  const { handleDownload, downloading } = useFileDownload();
+
   return (
     <motion.div
       className="glass-panel overflow-hidden border border-white/10"
@@ -115,18 +121,21 @@ const UpdateCard = ({ update, index }) => {
           </div>
           <p className="text-gray-400 text-sm">{update.description}</p>
         </div>
-        <div className="flex items-center mt-3 sm:mt-0">
-          <div className="flex items-center text-gray-400 text-sm mr-4">
+        <div className="flex items-center mt-3 sm:mt-0 space-x-4">
+          <div className="flex items-center text-gray-400 text-sm">
             <Calendar className="w-4 h-4 mr-1.5" />
             <span>{update.date}</span>
           </div>
-          <a 
-            href={`#download-${update.version}`}
-            className="text-white hover:underline text-sm flex items-center"
+          <Button 
+            variant="ghost"
+            size="sm"
+            disabled={downloading}
+            onClick={() => handleDownload()}
+            className="text-white hover:bg-white/10"
           >
             <Download className="w-4 h-4 mr-1.5" />
             Download
-          </a>
+          </Button>
         </div>
       </div>
       
@@ -139,27 +148,36 @@ const UpdateCard = ({ update, index }) => {
       </div>
       
       <div className="px-6 py-3 bg-white/5 flex justify-between items-center">
-        <a 
-          href={`#details-${update.version}`}
-          className="text-sm text-white hover:underline flex items-center"
-        >
-          Full Release Notes
-          <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
-        </a>
+        <div className="flex items-center space-x-4">
+          <Link 
+            to={`/docs/release-guide#${update.version}`}
+            className="text-sm text-white hover:underline flex items-center"
+          >
+            <FileText className="w-4 h-4 mr-1.5" />
+            Release Guide
+          </Link>
+          <Link 
+            to={`#details-${update.version}`}
+            className="text-sm text-white hover:underline flex items-center"
+          >
+            Full Release Notes
+            <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+          </Link>
+        </div>
         
         <div className="flex space-x-3">
-          <a 
-            href={`#known-issues-${update.version}`}
+          <Link 
+            to={`#known-issues-${update.version}`}
             className="text-sm text-gray-400 hover:text-white transition-colors"
           >
             Known Issues
-          </a>
-          <a 
-            href={`#help-${update.version}`}
+          </Link>
+          <Link 
+            to={`#help-${update.version}`}
             className="text-sm text-gray-400 hover:text-white transition-colors"
           >
             Get Help
-          </a>
+          </Link>
         </div>
       </div>
     </motion.div>
