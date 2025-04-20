@@ -2,7 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import { ComingSoon } from "@/components/ui/coming-soon";
-import DownloadButton from "@/components/landing/DownloadButton";
 import { Button } from "@/components/ui/button";
 
 interface PlanFeature {
@@ -37,7 +36,7 @@ const PricingPlanCard = ({
   
   return (
     <motion.div
-      className={`group relative rounded-2xl overflow-hidden backdrop-blur-lg transition-all duration-300 hover:translate-y-[-5px] border ${
+      className={`group relative rounded-2xl overflow-visible backdrop-blur-lg transition-all duration-300 hover:translate-y-[-5px] border ${
         highlight 
           ? 'border-white/20 shadow-lg shadow-white/5' 
           : 'border-white/10'
@@ -51,12 +50,12 @@ const PricingPlanCard = ({
         highlight 
           ? 'bg-gradient-to-br from-white/8 to-white/2'
           : 'bg-gradient-to-br from-white/4 to-white/1'
-      } z-0`} />
+      } z-0 rounded-2xl`} />
       
-      {/* Plan badge for highlight */}
+      {/* Plan badge for highlight - moved higher up */}
       {highlight && (
         <motion.div 
-          className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-xl px-4 py-1 rounded-full text-sm font-medium text-white border border-white/20 z-10 shadow-lg"
+          className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-xl px-4 py-1.5 rounded-full text-sm font-medium text-white border border-white/20 z-20 shadow-lg"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -116,14 +115,13 @@ const PricingPlanCard = ({
           )}
         </div>
         
-        {/* CTA Button */}
+        {/* CTA Button - Simplified for Basic plan */}
         {isBasicPlan ? (
           <div className="mb-8">
             <Button 
-              className="w-full py-6 bg-gradient-to-r from-white/15 to-white/5 hover:from-white/20 hover:to-white/10 text-white border border-white/10 relative overflow-hidden"
-              onClick={() => {}}
+              className="w-full py-6 bg-gradient-to-r from-white/15 to-white/5 hover:from-white/20 hover:to-white/10 text-white border border-white/10 rounded-xl transition-all duration-300"
             >
-              <DownloadButton variant="compact" />
+              Download App
             </Button>
           </div>
         ) : (
@@ -133,16 +131,17 @@ const PricingPlanCard = ({
             whileTap={{ scale: 0.98 }}
           >
             <Button 
-              className="w-full py-6 bg-gradient-to-r from-white/15 to-white/5 hover:from-white/20 hover:to-white/10 text-white border border-white/10 relative overflow-hidden"
+              className="w-full py-6 bg-gradient-to-r from-white/15 to-white/5 hover:from-white/20 hover:to-white/10 text-white border border-white/10 rounded-xl transition-all duration-300"
             >
-              <div className="absolute -top-3 -right-3 z-20">
-                <ComingSoon />
-              </div>
               <span className="flex items-center gap-2">
                 Get Started
                 <ArrowRight className="w-4 h-4" />
               </span>
             </Button>
+            {/* Coming Soon badge - moved to top right corner with higher z-index */}
+            <div className="absolute -top-4 -right-4 z-30">
+              <ComingSoon />
+            </div>
           </motion.div>
         )}
         

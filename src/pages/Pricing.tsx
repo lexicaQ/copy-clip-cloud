@@ -23,14 +23,17 @@ const Pricing = () => {
     {
       name: "Basic",
       price: isAnnual ? "0" : "0",
-      description: "Essential features for personal use",
+      description: "Perfect for personal use",
       icon: Cloud,
       features: [
-        { text: "Basic clipboard history", included: true },
+        { text: "Unlimited basic clipboard history", included: true, highlight: true },
         { text: "Single device sync", included: true },
         { text: "Standard encryption", included: true },
         { text: "7-day history retention", included: true },
         { text: "Community support", included: true },
+        { text: "Basic search functionality", included: true },
+        { text: "Simple organization tools", included: true },
+        { text: "Basic templates", included: true },
         { text: "AI organization", included: false },
         { text: "Custom rules", included: false },
         { text: "Priority support", included: false }
