@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -23,7 +22,8 @@ import {
   PenTool,
   Zap,
   Globe,
-  Settings
+  Settings,
+  X
 } from "lucide-react";
 import { toast } from "sonner";
 import Header from "@/components/layout/Header";
@@ -99,7 +99,7 @@ const documentationLinks: DocumentItem[] = [
     category: "core-features", 
     href: "/docs/smart-organization", 
     icon: BrainCircuit,
-    isPopular: true
+    isPopular: true 
   },
   { 
     title: "Search & Filtering", 
