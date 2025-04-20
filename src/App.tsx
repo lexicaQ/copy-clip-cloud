@@ -46,7 +46,6 @@ import Sdk from "./pages/docs/Sdk";
 import IntegrationGuides from "./pages/docs/IntegrationGuides";
 import DeveloperPortal from "./pages/docs/DeveloperPortal";
 import AllArticles from "./pages/docs/AllArticles";
-import ReleaseGuide from "./pages/docs/ReleaseGuide";
 
 // Feature pages that exist in the project
 import CopyClipCloud from "./pages/features/CopyClipCloud";
@@ -106,7 +105,6 @@ const App = () => (
           <Route path="/docs/integration-guides" element={<IntegrationGuides />} />
           <Route path="/docs/developer-portal" element={<DeveloperPortal />} />
           <Route path="/docs/all-articles" element={<AllArticles />} />
-          <Route path="/docs/release-guide" element={<ReleaseGuide />} />
           
           {/* Feature pages */}
           <Route path="/features/copy-clip-cloud" element={<CopyClipCloud />} />

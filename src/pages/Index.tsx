@@ -15,7 +15,6 @@ import AppWalkthrough from "@/components/landing/AppWalkthrough";
 import UserExamples from "@/components/landing/UserExamples";
 import FeaturePreview from "@/components/landing/FeaturePreview";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -77,7 +76,7 @@ const Index = () => {
           </motion.div>
         </motion.div>
 
-        {/* Enhanced Feature Highlights - UPDATED SECTION */}
+        {/* Enhanced Feature Highlights */}
         <motion.div 
           className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8"
           initial={{ opacity: 0, y: 20 }}
@@ -85,50 +84,30 @@ const Index = () => {
           transition={{ delay: 0.6 }}
         >
           {[
-            { 
-              icon: Sparkles, 
-              title: "AI Powered", 
-              desc: "Intelligent Organization", 
-              highlight: "Neural processing for smart content management", 
-              link: "/features/smart-organization"
-            },
-            { 
-              icon: Shield, 
-              title: "Encrypted", 
-              desc: "End-to-End Security", 
-              highlight: "Military-grade encryption protocols", 
-              link: "/features/end-to-end-encryption"
-            },
-            { 
-              icon: Zap, 
-              title: "Lightning Fast", 
-              desc: "Optimized Performance", 
-              highlight: "Instant sync across all devices", 
-              link: "/features/lightning-fast"
-            }
+            { icon: Sparkles, title: "AI Powered", desc: "Intelligent Organization", highlight: "Neural processing for smart content management" },
+            { icon: Shield, title: "Encrypted", desc: "End-to-End Security", highlight: "Military-grade encryption protocols" },
+            { icon: Zap, title: "Lightning Fast", desc: "Optimized Performance", highlight: "Instant sync across all devices" }
           ].map((feature, i) => (
             <motion.div 
               key={i}
-              className="glass-panel p-8 backdrop-blur-md flex flex-col items-center text-center h-full relative overflow-hidden group border border-white/10 hover:border-white/20 transition-all"
+              className="glass-panel p-8 backdrop-blur-md flex flex-col items-center text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 + (i * 0.1) }}
               whileHover={{ y: -5 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-20 transition-opacity"></div>
-              <div className="p-4 rounded-2xl bg-white/10 mb-6 relative">
+              <div className="p-4 rounded-2xl bg-white/10 mb-6">
                 <feature.icon className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-gray-400 mb-4">{feature.desc}</p>
-              <p className="text-sm text-gray-500 mb-6">{feature.highlight}</p>
-              <Link 
-                to={feature.link} 
-                className="mt-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-xl border border-white/10 transition-all group/btn text-sm font-medium"
+              <p className="text-sm text-gray-500">{feature.highlight}</p>
+              <Button 
+                className="mt-4 bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-xl border border-white/10"
               >
                 Learn More
-                <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-              </Link>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
             </motion.div>
           ))}
         </motion.div>

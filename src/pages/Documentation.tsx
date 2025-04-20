@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
@@ -16,8 +15,7 @@ import {
   Filter,
   Book,
   ChevronRight,
-  Sparkles,
-  X
+  Sparkles
 } from "lucide-react";
 import { toast } from "sonner";
 import Header from "@/components/layout/Header";
@@ -25,7 +23,6 @@ import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
 import { Button } from "@/components/ui/button";
 import { ComingSoon } from "@/components/ui/coming-soon";
-import { useNavigate } from "react-router-dom";
 
 // Document categories
 const categories = [
@@ -155,14 +152,6 @@ const documentationLinks: DocumentItem[] = [
     comingSoon: true 
   },
   { 
-    title: "Release Guide", 
-    description: "Learn about our latest updates and changes",
-    category: "all", 
-    href: "/docs/release-guide", 
-    icon: FileText,
-    isNew: true
-  },
-  { 
     title: "All Articles", 
     description: "Browse the complete collection of documentation articles",
     category: "all", 
@@ -237,44 +226,21 @@ const CategorySection = ({ title, items }: { title: string, items: DocumentItem[
 };
 
 const Documentation = () => {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filteredLinks, setFilteredLinks] = useState(documentationLinks);
-  
-  // Clear search button handler
-  const handleClearSearch = () => {
-    setSearchTerm("");
-    toast.success("Search cleared");
-  };
-  
-  // Enhanced filtering with debounce to improve performance
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const results = documentationLinks.filter(link => {
-        const matchesSearch = link.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            link.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === "all" || link.category === selectedCategory;
-        
-        return matchesSearch && matchesCategory;
-      });
+    const results = documentationLinks.filter(link => {
+      const matchesSearch = link.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          link.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === "all" || link.category === selectedCategory;
       
-      setFilteredLinks(results);
-    }, 300); // 300ms debounce delay
-    
-    return () => clearTimeout(timer);
-  }, [searchTerm, selectedCategory]);
-  
-  // Memoize the category items to avoid unnecessary re-renders
-  const categoryItems = useMemo(() => {
-    const items: Record<string, DocumentItem[]> = {};
-    categories.forEach(category => {
-      if (category.id !== "all") {
-        items[category.id] = documentationLinks.filter(link => link.category === category.id);
-      }
+      return matchesSearch && matchesCategory;
     });
-    return items;
-  }, []);
+    
+    setFilteredLinks(results);
+  }, [searchTerm, selectedCategory]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -307,23 +273,13 @@ const Documentation = () => {
               <input
                 type="text"
                 placeholder="Search documentation..."
-                className="w-full px-6 py-3 pl-12 rounded-full bg-white/5 border border-white/10 focus:border-white/30 focus:outline-none backdrop-blur-sm transition-colors text-white placeholder-gray-400"
+                className="w-full px-6 py-3 rounded-full bg-white/5 border border-white/10 focus:border-white/30 focus:outline-none backdrop-blur-sm transition-colors text-white placeholder-gray-400"
                 onChange={(e) => setSearchTerm(e.target.value)}
                 value={searchTerm}
-                aria-label="Search documentation"
               />
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 right-0 pr-6 flex items-center pointer-events-none">
                 <Search className="w-5 h-5 text-gray-400" />
               </div>
-              {searchTerm && (
-                <button 
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white"
-                  onClick={handleClearSearch}
-                  aria-label="Clear search"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
             </div>
             
             <div className="flex flex-wrap justify-center gap-2 mb-10">
@@ -345,7 +301,7 @@ const Documentation = () => {
             </div>
             
             <AnimatePresence mode="wait">
-              {selectedCategory === "all" && !searchTerm ? (
+              {selectedCategory === "all" ? (
                 <motion.div
                   key="all-categories"
                   initial={{ opacity: 0 }}
@@ -354,19 +310,30 @@ const Documentation = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="space-y-16">
-                    {categories.map(category => {
-                      if (category.id !== "all") {
-                        const items = categoryItems[category.id];
-                        return items && items.length > 0 ? (
-                          <CategorySection 
-                            key={category.id}
-                            title={category.name} 
-                            items={items} 
-                          />
-                        ) : null;
-                      }
-                      return null;
-                    })}
+                    <CategorySection 
+                      title="Getting Started" 
+                      items={documentationLinks.filter(link => link.category === "getting-started")} 
+                    />
+                    
+                    <CategorySection 
+                      title="Core Features" 
+                      items={documentationLinks.filter(link => link.category === "core-features")} 
+                    />
+                    
+                    <CategorySection 
+                      title="Advanced Usage" 
+                      items={documentationLinks.filter(link => link.category === "advanced")} 
+                    />
+                    
+                    <CategorySection 
+                      title="API & SDK" 
+                      items={documentationLinks.filter(link => link.category === "api")} 
+                    />
+                    
+                    <CategorySection 
+                      title="Security" 
+                      items={documentationLinks.filter(link => link.category === "security")} 
+                    />
                   </div>
                 </motion.div>
               ) : (
@@ -376,16 +343,11 @@ const Documentation = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
-                  <div className="mb-4 text-sm text-gray-400">
-                    Showing {filteredLinks.length} {filteredLinks.length === 1 ? 'result' : 'results'}
-                    {searchTerm && <span> for "{searchTerm}"</span>}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredLinks.map((link, index) => (
-                      <DocumentCard key={index} item={link} />
-                    ))}
-                  </div>
+                  {filteredLinks.map((link, index) => (
+                    <DocumentCard key={index} item={link} />
+                  ))}
                 </motion.div>
               )}
             </AnimatePresence>
