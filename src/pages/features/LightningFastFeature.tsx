@@ -212,7 +212,10 @@ const LightningFastFeature = () => {
                 <div className="z-10 w-32 h-32 rounded-full bg-white/5 flex flex-col items-center justify-center border border-white/10">
                   <div className="text-3xl font-bold text-white">
                     <motion.span
-                      animate={{ number: [0, 5] }}
+                      animate={{ 
+                        opacity: [0.7, 1, 0.7],
+                        scale: [0.98, 1, 0.98]
+                      }}
                       transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
                     >
                       {'<5%'}
