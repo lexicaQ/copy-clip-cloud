@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cookie, Info, Lock, Shield, CheckCheck } from "lucide-react";
+import { Cookie, Info, Lock, Shield, CheckCheck, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { 
@@ -111,14 +111,24 @@ const CookieBanner = () => {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="fixed bottom-4 left-4 z-50 w-[350px] max-w-[90vw]"
           >
-            <div className="glass-panel border border-white/10 bg-black/40 backdrop-blur-xl rounded-xl p-4 shadow-lg">
-              <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+            <div className="glass-panel border border-white/20 bg-black/60 backdrop-blur-xl rounded-xl p-5 shadow-xl">
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/5 to-white/0 rounded-xl pointer-events-none"></div>
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
                   <Cookie className="w-5 h-5" />
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-base font-medium mb-2">Cookie Settings</h2>
-                  <p className="text-sm text-gray-300 mb-3">
+                  <h2 className="text-base font-medium mb-2 flex justify-between items-center">
+                    <span>Cookie Settings</span>
+                    <button 
+                      onClick={() => setShowBanner(false)} 
+                      className="text-white/60 hover:text-white transition-colors"
+                      aria-label="Close cookie banner"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </h2>
+                  <p className="text-sm text-gray-300 mb-4">
                     We use cookies to enhance your experience. View our{" "}
                     <button onClick={handlePrivacyClick} className="text-white underline hover:text-white/80">
                       Privacy Policy
@@ -129,7 +139,7 @@ const CookieBanner = () => {
                     <Button
                       variant="outline"
                       onClick={() => setShowDialog(true)}
-                      className="bg-white/5 border-white/10 hover:bg-white/10 text-sm px-3 py-1.5 h-auto"
+                      className="bg-white/10 border-white/20 hover:bg-white/15 text-sm px-3 py-1.5 h-auto"
                     >
                       Manage Preferences
                     </Button>
@@ -148,7 +158,7 @@ const CookieBanner = () => {
       </AnimatePresence>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="sm:max-w-xl bg-black/95 text-white border border-white/10 backdrop-blur-xl shadow-xl">
+        <DialogContent className="sm:max-w-xl bg-black/95 text-white border border-white/20 backdrop-blur-xl shadow-xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <Cookie className="w-5 h-5" />
@@ -187,7 +197,7 @@ const CookieBanner = () => {
                             <TooltipTrigger asChild>
                               <Info className="w-4 h-4 text-white/60 cursor-help hover:text-white/80 transition-colors" />
                             </TooltipTrigger>
-                            <TooltipContent className="bg-black/90 border border-white/20 text-white p-3 max-w-xs">
+                            <TooltipContent className="bg-black/95 border border-white/20 text-white p-3 max-w-xs backdrop-blur-md">
                               <p className="text-sm">{type.tooltip}</p>
                             </TooltipContent>
                           </Tooltip>
