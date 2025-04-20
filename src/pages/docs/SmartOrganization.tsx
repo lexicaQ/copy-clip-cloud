@@ -1,7 +1,4 @@
-
 import React from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import DocLayout from "./DocLayout";
 import { 
   Tag, 
@@ -19,111 +16,59 @@ import {
 } from "lucide-react";
 
 const SmartOrganization = () => {
-  const smartFolderRules = [
-    {
-      name: "Code Snippets",
-      rules: [
-        "Content contains code syntax",
-        "Source application is VS Code or similar IDE",
-        "Tagged with 'code' or 'development'"
-      ],
-      icon: Code
-    },
-    {
-      name: "Personal Emails",
-      rules: [
-        "Content contains @gmail.com, @outlook.com, etc.",
-        "Not from work applications",
-        "Does not contain company terminology"
-      ],
-      icon: FileText
-    },
-    {
-      name: "Meeting Notes",
-      rules: [
-        "Content contains 'meeting', 'agenda', 'minutes'",
-        "Source application is note-taking app",
-        "Created during work hours (9am-5pm)"
-      ],
-      icon: Clock
-    }
-  ];
-
   return (
     <DocLayout title="Smart Organization" icon={Folder}>
       <div className="glass-panel p-8 mb-8">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <h2 className="text-2xl font-semibold mb-6">Organizing Your Clipboard History</h2>
-          
-          <p className="text-gray-300 mb-6">
-            CopyClipCloud's smart organization features help you keep your clipboard content organized, 
-            easily accessible, and manageable, even with thousands of clipboard items.
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-            <motion.div
-              className="glass-panel bg-white/5 p-6 rounded-lg border border-white/10"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center mb-4">
-                <FolderOpen className="w-6 h-6 text-blue-300" />
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="relative w-24 h-24 mx-auto mb-6">
+              <div className="absolute inset-0 bg-white/5 rounded-xl" />
+              <div className="relative w-full h-full rounded-xl bg-white/10 flex items-center justify-center">
+                <Folder className="w-12 h-12 text-white" />
               </div>
-              <h3 className="text-lg font-medium mb-3">Smart Folders</h3>
-              <p className="text-gray-400 mb-4">
-                Create intelligent folders that automatically organize your clipboard items based on content, source, date, and more.
-              </p>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="flex items-center">
-                  <ArrowRight className="w-3.5 h-3.5 mr-2 text-blue-400" />
-                  Rules-based organization
-                </li>
-                <li className="flex items-center">
-                  <ArrowRight className="w-3.5 h-3.5 mr-2 text-blue-400" />
-                  Content-type filtering
-                </li>
-                <li className="flex items-center">
-                  <ArrowRight className="w-3.5 h-3.5 mr-2 text-blue-400" />
-                  Source application detection
-                </li>
-              </ul>
-            </motion.div>
-            
-            <motion.div
-              className="glass-panel bg-white/5 p-6 rounded-lg border border-white/10"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-600/20 flex items-center justify-center mb-4">
-                <Tag className="w-6 h-6 text-indigo-300" />
-              </div>
-              <h3 className="text-lg font-medium mb-3">Tagging System</h3>
-              <p className="text-gray-400 mb-4">
-                Create a flexible organization system with custom tags that can be applied to any clipboard item.
-              </p>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="flex items-center">
-                  <ArrowRight className="w-3.5 h-3.5 mr-2 text-indigo-400" />
-                  Multiple tags per item
-                </li>
-                <li className="flex items-center">
-                  <ArrowRight className="w-3.5 h-3.5 mr-2 text-indigo-400" />
-                  Automatic tag suggestions
-                </li>
-                <li className="flex items-center">
-                  <ArrowRight className="w-3.5 h-3.5 mr-2 text-indigo-400" />
-                  Tag-based searching and filtering
-                </li>
-              </ul>
-            </motion.div>
+            </div>
+            <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
+              Smart Organization
+            </h1>
+            <p className="text-lg text-gray-400">
+              Intelligent organization for your clipboard content
+            </p>
           </div>
-          
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {[
+              {
+                icon: FolderOpen,
+                title: "Smart Folders",
+                description: "Automatically categorize your content"
+              },
+              {
+                icon: Tag,
+                title: "Auto-Tagging",
+                description: "AI-powered content classification"
+              },
+              {
+                icon: Clock,
+                title: "Time-Based Organization",
+                description: "Chronological content management"
+              },
+              {
+                icon: Search,
+                title: "Smart Search",
+                description: "Find content instantly"
+              }
+            ].map((feature, index) => (
+              <div 
+                key={index}
+                className="p-6 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm"
+              >
+                <feature.icon className="w-8 h-8 mb-4" />
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-gray-400">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+
           <h3 className="text-xl font-medium mb-4">Creating Smart Folders</h3>
           <p className="text-gray-300 mb-6">
             Smart folders automatically organize your clipboard items based on customizable rules:
@@ -247,7 +192,7 @@ const SmartOrganization = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

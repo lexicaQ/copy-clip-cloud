@@ -16,6 +16,7 @@ interface DocLayoutProps {
   backLink?: string;
   backText?: string;
   children: ReactNode;
+  showSidebar?: boolean;
 }
 
 const DocLayout: React.FC<DocLayoutProps> = ({ 
@@ -24,7 +25,8 @@ const DocLayout: React.FC<DocLayoutProps> = ({
   description,
   backLink = "/docs", 
   backText = "Back to Documentation", 
-  children 
+  children,
+  showSidebar = true
 }) => {
   const location = useLocation();
   
@@ -38,10 +40,12 @@ const DocLayout: React.FC<DocLayoutProps> = ({
       <Header />
       
       <div className="container mx-auto px-4 pt-24 pb-24 flex">
-        {/* Left sidebar */}
-        <div className="w-64 flex-shrink-0">
-          <DocSidebar />
-        </div>
+        {/* Left sidebar - only show on documentation pages */}
+        {showSidebar && (
+          <div className="w-64 flex-shrink-0">
+            <DocSidebar />
+          </div>
+        )}
 
         {/* Main content */}
         <SidebarInset className="flex-1">

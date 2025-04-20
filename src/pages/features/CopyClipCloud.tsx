@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -24,7 +23,6 @@ const CopyClipCloud = () => {
           </Button>
         </div>
 
-        {/* Hero Section mit interaktiver Illustration */}
         <motion.div
           className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
@@ -33,7 +31,7 @@ const CopyClipCloud = () => {
         >
           <div className="relative w-32 h-32 mx-auto mb-8">
             <motion.div 
-              className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 rounded-3xl"
+              className="absolute inset-0 bg-white/5 rounded-3xl"
               animate={{ 
                 scale: [1, 1.1, 1],
                 opacity: [0.5, 0.8, 0.5]
@@ -58,7 +56,6 @@ const CopyClipCloud = () => {
           </p>
         </motion.div>
 
-        {/* Interaktive Illustration */}
         <motion.div 
           className="max-w-4xl mx-auto mb-20 relative"
           initial={{ opacity: 0 }}
@@ -68,9 +65,7 @@ const CopyClipCloud = () => {
           <div className="aspect-[16/9] rounded-xl overflow-hidden relative glass-panel p-8">
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
             
-            {/* Devices Animation */}
             <div className="relative w-full h-full flex items-center justify-center">
-              {/* Laptop */}
               <motion.div
                 className="absolute left-1/4 transform -translate-x-1/2"
                 animate={{
@@ -87,7 +82,6 @@ const CopyClipCloud = () => {
                 </div>
               </motion.div>
 
-              {/* Cloud in Center */}
               <motion.div
                 className="relative"
                 animate={{
@@ -104,7 +98,6 @@ const CopyClipCloud = () => {
                   <Cloud className="w-20 h-20 text-white" />
                 </div>
                 
-                {/* Connecting Lines */}
                 {[0, 120, 240].map((degree) => (
                   <motion.div
                     key={degree}
@@ -123,7 +116,6 @@ const CopyClipCloud = () => {
                 ))}
               </motion.div>
 
-              {/* Mobile Device */}
               <motion.div
                 className="absolute right-1/4 transform translate-x-1/2"
                 animate={{
@@ -142,7 +134,6 @@ const CopyClipCloud = () => {
               </motion.div>
             </div>
 
-            {/* Floating Particles */}
             {[...Array(6)].map((_, i) => (
               <motion.div
                 key={i}
@@ -172,7 +163,6 @@ const CopyClipCloud = () => {
           </div>
         </motion.div>
 
-        {/* Feature Benefits */}
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
           initial={{ opacity: 0 }}
@@ -207,7 +197,6 @@ const CopyClipCloud = () => {
           ))}
         </motion.div>
 
-        {/* Call to Action */}
         <motion.div 
           className="text-center"
           initial={{ opacity: 0 }}
