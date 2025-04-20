@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -11,7 +10,7 @@ import {
   Laptop, 
   Computer, 
   Shield, 
-  Zap,  // Replace ZapFast with Zap
+  Zap, 
   Copy 
 } from "lucide-react";
 import Header from "@/components/layout/Header";
@@ -243,7 +242,7 @@ const UniversalClipboard = () => {
                 description: "Your content is encrypted and securely transferred to our cloud, making it instantly available on your other devices."
               },
               {
-                icon: ZapFast,
+                icon: Zap,
                 title: "Instant Paste",
                 description: "Paste your content on any other device. The transfer is so fast you won't even notice it's syncing."
               }
