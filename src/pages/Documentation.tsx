@@ -32,6 +32,8 @@ import SharedBackground from "@/components/layout/SharedBackground";
 import { Button } from "@/components/ui/button";
 import { ComingSoon } from "@/components/ui/coming-soon";
 import { Input } from "@/components/ui/input";
+import DocSidebar from "@/components/docs/DocSidebar";
+import { SidebarInset } from "@/components/ui/sidebar";
 
 // Document categories
 const categories = [
@@ -192,7 +194,6 @@ const documentationLinks: DocumentItem[] = [
   },
 ];
 
-// Document card component with improved styling
 const DocumentCard = ({ item }: { item: DocumentItem }) => {
   const Icon = item.icon;
   
@@ -240,7 +241,6 @@ const DocumentCard = ({ item }: { item: DocumentItem }) => {
   );
 };
 
-// Category section component to improve structure
 const CategorySection = ({ title, items }: { title: string, items: DocumentItem[] }) => {
   return (
     <div className="mb-16 last:mb-0">
@@ -281,170 +281,176 @@ const Documentation = () => {
       <SharedBackground />
       <Header />
       
-      <main className="pt-32 pb-24 container mx-auto px-4 max-w-6xl">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-gradient">Documentation</span>
-          </h1>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Explore our comprehensive guides and resources to get the most out of CopyClipCloud.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="mb-16 mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <div className="glass-panel p-8 rounded-xl backdrop-blur-xl border border-white/10 shadow-lg">
-            <div className="relative mb-8 max-w-2xl mx-auto">
-              <Input
-                type="text"
-                placeholder="Search documentation..."
-                className="w-full px-12 py-3 rounded-full bg-white/5 border border-white/10 focus:border-white/30 focus:outline-none backdrop-blur-sm transition-colors text-white placeholder-gray-400"
-                onChange={(e) => setSearchTerm(e.target.value)}
-                value={searchTerm}
-              />
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="w-5 h-5 text-gray-400" />
-              </div>
-              {searchTerm && (
-                <button 
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white"
-                  onClick={() => setSearchTerm("")}
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
-            </div>
-            
-            <div className="flex flex-wrap justify-center gap-2 mb-10">
-              {categories.map((category) => (
-                <motion.button
-                  key={category.id}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    selectedCategory === category.id 
-                      ? 'bg-white text-black' 
-                      : 'bg-white/5 text-white hover:bg-white/10'
-                  }`}
-                  onClick={() => setSelectedCategory(category.id)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {category.name}
-                </motion.button>
-              ))}
-            </div>
-            
-            <AnimatePresence mode="wait">
-              {selectedCategory === "all" ? (
-                <motion.div
-                  key="all-categories"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="space-y-16">
-                    <CategorySection 
-                      title="Getting Started" 
-                      items={documentationLinks.filter(link => link.category === "getting-started")} 
-                    />
-                    
-                    <CategorySection 
-                      title="Core Features" 
-                      items={documentationLinks.filter(link => link.category === "core-features")} 
-                    />
-                    
-                    <CategorySection 
-                      title="Advanced Usage" 
-                      items={documentationLinks.filter(link => link.category === "advanced")} 
-                    />
-                    
-                    <CategorySection 
-                      title="API & SDK" 
-                      items={documentationLinks.filter(link => link.category === "api")} 
-                    />
-                    
-                    <CategorySection 
-                      title="Security" 
-                      items={documentationLinks.filter(link => link.category === "security")} 
-                    />
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="filtered-category"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                >
-                  {filteredLinks.map((link, index) => (
-                    <DocumentCard key={index} item={link} />
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-            
-            {filteredLinks.length === 0 && (
-              <motion.div 
-                className="text-center py-16"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <FileText className="w-12 h-12 mx-auto text-white/20 mb-4" />
-                <h3 className="text-xl font-medium mb-2">No articles found</h3>
-                <p className="text-gray-400 max-w-md mx-auto">
-                  We couldn't find any articles matching your search. Try using different keywords or browse all articles.
-                </p>
-                <Button 
-                  variant="outline" 
-                  className="mt-6"
-                  onClick={() => {
-                    setSearchTerm("");
-                    setSelectedCategory("all");
-                    toast.success("Filters reset");
-                  }}
-                >
-                  Reset filters
-                </Button>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
+      <div className="container mx-auto px-4 pt-24 pb-24 flex">
+        <div className="w-64 flex-shrink-0">
+          <DocSidebar />
+        </div>
         
-        <motion.div
-          className="glass-panel p-8 rounded-xl text-center mt-12 border border-white/10 shadow-lg backdrop-blur-sm"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <div className="flex items-center justify-center mb-4">
-            <Sparkles className="w-5 h-5 mr-2 text-white/70" />
-            <h2 className="text-2xl font-bold">Need More Help?</h2>
-          </div>
-          <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
-            Can't find what you're looking for? Our support team is ready to assist you with any questions or issues.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Button asChild variant="outline">
-              <Link to="/support">Contact Support</Link>
-            </Button>
-            <Button asChild variant="default">
-              <Link to="/docs/all-articles">View All Articles</Link>
-            </Button>
-          </div>
-        </motion.div>
-      </main>
+        <SidebarInset className="flex-1">
+          <motion.div
+            className="text-center mb-16 pt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <span className="text-gradient">Documentation</span>
+            </h1>
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
+              Explore our comprehensive guides and resources to get the most out of CopyClipCloud.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="mb-16 mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="glass-panel p-8 rounded-xl backdrop-blur-xl border border-white/10 shadow-lg">
+              <div className="relative mb-8 max-w-2xl mx-auto">
+                <Input
+                  type="text"
+                  placeholder="Search documentation..."
+                  className="w-full px-12 py-3 rounded-full bg-white/5 border border-white/10 focus:border-white/30 focus:outline-none backdrop-blur-sm transition-colors text-white placeholder-gray-400"
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
+                />
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Search className="w-5 h-5 text-gray-400" />
+                </div>
+                {searchTerm && (
+                  <button 
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white"
+                    onClick={() => setSearchTerm("")}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+              
+              <div className="flex flex-wrap justify-center gap-2 mb-10">
+                {categories.map((category) => (
+                  <motion.button
+                    key={category.id}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      selectedCategory === category.id 
+                        ? 'bg-white text-black' 
+                        : 'bg-white/5 text-white hover:bg-white/10'
+                    }`}
+                    onClick={() => setSelectedCategory(category.id)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {category.name}
+                  </motion.button>
+                ))}
+              </div>
+              
+              <AnimatePresence mode="wait">
+                {selectedCategory === "all" ? (
+                  <motion.div
+                    key="all-categories"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="space-y-16">
+                      <CategorySection 
+                        title="Getting Started" 
+                        items={documentationLinks.filter(link => link.category === "getting-started")} 
+                      />
+                      
+                      <CategorySection 
+                        title="Core Features" 
+                        items={documentationLinks.filter(link => link.category === "core-features")} 
+                      />
+                      
+                      <CategorySection 
+                        title="Advanced Usage" 
+                        items={documentationLinks.filter(link => link.category === "advanced")} 
+                      />
+                      
+                      <CategorySection 
+                        title="API & SDK" 
+                        items={documentationLinks.filter(link => link.category === "api")} 
+                      />
+                      
+                      <CategorySection 
+                        title="Security" 
+                        items={documentationLinks.filter(link => link.category === "security")} 
+                      />
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="filtered-category"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  >
+                    {filteredLinks.map((link, index) => (
+                      <DocumentCard key={index} item={link} />
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+              {filteredLinks.length === 0 && (
+                <motion.div 
+                  className="text-center py-16"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <FileText className="w-12 h-12 mx-auto text-white/20 mb-4" />
+                  <h3 className="text-xl font-medium mb-2">No articles found</h3>
+                  <p className="text-gray-400 max-w-md mx-auto">
+                    We couldn't find any articles matching your search. Try using different keywords or browse all articles.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    className="mt-6"
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSelectedCategory("all");
+                      toast.success("Filters reset");
+                    }}
+                  >
+                    Reset filters
+                  </Button>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+          
+          <motion.div
+            className="glass-panel p-8 rounded-xl text-center mt-12 border border-white/10 shadow-lg backdrop-blur-sm"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <div className="flex items-center justify-center mb-4">
+              <Sparkles className="w-5 h-5 mr-2 text-white/70" />
+              <h2 className="text-2xl font-bold">Need More Help?</h2>
+            </div>
+            <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
+              Can't find what you're looking for? Our support team is ready to assist you with any questions or issues.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button asChild variant="outline">
+                <Link to="/support">Contact Support</Link>
+              </Button>
+              <Button asChild variant="default">
+                <Link to="/docs/all-articles">View All Articles</Link>
+              </Button>
+            </div>
+          </motion.div>
+        </SidebarInset>
+      </div>
       
       <Footer />
     </div>
