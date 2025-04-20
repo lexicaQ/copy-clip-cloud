@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -7,7 +8,8 @@ import {
   Info, 
   X,
   Check, 
-  Link 
+  Link,
+  ExternalLink 
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -95,11 +97,19 @@ const CookieBanner = () => {
   ];
 
   const handleAcceptAll = () => {
-    const preferences = Object.fromEntries(
-      cookieTypes.map(type => [type.id, true])
-    );
-    setCookiePreferences(preferences);
-    savePreferences(preferences, "all");
+    // Create a correctly typed preferences object from the cookieTypes
+    const allPreferences = {
+      essential: true,
+      analytics: true,
+      marketing: true,
+      functional: true,
+      personalization: true,
+      security: true,
+      social: true
+    };
+    
+    setCookiePreferences(allPreferences);
+    savePreferences(allPreferences, "all");
   };
 
   const handleSavePreferences = () => {
