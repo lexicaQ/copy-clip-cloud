@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import AppFeatures from "@/components/landing/AppFeatures";
@@ -15,6 +16,7 @@ import AppWalkthrough from "@/components/landing/AppWalkthrough";
 import UserExamples from "@/components/landing/UserExamples";
 import FeaturePreview from "@/components/landing/FeaturePreview";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -52,26 +54,27 @@ const Index = () => {
             transition={{ delay: 0.6 }}
           >
             {[
-              { icon: Sparkles, title: "AI Powered", desc: "Intelligent Organization" },
-              { icon: Shield, title: "Encrypted", desc: "End-to-End Security" },
-              { icon: Zap, title: "Lightning Fast", desc: "Optimized Performance" }
+              { icon: Sparkles, title: "AI Powered", desc: "Intelligent Organization", link: "/features/smart-organization" },
+              { icon: Shield, title: "Encrypted", desc: "End-to-End Security", link: "/features/end-to-end-encryption" },
+              { icon: Zap, title: "Lightning Fast", desc: "Optimized Performance", link: "/features/lightning-fast" }
             ].map((feature, i) => (
-              <motion.div 
-                key={i}
-                className="glass-panel px-6 py-4 flex items-center gap-3 backdrop-blur-md"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 + (i * 0.1) }}
-                whileHover={{ y: -5 }}
-              >
-                <div className="p-2 rounded-lg bg-white/10">
-                  <feature.icon className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <p className="font-medium text-white">{feature.title}</p>
-                  <p className="text-xs text-gray-400">{feature.desc}</p>
-                </div>
-              </motion.div>
+              <Link to={feature.link} key={i}>
+                <motion.div 
+                  className="glass-panel px-6 py-4 flex items-center gap-3 backdrop-blur-md hover:bg-white/5 transition-all duration-300"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 + (i * 0.1) }}
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="p-2 rounded-lg bg-white/10">
+                    <feature.icon className="w-5 h-5" />
+                  </div>
+                  <div className="text-left">
+                    <p className="font-medium text-white">{feature.title}</p>
+                    <p className="text-xs text-gray-400">{feature.desc}</p>
+                  </div>
+                </motion.div>
+              </Link>
             ))}
           </motion.div>
         </motion.div>
@@ -84,9 +87,9 @@ const Index = () => {
           transition={{ delay: 0.6 }}
         >
           {[
-            { icon: Sparkles, title: "AI Powered", desc: "Intelligent Organization", highlight: "Neural processing for smart content management" },
-            { icon: Shield, title: "Encrypted", desc: "End-to-End Security", highlight: "Military-grade encryption protocols" },
-            { icon: Zap, title: "Lightning Fast", desc: "Optimized Performance", highlight: "Instant sync across all devices" }
+            { icon: Sparkles, title: "AI Powered", desc: "Intelligent Organization", highlight: "Neural processing for smart content management", link: "/features/smart-organization" },
+            { icon: Shield, title: "Encrypted", desc: "End-to-End Security", highlight: "Military-grade encryption protocols", link: "/features/end-to-end-encryption" },
+            { icon: Zap, title: "Lightning Fast", desc: "Optimized Performance", highlight: "Instant sync across all devices", link: "/features/lightning-fast" }
           ].map((feature, i) => (
             <motion.div 
               key={i}
@@ -104,9 +107,12 @@ const Index = () => {
               <p className="text-sm text-gray-500">{feature.highlight}</p>
               <Button 
                 className="mt-4 bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-xl border border-white/10"
+                asChild
               >
-                Learn More
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <Link to={feature.link}>
+                  Learn More
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
               </Button>
             </motion.div>
           ))}
@@ -130,12 +136,14 @@ const Index = () => {
               {
                 icon: Code,
                 title: "Developer Friendly",
-                description: "Built with modern technologies and extensive API support for seamless integration."
+                description: "Built with modern technologies and extensive API support for seamless integration.",
+                link: "/docs/api-documentation"
               },
               {
                 icon: Users,
                 title: "Team Collaboration",
-                description: "Real-time synchronization and sharing features for effective team coordination."
+                description: "Real-time synchronization and sharing features for effective team coordination.",
+                link: "/features/universal-clipboard"
               }
             ].map((benefit, i) => (
               <motion.div
@@ -153,6 +161,15 @@ const Index = () => {
                   <div>
                     <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
                     <p className="text-gray-400 leading-relaxed">{benefit.description}</p>
+                    <Link to={benefit.link}>
+                      <Button 
+                        variant="ghost" 
+                        className="mt-4 px-0 hover:bg-transparent hover:text-white text-white/70"
+                      >
+                        Learn more
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </motion.div>

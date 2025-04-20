@@ -29,6 +29,7 @@ import CookieBanner from "./components/cookie/CookieBanner";
 import AcceptableUse from "./pages/AcceptableUse";
 import DataProcessing from "./pages/DataProcessing";
 import GettingStartedHelp from "./pages/help/GettingStartedHelp";
+import ReleaseGuide from "./pages/docs/ReleaseGuide";
 
 // Documentation pages
 import GettingStarted from "./pages/docs/GettingStarted";
@@ -105,6 +106,7 @@ const App = () => (
           <Route path="/docs/integration-guides" element={<IntegrationGuides />} />
           <Route path="/docs/developer-portal" element={<DeveloperPortal />} />
           <Route path="/docs/all-articles" element={<AllArticles />} />
+          <Route path="/docs/release-guide" element={<ReleaseGuide />} />
           
           {/* Feature pages */}
           <Route path="/features/copy-clip-cloud" element={<CopyClipCloud />} />

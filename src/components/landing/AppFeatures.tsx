@@ -2,15 +2,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Cloud, Clipboard, Shield, Search, Clock, Zap, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface FeatureProps {
   title: string;
   description: string;
   icon: React.ElementType;
   index: number;
+  link: string;
 }
 
-const Feature = ({ title, description, icon: Icon, index }: FeatureProps) => {
+const Feature = ({ title, description, icon: Icon, index, link }: FeatureProps) => {
   const isEven = index % 2 === 0;
   
   return (
@@ -31,13 +33,15 @@ const Feature = ({ title, description, icon: Icon, index }: FeatureProps) => {
             <h3 className="text-lg font-semibold mb-3">{title}</h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-4">{description}</p>
             
-            <motion.div 
-              className="flex items-center text-sm text-white/70 hover:text-white cursor-pointer transition-colors group"
-              whileHover={{ x: 5 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              Learn more <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
-            </motion.div>
+            <Link to={link}>
+              <motion.div 
+                className="flex items-center text-sm text-white/70 hover:text-white cursor-pointer transition-colors group"
+                whileHover={{ x: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Learn more <ArrowRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
+              </motion.div>
+            </Link>
           </div>
         </div>
       </div>
@@ -57,32 +61,38 @@ const features = [
   {
     title: "Universal Clipboard",
     description: "Copy on one device, paste on another. Seamlessly sync your clipboard across all your Mac devices.",
-    icon: Cloud
+    icon: Cloud,
+    link: "/features/universal-clipboard"
   },
   {
     title: "Rich Media Support",
     description: "Store and manage text, images, files, and more in your clipboard history with intelligent organization.",
-    icon: Clipboard
+    icon: Clipboard,
+    link: "/features/smart-organization"
   },
   {
     title: "Secure & Private",
     description: "End-to-end encryption ensures your clipboard data stays private and secure at all times.",
-    icon: Shield
+    icon: Shield,
+    link: "/features/end-to-end-encryption"
   },
   {
     title: "Intelligent Search",
     description: "Quickly find any item in your clipboard history with powerful search and filtering options.",
-    icon: Search
+    icon: Search,
+    link: "/features/smart-search"
   },
   {
     title: "History Timeline",
     description: "Browse through your clipboard history with an intuitive timeline view and quick access to recent items.",
-    icon: Clock
+    icon: Clock,
+    link: "/docs/core-features"
   },
   {
     title: "Performance Optimized",
     description: "Lightweight and responsive, designed to work seamlessly without slowing down your system.",
-    icon: Zap
+    icon: Zap,
+    link: "/features/lightning-fast"
   }
 ];
 
@@ -123,6 +133,7 @@ const AppFeatures = () => {
             description={feature.description}
             icon={feature.icon}
             index={index}
+            link={feature.link}
           />
         ))}
         

@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, Loader } from "lucide-react";
+import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, Loader, BookOpen } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFileDownload } from "@/hooks/useFileDownload";
 
@@ -72,6 +73,7 @@ const Header = () => {
             <NavLink to="/" icon={Home} onClick={() => handleNavigation("/")}>Home</NavLink>
             <NavLink to="/features" icon={FileText} onClick={() => handleNavigation("/features")}>Features</NavLink>
             <NavLink to="/pricing" icon={FileText} onClick={() => handleNavigation("/pricing")}>Pricing</NavLink>
+            <NavLink to="/docs" icon={BookOpen} onClick={() => handleNavigation("/docs")}>Documentation</NavLink>
             <NavLink to="/about" icon={Clipboard} onClick={() => handleNavigation("/about")}>About</NavLink>
             <NavLink to="/contact" icon={MessageSquare} onClick={() => handleNavigation("/contact")}>Contact</NavLink>
             <NavLink to="/support" icon={MessageSquare} onClick={() => handleNavigation("/support")}>Support</NavLink>
@@ -168,6 +170,7 @@ const Header = () => {
                 <MobileNavLink to="/" icon={Home} onClick={() => handleNavigation("/")}>Home</MobileNavLink>
                 <MobileNavLink to="/features" icon={FileText} onClick={() => handleNavigation("/features")}>Features</MobileNavLink>
                 <MobileNavLink to="/pricing" icon={FileText} onClick={() => handleNavigation("/pricing")}>Pricing</MobileNavLink>
+                <MobileNavLink to="/docs" icon={BookOpen} onClick={() => handleNavigation("/docs")}>Documentation</MobileNavLink>
                 <MobileNavLink to="/about" icon={Clipboard} onClick={() => handleNavigation("/about")}>About</MobileNavLink>
                 <MobileNavLink to="/contact" icon={MessageSquare} onClick={() => handleNavigation("/contact")}>Contact</MobileNavLink>
                 <MobileNavLink to="/support" icon={MessageSquare} onClick={() => handleNavigation("/support")}>Support</MobileNavLink>
