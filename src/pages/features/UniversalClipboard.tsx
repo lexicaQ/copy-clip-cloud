@@ -2,7 +2,18 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Cloud, ArrowRight, Check, Smartphone, Laptop, Computer, Shield, ZapFast, Copy } from "lucide-react";
+import { 
+  ArrowLeft, 
+  Cloud, 
+  ArrowRight, 
+  Check, 
+  Smartphone, 
+  Laptop, 
+  Computer, 
+  Shield, 
+  Zap,  // Replace ZapFast with Zap
+  Copy 
+} from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
