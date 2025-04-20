@@ -1,4 +1,7 @@
+
 import React from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import DocLayout from "./DocLayout";
 import { 
   Tag, 
@@ -14,6 +17,37 @@ import {
   FileText,
   Settings
 } from "lucide-react";
+
+// Define the smartFolderRules data that was missing
+const smartFolderRules = [
+  {
+    name: "Code Snippets",
+    icon: Code,
+    rules: [
+      "Contains code syntax (function, class, const, etc.)",
+      "Has programming language identifiers",
+      "Contains code formatting patterns"
+    ]
+  },
+  {
+    name: "Meeting Notes",
+    icon: FileText,
+    rules: [
+      "Contains dates and times",
+      "Has participant names",
+      "Contains action items or follow-ups"
+    ]
+  },
+  {
+    name: "Contact Information",
+    icon: Tag,
+    rules: [
+      "Contains email addresses",
+      "Has phone numbers",
+      "Contains social media handles"
+    ]
+  }
+];
 
 const SmartOrganization = () => {
   return (

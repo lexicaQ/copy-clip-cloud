@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cookie, Info, Lock, Shield, Check } from "lucide-react";
+import { Cookie, Info, Lock, Shield, Check, CheckCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { 
@@ -63,7 +63,7 @@ const CookieBanner = () => {
       id: "analytics",
       title: "Analytics Cookies",
       description: "Help us understand how you use our site",
-      icon: CheckCheck,
+      icon: Check,
       tooltip: "These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site."
     }
   ];
