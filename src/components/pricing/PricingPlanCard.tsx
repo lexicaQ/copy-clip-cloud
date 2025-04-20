@@ -1,10 +1,8 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import { ComingSoon } from "@/components/ui/coming-soon";
 import DownloadButton from "@/components/landing/DownloadButton";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 interface PlanFeature {
@@ -67,7 +65,7 @@ const PricingPlanCard = ({
         </motion.div>
       )}
       
-      <div className="p-8 relative z-1">
+      <div className="p-8 relative z-10">
         {/* Icon and name */}
         <div className="flex flex-col items-center text-center mb-6">
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center mb-4 border border-white/10">
@@ -121,7 +119,12 @@ const PricingPlanCard = ({
         {/* CTA Button */}
         {isBasicPlan ? (
           <div className="mb-8">
-            <DownloadButton variant="compact" />
+            <Button 
+              className="w-full py-6 bg-gradient-to-r from-white/15 to-white/5 hover:from-white/20 hover:to-white/10 text-white border border-white/10 relative overflow-hidden"
+              onClick={() => {}}
+            >
+              <DownloadButton variant="compact" />
+            </Button>
           </div>
         ) : (
           <motion.div
@@ -132,7 +135,9 @@ const PricingPlanCard = ({
             <Button 
               className="w-full py-6 bg-gradient-to-r from-white/15 to-white/5 hover:from-white/20 hover:to-white/10 text-white border border-white/10 relative overflow-hidden"
             >
-              <ComingSoon className="absolute -top-3 -left-3" />
+              <div className="absolute -top-3 -right-3 z-20">
+                <ComingSoon />
+              </div>
               <span className="flex items-center gap-2">
                 Get Started
                 <ArrowRight className="w-4 h-4" />

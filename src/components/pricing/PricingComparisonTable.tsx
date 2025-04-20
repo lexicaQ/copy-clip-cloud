@@ -1,5 +1,5 @@
-
 import React from "react";
+import { motion } from "framer-motion";
 import { Check, Info } from "lucide-react";
 import {
   Table,
@@ -15,7 +15,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { motion } from "framer-motion";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface Feature {
   name: string;
@@ -136,7 +140,6 @@ const PricingComparisonTable = ({ isAnnual }: PricingComparisonTableProps) => {
     },
   ];
 
-  // Group features by category
   const getCategoryFeatures = () => {
     const result: { [key: string]: Feature[] } = {};
     let currentCategory = "";
@@ -164,6 +167,16 @@ const PricingComparisonTable = ({ isAnnual }: PricingComparisonTableProps) => {
     enterprise: { monthly: "7.99", annual: "79.99" }
   };
 
+  const getCategoryDescription = (category: string) => {
+    const descriptions: Record<string, string> = {
+      "Core Features": "Essential functionalities that form the backbone of our service",
+      "Sync & Organization": "Tools and features for managing and synchronizing your data",
+      "Security & Privacy": "Advanced security measures to protect your information",
+      "Support & Teams": "Collaborative features and dedicated support options"
+    };
+    return descriptions[category] || category;
+  };
+
   return (
     <motion.div 
       className="rounded-xl overflow-hidden border border-white/10 backdrop-blur-xl bg-black/5"
@@ -177,45 +190,54 @@ const PricingComparisonTable = ({ isAnnual }: PricingComparisonTableProps) => {
           <TableHeader>
             <TableRow className="border-b border-white/10 bg-white/5">
               <TableHead className="w-[280px] py-6 text-white font-medium">Features</TableHead>
-              <TableHead className="text-center py-6">
-                <div className="flex flex-col items-center">
-                  <span className="text-white font-medium text-lg">Basic</span>
-                  <span className="text-white/70 text-sm mt-1">${pricing.basic[isAnnual ? 'annual' : 'monthly']}/{isAnnual ? 'year' : 'month'}</span>
-                </div>
-              </TableHead>
-              <TableHead className="text-center py-6 bg-white/5">
-                <div className="flex flex-col items-center">
-                  <span className="text-white font-medium text-lg">Pro</span>
-                  <span className="text-white/70 text-sm mt-1">${pricing.pro[isAnnual ? 'annual' : 'monthly']}/{isAnnual ? 'year' : 'month'}</span>
-                  {isAnnual && <span className="text-xs text-green-400">Save 20%</span>}
-                </div>
-              </TableHead>
-              <TableHead className="text-center py-6">
-                <div className="flex flex-col items-center">
-                  <span className="text-white font-medium text-lg">Enterprise</span>
-                  <span className="text-white/70 text-sm mt-1">${pricing.enterprise[isAnnual ? 'annual' : 'monthly']}/{isAnnual ? 'year' : 'month'}</span>
-                  {isAnnual && <span className="text-xs text-green-400">Save 20%</span>}
-                </div>
-              </TableHead>
+              {["Basic", "Pro", "Enterprise"].map((plan, index) => (
+                <TableHead key={plan} className="text-center py-6">
+                  <motion.div 
+                    className="flex flex-col items-center"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * (index + 1) }}
+                  >
+                    <span className="text-white font-medium text-lg">{plan}</span>
+                    <span className="text-white/70 text-sm mt-1">
+                      ${plan === "Basic" ? "0" : plan === "Pro" ? (isAnnual ? "39.99" : "3.99") : (isAnnual ? "79.99" : "7.99")}/{isAnnual ? 'year' : 'month'}
+                    </span>
+                    {isAnnual && plan !== "Basic" && (
+                      <span className="text-xs text-green-400">Save 20%</span>
+                    )}
+                  </motion.div>
+                </TableHead>
+              ))}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {categories.map((category, categoryIndex) => (
+            {Object.entries(getCategoryFeatures()).map(([category, features], categoryIndex) => (
               <React.Fragment key={category}>
                 <TableRow className="bg-white/5 border-white/10">
-                  <TableCell colSpan={4} className="font-semibold text-white py-4">
+                  <TableCell colSpan={4} className="py-4">
                     <motion.div
                       initial={{ opacity: 0 }}
                       whileInView={{ opacity: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.1 * categoryIndex }}
+                      className="flex items-center gap-2"
                     >
-                      {category}
+                      <span className="font-semibold text-white">{category}</span>
+                      <Popover>
+                        <PopoverTrigger>
+                          <Info className="h-4 w-4 text-white/40 hover:text-white/60 transition-colors" />
+                        </PopoverTrigger>
+                        <PopoverContent className="bg-black/90 text-white border border-white/10 backdrop-blur-xl p-4">
+                          <p className="text-sm">
+                            {getCategoryDescription(category)}
+                          </p>
+                        </PopoverContent>
+                      </Popover>
                     </motion.div>
                   </TableCell>
                 </TableRow>
                 
-                {categoryFeatures[category].map((feature, index) => (
+                {features.map((feature, index) => (
                   <TableRow key={`${category}-${index}`} className="border-white/10 hover:bg-white/5">
                     <TableCell className="font-medium text-white py-4">
                       <motion.div
@@ -223,6 +245,7 @@ const PricingComparisonTable = ({ isAnnual }: PricingComparisonTableProps) => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.05 * (index + 1) }}
+                        className="flex items-center gap-2"
                       >
                         <TooltipProvider>
                           <Tooltip>
@@ -230,7 +253,7 @@ const PricingComparisonTable = ({ isAnnual }: PricingComparisonTableProps) => {
                               {feature.name}
                               <Info className="h-4 w-4 text-white/40" />
                             </TooltipTrigger>
-                            <TooltipContent className="bg-black/90 text-white border border-white/10 backdrop-blur-xl shadow-xl p-3 max-w-xs">
+                            <TooltipContent className="bg-black/90 text-white border border-white/10 backdrop-blur-xl shadow-xl p-3">
                               <p>{feature.description}</p>
                             </TooltipContent>
                           </Tooltip>
@@ -238,65 +261,29 @@ const PricingComparisonTable = ({ isAnnual }: PricingComparisonTableProps) => {
                       </motion.div>
                     </TableCell>
                     
-                    <TableCell className="text-center py-4">
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.05 * (index + 1) + 0.1 }}
-                        className="flex justify-center"
-                      >
-                        {typeof feature.basic === 'string' ? (
-                          <span className="text-white bg-white/5 px-3 py-1 rounded-full text-sm">{feature.basic}</span>
-                        ) : feature.basic ? (
-                          <div className="h-6 w-6 rounded-full bg-white/10 flex items-center justify-center">
-                            <Check className="h-3.5 w-3.5 text-white" />
-                          </div>
-                        ) : (
-                          <span className="text-white/30">—</span>
-                        )}
-                      </motion.div>
-                    </TableCell>
-                    
-                    <TableCell className="text-center py-4 bg-white/5">
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.05 * (index + 1) + 0.2 }}
-                        className="flex justify-center"
-                      >
-                        {typeof feature.pro === 'string' ? (
-                          <span className="text-white bg-white/10 px-3 py-1 rounded-full text-sm">{feature.pro}</span>
-                        ) : feature.pro ? (
-                          <div className="h-6 w-6 rounded-full bg-white/20 flex items-center justify-center">
-                            <Check className="h-3.5 w-3.5 text-white" />
-                          </div>
-                        ) : (
-                          <span className="text-white/30">—</span>
-                        )}
-                      </motion.div>
-                    </TableCell>
-                    
-                    <TableCell className="text-center py-4">
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.05 * (index + 1) + 0.3 }}
-                        className="flex justify-center"
-                      >
-                        {typeof feature.enterprise === 'string' ? (
-                          <span className="text-white bg-white/5 px-3 py-1 rounded-full text-sm">{feature.enterprise}</span>
-                        ) : feature.enterprise ? (
-                          <div className="h-6 w-6 rounded-full bg-white/10 flex items-center justify-center">
-                            <Check className="h-3.5 w-3.5 text-white" />
-                          </div>
-                        ) : (
-                          <span className="text-white/30">—</span>
-                        )}
-                      </motion.div>
-                    </TableCell>
+                    {["basic", "pro", "enterprise"].map((plan, planIndex) => (
+                      <TableCell key={plan} className="text-center py-4">
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.05 * (index + 1) + (0.1 * planIndex) }}
+                          className="flex justify-center"
+                        >
+                          {typeof feature[plan as keyof typeof feature] === 'string' ? (
+                            <span className="text-white bg-white/5 px-3 py-1 rounded-full text-sm">
+                              {feature[plan as keyof typeof feature]}
+                            </span>
+                          ) : feature[plan as keyof typeof feature] ? (
+                            <div className="h-6 w-6 rounded-full bg-white/10 flex items-center justify-center">
+                              <Check className="h-3.5 w-3.5 text-white" />
+                            </div>
+                          ) : (
+                            <span className="text-white/30">—</span>
+                          )}
+                        </motion.div>
+                      </TableCell>
+                    ))}
                   </TableRow>
                 ))}
               </React.Fragment>
