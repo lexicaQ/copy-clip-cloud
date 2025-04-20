@@ -1,7 +1,9 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SharedBackground from "@/components/layout/SharedBackground";
 import { 
   MessageSquare, 
   Mail, 
@@ -20,17 +22,18 @@ import {
   AccordionTrigger 
 } from "@/components/ui/accordion";
 import { ComingSoon } from "@/components/ui/coming-soon";
+import { Button } from "@/components/ui/button";
 
 const SupportOption = ({ title, description, icon: Icon, link, linkText, comingSoon = false }) => (
   <motion.div
-    className="glass-panel p-6 hover:bg-white/5 transition-all duration-300 relative"
+    className="glass-panel p-6 hover:bg-white/5 transition-all duration-300 relative overflow-visible"
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.4 }}
   >
     {comingSoon && (
-      <div className="absolute -top-2 -left-2 z-10">
+      <div className="absolute -top-3 -right-3 z-10">
         <ComingSoon />
       </div>
     )}
@@ -42,7 +45,7 @@ const SupportOption = ({ title, description, icon: Icon, link, linkText, comingS
         <h3 className="font-medium text-lg mb-2">{title}</h3>
         <p className="text-gray-400 text-sm mb-4">{description}</p>
         <Link 
-          to={link === "/documentation" ? "/docs" : link} 
+          to={link} 
           className={`text-sm inline-flex items-center font-medium text-white hover:underline ${
             comingSoon ? 'pointer-events-none opacity-70' : ''
           }`}
@@ -75,10 +78,16 @@ const Support = () => {
   ];
   
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-background">
+      <SharedBackground />
       <Header />
 
-      <main className="pt-32 pb-24 px-4 max-w-7xl mx-auto">
+      <main className="pt-32 pb-24 px-4 max-w-7xl mx-auto relative">
+        {/* Overlapping Coming Soon badge in the top left */}
+        <div className="absolute -left-2 -top-2 z-10">
+          <ComingSoon />
+        </div>
+
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -135,7 +144,7 @@ const Support = () => {
               title="Documentation"
               description="Browse our comprehensive documentation for detailed instructions."
               icon={BookOpen}
-              link="/documentation"
+              link="/docs"
               linkText="View Documentation"
             />
             <SupportOption 
@@ -150,14 +159,14 @@ const Support = () => {
         </motion.div>
 
         <motion.div
-          className="mb-16"
+          className="mb-16 glass-panel p-8 rounded-xl"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
         >
           <h2 className="text-2xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-          <div className="glass-panel">
+          <div>
             <Accordion type="single" collapsible className="divide-y divide-white/10">
               {popularQuestions.map((faq, index) => (
                 <AccordionItem key={index} value={`item-${index}`} className="border-b-0 last:border-0">
@@ -225,30 +234,36 @@ const Support = () => {
               Join our community to share tips, ask questions, and connect with other users.
             </p>
             <div className="flex flex-wrap gap-3">
-              <a 
+              <motion.a 
                 href="#forum" 
                 className="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 Forum
-              </a>
-              <a 
+              </motion.a>
+              <motion.a 
                 href="#discord" 
                 className="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 Discord
-              </a>
-              <a 
+              </motion.a>
+              <motion.a 
                 href="#reddit" 
                 className="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 Reddit
-              </a>
+              </motion.a>
             </div>
           </motion.div>
         </motion.div>
 
         <motion.div
-          className="text-center"
+          className="text-center glass-panel p-8 rounded-xl"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -258,12 +273,9 @@ const Support = () => {
           <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
             Your opinion matters to us. Let us know how we can improve CopyClipCloud.
           </p>
-          <a 
-            href="/contact" 
-            className="px-6 py-3 bg-white text-black rounded-full inline-flex items-center hover:bg-opacity-90 transition-all"
-          >
-            Send Feedback
-          </a>
+          <Button asChild>
+            <Link to="/contact">Send Feedback</Link>
+          </Button>
         </motion.div>
       </main>
 

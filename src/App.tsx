@@ -30,10 +30,28 @@ import AcceptableUse from "./pages/AcceptableUse";
 import DataProcessing from "./pages/DataProcessing";
 import GettingStartedHelp from "./pages/help/GettingStartedHelp";
 
+// Documentation pages
+import GettingStarted from "./pages/docs/GettingStarted";
+import CoreFeatures from "./pages/docs/CoreFeatures";
+import AdvancedUsage from "./pages/docs/AdvancedUsage";
+import ApiDocumentation from "./pages/docs/ApiDocumentation";
+import ApiExplorer from "./pages/docs/ApiExplorer";
+import KeyboardShortcuts from "./pages/docs/KeyboardShortcuts";
+import CloudSync from "./pages/docs/CloudSync";
+import Templates from "./pages/docs/Templates";
+import SmartOrganization from "./pages/docs/SmartOrganization";
+import SearchFiltering from "./pages/docs/SearchFiltering";
+import SecurityDocs from "./pages/docs/SecurityDocs";
+import Sdk from "./pages/docs/Sdk";
+import IntegrationGuides from "./pages/docs/IntegrationGuides";
+import DeveloperPortal from "./pages/docs/DeveloperPortal";
+import AllArticles from "./pages/docs/AllArticles";
+
 // Feature pages that exist in the project
 import CopyClipCloud from "./pages/features/CopyClipCloud";
-import SmartOrganization from "./pages/features/SmartOrganization";
 import SmartOrganizationFeature from "./pages/features/SmartOrganizationFeature";
+import UniversalClipboard from "./pages/features/UniversalClipboard";
+import SmartSearch from "./pages/features/SmartSearch";
 
 const queryClient = new QueryClient();
 
@@ -68,11 +86,28 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/status" element={<Status />} />
           
+          {/* Documentation pages */}
+          <Route path="/docs/getting-started" element={<GettingStarted />} />
+          <Route path="/docs/core-features" element={<CoreFeatures />} />
+          <Route path="/docs/advanced-usage" element={<AdvancedUsage />} />
+          <Route path="/docs/api-documentation" element={<ApiDocumentation />} />
+          <Route path="/docs/api-explorer" element={<ApiExplorer />} />
+          <Route path="/docs/keyboard-shortcuts" element={<KeyboardShortcuts />} />
+          <Route path="/docs/cloud-sync" element={<CloudSync />} />
+          <Route path="/docs/templates" element={<Templates />} />
+          <Route path="/docs/smart-organization" element={<SmartOrganization />} />
+          <Route path="/docs/search-filtering" element={<SearchFiltering />} />
+          <Route path="/docs/security" element={<SecurityDocs />} />
+          <Route path="/docs/sdk" element={<Sdk />} />
+          <Route path="/docs/integration-guides" element={<IntegrationGuides />} />
+          <Route path="/docs/developer-portal" element={<DeveloperPortal />} />
+          <Route path="/docs/all-articles" element={<AllArticles />} />
+          
           {/* Feature pages */}
           <Route path="/features/copy-clip-cloud" element={<CopyClipCloud />} />
-          <Route path="/features/universal-clipboard" element={<CopyClipCloud />} />
-          <Route path="/features/smart-organization" element={<SmartOrganization />} />
-          <Route path="/features/smart-organization-feature" element={<SmartOrganizationFeature />} />
+          <Route path="/features/universal-clipboard" element={<UniversalClipboard />} />
+          <Route path="/features/smart-organization" element={<SmartOrganizationFeature />} />
+          <Route path="/features/smart-search" element={<SmartSearch />} />
           
           {/* Help pages */}
           <Route path="/help/getting-started" element={<GettingStartedHelp />} />
