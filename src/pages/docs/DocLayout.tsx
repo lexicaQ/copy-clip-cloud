@@ -37,21 +37,21 @@ const DocLayout: React.FC<DocLayoutProps> = ({
       
       <div className="flex flex-col lg:flex-row pt-24 pb-24">
         {/* Fixed sidebar for better navigation - always visible on documentation pages */}
-        <div className="fixed left-0 top-24 h-[calc(100vh-96px)] w-64 hidden lg:block overflow-auto z-10">
+        <div className="fixed left-0 top-24 h-[calc(100vh-96px)] w-64 hidden lg:block overflow-auto z-10 border-r border-white/10 bg-background/95 backdrop-blur-sm">
           <DocSidebar />
         </div>
         
         {/* Mobile sidebar (visible on smaller screens) */}
-        <div className="lg:hidden mb-6">
+        <div className="lg:hidden mb-6 px-4">
           <DocSidebar />
         </div>
         
-        <main className="flex-1 px-4 lg:px-8 max-w-4xl mx-auto lg:ml-64 w-full">
+        <main className="flex-1 px-4 lg:px-12 max-w-4xl mx-auto lg:ml-64 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-8 pt-10 lg:pt-0"
+            className="mb-8 pt-10 lg:pt-4"
           >
             <Link 
               to={backLink} 

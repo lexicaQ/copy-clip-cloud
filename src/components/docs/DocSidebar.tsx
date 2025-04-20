@@ -32,7 +32,7 @@ interface SidebarLinkProps {
 const SidebarLink = ({ href, icon: Icon, title, isActive, isNew, onClick }: SidebarLinkProps) => (
   <Link
     to={href}
-    className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+    className={`flex items-center px-4 py-2.5 rounded-lg transition-all ${
       isActive 
         ? 'bg-white/10 text-white' 
         : 'text-white/70 hover:bg-white/5 hover:text-white'
@@ -40,7 +40,7 @@ const SidebarLink = ({ href, icon: Icon, title, isActive, isNew, onClick }: Side
     onClick={onClick}
   >
     <Icon className="w-4 h-4 mr-3 flex-shrink-0" />
-    <span className="text-sm">{title}</span>
+    <span className="text-sm font-medium">{title}</span>
     {isNew && (
       <span className="ml-2 text-[10px] bg-white/10 text-white px-1.5 py-0.5 rounded">NEW</span>
     )}
@@ -55,7 +55,7 @@ interface SidebarSectionProps {
 
 const SidebarSection = ({ title, children }: SidebarSectionProps) => (
   <div className="mb-6">
-    <h3 className="text-xs uppercase tracking-wider text-white/50 font-medium mb-2 px-4">{title}</h3>
+    <h3 className="text-xs uppercase tracking-wider text-white/50 font-medium mb-3 px-4">{title}</h3>
     <div className="space-y-1">
       {children}
     </div>
@@ -96,12 +96,12 @@ const DocSidebar = () => {
       <MobileToggle />
       
       <motion.aside
-        className={`w-full lg:w-64 flex-shrink-0 border-r border-white/10 py-6 fixed lg:sticky top-0 lg:top-24 left-0 h-screen lg:h-[calc(100vh-96px)] z-40 bg-background transition-transform duration-300 transform lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'} overflow-y-auto`}
+        className={`w-full lg:w-64 flex-shrink-0 py-6 fixed lg:sticky top-0 lg:top-24 left-0 h-screen lg:h-[calc(100vh-96px)] z-40 bg-background transition-transform duration-300 transform lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 overflow-y-auto`}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="sticky top-0 bg-background z-10 px-4 pb-4">
+        <div className="sticky top-0 bg-background/95 backdrop-blur-sm z-10 px-4 pb-4">
           <div className="relative mb-6">
             <input
               type="text"

@@ -40,25 +40,29 @@ const GettingStartedHelp = () => {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
           {guides.map((guide, index) => (
-            <div 
+            <motion.div 
               key={index} 
-              className="glass-panel p-6 hover:bg-white/5 transition-all duration-300"
+              className="glass-panel p-6 hover:bg-white/5 transition-all duration-300 border border-white/10 shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              whileHover={{ y: -5, boxShadow: "0 15px 30px rgba(0,0,0,0.2)" }}
             >
               <h3 className="text-xl font-medium mb-3">{guide.title}</h3>
               <p className="text-gray-400 mb-4">{guide.description}</p>
               <Link 
                 to="#" 
-                className="text-white hover:underline inline-flex items-center"
+                className="text-white hover:underline inline-flex items-center group"
               >
-                Read Guide <ArrowRight className="w-4 h-4 ml-2" />
+                Read Guide <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </main>

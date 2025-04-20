@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -161,17 +160,18 @@ const documentationLinks: DocumentItem[] = [
   },
 ];
 
-// Document card component
+// Document card component with improved styling
 const DocumentCard = ({ item }: { item: DocumentItem }) => {
   const Icon = item.icon;
   
   return (
     <motion.div
-      className="glass-panel p-5 hover:bg-white/5 transition-colors duration-300 h-full flex flex-col relative overflow-visible"
+      className="glass-panel p-6 hover:bg-white/5 transition-colors duration-300 h-full flex flex-col relative overflow-visible shadow-lg border border-white/10"
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
+      whileHover={{ y: -5, boxShadow: "0 15px 30px rgba(0,0,0,0.2)" }}
     >
       {item.comingSoon && (
         <div className="absolute -top-3 -right-3 z-10">
@@ -182,12 +182,12 @@ const DocumentCard = ({ item }: { item: DocumentItem }) => {
         to={item.comingSoon ? "#" : item.href} 
         className={`flex flex-col h-full ${item.comingSoon ? 'pointer-events-none' : ''}`}
       >
-        <div className="flex items-start space-x-3 mb-3">
-          <div className="p-2.5 rounded-xl bg-white/10 flex-shrink-0">
+        <div className="flex items-start space-x-4 mb-4">
+          <div className="p-3 rounded-xl bg-white/10 flex-shrink-0">
             <Icon className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-lg font-medium text-white">{item.title}</h3>
               {item.isNew && (
                 <span className="px-1.5 py-0.5 bg-white/10 text-white text-xs rounded">New</span>
@@ -196,15 +196,32 @@ const DocumentCard = ({ item }: { item: DocumentItem }) => {
                 <span className="px-1.5 py-0.5 bg-white/10 text-white text-xs rounded">Popular</span>
               )}
             </div>
-            <p className="text-sm text-gray-400 mt-1 line-clamp-2">{item.description}</p>
+            <p className="text-sm text-gray-400 mt-2 line-clamp-2">{item.description}</p>
           </div>
         </div>
-        <div className="mt-auto pt-3 flex items-center text-sm text-white/70 hover:text-white transition-colors">
+        <div className="mt-auto pt-3 flex items-center text-sm text-white/70 hover:text-white transition-colors group">
           <span>Read more</span>
-          <ChevronRight className="w-4 h-4 ml-1" />
+          <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
         </div>
       </Link>
     </motion.div>
+  );
+};
+
+// Category section component to improve structure
+const CategorySection = ({ title, items }: { title: string, items: DocumentItem[] }) => {
+  return (
+    <div className="mb-16 last:mb-0">
+      <h2 className="text-2xl font-bold mb-8 text-center">
+        <span className="text-gradient">{title}</span>
+        <div className="h-1 w-16 bg-white/20 mx-auto mt-2"></div>
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {items.map((link, index) => (
+          <DocumentCard key={index} item={link} />
+        ))}
+      </div>
+    </div>
   );
 };
 
@@ -251,7 +268,7 @@ const Documentation = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="glass-panel p-8 rounded-xl backdrop-blur-xl">
+          <div className="glass-panel p-8 rounded-xl backdrop-blur-xl border border-white/10 shadow-lg">
             <div className="relative mb-8 max-w-2xl mx-auto">
               <input
                 type="text"
@@ -293,60 +310,30 @@ const Documentation = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="space-y-16">
-                    <div>
-                      <h2 className="text-2xl font-bold mb-6 text-center text-gradient">Getting Started</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {documentationLinks
-                          .filter(link => link.category === "getting-started")
-                          .map((link, index) => (
-                            <DocumentCard key={index} item={link} />
-                          ))}
-                      </div>
-                    </div>
+                    <CategorySection 
+                      title="Getting Started" 
+                      items={documentationLinks.filter(link => link.category === "getting-started")} 
+                    />
                     
-                    <div>
-                      <h2 className="text-2xl font-bold mb-6 text-center text-gradient">Core Features</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {documentationLinks
-                          .filter(link => link.category === "core-features")
-                          .map((link, index) => (
-                            <DocumentCard key={index} item={link} />
-                          ))}
-                      </div>
-                    </div>
+                    <CategorySection 
+                      title="Core Features" 
+                      items={documentationLinks.filter(link => link.category === "core-features")} 
+                    />
                     
-                    <div>
-                      <h2 className="text-2xl font-bold mb-6 text-center text-gradient">Advanced Usage</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {documentationLinks
-                          .filter(link => link.category === "advanced")
-                          .map((link, index) => (
-                            <DocumentCard key={index} item={link} />
-                          ))}
-                      </div>
-                    </div>
+                    <CategorySection 
+                      title="Advanced Usage" 
+                      items={documentationLinks.filter(link => link.category === "advanced")} 
+                    />
                     
-                    <div>
-                      <h2 className="text-2xl font-bold mb-6 text-center text-gradient">API & SDK</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {documentationLinks
-                          .filter(link => link.category === "api")
-                          .map((link, index) => (
-                            <DocumentCard key={index} item={link} />
-                          ))}
-                      </div>
-                    </div>
+                    <CategorySection 
+                      title="API & SDK" 
+                      items={documentationLinks.filter(link => link.category === "api")} 
+                    />
                     
-                    <div>
-                      <h2 className="text-2xl font-bold mb-6 text-center text-gradient">Security</h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {documentationLinks
-                          .filter(link => link.category === "security")
-                          .map((link, index) => (
-                            <DocumentCard key={index} item={link} />
-                          ))}
-                      </div>
-                    </div>
+                    <CategorySection 
+                      title="Security" 
+                      items={documentationLinks.filter(link => link.category === "security")} 
+                    />
                   </div>
                 </motion.div>
               ) : (
@@ -394,7 +381,7 @@ const Documentation = () => {
         </motion.div>
         
         <motion.div
-          className="glass-panel p-8 rounded-xl text-center mt-12"
+          className="glass-panel p-8 rounded-xl text-center mt-12 border border-white/10 shadow-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}

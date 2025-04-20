@@ -95,25 +95,67 @@ const testimonials = [
   }
 ];
 
-// Modern testimonial card component
+// Modern testimonial card component with improved avatar positioning
 const TestimonialCard = ({ 
   name, role, content, rating, image, company, verified = true 
 }: TestimonialProps) => {
   return (
     <motion.div 
-      className="h-full glass-panel backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl p-6 relative group transition-all duration-300"
+      className="relative h-full pt-10 px-6 pb-6 glass-panel backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-lg"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
       whileHover={{ y: -5, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)" }}
     >
+      {/* Avatar positioned prominently at the top */}
+      <div className="absolute -top-10 left-1/2 transform -translate-x-1/2">
+        <motion.div 
+          className="w-20 h-20 rounded-full overflow-hidden border-4 border-background shadow-xl bg-white/5"
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <img src={image} alt={name} className="w-full h-full object-cover" />
+        </motion.div>
+        {verified && (
+          <motion.div 
+            className="absolute -bottom-1 right-0 bg-white/10 p-1 rounded-full backdrop-blur-md border border-white/20"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <ShieldCheck className="w-4 h-4 text-white" />
+          </motion.div>
+        )}
+      </div>
+      
       {/* Quote icon with enhanced styling */}
-      <div className="absolute -top-3 -right-3 rounded-full p-2 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl border border-white/20 shadow-xl">
+      <div className="absolute -top-2 -right-2 rounded-full p-2 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl border border-white/20 shadow-xl">
         <Quote className="w-4 h-4 text-white" />
       </div>
       
+      {/* User info with enhanced styling */}
+      <div className="text-center mt-8 mb-4">
+        <motion.h4 
+          className="font-medium text-white text-base"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          {name}
+        </motion.h4>
+        <motion.p 
+          className="text-xs text-gray-400"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.35 }}
+        >
+          {role} {company && <span className="opacity-60 mx-1">•</span>} {company}
+        </motion.p>
+      </div>
+      
       {/* Rating */}
-      <div className="flex text-white mb-4 mt-1">
+      <div className="flex justify-center text-white mb-4">
         {[...Array(5)].map((_, i) => (
           <motion.div 
             key={i}
@@ -122,7 +164,7 @@ const TestimonialCard = ({
             transition={{ delay: i * 0.1, duration: 0.3 }}
           >
             <Star 
-              className={`w-4 h-4 mr-1 ${i < Math.floor(rating) ? 'text-white' : 'text-gray-600'}`}
+              className={`w-4 h-4 mx-0.5 ${i < Math.floor(rating) ? 'text-white' : 'text-gray-600'}`}
               fill={i < Math.floor(rating) ? "currentColor" : "none"} 
             />
           </motion.div>
@@ -132,53 +174,13 @@ const TestimonialCard = ({
       
       {/* Content with subtle animation */}
       <motion.p 
-        className="text-gray-300 italic leading-relaxed mb-6 text-base"
+        className="text-gray-300 italic leading-relaxed text-center text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.4 }}
+        transition={{ delay: 0.4, duration: 0.4 }}
       >
         "{content}"
       </motion.p>
-      
-      {/* User info with enhanced styling */}
-      <div className="flex items-center pt-4 border-t border-white/10 mt-auto">
-        <div className="relative">
-          <motion.div 
-            className="w-12 h-12 rounded-full overflow-hidden border border-white/20 shadow-lg bg-white/5"
-            whileHover={{ scale: 1.05 }}
-          >
-            <img src={image} alt={name} className="w-full h-full object-cover" />
-          </motion.div>
-          {verified && (
-            <motion.div 
-              className="absolute -bottom-1 -right-1 bg-white/10 p-1 rounded-full backdrop-blur-md"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.3 }}
-            >
-              <ShieldCheck className="w-3 h-3 text-white" />
-            </motion.div>
-          )}
-        </div>
-        <div className="ml-4">
-          <motion.h4 
-            className="font-medium text-white text-base"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.3 }}
-          >
-            {name}
-          </motion.h4>
-          <motion.p 
-            className="text-xs text-gray-400"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.45, duration: 0.3 }}
-          >
-            {role} {company && <span className="opacity-60 mx-1">•</span>} {company}
-          </motion.p>
-        </div>
-      </div>
     </motion.div>
   );
 };

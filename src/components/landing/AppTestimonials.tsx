@@ -16,41 +16,41 @@ interface TestimonialProps {
 const Testimonial = ({ name, role, content, rating, image, company, verified = true }: TestimonialProps) => {
   return (
     <motion.div 
-      className="glass-panel p-6 relative hover:scale-[1.02] transition-all"
+      className="glass-panel p-6 relative hover:scale-[1.02] transition-all h-full pt-14"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       viewport={{ once: true }}
     >
+      {/* Avatar positioned prominently at the top */}
+      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
+        <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-background shadow-lg">
+          <img src={image} alt={name} className="w-full h-full object-cover" />
+        </div>
+        {verified && (
+          <div className="absolute -bottom-1 right-0 bg-white/10 p-1 rounded-full backdrop-blur-md border border-white/20">
+            <ShieldCheck className="w-3 h-3 text-white" />
+          </div>
+        )}
+      </div>
+      
       <div className="absolute -top-3 -right-3 bg-white/10 p-1.5 rounded-full backdrop-blur-md">
         <Quote className="w-6 h-6 text-white" />
       </div>
       
-      <div className="flex items-center mb-4">
-        <div className="w-14 h-14 rounded-full overflow-hidden mr-4 border border-white/20 shadow-glow">
-          <img src={image} alt={name} className="w-full h-full object-cover" />
-        </div>
-        <div>
-          <div className="flex items-center">
-            <h4 className="font-medium text-white">{name}</h4>
-            {verified && (
-              <div className="ml-2 bg-white/10 p-0.5 rounded-full">
-                <ShieldCheck className="w-3 h-3 text-white" />
-              </div>
-            )}
-          </div>
-          <p className="text-sm text-gray-400">{role}</p>
-          {company && <p className="text-xs text-gray-500 flex items-center"><Award className="w-3 h-3 mr-1" /> {company}</p>}
-        </div>
+      <div className="text-center mb-4">
+        <h4 className="font-medium text-white">{name}</h4>
+        <p className="text-sm text-gray-400">{role}</p>
+        {company && <p className="text-xs text-gray-500 flex items-center justify-center"><Award className="w-3 h-3 mr-1" /> {company}</p>}
       </div>
       
-      <p className="text-gray-300 mb-4 italic leading-relaxed">{`"${content}"`}</p>
+      <p className="text-gray-300 mb-4 italic leading-relaxed text-center">{`"${content}"`}</p>
       
-      <div className="flex text-white">
+      <div className="flex justify-center text-white">
         {[...Array(5)].map((_, i) => (
           <Star 
             key={i} 
-            className={`w-4 h-4 mr-1 ${i < rating ? 'text-white' : 'text-gray-600'}`}
+            className={`w-4 h-4 mx-0.5 ${i < rating ? 'text-white' : 'text-gray-600'}`}
             fill={i < rating ? "currentColor" : "none"} 
           />
         ))}
