@@ -26,7 +26,6 @@ const DocLayout: React.FC<DocLayoutProps> = ({
 }) => {
   const location = useLocation();
   
-  // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -35,23 +34,14 @@ const DocLayout: React.FC<DocLayoutProps> = ({
     <div className="min-h-screen bg-background">
       <Header />
       
-      <div className="flex flex-col lg:flex-row pt-24 pb-24">
-        {/* Fixed sidebar for better navigation - always visible on documentation pages */}
-        <div className="fixed left-0 top-24 h-[calc(100vh-96px)] w-64 hidden lg:block overflow-auto z-10 border-r border-white/10 bg-background/95 backdrop-blur-sm">
-          <DocSidebar />
-        </div>
-        
-        {/* Mobile sidebar (visible on smaller screens) */}
-        <div className="lg:hidden mb-6 px-4">
-          <DocSidebar />
-        </div>
-        
-        <main className="flex-1 px-4 lg:px-12 max-w-4xl mx-auto lg:ml-64 w-full">
+      <div className="flex flex-col lg:flex-row pt-24 pb-24 relative max-w-[90rem] mx-auto">
+        {/* Main content - centered */}
+        <main className="flex-1 px-4 lg:px-12 order-2 lg:order-1">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-8 pt-10 lg:pt-4"
+            className="mb-8 pt-10 lg:pt-4 max-w-4xl mx-auto"
           >
             <Link 
               to={backLink} 
@@ -80,6 +70,18 @@ const DocLayout: React.FC<DocLayoutProps> = ({
             </div>
           </motion.div>
         </main>
+
+        {/* Fixed sidebar - now on the right */}
+        <div className="order-1 lg:order-2">
+          <div className="fixed right-0 top-24 h-[calc(100vh-96px)] w-64 hidden lg:block overflow-auto z-10 border-l border-white/10 bg-background/95 backdrop-blur-sm">
+            <DocSidebar />
+          </div>
+          
+          {/* Mobile sidebar */}
+          <div className="lg:hidden mb-6 px-4">
+            <DocSidebar />
+          </div>
+        </div>
       </div>
       
       <Footer />

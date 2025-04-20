@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -82,7 +81,6 @@ const SmartOrganizationFeature = () => {
       <Header />
       
       <main className="container mx-auto px-4 pt-32 pb-16">
-        {/* Back button with improved styling */}
         <div className="mb-12">
           <Button 
             variant="ghost" 
@@ -96,18 +94,17 @@ const SmartOrganizationFeature = () => {
           </Button>
         </div>
 
-        {/* Hero Section */}
         <motion.div
           className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-8">
-            <Sparkles className="w-10 h-10" />
+          <div className="w-24 h-24 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 backdrop-blur-xl">
+            <Sparkles className="w-12 h-12 text-white" />
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent">
             AI-Powered Smart Organization
           </h1>
           
@@ -117,7 +114,6 @@ const SmartOrganizationFeature = () => {
           </p>
         </motion.div>
 
-        {/* Key Benefits */}
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
           initial={{ opacity: 0, y: 20 }}
@@ -138,15 +134,16 @@ const SmartOrganizationFeature = () => {
           />
         </motion.div>
 
-        {/* How It Works */}
         <motion.div 
           className="mb-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <h2 className="text-3xl font-bold text-center mb-12">How Smart Organization Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
+            How Smart Organization Works
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FeatureItem
               icon={Brain}
               title="Neural Processing"
@@ -170,25 +167,21 @@ const SmartOrganizationFeature = () => {
           </div>
         </motion.div>
 
-        {/* Interactive Visualization */}
         <motion.div 
           className="mb-20 overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <h2 className="text-3xl font-bold text-center mb-12">See Smart Organization in Action</h2>
-          
-          <div className="relative aspect-video max-w-4xl mx-auto bg-white/5 rounded-xl border border-white/10 p-8 overflow-hidden">
-            {/* Central AI node */}
+          <div className="relative aspect-video max-w-4xl mx-auto glass-panel p-8 overflow-hidden border border-white/10">
             <motion.div 
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
               animate={{ 
                 scale: [1, 1.1, 1],
-                boxShadow: [
-                  "0 0 20px rgba(255, 255, 255, 0.1)",
-                  "0 0 40px rgba(255, 255, 255, 0.2)",
-                  "0 0 20px rgba(255, 255, 255, 0.1)"
+                filter: [
+                  'drop-shadow(0 0 20px rgba(255, 255, 255, 0.1))',
+                  'drop-shadow(0 0 40px rgba(255, 255, 255, 0.2))',
+                  'drop-shadow(0 0 20px rgba(255, 255, 255, 0.1))'
                 ]
               }}
               transition={{ 
@@ -197,17 +190,17 @@ const SmartOrganizationFeature = () => {
                 ease: "easeInOut"
               }}
             >
-              <div className="bg-white/10 backdrop-blur-xl p-4 rounded-full">
-                <Brain className="w-12 h-12 text-pink-400/80" />
+              <div className="bg-white/10 backdrop-blur-xl p-6 rounded-full border border-white/20">
+                <Brain className="w-16 h-16 text-white" />
               </div>
             </motion.div>
-            
-            {/* Connection lines */}
+
             {[0, 60, 120, 180, 240, 300].map((angle) => (
               <motion.div
                 key={angle}
-                className="absolute top-1/2 left-1/2 h-px bg-gradient-to-r from-white/30 to-transparent"
+                className="absolute top-1/2 left-1/2 h-px"
                 style={{ 
+                  background: 'linear-gradient(90deg, rgba(255,255,255,0.2) 0%, transparent 100%)',
                   width: "40%",
                   transformOrigin: "left center",
                   transform: `rotate(${angle}deg) translateY(-50%)`
@@ -224,8 +217,7 @@ const SmartOrganizationFeature = () => {
                 }}
               />
             ))}
-            
-            {/* Content nodes */}
+
             {[
               { icon: FileCheck, label: "Documents", angle: 0, distance: 0.38 },
               { icon: Check, label: "Tasks", angle: 60, distance: 0.38 },
@@ -270,12 +262,11 @@ const SmartOrganizationFeature = () => {
                 </motion.div>
               );
             })}
-            
-            {/* Data particles */}
+
             {[...Array(12)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-1.5 h-1.5 rounded-full bg-pink-400/40"
+                className="absolute w-2 h-2 rounded-full bg-white/20 backdrop-blur-sm"
                 initial={{ 
                   x: "50%", 
                   y: "50%",
@@ -284,7 +275,8 @@ const SmartOrganizationFeature = () => {
                 animate={{
                   x: `${50 + (Math.random() * 80 - 40)}%`,
                   y: `${50 + (Math.random() * 80 - 40)}%`,
-                  opacity: [0, 0.8, 0]
+                  opacity: [0, 0.8, 0],
+                  scale: [1, 1.2, 1]
                 }}
                 transition={{
                   duration: 4 + Math.random() * 3,
@@ -297,7 +289,6 @@ const SmartOrganizationFeature = () => {
           </div>
         </motion.div>
 
-        {/* Use Cases */}
         <motion.div 
           className="mb-20"
           initial={{ opacity: 0 }}
@@ -321,20 +312,21 @@ const SmartOrganizationFeature = () => {
           </div>
         </motion.div>
 
-        {/* Call to Action */}
         <motion.div 
           className="text-center py-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          <h2 className="text-3xl font-bold mb-6">Experience Smart Organization</h2>
+          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
+            Experience Smart Organization
+          </h2>
           <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
             Let AI handle the organization so you can focus on what matters most - your work and creativity.
           </p>
           <Button 
             size="lg"
-            className="bg-gradient-to-r from-white/10 to-white/5 hover:from-white/20 hover:to-white/10 backdrop-blur-xl border border-white/10"
+            className="bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 transition-colors"
           >
             Try It Now
             <ArrowRight className="w-4 h-4 ml-2" />
