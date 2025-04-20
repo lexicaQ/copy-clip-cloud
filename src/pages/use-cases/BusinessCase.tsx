@@ -1,7 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Briefcase, Calculator, PresentationChart, Users, ArrowRight, ChartBar } from "lucide-react";
+import { Presentation, Calculator, Users, ArrowRight, ChartBar } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
@@ -9,7 +9,7 @@ import SharedBackground from "@/components/layout/SharedBackground";
 const BusinessCase = () => {
   const features = [
     {
-      icon: PresentationChart,
+      icon: Presentation, // Changed from PresentationChart to Presentation
       title: "Presentation Content",
       description: "Keep your presentation content organized and accessible across all devices. Store and retrieve important slides and talking points instantly."
     },
