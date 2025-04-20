@@ -52,6 +52,9 @@ import CopyClipCloud from "./pages/features/CopyClipCloud";
 import SmartOrganizationFeature from "./pages/features/SmartOrganizationFeature";
 import UniversalClipboard from "./pages/features/UniversalClipboard";
 import SmartSearch from "./pages/features/SmartSearch";
+import TemplatesFeature from "./pages/features/TemplatesFeature";
+import EndToEndEncryptionFeature from "./pages/features/EndToEndEncryptionFeature";
+import LightningFastFeature from "./pages/features/LightningFastFeature";
 
 const queryClient = new QueryClient();
 
@@ -108,6 +111,9 @@ const App = () => (
           <Route path="/features/universal-clipboard" element={<UniversalClipboard />} />
           <Route path="/features/smart-organization" element={<SmartOrganizationFeature />} />
           <Route path="/features/smart-search" element={<SmartSearch />} />
+          <Route path="/features/templates" element={<TemplatesFeature />} />
+          <Route path="/features/end-to-end-encryption" element={<EndToEndEncryptionFeature />} />
+          <Route path="/features/lightning-fast" element={<LightningFastFeature />} />
           
           {/* Help pages */}
           <Route path="/help/getting-started" element={<GettingStartedHelp />} />

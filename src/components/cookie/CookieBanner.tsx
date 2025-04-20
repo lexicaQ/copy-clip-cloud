@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Shield, Cookie, Lock } from "lucide-react";
+import { Cookie, Info, Lock, Shield, CheckCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { 
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const CookieBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
@@ -41,25 +42,29 @@ const CookieBanner = () => {
       title: "Essential Cookies",
       description: "Required for basic site functionality",
       required: true,
-      icon: Shield
+      icon: Shield,
+      tooltip: "These cookies are necessary for the website to function and cannot be switched off in our systems."
     },
     {
       id: "security",
       title: "Security Cookies",
       description: "Enhance site security and prevent fraud",
-      icon: Lock
+      icon: Lock,
+      tooltip: "These cookies help detect and prevent security risks, protect user data, and ensure safe browsing."
     },
     {
       id: "functional",
       title: "Functional Cookies",
       description: "Remember your preferences and settings",
-      icon: Cookie
+      icon: Cookie,
+      tooltip: "These cookies enable the website to provide enhanced functionality and personalization based on your interactions."
     },
     {
       id: "analytics",
       title: "Analytics Cookies",
       description: "Help us understand how you use our site",
-      icon: Shield
+      icon: CheckCheck,
+      tooltip: "These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site."
     }
   ];
 
@@ -96,7 +101,7 @@ const CookieBanner = () => {
   };
 
   return (
-    <>
+    <TooltipProvider>
       <AnimatePresence>
         {showBanner && (
           <motion.div
@@ -104,12 +109,12 @@ const CookieBanner = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-xl mx-auto"
+            className="fixed bottom-4 left-4 z-50 w-[350px] max-w-[90vw]"
           >
-            <div className="glass-panel border border-white/10 bg-black/40 backdrop-blur-xl rounded-2xl p-4">
+            <div className="glass-panel border border-white/10 bg-black/40 backdrop-blur-xl rounded-xl p-4 shadow-lg">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <Cookie className="w-4 h-4" />
+                <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <Cookie className="w-5 h-5" />
                 </div>
                 <div className="flex-1">
                   <h2 className="text-base font-medium mb-2">Cookie Settings</h2>
@@ -126,7 +131,7 @@ const CookieBanner = () => {
                       onClick={() => setShowDialog(true)}
                       className="bg-white/5 border-white/10 hover:bg-white/10 text-sm px-3 py-1.5 h-auto"
                     >
-                      Customize
+                      Manage Preferences
                     </Button>
                     <Button
                       onClick={handleAcceptAll}
@@ -143,16 +148,16 @@ const CookieBanner = () => {
       </AnimatePresence>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="sm:max-w-xl bg-black/95 text-white border border-white/10 backdrop-blur-xl">
+        <DialogContent className="sm:max-w-xl bg-black/95 text-white border border-white/10 backdrop-blur-xl shadow-xl">
           <DialogHeader>
             <DialogTitle className="text-xl flex items-center gap-2">
               <Cookie className="w-5 h-5" />
-              Cookie Settings
+              Cookie Preferences
             </DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4 my-4">
-            {cookieTypes.map((type) => {
+          <div className="space-y-4 my-4 max-h-[60vh] overflow-y-auto pr-2 scrollbar-thin">
+            {cookieTypes.map((type, index) => {
               const Icon = type.icon;
               const isEnabled = cookiePreferences[type.id as keyof typeof cookiePreferences];
               
@@ -161,20 +166,32 @@ const CookieBanner = () => {
                   key={type.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className={`p-3 rounded-lg transition-all ${
-                    isEnabled ? "bg-white/10" : "bg-white/5"
+                  transition={{ duration: 0.2, delay: index * 0.05 }}
+                  className={`p-4 rounded-lg border transition-all ${
+                    isEnabled 
+                      ? "bg-white/10 border-white/20" 
+                      : "bg-white/5 border-white/10"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
                         isEnabled ? "bg-white/20" : "bg-white/10"
                       }`}>
-                        <Icon className="w-4 h-4" />
+                        <Icon className="w-5 h-5" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-sm">{type.title}</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-medium">{type.title}</h3>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Info className="w-4 h-4 text-white/60 cursor-help hover:text-white/80 transition-colors" />
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-black/90 border border-white/20 text-white p-3 max-w-xs">
+                              <p className="text-sm">{type.tooltip}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
                         <p className="text-xs text-gray-400">{type.description}</p>
                       </div>
                     </div>
@@ -208,7 +225,7 @@ const CookieBanner = () => {
             <div className="flex gap-2">
               <Button
                 onClick={handleSavePreferences}
-                className="bg-white text-black hover:bg-white/90"
+                className="bg-white/10 text-white border border-white/20 hover:bg-white/20"
               >
                 Save Preferences
               </Button>
@@ -222,7 +239,7 @@ const CookieBanner = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
+    </TooltipProvider>
   );
 };
 

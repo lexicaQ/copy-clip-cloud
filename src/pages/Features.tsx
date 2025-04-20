@@ -14,6 +14,25 @@ import { ComingSoon } from "@/components/ui/coming-soon";
 import { ArrowRight } from "lucide-react";
 
 const Features = () => {
+  // Updated feature page links
+  const getFeatureLink = (title: string) => {
+    const titleToPath: Record<string, string> = {
+      "Universal Clipboard": "/features/universal-clipboard",
+      "Smart Organization": "/features/smart-organization",
+      "Smart Search": "/features/smart-search",
+      "Templates": "/features/templates",
+      "End-to-End Encryption": "/features/end-to-end-encryption",
+      "Lightning Fast": "/features/lightning-fast",
+      "Cloud Sync": "/features/copy-clip-cloud",
+      "History Timeline": "/features/history-timeline",
+      "Code Snippets": "/features/code-snippets",
+      "Team Collaboration": "/features/team-collaboration",
+      "Custom Rules": "/features/custom-rules"
+    };
+    
+    return titleToPath[title] || "#";
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SharedBackground />
@@ -36,7 +55,7 @@ const Features = () => {
               className="relative"
             >
               <Link 
-                to={feature.link || "#"} 
+                to={getFeatureLink(feature.title)} 
                 className="block group"
               >
                 <FeatureShowcase
@@ -68,8 +87,8 @@ const Features = () => {
                 )}
               </div>
               
-              {/* Coming soon badge */}
-              {index % 2 === 1 && (
+              {/* Coming soon badge for features that aren't fully implemented yet */}
+              {getFeatureLink(feature.title) === "#" && (
                 <ComingSoon className="absolute -top-4 right-0 lg:right-auto lg:-left-16" />
               )}
             </motion.div>
@@ -88,28 +107,32 @@ const Features = () => {
           </motion.h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featureCards.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                viewport={{ once: true, margin: "-50px" }}
-              >
-                <Link 
-                  to={feature.link || "#"} 
-                  className={`block ${feature.comingSoon ? 'pointer-events-none' : ''}`}
+            {featureCards.map((feature, index) => {
+              const hasPage = getFeatureLink(feature.title) !== "#";
+              
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  viewport={{ once: true, margin: "-50px" }}
                 >
-                  <FeatureCard
-                    title={feature.title}
-                    description={feature.description}
-                    icon={feature.icon}
-                    color={feature.color}
-                    comingSoon={feature.comingSoon || index % 3 === 2}
-                  />
-                </Link>
-              </motion.div>
-            ))}
+                  <Link 
+                    to={getFeatureLink(feature.title)} 
+                    className={`block ${!hasPage ? 'pointer-events-none' : ''}`}
+                  >
+                    <FeatureCard
+                      title={feature.title}
+                      description={feature.description}
+                      icon={feature.icon}
+                      color={feature.color}
+                      comingSoon={!hasPage || feature.comingSoon}
+                    />
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
 
