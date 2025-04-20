@@ -69,7 +69,7 @@ const Header = () => {
             </motion.span>
           </Link>
           
-          <nav className="hidden md:flex items-center space-x-10">
+          <nav className="hidden md:flex items-center space-x-8">
             <NavLink to="/" icon={Home} onClick={() => handleNavigation("/")}>Home</NavLink>
             <NavLink to="/features" icon={FileText} onClick={() => handleNavigation("/features")}>Features</NavLink>
             <NavLink to="/pricing" icon={FileText} onClick={() => handleNavigation("/pricing")}>Pricing</NavLink>

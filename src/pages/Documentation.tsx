@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -15,7 +16,14 @@ import {
   Filter,
   Book,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  History,
+  BookOpen,
+  Terminal,
+  PenTool,
+  Zap,
+  Globe,
+  Settings
 } from "lucide-react";
 import { toast } from "sonner";
 import Header from "@/components/layout/Header";
@@ -23,6 +31,7 @@ import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
 import { Button } from "@/components/ui/button";
 import { ComingSoon } from "@/components/ui/coming-soon";
+import { Input } from "@/components/ui/input";
 
 // Document categories
 const categories = [
@@ -56,6 +65,14 @@ const documentationLinks: DocumentItem[] = [
     isPopular: true
   },
   { 
+    title: "Release Guide", 
+    description: "Stay updated with the latest changes and improvements",
+    category: "getting-started", 
+    href: "/docs/release-guide", 
+    icon: History,
+    isNew: true
+  },
+  { 
     title: "Core Features", 
     description: "Discover the fundamental capabilities of CopyClipCloud",
     category: "core-features", 
@@ -68,7 +85,6 @@ const documentationLinks: DocumentItem[] = [
     category: "core-features", 
     href: "/docs/cloud-sync", 
     icon: Cloud,
-    isNew: true
   },
   { 
     title: "Templates", 
@@ -100,18 +116,19 @@ const documentationLinks: DocumentItem[] = [
     icon: Key 
   },
   { 
-    title: "Security", 
-    description: "Understand how we protect your sensitive clipboard data",
-    category: "security", 
-    href: "/docs/security", 
-    icon: Shield 
-  },
-  { 
     title: "Advanced Usage", 
     description: "Take your clipboard management to the next level",
     category: "advanced", 
     href: "/docs/advanced-usage", 
-    icon: Bookmark 
+    icon: Zap 
+  },
+  { 
+    title: "End-to-End Encryption", 
+    description: "Learn about our security features that protect your data",
+    category: "advanced", 
+    href: "/features/end-to-end-encryption", 
+    icon: Shield,
+    isPopular: true 
   },
   { 
     title: "API Documentation", 
@@ -119,14 +136,14 @@ const documentationLinks: DocumentItem[] = [
     category: "api", 
     href: "/docs/api-documentation", 
     icon: FileText,
-    isNew: true
   },
   { 
     title: "API Explorer", 
     description: "Interactive tool to test and explore our API endpoints",
     category: "api", 
     href: "/docs/api-explorer", 
-    icon: Code,
+    icon: Terminal,
+    isNew: true,
     comingSoon: true
   },
   { 
@@ -141,22 +158,37 @@ const documentationLinks: DocumentItem[] = [
     description: "Connect CopyClipCloud with other tools and services",
     category: "api", 
     href: "/docs/integration-guides", 
-    icon: Code 
+    icon: Globe 
   },
   { 
     title: "Developer Portal", 
     description: "Access developer resources and manage API keys",
     category: "api", 
     href: "/docs/developer-portal", 
-    icon: Bookmark,
+    icon: Settings,
+    isNew: true,
     comingSoon: true 
+  },
+  { 
+    title: "Security", 
+    description: "Understand how we protect your clipboard data",
+    category: "security", 
+    href: "/docs/security", 
+    icon: Shield 
   },
   { 
     title: "All Articles", 
     description: "Browse the complete collection of documentation articles",
     category: "all", 
     href: "/docs/all-articles", 
-    icon: FileText 
+    icon: BookOpen 
+  },
+  { 
+    title: "Tutorials", 
+    description: "Step-by-step guides to make the most of CopyClipCloud",
+    category: "getting-started", 
+    href: "/tutorials", 
+    icon: PenTool 
   },
 ];
 
@@ -166,7 +198,7 @@ const DocumentCard = ({ item }: { item: DocumentItem }) => {
   
   return (
     <motion.div
-      className="glass-panel p-6 hover:bg-white/5 transition-colors duration-300 h-full flex flex-col relative overflow-visible shadow-lg border border-white/10"
+      className="glass-panel p-6 hover:bg-white/5 transition-all duration-300 h-full flex flex-col relative overflow-visible border border-white/10 rounded-xl backdrop-blur-sm"
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -212,10 +244,12 @@ const DocumentCard = ({ item }: { item: DocumentItem }) => {
 const CategorySection = ({ title, items }: { title: string, items: DocumentItem[] }) => {
   return (
     <div className="mb-16 last:mb-0">
-      <h2 className="text-2xl font-bold mb-8 text-center">
-        <span className="text-gradient">{title}</span>
-        <div className="h-1 w-16 bg-white/20 mx-auto mt-2"></div>
-      </h2>
+      <div className="flex items-center mb-8">
+        <h2 className="text-2xl font-bold">
+          <span className="text-gradient">{title}</span>
+        </h2>
+        <div className="h-px flex-1 bg-white/10 ml-4"></div>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((link, index) => (
           <DocumentCard key={index} item={link} />
@@ -270,16 +304,24 @@ const Documentation = () => {
         >
           <div className="glass-panel p-8 rounded-xl backdrop-blur-xl border border-white/10 shadow-lg">
             <div className="relative mb-8 max-w-2xl mx-auto">
-              <input
+              <Input
                 type="text"
                 placeholder="Search documentation..."
-                className="w-full px-6 py-3 rounded-full bg-white/5 border border-white/10 focus:border-white/30 focus:outline-none backdrop-blur-sm transition-colors text-white placeholder-gray-400"
+                className="w-full px-12 py-3 rounded-full bg-white/5 border border-white/10 focus:border-white/30 focus:outline-none backdrop-blur-sm transition-colors text-white placeholder-gray-400"
                 onChange={(e) => setSearchTerm(e.target.value)}
                 value={searchTerm}
               />
-              <div className="absolute inset-y-0 right-0 pr-6 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <Search className="w-5 h-5 text-gray-400" />
               </div>
+              {searchTerm && (
+                <button 
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white"
+                  onClick={() => setSearchTerm("")}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
             </div>
             
             <div className="flex flex-wrap justify-center gap-2 mb-10">
@@ -381,7 +423,7 @@ const Documentation = () => {
         </motion.div>
         
         <motion.div
-          className="glass-panel p-8 rounded-xl text-center mt-12 border border-white/10 shadow-lg"
+          className="glass-panel p-8 rounded-xl text-center mt-12 border border-white/10 shadow-lg backdrop-blur-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}

@@ -35,8 +35,20 @@ const DocLayout: React.FC<DocLayoutProps> = ({
       <Header />
       
       <div className="flex flex-col lg:flex-row pt-24 pb-24 relative max-w-[90rem] mx-auto">
+        {/* Left sidebar - now fixed on the left */}
+        <div className="order-2 lg:order-1 lg:w-64 flex-shrink-0">
+          <div className="fixed left-0 top-24 h-[calc(100vh-96px)] w-64 hidden lg:block overflow-auto z-10 border-r border-white/10 bg-background/95 backdrop-blur-sm">
+            <DocSidebar />
+          </div>
+          
+          {/* Mobile sidebar */}
+          <div className="lg:hidden mb-6 px-4">
+            <DocSidebar />
+          </div>
+        </div>
+
         {/* Main content - centered */}
-        <main className="flex-1 px-4 lg:px-12 order-2 lg:order-1">
+        <main className="flex-1 px-4 lg:px-12 order-1 lg:order-2">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,7 +63,7 @@ const DocLayout: React.FC<DocLayoutProps> = ({
               {backText}
             </Link>
             
-            <div className="glass-panel p-8 mb-8">
+            <div className="glass-panel p-8 mb-8 backdrop-blur-md border border-white/10 rounded-xl">
               <div className="flex items-center mb-6">
                 <div className="p-3 rounded-lg bg-white/10 mr-4">
                   <Icon className="w-6 h-6 text-white" />
@@ -70,18 +82,6 @@ const DocLayout: React.FC<DocLayoutProps> = ({
             </div>
           </motion.div>
         </main>
-
-        {/* Fixed sidebar - now on the right */}
-        <div className="order-1 lg:order-2">
-          <div className="fixed right-0 top-24 h-[calc(100vh-96px)] w-64 hidden lg:block overflow-auto z-10 border-l border-white/10 bg-background/95 backdrop-blur-sm">
-            <DocSidebar />
-          </div>
-          
-          {/* Mobile sidebar */}
-          <div className="lg:hidden mb-6 px-4">
-            <DocSidebar />
-          </div>
-        </div>
       </div>
       
       <Footer />
