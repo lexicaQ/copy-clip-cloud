@@ -1,6 +1,7 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Zap, Cloud, Star, Check, Info, CreditCard, Lock, BadgeDollarSign } from "lucide-react";
+import { Shield, Zap, Cloud, Check, Info, CreditCard, Lock, BadgeDollarSign } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
@@ -21,7 +22,7 @@ const Pricing = () => {
   const plans = [
     {
       name: "Basic",
-      price: "0",
+      price: isAnnual ? "0" : "0",
       description: "Essential features for personal use",
       icon: Cloud,
       features: [
@@ -37,7 +38,7 @@ const Pricing = () => {
     },
     {
       name: "Pro",
-      price: "49.99",
+      price: isAnnual ? "39.99" : "3.99",
       description: "Advanced features for power users",
       icon: Zap,
       highlight: true,
@@ -54,7 +55,7 @@ const Pricing = () => {
     },
     {
       name: "Enterprise",
-      price: "99.99",
+      price: isAnnual ? "79.99" : "7.99",
       description: "Complete solution for teams",
       icon: Shield,
       features: [
@@ -76,32 +77,6 @@ const Pricing = () => {
       <Header />
       
       <div className="relative z-10 pt-32 pb-24">
-        {/* Background animated elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={`circle-${i}`}
-              className="absolute rounded-full border border-white/5"
-              style={{
-                width: `${100 + i * 200}px`,
-                height: `${100 + i * 200}px`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                rotate: [0, 360],
-                x: [-(i * 50), (i * 50), -(i * 50)],
-                y: [-(i * 30), (i * 30), -(i * 30)],
-              }}
-              transition={{
-                rotate: { duration: 50 + i * 10, repeat: Infinity, ease: "linear" },
-                x: { duration: 30 + i * 5, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" },
-                y: { duration: 20 + i * 5, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" },
-              }}
-            />
-          ))}
-        </div>
-        
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center mb-16"
@@ -115,21 +90,6 @@ const Pricing = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                animate={{
-                  boxShadow: [
-                    "0 0 0 0 rgba(255, 255, 255, 0.1)",
-                    "0 0 0 10px rgba(255, 255, 255, 0)",
-                    "0 0 0 0 rgba(255, 255, 255, 0.1)",
-                  ],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
               <BadgeDollarSign className="w-10 h-10 text-white" />
             </motion.div>
             
@@ -141,7 +101,7 @@ const Pricing = () => {
             </p>
             
             <div className="flex items-center justify-center gap-4 mb-16">
-              <span className={`transition-colors ${!isAnnual ? 'text-white' : 'text-gray-400'}`}>Monthly</span>
+              <span className={`transition-colors ${!isAnnual ? 'text-white font-medium' : 'text-gray-400'}`}>Monthly</span>
               <div className="relative">
                 <Switch
                   checked={isAnnual}
@@ -159,14 +119,14 @@ const Pricing = () => {
                   </motion.span>
                 )}
               </div>
-              <span className={`transition-colors ${isAnnual ? 'text-white' : 'text-gray-400'}`}>
+              <span className={`transition-colors ${isAnnual ? 'text-white font-medium' : 'text-gray-400'}`}>
                 Annual
               </span>
             </div>
           </motion.div>
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -193,7 +153,7 @@ const Pricing = () => {
                 Find the perfect plan for your needs. See how our plans compare feature by feature.
               </p>
             </div>
-            <PricingComparisonTable />
+            <PricingComparisonTable isAnnual={isAnnual} />
           </motion.div>
 
           <motion.div 
