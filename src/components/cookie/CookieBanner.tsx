@@ -118,7 +118,7 @@ const CookieBanner = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-md p-4"
+            className="fixed bottom-0 left-0 z-50 w-full max-w-md p-4"
           >
             <div className="glass-panel border border-white/10 bg-black/75 backdrop-blur-xl rounded-xl p-6 shadow-lg">
               <div className="flex items-start gap-4">
@@ -262,3 +262,4 @@ const CookieBanner = () => {
 };
 
 export default CookieBanner;
+
