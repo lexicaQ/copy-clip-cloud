@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, Info, Lock, Shield, Check } from "lucide-react";
@@ -109,10 +108,10 @@ const CookieBanner = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[650px] max-w-[95vw]"
+            className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[600px] max-w-[95vw]"
           >
             <div className="glass-panel border border-white/10 bg-black/40 backdrop-blur-xl rounded-xl p-6 shadow-lg">
-              <div className="flex flex-col md:flex-row items-start gap-4">
+              <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
                   <Cookie className="w-6 h-6" />
                 </div>
