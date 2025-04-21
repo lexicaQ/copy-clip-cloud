@@ -148,7 +148,7 @@ const SmartOrganizationFeature = () => {
             <FeatureItem icon={Brain} title="Neural Processing" description="Our AI analyzes the content, format, and context of each clipboard item using advanced neural networks." />
             <FeatureItem icon={LayoutGrid} title="Intelligent Grouping" description="Similar content is automatically grouped together, creating intuitive collections for easy access." />
             <FeatureItem icon={Tag} title="Auto-Tagging" description="Keywords and metadata are automatically generated to enhance searchability and organization." />
-            <FeatureItem icon={Zap} title="Adaptive Learning" description="The system improves over time by learning from your usage patterns and preferences." />
+            
           </div>
         </motion.div>
 
