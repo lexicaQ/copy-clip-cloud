@@ -14,51 +14,55 @@ export const useFileDownload = () => {
   const [downloading, setDownloading] = useState(false);
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   
-  // Fetch file info on hook initialization
+  // Fetch file info on hook initialization with debounce to prevent animation issues
   useEffect(() => {
-    const fetchFileInfo = async () => {
-      try {
-        const { data: files, error } = await supabase
-          .storage
-          .from('app_files')
-          .list();
-        
-        if (error) {
-          console.error("Error fetching file info:", error);
-          return;
-        }
-        
-        if (files && files.length > 0) {
-          // Sort files by created_at if available, otherwise use the first file
-          const latestFile = files[0];
-          
-          // Parse version from filename if possible (format: CopyClipCloud_X.Y.Z.ext)
-          let version = '1.0.0'; // Default version
-          const versionMatch = latestFile.name.match(/(\d+\.\d+\.\d+)/);
-          if (versionMatch) {
-            version = versionMatch[1];
-          }
-          
-          // Extract file extension
-          const extension = latestFile.name.split('.').pop() || '';
-          
-          // Format file size
-          const size = formatFileSize(latestFile.metadata?.size || 0);
-          
-          setFileInfo({
-            fileName: latestFile.name,
-            version,
-            size,
-            extension
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching file info:", error);
-      }
-    };
+    const timer = setTimeout(() => {
+      fetchFileInfo();
+    }, 300); // Add small delay to prevent animation issues
     
-    fetchFileInfo();
+    return () => clearTimeout(timer);
   }, []);
+  
+  const fetchFileInfo = async () => {
+    try {
+      const { data: files, error } = await supabase
+        .storage
+        .from('app_files')
+        .list();
+      
+      if (error) {
+        console.error("Error fetching file info:", error);
+        return;
+      }
+      
+      if (files && files.length > 0) {
+        // Sort files by created_at if available
+        const latestFile = files[0];
+        
+        // Parse version from filename if possible (format: CopyClipCloud_X.Y.Z.ext)
+        let version = '1.0.0'; // Default version
+        const versionMatch = latestFile.name.match(/(\d+\.\d+\.\d+)/);
+        if (versionMatch) {
+          version = versionMatch[1];
+        }
+        
+        // Extract file extension
+        const extension = latestFile.name.split('.').pop() || '';
+        
+        // Format file size
+        const size = formatFileSize(latestFile.metadata?.size || 0);
+        
+        setFileInfo({
+          fileName: latestFile.name,
+          version,
+          size,
+          extension
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching file info:", error);
+    }
+  };
 
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
@@ -126,7 +130,7 @@ export const useFileDownload = () => {
         console.error("Error calling increment function:", countError);
       }
 
-      // Only show toast in bottom right
+      // Only show toast in bottom right as requested
       toast.success("Download started", {
         position: "bottom-right",
         description: "Your file will be downloaded shortly"
