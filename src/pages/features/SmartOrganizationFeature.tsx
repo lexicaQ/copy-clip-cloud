@@ -1,11 +1,14 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Brain, CircleCheck, LayoutGrid, Tag, Zap, FileCheck, Check, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain, CircleCheck, LayoutGrid, Tag, Zap, FileCheck, Check, Sparkles, Clipboard } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SharedBackground from "@/components/layout/SharedBackground";
 import { Button } from "@/components/ui/button";
+import FeatureCallToAction from "@/components/features/FeatureCallToAction";
+
 const AnimatedSection = ({
   children,
   delay = 0
@@ -173,7 +176,65 @@ const SmartOrganizationFeature = () => {
         </AnimatedSection>
 
         <AnimatedSection delay={0.4}>
-          
+          <div className="relative h-[400px] mb-16">
+            <div className="absolute inset-0 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40"></div>
+              
+              {/* AI Organization Visualization */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative w-full h-full max-w-4xl">
+                  <RadialIcon icon={Clipboard} label="Text" angle={30} distance={0.4} />
+                  <RadialIcon icon={FileCheck} label="Code" angle={90} distance={0.3} />
+                  <RadialIcon icon={Brain} label="Analysis" angle={160} distance={0.35} />
+                  <RadialIcon icon={Tag} label="Tags" angle={210} distance={0.25} />
+                  <RadialIcon icon={LayoutGrid} label="Categories" angle={280} distance={0.4} />
+                  <RadialIcon icon={Zap} label="Actions" angle={340} distance={0.3} />
+                  
+                  {/* Central element */}
+                  <motion.div 
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    animate={{ 
+                      rotate: 360,
+                      scale: [1, 1.05, 1]
+                    }}
+                    transition={{ 
+                      rotate: { duration: 30, repeat: Infinity, ease: "linear" },
+                      scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                  >
+                    <div className="relative">
+                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl border border-white/20 flex items-center justify-center">
+                        <Sparkles className="w-16 h-16 text-white" />
+                      </div>
+                      <div className="absolute inset-0 rounded-full border border-white/30">
+                        <motion.div 
+                          className="absolute inset-0 rounded-full"
+                          animate={{
+                            boxShadow: ["0 0 0 0px rgba(255,255,255,0.2)", "0 0 0 10px rgba(255,255,255,0)"]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                  
+                  {/* Connection lines */}
+                  <svg className="absolute inset-0 w-full h-full" style={{zIndex: -1}}>
+                    <motion.path 
+                      stroke="rgba(255,255,255,0.15)" 
+                      strokeWidth="1"
+                      fill="none" 
+                      d="M250,200 C250,150 350,150 350,200" 
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 1 }}
+                      transition={{ duration: 1.5, delay: 0.5 }}
+                    />
+                    {/* More connection paths would go here */}
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </AnimatedSection>
 
         <AnimatedSection delay={0.5}>
@@ -188,19 +249,7 @@ const SmartOrganizationFeature = () => {
         </AnimatedSection>
 
         <AnimatedSection delay={0.6}>
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold text-transparent bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text mb-6">
-              Experience the Future of Clipboard Management
-            </h2>
-            <p className="text-gray-300 mb-10">
-              Let AI take the effort out of organizing your clipboard, so you
-              can focus on what matters most — creativity, productivity, and
-              flow.
-            </p>
-            <Button size="lg" className="bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 transition-colors inline-flex items-center gap-2 mx-auto">
-              Try It Now <ArrowRight className="w-5 h-5" />
-            </Button>
-          </div>
+          <FeatureCallToAction />
         </AnimatedSection>
       </main>
 

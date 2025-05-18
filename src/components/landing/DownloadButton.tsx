@@ -2,7 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useFileDownload } from "@/hooks/useFileDownload";
-import { toast } from "sonner";
 import { DownloadButtonBackground } from "./DownloadButtonBackground";
 import { DownloadButtonContent } from "./DownloadButtonContent";
 import { CompactDownloadButton } from "./CompactDownloadButton";
@@ -16,10 +15,7 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
 
   const handleButtonClick = () => {
     handleDownload();
-    toast.success("Download started", {
-      description: "Your download will begin shortly",
-      position: "bottom-center",
-    });
+    // Toast is now only shown in the useFileDownload hook
   };
 
   if (variant === "compact") {
@@ -51,21 +47,6 @@ const DownloadButton = ({ variant = "primary" }: { variant?: "primary" | "compac
         >
           <DownloadButtonBackground isHovered={isHovered} />
           <DownloadButtonContent downloading={downloading} isHovered={isHovered} />
-          
-          <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden rounded-b-xl z-10">
-            <motion.div 
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
-              animate={{
-                x: [-100, 100]
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                repeatDelay: 0.5
-              }}
-            />
-          </div>
         </motion.button>
 
         <FileInformation fileInfo={fileInfo} downloadCount={downloadCount} />

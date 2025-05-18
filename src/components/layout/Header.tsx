@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, Loader, BookOpen } from "lucide-react";
+import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, Loader, BookOpen, Cloud } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFileDownload } from "@/hooks/useFileDownload";
 
@@ -76,7 +76,7 @@ const Header = () => {
             <NavLink to="/docs" icon={BookOpen} onClick={() => handleNavigation("/docs")}>Documentation</NavLink>
             <NavLink to="/about" icon={Clipboard} onClick={() => handleNavigation("/about")}>About</NavLink>
             <NavLink to="/contact" icon={MessageSquare} onClick={() => handleNavigation("/contact")}>Contact</NavLink>
-            <NavLink to="/support" icon={MessageSquare} onClick={() => handleNavigation("/support")}>Support</NavLink>
+            <NavLink to="/support" icon={Shield} onClick={() => handleNavigation("/support")}>Support</NavLink>
           </nav>
           
           <div className="hidden md:flex items-center space-x-4">
@@ -97,7 +97,9 @@ const Header = () => {
                 transition={{
                   duration: 1.5,
                   repeat: Infinity,
-                  repeatDelay: 2
+                  repeatDelay: 0,
+                  ease: "linear",
+                  repeatType: "loop"
                 }}
               />
               <Download className="w-4 h-4 text-white relative z-10" />
@@ -173,7 +175,7 @@ const Header = () => {
                 <MobileNavLink to="/docs" icon={BookOpen} onClick={() => handleNavigation("/docs")}>Documentation</MobileNavLink>
                 <MobileNavLink to="/about" icon={Clipboard} onClick={() => handleNavigation("/about")}>About</MobileNavLink>
                 <MobileNavLink to="/contact" icon={MessageSquare} onClick={() => handleNavigation("/contact")}>Contact</MobileNavLink>
-                <MobileNavLink to="/support" icon={MessageSquare} onClick={() => handleNavigation("/support")}>Support</MobileNavLink>
+                <MobileNavLink to="/support" icon={Shield} onClick={() => handleNavigation("/support")}>Support</MobileNavLink>
                 
                 <div className="pt-4 mt-4 border-t border-white/10">
                   <p className="text-gray-400 mb-3 text-sm font-medium pl-2">Support</p>
@@ -205,11 +207,14 @@ const Header = () => {
 const NavLink = ({ children, to, icon: Icon, onClick }: { children: React.ReactNode; to: string; icon: React.ElementType; onClick?: () => void }) => {
   const location = useLocation();
   const isActive = location.pathname === to;
+  const [isHovered, setIsHovered] = useState(false);
   
   return (
     <button 
       onClick={onClick}
       className="relative group flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Icon className="w-4 h-4 mr-1 group-hover:rotate-3 transition-transform duration-300" />
       <span className="relative">
@@ -218,7 +223,7 @@ const NavLink = ({ children, to, icon: Icon, onClick }: { children: React.ReactN
           <motion.span 
             className="absolute inset-x-0 -bottom-1 h-px bg-white/40 origin-left"
             initial={{ scaleX: 0 }}
-            whileHover={{ scaleX: 1 }}
+            animate={{ scaleX: isHovered ? 1 : 0 }}
             transition={{ duration: 0.3 }}
           />
         )}
@@ -232,6 +237,47 @@ const NavLink = ({ children, to, icon: Icon, onClick }: { children: React.ReactN
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
+      
+      {/* Cloud animation on hover */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div 
+            className="absolute bottom-0 left-0 right-0 pointer-events-none"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 5 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="relative h-1">
+              <motion.div
+                className="absolute bottom-0"
+                animate={{ x: ['10%', '80%'] }}
+                transition={{
+                  duration: 2.5,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatType: "reverse"
+                }}
+              >
+                <Cloud className="text-white/20 w-3 h-3" />
+              </motion.div>
+              <motion.div
+                className="absolute bottom-0"
+                animate={{ x: ['30%', '70%'] }}
+                transition={{
+                  duration: 3,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  delay: 0.5
+                }}
+              >
+                <Cloud className="text-white/10 w-2 h-2" />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </button>
   );
 };

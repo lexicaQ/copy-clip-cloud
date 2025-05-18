@@ -36,7 +36,7 @@ const CookieBanner = () => {
   useEffect(() => {
     const consent = localStorage.getItem("cookie-consent");
     if (!consent) {
-      const timer = setTimeout(() => setShowBanner(true), 1000);
+      const timer = setTimeout(() => setShowBanner(true), 1500); // Increased delay for more visibility
       return () => clearTimeout(timer);
     }
   }, []);
@@ -118,9 +118,9 @@ const CookieBanner = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-0 left-0 z-50 w-full max-w-md p-4"
+            className="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-4 py-6"
           >
-            <div className="glass-panel border border-white/10 bg-black/75 backdrop-blur-xl rounded-xl p-6 shadow-lg">
+            <div className="glass-panel border border-white/10 bg-black/75 backdrop-blur-xl rounded-xl p-6 shadow-lg max-w-md w-full">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
                   <Cookie className="w-6 h-6 text-white" />
@@ -173,8 +173,7 @@ const CookieBanner = () => {
           <div className="space-y-4 my-4 max-h-[60vh] overflow-y-auto pr-2 scrollbar-thin">
             {cookieTypes.map((type, index) => {
               const Icon = type.icon;
-              const isEnabled =
-                cookiePreferences[type.id];
+              const isEnabled = cookiePreferences[type.id];
               return (
                 <motion.div
                   key={type.id}
@@ -262,4 +261,3 @@ const CookieBanner = () => {
 };
 
 export default CookieBanner;
-

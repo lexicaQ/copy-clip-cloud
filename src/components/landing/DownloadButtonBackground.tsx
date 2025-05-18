@@ -21,7 +21,7 @@ export const DownloadButtonBackground = ({ isHovered }: { isHovered: boolean }) 
       
       {/* Particle effects */}
       <div className="absolute inset-0 overflow-hidden rounded-xl z-0">
-        {Array.from({ length: 8 }).map((_, i) => (
+        {Array.from({ length: 12 }).map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-white/40 rounded-full"
@@ -43,6 +43,21 @@ export const DownloadButtonBackground = ({ isHovered }: { isHovered: boolean }) 
             }}
           />
         ))}
+      </div>
+      
+      {/* Enhanced bottom glowing line animation */}
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden rounded-b-xl z-10">
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+          initial={{ x: "-100%" }}
+          animate={{ x: "100%" }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            ease: "linear",
+            repeatType: "loop"
+          }}
+        />
       </div>
     </>
   );
