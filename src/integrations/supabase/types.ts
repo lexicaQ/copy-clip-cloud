@@ -35,6 +35,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_upload_file: {
+        Args: { bucket_name: string; file_path: string; file_content: string }
+        Returns: string
+      }
       increment_download_count: {
         Args: { version_param: string }
         Returns: undefined

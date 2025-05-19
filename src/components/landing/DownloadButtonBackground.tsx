@@ -45,10 +45,10 @@ export const DownloadButtonBackground = ({ isHovered }: { isHovered: boolean }) 
         ))}
       </div>
       
-      {/* Enhanced bottom glowing line animation with improved continuous effect */}
+      {/* Enhanced bottom glowing line animation with continuous seamless effect */}
       <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden rounded-b-xl z-10">
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent"
           initial={{ x: "-100%" }}
           animate={{ x: "100%" }}
           transition={{
@@ -56,12 +56,12 @@ export const DownloadButtonBackground = ({ isHovered }: { isHovered: boolean }) 
             repeat: Infinity,
             ease: "linear",
             repeatType: "loop",
-            repeatDelay: 0 // Remove delay between repetitions for seamless loop
+            repeatDelay: 0
           }}
         />
         {/* Add second animation element offset in time for continuous effect */}
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent"
           initial={{ x: "-100%" }}
           animate={{ x: "100%" }}
           transition={{

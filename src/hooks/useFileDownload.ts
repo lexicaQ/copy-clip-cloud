@@ -130,7 +130,7 @@ export const useFileDownload = () => {
         console.error("Error calling increment function:", countError);
       }
 
-      // Only show toast in bottom right as requested
+      // Show toast in bottom right
       toast.success("Download started", {
         position: "bottom-right",
         description: "Your file will be downloaded shortly"
