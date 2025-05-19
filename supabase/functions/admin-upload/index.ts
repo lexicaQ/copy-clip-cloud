@@ -43,42 +43,71 @@ serve(async (req) => {
 
     console.log(`Uploading file ${fileName} to app_files bucket`);
     
-    // Upload directly to storage
-    const { data, error } = await supabase
-      .storage
-      .from('app_files')
-      .upload(fileName, fileBuffer, {
-        contentType: file.type || 'application/octet-stream',
-        upsert: true
-      });
+    // Try direct upload first with detailed error reporting
+    try {
+      const { data, error } = await supabase
+        .storage
+        .from('app_files')
+        .upload(fileName, fileBuffer, {
+          contentType: file.type || 'application/octet-stream',
+          upsert: true
+        });
 
-    if (error) {
-      console.error('Error uploading file:', error);
+      if (error) {
+        console.error('Direct upload error details:', JSON.stringify(error));
+        throw error;
+      }
+
+      console.log('File upload successful:', data);
+      
+      // Get the public URL
+      const { data: publicUrlData } = supabase
+        .storage
+        .from('app_files')
+        .getPublicUrl(fileName);
+
       return new Response(
         JSON.stringify({ 
-          error: 'Failed to upload file',
-          details: error
+          message: 'File uploaded successfully',
+          data: data,
+          publicUrl: publicUrlData?.publicUrl || null
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+      );
+    } catch (uploadError) {
+      console.error('Upload error, attempting fallback method:', uploadError);
+      
+      // Fallback to using the admin_upload_file function
+      console.log('Trying to use admin_upload_file function');
+      const { data: fnResult, error: fnError } = await supabase
+        .rpc('admin_upload_file', { 
+          bucket_name: 'app_files',
+          file_path: fileName,
+          file_content: fileBuffer
+        });
+        
+      if (fnError) {
+        console.error('Function call error:', fnError);
+        throw fnError;
+      }
+      
+      console.log('Function upload successful:', fnResult);
+      
+      // Get the public URL
+      const { data: publicUrlData } = supabase
+        .storage
+        .from('app_files')
+        .getPublicUrl(fileName);
+
+      return new Response(
+        JSON.stringify({ 
+          message: 'File uploaded successfully via function',
+          data: { path: fnResult },
+          publicUrl: publicUrlData?.publicUrl || null
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
       );
     }
-
-    console.log('File upload successful:', data);
-    
-    // Get the public URL
-    const { data: publicUrlData } = supabase
-      .storage
-      .from('app_files')
-      .getPublicUrl(fileName);
-
-    return new Response(
-      JSON.stringify({ 
-        message: 'File uploaded successfully',
-        data: data,
-        publicUrl: publicUrlData?.publicUrl || null
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
-    );
 
   } catch (error) {
     console.error('Unexpected error in admin-upload function:', error);

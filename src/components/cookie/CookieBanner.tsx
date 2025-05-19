@@ -120,7 +120,7 @@ const CookieBanner = () => {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="fixed bottom-0 left-0 right-0 z-50 flex justify-center px-4 py-6"
           >
-            <div className="glass-panel border border-white/10 bg-black/75 backdrop-blur-xl rounded-xl p-6 shadow-lg max-w-md w-full">
+            <div className="glass-panel border border-white/10 bg-black/75 backdrop-blur-xl rounded-xl p-6 shadow-lg max-w-4xl w-full">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
                   <Cookie className="w-6 h-6 text-white" />
@@ -143,13 +143,13 @@ const CookieBanner = () => {
                     <Button
                       variant="outline"
                       onClick={() => setShowDialog(true)}
-                      className="bg-white/10 border-white/20 hover:bg-white/20 text-white"
+                      className="bg-white/10 border-white/20 hover:bg-white/20 text-white hover:text-white"
                     >
                       Manage Preferences
                     </Button>
                     <Button
                       onClick={handleAcceptAll}
-                      className="bg-white text-black hover:bg-white/90"
+                      className="bg-white text-black hover:bg-white/90 hover:text-black"
                     >
                       Accept All
                     </Button>
@@ -235,20 +235,20 @@ const CookieBanner = () => {
             <Button
               variant="outline"
               onClick={handlePrivacyClick}
-              className="bg-transparent border-white/20 hover:bg-white/10 text-white"
+              className="bg-transparent border-white/20 hover:bg-white/10 text-white hover:text-white"
             >
               Privacy Policy
             </Button>
             <div className="flex gap-2">
               <Button
                 onClick={handleSavePreferences}
-                className="bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                className="bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:text-white"
               >
                 Save Preferences
               </Button>
               <Button
                 onClick={handleAcceptAll}
-                className="bg-white text-black hover:bg-white/90"
+                className="bg-white text-black hover:bg-white/90 hover:text-black"
               >
                 Accept All
               </Button>
