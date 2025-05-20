@@ -18,11 +18,23 @@ serve(async (req) => {
   }
 
   try {
+    // Verify Supabase environment variables are set
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    if (!supabaseUrl || !supabaseServiceRoleKey) {
+      console.error("Missing required environment variables");
+      return new Response(
+        JSON.stringify({ 
+          error: 'Server configuration error',
+          message: 'Missing Supabase environment variables'
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      );
+    }
+
     // Use the service role key for admin privileges
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
     // Get file data from request
     const formData = await req.formData();
@@ -30,6 +42,7 @@ serve(async (req) => {
     const fileName = formData.get('fileName')?.toString() || 'CopyClipCloud_1.0.0.dmg';
     
     if (!file || typeof file === 'string') {
+      console.error("Invalid file format or missing file", typeof file);
       return new Response(
         JSON.stringify({ 
           error: 'No file provided or invalid file format',
@@ -40,11 +53,11 @@ serve(async (req) => {
 
     // Convert file to arrayBuffer
     const fileBuffer = await file.arrayBuffer();
-
-    console.log(`Uploading file ${fileName} to app_files bucket`);
+    console.log(`Uploading file ${fileName} (${file.type}, ${fileBuffer.byteLength} bytes) to app_files bucket`);
     
     // Try direct upload first with detailed error reporting
     try {
+      console.log("Attempting direct storage upload...");
       const { data, error } = await supabase
         .storage
         .from('app_files')
