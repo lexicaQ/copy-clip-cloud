@@ -50,6 +50,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ensure_download_stats_table: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      get_total_downloads: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       increment_download_count: {
         Args: { version_param: string }
         Returns: undefined

@@ -26,34 +26,23 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-    // Create the download_stats table if it doesn't exist
-    try {
-      await supabase.rpc('ensure_download_stats_table');
-    } catch (error) {
-      console.error("Error ensuring download_stats table exists:", error);
-    }
-    
-    // Query the download_stats table to get the total count
-    const { data, error } = await supabase
-      .from('download_stats')
-      .select('download_count')
-      .order('download_count', { ascending: false });
+    // Call the get_total_downloads function
+    const { data, error } = await supabase.rpc('get_total_downloads');
     
     if (error) {
+      console.error("Error getting total downloads:", error);
       return new Response(
         JSON.stringify({ error: error.message }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
       );
     }
     
-    // Calculate total downloads
-    const totalDownloads = data.reduce((sum, record) => sum + record.download_count, 0);
-    
     return new Response(
-      JSON.stringify(totalDownloads),
+      JSON.stringify(data),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     );
   } catch (error) {
+    console.error("Unexpected error:", error);
     return new Response(
       JSON.stringify({ error: 'An unexpected error occurred' }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
