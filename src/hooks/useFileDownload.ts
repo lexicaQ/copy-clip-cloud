@@ -14,7 +14,7 @@ export const useFileDownload = () => {
   const [downloading, setDownloading] = useState(false);
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   
-  // Fetch file info on hook initialization with debounce to prevent animation issues
+  // Fetch file info on hook initialization
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchFileInfo();
@@ -36,7 +36,7 @@ export const useFileDownload = () => {
       }
       
       if (files && files.length > 0) {
-        // Sort files by created_at if available
+        // Sort files by created_at to get the latest
         const latestFile = files[0];
         
         // Parse version from filename if possible (format: CopyClipCloud_X.Y.Z.ext)
@@ -77,68 +77,55 @@ export const useFileDownload = () => {
     setDownloading(true);
     
     try {
-      const { data: files, error } = await supabase
-        .storage
-        .from('app_files')
-        .list();
-
-      if (error || !files?.length) {
-        throw new Error('No files available');
+      // Call the edge function to get the download URL and increment count
+      const response = await fetch(`${supabase.supabaseUrl}/functions/v1/download-app`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabase.supabaseKey}`
+        },
+        body: JSON.stringify({})
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to generate download URL');
       }
       
-      // Get latest version file
-      const latestFile = files[0];
+      const data = await response.json();
       
-      // Get the public URL of the file
-      const { data } = await supabase
-        .storage
-        .from('app_files')
-        .download(latestFile.name);
-
-      if (!data) {
-        throw new Error('Failed to download file');
+      if (!data.downloadUrl) {
+        throw new Error('No download URL returned');
       }
-
-      // Create download link
-      const url = URL.createObjectURL(data);
+      
+      // Create download link and trigger download
       const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', latestFile.name);
+      link.href = data.downloadUrl;
+      link.setAttribute('download', data.fileName || 'CopyClipCloud.dmg');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-      // Increment download counter in database using edge function
-      try {
-        // Extract version from filename if possible
-        let version = '1.0.0'; // Default version
-        const versionMatch = latestFile.name.match(/(\d+\.\d+\.\d+)/);
-        if (versionMatch) {
-          version = versionMatch[1];
-        }
-        
-        // Call the edge function to increment the download count
-        const { error: updateError } = await supabase.rpc('increment_download_count', {
-          version_param: version
-        });
-        
-        if (updateError) {
-          console.error("Error updating download count:", updateError);
-        }
-      } catch (countError) {
-        console.error("Error calling increment function:", countError);
-      }
 
       // Show toast in bottom right
       toast.success("Download started", {
         position: "bottom-right",
         description: "Your file will be downloaded shortly"
       });
+      
+      // Update the file info with the latest data
+      if (data.fileName && data.version) {
+        const extension = data.fileName.split('.').pop() || '';
+        setFileInfo(prev => ({
+          ...prev!,
+          fileName: data.fileName,
+          version: data.version,
+          extension
+        }));
+      }
 
     } catch (error: any) {
       console.error("Download error:", error);
-      toast.error("Download failed. Please try again.", {
+      toast.error(`Download failed: ${error.message || 'Please try again.'}`, {
         position: "bottom-right"
       });
     } finally {

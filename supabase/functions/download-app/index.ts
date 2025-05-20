@@ -28,11 +28,23 @@ serve(async (req) => {
       console.log("No specific file requested in body");
     }
 
+    // Verify Supabase environment variables are set
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    if (!supabaseUrl || !supabaseServiceRoleKey) {
+      console.error("Missing required environment variables");
+      return new Response(
+        JSON.stringify({ 
+          error: 'Server configuration error',
+          message: 'Missing Supabase environment variables'
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      );
+    }
+
     console.log("Creating Supabase client");
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
     // First, check for files in the app_files bucket 
     console.log("Checking app_files bucket for downloadable files");
@@ -118,6 +130,21 @@ serve(async (req) => {
     const versionMatch = fileToDownload.name.match(/(\d+\.\d+\.\d+)/);
     if (versionMatch) {
       version = versionMatch[1];
+    }
+
+    // Increment download count using the function
+    try {
+      const { error: incrementError } = await supabase.rpc('increment_download_count', {
+        version_param: version
+      });
+      
+      if (incrementError) {
+        console.error("Error incrementing download count:", incrementError);
+      } else {
+        console.log(`Successfully incremented download count for version ${version}`);
+      }
+    } catch (countError) {
+      console.error("Error calling increment function:", countError);
     }
 
     console.log(`Download URL generated successfully for file: ${fileToDownload.name}`);

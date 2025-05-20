@@ -79,6 +79,26 @@ serve(async (req) => {
         .from('app_files')
         .getPublicUrl(fileName);
 
+      // Also store metadata in the database
+      const fileSize = fileBuffer.byteLength;
+      const mimeType = file.type || 'application/octet-stream';
+      
+      // Insert file metadata into database
+      const { error: metadataError } = await supabase
+        .from('file_metadata')
+        .insert({
+          file_name: fileName,
+          file_path: data.path,
+          file_size: fileSize,
+          mime_type: mimeType,
+          is_public: true,
+          user_id: null  // Admin uploads don't have specific user
+        });
+        
+      if (metadataError) {
+        console.error('Error storing file metadata:', metadataError);
+      }
+
       return new Response(
         JSON.stringify({ 
           message: 'File uploaded successfully',

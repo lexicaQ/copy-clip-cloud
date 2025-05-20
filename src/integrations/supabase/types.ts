@@ -9,24 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      download_stats: {
+      file_metadata: {
         Row: {
-          download_count: number | null
+          created_at: string | null
+          file_name: string
+          file_path: string
+          file_size: number | null
           id: string
-          last_downloaded: string | null
-          version: string
+          is_public: boolean | null
+          mime_type: string | null
+          updated_at: string | null
+          user_id: string | null
         }
         Insert: {
-          download_count?: number | null
+          created_at?: string | null
+          file_name: string
+          file_path: string
+          file_size?: number | null
           id?: string
-          last_downloaded?: string | null
-          version: string
+          is_public?: boolean | null
+          mime_type?: string | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
-          download_count?: number | null
+          created_at?: string | null
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
           id?: string
-          last_downloaded?: string | null
-          version?: string
+          is_public?: boolean | null
+          mime_type?: string | null
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -35,10 +50,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      admin_upload_file: {
-        Args: { bucket_name: string; file_path: string; file_content: string }
-        Returns: string
-      }
       increment_download_count: {
         Args: { version_param: string }
         Returns: undefined

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Clipboard, Shield, FileText, Download, MessageSquare, Home, Loader, BookOpen, Cloud } from "lucide-react";
@@ -11,7 +10,7 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { handleDownload } = useFileDownload();
+  const { handleDownload, downloading } = useFileDownload();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -103,7 +102,9 @@ const Header = () => {
                 }}
               />
               <Download className="w-4 h-4 text-white relative z-10" />
-              <span className="font-medium text-white relative z-10">Download</span>
+              <span className="font-medium text-white relative z-10">
+                {downloading ? "Downloading..." : "Download"}
+              </span>
             </motion.button>
           </div>
           
@@ -192,7 +193,7 @@ const Header = () => {
                     whileTap={{ scale: 0.97 }}
                   >
                     <Download className="w-5 h-5" />
-                    <span>Download Now</span>
+                    <span>{downloading ? "Downloading..." : "Download Now"}</span>
                   </motion.button>
                 </div>
               </div>
