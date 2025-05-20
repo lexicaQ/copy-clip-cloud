@@ -8,20 +8,16 @@ export const useDownloadCount = () => {
   useEffect(() => {
     const fetchDownloadCount = async () => {
       try {
-        // Query the download_stats table
-        const { data, error } = await supabase
-          .from('download_stats')
-          .select('download_count')
-          .order('download_count', { ascending: false })
-          .limit(1);
+        // Use a direct query with RPC as the download_stats table isn't in the TypeScript definitions
+        const { data, error } = await supabase.rpc('get_total_downloads');
           
         if (error) {
           console.error("Error fetching download count:", error);
           return;
         }
         
-        if (data && data.length > 0) {
-          setDownloadCount(data[0].download_count);
+        if (data) {
+          setDownloadCount(data);
         } else {
           // If no records found, default to 0
           setDownloadCount(0);

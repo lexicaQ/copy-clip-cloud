@@ -77,12 +77,12 @@ export const useFileDownload = () => {
     setDownloading(true);
     
     try {
-      // Call the edge function to get the download URL and increment count
-      const response = await fetch(`${supabase.supabaseUrl}/functions/v1/download-app`, {
+      // Call the edge function using fetch with the correct URL format
+      const response = await fetch('/api/download-app', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabase.supabaseKey}`
+          'Authorization': `Bearer ${supabase.auth.getSession()}`
         },
         body: JSON.stringify({})
       });
