@@ -81,8 +81,7 @@ export const useFileDownload = () => {
       const response = await fetch('/api/download-app', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabase.auth.getSession()}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({})
       });
