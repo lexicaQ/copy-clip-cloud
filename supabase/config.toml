@@ -31,3 +31,7 @@ url = "/api/download-app"
 [[fetch.endpoints]]
 handler = "v1/get-total-downloads"
 url = "/api/get-total-downloads"
+
+[[fetch.endpoints]]
+handler = "v1/admin-upload"
+url = "/api/admin-upload"
