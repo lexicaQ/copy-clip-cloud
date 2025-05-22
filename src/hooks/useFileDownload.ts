@@ -25,6 +25,7 @@ export const useFileDownload = () => {
   
   const fetchFileInfo = async () => {
     try {
+      console.log("Fetching file info...");
       const { data: files, error } = await supabase
         .storage
         .from('app_files')
@@ -36,8 +37,13 @@ export const useFileDownload = () => {
       }
       
       if (files && files.length > 0) {
+        console.log("Files found:", files);
         // Sort files by created_at to get the latest
-        const latestFile = files[0];
+        const sortedFiles = [...files].sort((a, b) => {
+          return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+        });
+        
+        const latestFile = sortedFiles[0];
         
         // Parse version from filename if possible (format: CopyClipCloud_X.Y.Z.ext)
         let version = '1.0.0'; // Default version
@@ -58,6 +64,8 @@ export const useFileDownload = () => {
           size,
           extension
         });
+      } else {
+        console.log("No files found in the bucket");
       }
     } catch (error) {
       console.error("Error fetching file info:", error);
@@ -77,6 +85,7 @@ export const useFileDownload = () => {
     setDownloading(true);
     
     try {
+      console.log("Initiating download...");
       // Call the edge function using fetch with the correct URL format
       const response = await fetch('/api/download-app', {
         method: 'POST',
@@ -92,6 +101,7 @@ export const useFileDownload = () => {
       }
       
       const data = await response.json();
+      console.log("Download response:", data);
       
       if (!data.downloadUrl) {
         throw new Error('No download URL returned');

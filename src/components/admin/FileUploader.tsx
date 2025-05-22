@@ -12,7 +12,29 @@ const FileUploader = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      const selectedFile = e.target.files[0];
+      
+      // Validate file type
+      const validTypes = ['application/x-apple-diskimage', 'application/zip', 'application/x-apple-pkg'];
+      const fileName = selectedFile.name.toLowerCase();
+      const isValidExtension = fileName.endsWith('.dmg') || fileName.endsWith('.zip') || fileName.endsWith('.pkg');
+      
+      if (!validTypes.includes(selectedFile.type) && !isValidExtension) {
+        toast.error("Invalid file type", {
+          description: "Only DMG, ZIP, or PKG files are allowed."
+        });
+        return;
+      }
+      
+      // Validate file size (500MB max)
+      if (selectedFile.size > 500 * 1024 * 1024) {
+        toast.error("File too large", {
+          description: "Maximum file size is 500MB."
+        });
+        return;
+      }
+      
+      setFile(selectedFile);
       setUploadStatus('idle');
       setErrorMessage(null);
     }
@@ -32,6 +54,7 @@ const FileUploader = () => {
       const formData = new FormData();
       formData.append('file', file);
 
+      console.log("Starting file upload...");
       const response = await fetch('/api/admin-upload', {
         method: 'POST',
         body: formData,
@@ -43,6 +66,7 @@ const FileUploader = () => {
         throw new Error(data.error || 'Upload failed');
       }
 
+      console.log("Upload successful:", data);
       setUploadStatus('success');
       toast.success("File uploaded successfully", {
         description: `${file.name} has been uploaded and is now available for download.`
@@ -50,6 +74,9 @@ const FileUploader = () => {
 
       // Clear the file input
       setFile(null);
+      if (document.getElementById('file-upload') as HTMLInputElement) {
+        (document.getElementById('file-upload') as HTMLInputElement).value = '';
+      }
     } catch (error: any) {
       console.error("Upload error:", error);
       setUploadStatus('error');
@@ -131,7 +158,7 @@ const FileUploader = () => {
       </div>
       
       <p className="text-xs text-white/60 mt-4">
-        Note: This upload is restricted to administrators only. Files uploaded will be available for public download.
+        Note: Only DMG, ZIP, or PKG files up to 500MB are accepted. Files uploaded will be available for public download.
       </p>
     </div>
   );

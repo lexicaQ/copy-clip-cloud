@@ -24,6 +24,8 @@ serve(async (req) => {
       );
     }
 
+    // Create a Supabase client with the service role key
+    // This bypasses RLS and allows us to upload files regardless of policies
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     
     // Parse request body
@@ -37,11 +39,31 @@ serve(async (req) => {
       );
     }
 
+    // Check file type and size
+    const allowedTypes = ['application/x-apple-diskimage', 'application/zip', 'application/x-apple-pkg'];
+    const maxSize = 500 * 1024 * 1024; // 500MB
+    
+    if (!allowedTypes.includes(file.type) && !file.name.endsWith('.dmg') && !file.name.endsWith('.zip') && !file.name.endsWith('.pkg')) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid file type. Only DMG, ZIP, or PKG files are allowed.' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
+    }
+    
+    if (file.size > maxSize) {
+      return new Response(
+        JSON.stringify({ error: 'File too large. Maximum size is 500MB.' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
+    }
+
     const fileExt = file.name.split('.').pop();
     const fileName = `CopyClipCloud_${new Date().toISOString().replace(/[:.]/g, '-')}.${fileExt}`;
     const filePath = `${fileName}`;
 
-    // Upload file to storage using service role
+    console.log(`Uploading file: ${fileName}, size: ${file.size}, type: ${file.type}`);
+
+    // Upload file to storage using service role key (bypasses RLS)
     const { data, error } = await supabase
       .storage
       .from('app_files')
@@ -58,11 +80,13 @@ serve(async (req) => {
       );
     }
     
+    console.log("File uploaded successfully:", data);
+    
     // Get file metadata
     const fileSize = file.size;
     const version = '1.0.0'; // Default version or extract from filename
     
-    // Create a signed URL for downloading
+    // Create a signed URL for downloading - this works regardless of policies
     const { data: urlData, error: urlError } = await supabase
       .storage
       .from('app_files')
