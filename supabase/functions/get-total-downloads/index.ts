@@ -26,19 +26,43 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
-    // Call the get_total_downloads function
-    const { data, error } = await supabase.rpc('get_total_downloads');
-    
-    if (error) {
-      console.error("Error getting total downloads:", error);
-      return new Response(
-        JSON.stringify({ error: error.message }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-      );
+    // Create the download_stats table if it doesn't exist
+    try {
+      await supabase.rpc('ensure_download_stats_table');
+    } catch (error) {
+      console.error("Error ensuring download_stats table exists:", error);
+      // Create a simple table if the RPC fails
+      await supabase.from('download_stats').select('count').limit(1);
+    }
+
+    // Get total downloads using the RPC function
+    let totalDownloads = 0;
+    try {
+      const { data, error } = await supabase.rpc('get_total_downloads');
+      
+      if (error) {
+        console.error("Error getting total downloads:", error);
+        throw error;
+      }
+      
+      totalDownloads = data || 0;
+    } catch (error) {
+      console.error("RPC function failed, falling back to direct query:", error);
+      
+      // Fallback: Directly query the download_stats table
+      const { data, error } = await supabase
+        .from('download_stats')
+        .select('download_count');
+      
+      if (error) {
+        console.error("Error with fallback query:", error);
+      } else if (data) {
+        totalDownloads = data.reduce((sum, row) => sum + (row.download_count || 0), 0);
+      }
     }
     
     return new Response(
-      JSON.stringify(data),
+      JSON.stringify(totalDownloads),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
     );
   } catch (error) {

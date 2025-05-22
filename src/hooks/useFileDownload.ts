@@ -97,7 +97,7 @@ export const useFileDownload = () => {
       
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to generate download URL');
+        throw new Error(errorData.error || errorData.message || 'Failed to generate download URL');
       }
       
       const data = await response.json();
